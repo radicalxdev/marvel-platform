@@ -128,3 +128,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore back-end build output
+/platform-backend/backend/build/
+/platform-backend/functions/node_modules/
+
+# Ignore front-end build output
+/platform-front-end/build/
+/platform-front-end/node_modules/

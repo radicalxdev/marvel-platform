@@ -27,24 +27,5 @@ const convertToUnixTimestamp = (date) => {
   return unixTimestamp;
 };
 
-const transformEnrolledDoc = (doc) => {
-  const { startTime: st, endTime: et, practice, ...enrolledChallegeData } = doc;
 
-  const transformedPractices = practice
-    ?.map(({ startTime: sTime, endTime: eTime, ...practiceData }) => ({
-      startTime: convertToUnixTimestamp(sTime),
-      endTime: convertToUnixTimestamp(eTime),
-      ...practiceData,
-    }))
-    .sort((a, b) => a.level - b.level);
-
-  const transformedDoc = {
-    startTime: convertToUnixTimestamp(st),
-    endTime: convertToUnixTimestamp(et),
-    practice: transformedPractices,
-    ...enrolledChallegeData,
-  };
-
-  return transformedDoc;
-};
-export { parseFirebaseText, convertToUnixTimestamp, transformEnrolledDoc };
+export { parseFirebaseText, convertToUnixTimestamp };

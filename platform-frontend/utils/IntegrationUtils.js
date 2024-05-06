@@ -1,4 +1,4 @@
-import { amplitude } from '@/hooks/useAmplitudeInit';
+import { amplitude } from "@/hooks/useAmplitudeInit";
 
 /**
  * Sets the behavior of the Intercom widget based on the specified action.
@@ -7,11 +7,11 @@ import { amplitude } from '@/hooks/useAmplitudeInit';
  * @return {object} An object containing the observer used for scrolling.
  */
 const setIntercom = (action) => {
-  const frame = window.document.querySelector('body .intercom-messenger-frame');
+  const frame = window.document.querySelector("body .intercom-messenger-frame");
   const launchers = window.document.querySelectorAll(
-    '.intercom-launcher, .intercom-launcher-active, .intercom-507y44, .intercom-dfosxs'
+    ".intercom-launcher, .intercom-launcher-active, .intercom-507y44, .intercom-dfosxs"
   );
-  const intercomLauncher = window.document.querySelector('.intercom-launcher');
+  const intercomLauncher = window.document.querySelector(".intercom-launcher");
 
   const clickIntercom = () => {
     if (intercomLauncher) {
@@ -25,11 +25,11 @@ const setIntercom = (action) => {
   const handleScroll = () => {
     if (window.scrollY > 0) {
       if (frame) {
-        frame.style.position = 'absolute';
+        frame.style.position = "absolute";
       }
 
       launchers.forEach((launcher) => {
-        launcher.style.position = 'absolute';
+        launcher.style.position = "absolute";
       });
     }
   };
@@ -39,7 +39,7 @@ const setIntercom = (action) => {
     mutationsList.forEach((mutation) => {
       if (mutation.addedNodes && mutation.addedNodes.length > 0) {
         mutation.addedNodes.forEach((node) => {
-          if (node.classList && node.classList.contains('intercom-launcher')) {
+          if (node.classList && node.classList.contains("intercom-launcher")) {
             clickIntercom();
             obs.disconnect();
           }
@@ -49,23 +49,23 @@ const setIntercom = (action) => {
   });
 
   switch (action) {
-    case 'hide':
+    case "hide":
       if (frame) {
-        frame.style.display = 'none';
+        frame.style.display = "none";
       }
       launchers.forEach((launcher) => {
-        launcher.style.display = 'none';
+        launcher.style.display = "none";
       });
       break;
-    case 'open':
-      if (!!frame && frame.style.display === 'none') {
-        frame.style.display = 'block';
+    case "open":
+      if (!!frame && frame.style.display === "none") {
+        frame.style.display = "block";
       }
       launchers.forEach((launcher) => {
-        launcher.style.display = 'block';
+        launcher.style.display = "block";
       });
       break;
-    case 'scroll':
+    case "scroll":
       observer.observe(window.document.body, {
         childList: true,
         subtree: true,
@@ -73,15 +73,15 @@ const setIntercom = (action) => {
 
       if (window.scrollY > 0) {
         if (frame) {
-          frame.style.position = 'absolute';
+          frame.style.position = "absolute";
         }
 
         launchers.forEach((launcher) => {
-          launcher.style.position = 'absolute';
+          launcher.style.position = "absolute";
         });
       }
 
-      window.addEventListener('scroll', handleScroll);
+      window.addEventListener("scroll", handleScroll);
       break;
     default:
       break;
@@ -110,7 +110,7 @@ const amplitudeTracker = (name, props) => {
  */
 const formatStripeAmount = (unitAmount) => {
   const amount = unitAmount / 100; // Convert from cents to dollars
-  return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  return amount.toLocaleString("en-US", { style: "currency", currency: "USD" });
 };
 
 /**

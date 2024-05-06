@@ -1,6 +1,6 @@
 {
-  "name": "radicalx-platform",
-  "version": "0.3.2",
+  "name": "kai-ai",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -27,10 +27,8 @@
     "@amplitude/analytics-browser": "^2.3.5",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
-    "@invertase/firestore-stripe-payments": "^0.0.7",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.0",
-    "@readyplayerme/rpm-react-sdk": "^0.1.4",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "firebase": "^9.22.0",
