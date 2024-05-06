@@ -1,0 +1,34 @@
+{
+  "name": "RadicalX AI",
+  "short_name": "RadicalX AI",
+  "icons": [
+    {
+      "src": "./RadicalX-Favicon-16x16.png",
+      "type": "image/png",
+      "sizes": "16x16"
+    },
+    {
+      "src": "./RadicalX-Favicon-32x32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "./RadicalX-Favicon-128x128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "./RadicalX-Logo-256x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "./RadicalX-Logo-500x500.png",
+      "type": "image/png",
+      "sizes": "500x500"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}

@@ -1,0 +1,183 @@
+const styles = {
+  mainGridProps: {
+    container: true,
+    width: '100vw',
+  },
+  contentGridProps: (extraContentProps, headerHeight) => ({
+    container: true,
+    justifyContent: 'center',
+    item: true,
+    desktopLarge: 12,
+    minHeight: `calc(100vh - ${headerHeight}px)`,
+    height: 'auto',
+    sx: (theme) => ({
+      background: theme.palette.Background.primary,
+      py: {
+        desktopLarge: 5,
+        desktop: 4,
+        laptop: 5,
+        tablet: '28px',
+        mobile: 3,
+        mobileSmall: 3,
+      },
+      px: {
+        desktopLarge: 5,
+        desktop: 4,
+        laptop: 5,
+        tablet: 5,
+        mobile: 5,
+        mobileSmall: '12px',
+      },
+      ...extraContentProps,
+    }),
+  }),
+  logoGridProps: {
+    item: true,
+    container: true,
+    width: 'auto',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    sx: {
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+  },
+  accountDetailsGridProps: {
+    item: true,
+    container: true,
+    width: 'auto',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    columnGap: {
+      desktopLarge: 2,
+      mobile: 1,
+      mobileSmall: '4px',
+    },
+  },
+  intercomIconConfig: {
+    width: 36,
+    height: 36,
+    alt: 'Intercom',
+  },
+  diamondProps: {
+    color: 'blue',
+    height: { desktop: '48px', mobile: '36px', mobileSmall: '28px' },
+    extraChipGridProps: { minWidth: '90px' },
+    extraChipProps: {
+      px: { mobileSmall: 1, desktopMedium: '10px' },
+    },
+  },
+  coinsProps: {
+    color: 'yellow',
+    height: { desktop: '48px', mobile: '36px', mobileSmall: '28px' },
+    extraChipGridProps: { minWidth: '90px' },
+    extraChipProps: {
+      px: { mobileSmall: 1, desktopMedium: '10px' },
+    },
+  },
+  faviconGridProps: {
+    item: true,
+    container: true,
+    width: { desktop: '48px', mobile: '36px', mobileSmall: '28px' },
+    height: { desktop: '48px', mobile: '36px', mobileSmall: '28px' },
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    sx: {
+      svg: {
+        width: { desktop: '48px', mobile: '36px', mobileSmall: '28px' },
+        height: { desktop: '48px', mobile: '36px', mobileSmall: '28px' },
+      },
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+  },
+  backButtonGridProps: {
+    item: true,
+    container: true,
+    mobileSmall: 4,
+    columnGap: 1,
+  },
+  backButtonProps: {
+    iconPlacement: 'left',
+    color: 'blue2',
+    bgcolor: '#181A20',
+    extraProps: {
+      fontSize: '14px',
+      fontFamily: 'Satoshi Medium',
+      height: { desktop: '48px', mobile: '36px', mobileSmall: '28px' },
+    },
+  },
+  missionDashboardButtonProps: {
+    bgcolor: '#181A20',
+    color: 'purple',
+    iconPlacement: 'left',
+    extraProps: {
+      width: '100%',
+      height: '36px',
+    },
+    extraButtonProps: {
+      fontSize: '18px',
+      fontFamily: 'Satoshi Bold',
+    },
+  },
+  missionDetailsButtonProps: {
+    bgcolor: '#181A20',
+    color: 'purple2',
+    iconPlacement: 'left',
+    extraProps: {
+      width: '100%',
+      height: '36px',
+    },
+    extraButtonProps: {
+      fontSize: '18px',
+      fontFamily: 'Satoshi Bold',
+    },
+  },
+  startQuizButtonProps: {
+    variant: 'mission',
+    sx: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '100px',
+      textTransform: 'capitalize',
+      height: '36px',
+      fontFamily: 'Satoshi Bold',
+      fontSize: '18px',
+    },
+  },
+  submitButtonProps: {
+    variant: 'mission',
+    sx: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '100px',
+      textTransform: 'capitalize',
+      height: '36px',
+      fontFamily: 'Satoshi Bold',
+      fontSize: '18px',
+    },
+  },
+  backToMissionButtonProps: {
+    sx: {
+      borderColor: 'transparent',
+      borderRadius: '100px',
+      fontFamily: 'Satoshi Bold',
+      fontSize: '16px',
+      textTransform: 'capitalize',
+      color: (theme) => theme.palette.Background.gradient.grey,
+      '&:hover': {
+        background: (theme) => theme.palette.Background.gradient.grey,
+        color: (theme) => theme.palette.Dark_Colors.Dark[1],
+        svg: {
+          color: (theme) => theme.palette.Dark_Colors.Dark[1],
+        },
+      },
+    },
+  },
+};
+
+export default styles;
