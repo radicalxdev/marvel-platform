@@ -5,15 +5,7 @@ import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import ListingsPage from '@/components/ListingsPage';
 import MainAppLayout from '@/layouts/MainAppLayout';
 
-import Ebay from '@/assets/svg/partners/Ebay.svg';
-import EY from '@/assets/svg/partners/EY.svg';
-import Google from '@/assets/svg/partners/Google.svg';
-import Microsoft from '@/assets/svg/partners/Microsoft.svg';
-import PayPal from '@/assets/svg/partners/PayPal.svg';
-import Uber from '@/assets/svg/partners/Uber.svg';
 import ImageURLs from '@/assets/urls';
-
-import CHALLENGES from '@/constants/challenges';
 
 import styles from './styles';
 
@@ -24,15 +16,7 @@ const DEFAULT_LEARNERS = [
 ];
 
 const FeaturedMissions = (props) => {
-  const {
-    open,
-    toggleOpen,
-    handleContinueMission,
-    enrolledChallenges,
-    data,
-    loading,
-    error,
-  } = props;
+  const { toggleOpen } = props;
 
   const theme = useTheme();
 
@@ -69,30 +53,8 @@ const FeaturedMissions = (props) => {
     );
   };
 
-  const BlockQuestDialogProps = {
-    handleClose: toggleOpen,
-    open,
-    singleButton: false,
-    primaryButtonText: 'Continue Mission 🌟',
-    secondaryButtonText: 'Cancel 🦋',
-    primaryButtonClickHandler: handleContinueMission,
-    secondaryButtonClickHandler: toggleOpen,
-    contentText:
-      'You have already enrolled in a similar mission and are currently blocked from accessing this one. 🚫',
-    mainText: 'Oops! 🙁 It seems you can\u0027t access the current mission.',
-    chipLabel: 'Already Registered',
-    success: false,
-    showScore: false,
-    disableExit: false,
-  };
-
   const ListingsCardProps = {
     toggleOpen,
-    data,
-    loading,
-    error,
-    enrolledChallenges: enrolledChallenges.data,
-    challengeType: CHALLENGES.MISSION,
     isMissions: true,
   };
 
@@ -122,21 +84,10 @@ const FeaturedMissions = (props) => {
     extraComponents: renderLearnMore(),
   };
 
-  const Partners = [
-    { id: 'microsoft', logo: Microsoft },
-    { id: 'google', logo: Google },
-    { id: 'ebay', logo: Ebay },
-    { id: 'paypal', logo: PayPal },
-    { id: 'ey', logo: EY },
-    { id: 'uber', logo: Uber },
-  ];
-
   return (
     <ListingsPage
-      blockDialogProps={BlockQuestDialogProps}
       listingsCardProps={ListingsCardProps}
       introCardProps={IntroCardProps}
-      partners={Partners}
     />
   );
 };

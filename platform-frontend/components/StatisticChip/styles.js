@@ -18,20 +18,16 @@ const styles = {
     alignItems: 'center',
     borderRadius: '40px',
     height: height || '30px',
-    sx: (theme) => ({
-      backgroundColor: theme.palette.Background.chip[`${color}Light`],
+    sx: () => ({
       ...extraChipGridProps,
     }),
   }),
   chipProps: (color, extraProps) => ({
-    sx: (theme) => ({
-      fontWeight: theme.typography.Components['Default Chip'].fontWeight,
-      lineHeight: theme.typography.Components['Default Chip'].lineHeight,
-      letterSpacing: theme.typography.Components['Default Chip'].letterSpacing,
+    sx: () => ({
       width: '100%',
       height: '100%',
       borderRadius: '40px',
-      color: color === 'grey' ? 'white' : theme.palette.Background.chip[color],
+      color: 'white',
       fontSize: { laptop: '18px', tablet: '12px', mobileSmall: '10px' },
       columnGap: '4px',
       ...extraProps,
