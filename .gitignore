@@ -128,3 +128,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
+
+
+# Backend
+backend/__pycache__
+backend/env/
+*/key.json
