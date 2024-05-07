@@ -7,7 +7,8 @@
     "shell": "firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "prepare": "cd ../.. && husky install platform-backend/functions/.husky"
   },
   "engines": {
     "node": "18"
