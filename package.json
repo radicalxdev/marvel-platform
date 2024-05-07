@@ -1,0 +1,15 @@
+{
+  "name": "kai-ai",
+  "version": "1.0.0",
+  "description": "This is an AI teaching assistant project that combines a front-end and back-end application. The front-end is located in the `platform-frontend` directory, and the back-end is located in the `platform-backend` directory.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^9.0.11"
+  }
+}
