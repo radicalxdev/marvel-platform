@@ -1,11 +1,11 @@
-const admin = require("firebase-admin");
-const { firestore, https, logger, pubsub } = require("firebase-functions");
-const { onCall } = require("firebase-functions/v2/https");
-const moment = require("moment");
+const admin = require('firebase-admin');
+const { firestore, https, logger, pubsub } = require('firebase-functions');
+const { onCall } = require('firebase-functions/v2/https');
+const moment = require('moment');
 
-const { STATUS } = require("../constants");
+const { STATUS } = require('../constants');
 
-const ArrayUtil = require("../utils/ArrayUtil");
+const ArrayUtil = require('../utils/ArrayUtil');
 
 const db = admin.firestore();
 
@@ -16,15 +16,15 @@ const TWENTY_FIVE_MINS = 1500000;
  *
  * @return {undefined} No return value.
  */
-const startChallenge = pubsub.schedule("every 5 minutes").onRun(async () => {
+const startChallenge = pubsub.schedule('every 5 minutes').onRun(async () => {
   try {
     const currentTime = new Date();
 
     /* Get challenges that should be started */
     const challengeRef = await db
-      .collection("challenges")
-      .where("startTime", "<=", currentTime)
-      .where("status", "==", STATUS.NOT_STARTED)
+      .collection('challenges')
+      .where('startTime', '<=', currentTime)
+      .where('status', '==', STATUS.NOT_STARTED)
       .get();
 
     if (challengeRef.empty) return;
@@ -34,7 +34,7 @@ const startChallenge = pubsub.schedule("every 5 minutes").onRun(async () => {
     await Promise.all(
       challenges.map(async (challenge) => {
         await challenge.ref.update({ status: STATUS.IN_PROGRESS });
-        await db.collection("leaderboards").doc(challenge.id).set({
+        await db.collection('leaderboards').doc(challenge.id).set({
           id: challenge.id,
           players: [],
         });
@@ -57,25 +57,25 @@ const startChallenge = pubsub.schedule("every 5 minutes").onRun(async () => {
  *
  * @return {undefined} - This function does not return a value.
  */
-const stopChallenge = pubsub.schedule("every 5 minutes").onRun(async () => {
+const stopChallenge = pubsub.schedule('every 5 minutes').onRun(async () => {
   try {
     const currentTime = new Date();
 
     /* Get challenges that have ended */
     const challengesRef = await db
-      .collection("challenges")
-      .where("endTime", "<=", currentTime)
-      .where("status", "==", STATUS.IN_PROGRESS)
+      .collection('challenges')
+      .where('endTime', '<=', currentTime)
+      .where('status', '==', STATUS.IN_PROGRESS)
       .get();
 
     if (challengesRef.empty) {
-      logger.log("No challenges to stop found");
+      logger.log('No challenges to stop found');
       return;
     }
 
     const challenges = ArrayUtil.firebaseDocsToArray(challengesRef?.docs);
 
-    if (process.env.DEBUG) logger.log("Challenges: ", challenges);
+    if (process.env.DEBUG) logger.log('Challenges: ', challenges);
 
     /* For all the challenges update the players */
     await Promise.all(
@@ -84,12 +84,12 @@ const stopChallenge = pubsub.schedule("every 5 minutes").onRun(async () => {
         await challenge.ref.update({ status: STATUS.COMPLETED });
 
         // If challenge is not a quest, return
-        if (process.env.DEBUG) logger.log("type", challenge.type);
+        if (process.env.DEBUG) logger.log('type', challenge.type);
 
         // Get enrolled players
         const enrolledPlayersRef = await db
-          .collection("enrolledPlayers")
-          .where("challengeId", "==", challenge.id)
+          .collection('enrolledPlayers')
+          .where('challengeId', '==', challenge.id)
           .get();
 
         // If no enrolled players for the quest, return
@@ -105,7 +105,7 @@ const stopChallenge = pubsub.schedule("every 5 minutes").onRun(async () => {
         );
 
         // If challenge is not a quest, set endTime and status to completed then return
-        if (challenge.type !== "quest") {
+        if (challenge.type !== 'quest') {
           await Promise.all(
             enrolledPlayers.map(async (player) => {
               const { ref } = player;
@@ -134,21 +134,21 @@ const stopChallenge = pubsub.schedule("every 5 minutes").onRun(async () => {
 
             /* Check if all tasks are completed */
             const answerDocRef = await enrolledPlayerDocRef
-              .collection("internal")
-              .doc("tasksAnswers")
+              .collection('internal')
+              .doc('tasksAnswers')
               .get();
 
             /* If answer doc not found, return */
             if (!answerDocRef.exists) {
-              await ref.update({ status: STATUS.INCOMPLETE });
-              logger.log("Assessment doc not found");
+              await challenge.ref.update({ status: STATUS.INCOMPLETE });
+              logger.log('Assessment doc not found');
               return;
             }
 
             process.env.DEBUG &&
-              logger.log("answerDocRef", answerDocRef?.data());
+              logger.log('answerDocRef', answerDocRef?.data());
 
-            const { tasks, endTime, duration } = answerDocRef?.data();
+            const { tasks, endTime, duration } = answerDocRef.data();
 
             // Calculate total score, if not set
             const totalScore =
@@ -187,11 +187,11 @@ const stopChallenge = pubsub.schedule("every 5 minutes").onRun(async () => {
 
         /* Distribute prize to winner */
         const winner = await db
-          .collectionGroup("internal")
-          .where("challengeId", "==", challenge?.id)
-          .where("totalScore", ">", 0)
-          .orderBy("totalScore", "desc")
-          .orderBy("duration", "asc")
+          .collectionGroup('internal')
+          .where('challengeId', '==', challenge?.id)
+          .where('totalScore', '>', 0)
+          .orderBy('totalScore', 'desc')
+          .orderBy('duration', 'asc')
           .limit(1)
           .get();
 
@@ -207,17 +207,17 @@ const stopChallenge = pubsub.schedule("every 5 minutes").onRun(async () => {
         )?.[0];
 
         process.env.DEBUG &&
-          logger.log("transformWinnerDoc", transformWinnerDoc);
+          logger.log('transformWinnerDoc', transformWinnerDoc);
 
         const winnerEnrolledPlayerDoc =
           await transformWinnerDoc?.ref.parent.parent?.get();
 
-        const { userId } = winnerEnrolledPlayerDoc?.data();
+        const { userId } = winnerEnrolledPlayerDoc.data();
 
-        process.env.DEBUG && logger.log("winner userId", userId);
+        process.env.DEBUG && logger.log('winner userId', userId);
 
         await db
-          .collection("users")
+          .collection('users')
           .doc(userId)
           .update({
             coins: admin.firestore.FieldValue.increment(challenge.prizePool),
@@ -254,35 +254,35 @@ const tasksUpdater = https.onCall(async (data, context) => {
 
   /* Get enrolled player */
   const enrolledPlayerQuery = await db
-    .collection("enrolledPlayers")
-    .where("challengeId", "==", challengeId)
-    .where("journeyId", "==", journeyId)
-    .where("userId", "==", userId)
+    .collection('enrolledPlayers')
+    .where('challengeId', '==', challengeId)
+    .where('journeyId', '==', journeyId)
+    .where('userId', '==', userId)
     .get();
 
   if (enrolledPlayerQuery.empty) {
     throw new https.HttpsError(
-      "not-found",
-      "User enrollement document not found"
+      'not-found',
+      'User enrollement document not found'
     );
   }
 
   const answersDoc = await enrolledPlayerQuery.docs[0].ref
-    .collection("internal")
-    .doc("tasksAnswers")
+    .collection('internal')
+    .doc('tasksAnswers')
     .get();
 
   if (!answersDoc.exists) {
     throw new https.HttpsError(
-      "not-found",
-      "User assessment document not found"
+      'not-found',
+      'User assessment document not found'
     );
   }
 
   const answersData = answersDoc.data();
 
   if (answersData.endTime) {
-    return { status: "aborted", message: "Endtime already exists" };
+    return { status: 'aborted', message: 'Endtime already exists' };
   }
 
   if (!answersData.startTime) {
@@ -290,7 +290,7 @@ const tasksUpdater = https.onCall(async (data, context) => {
     answersData.tasks[0].startTime = currentTime;
     return answersDoc.ref.update({
       startTime: currentTime,
-      endTime: moment(currentTime).add(25, "minutes"),
+      endTime: moment(currentTime).add(25, 'minutes'),
       duration: TWENTY_FIVE_MINS,
       tasks: answersData.tasks,
     });
@@ -320,49 +320,49 @@ const submitTask = async (data) => {
 
   /* Get enrolled player */
   const enrolledPlayerQuery = await db
-    .collection("enrolledPlayers")
-    .where("challengeId", "==", challengeId)
-    .where("journeyId", "==", journeyId)
-    .where("userId", "==", userId)
+    .collection('enrolledPlayers')
+    .where('challengeId', '==', challengeId)
+    .where('journeyId', '==', journeyId)
+    .where('userId', '==', userId)
     .get();
 
   if (enrolledPlayerQuery.empty) {
     throw new https.HttpsError(
-      "not-found",
-      "User enrollement document not found"
+      'not-found',
+      'User enrollement document not found'
     );
   }
 
   /* Get challenge */
   const challengeQuery = await db
-    .collection("challenges")
+    .collection('challenges')
     .doc(challengeId)
     .get();
 
   if (!challengeQuery.exists) {
-    throw new https.HttpsError("not-found", "Challenge document not found");
+    throw new https.HttpsError('not-found', 'Challenge document not found');
   }
 
   /* Get challenge solutions */
   const challengeSoltuionQuery = await challengeQuery.ref
-    .collection("internal")
-    .doc("tasksSolutions")
+    .collection('internal')
+    .doc('tasksSolutions')
     .get();
 
   if (!challengeSoltuionQuery.exists) {
-    throw new https.HttpsError("not-found", "Internal document not found");
+    throw new https.HttpsError('not-found', 'Internal document not found');
   }
 
   const challengeSoltuions = challengeSoltuionQuery.data();
   const answersDoc = await enrolledPlayerQuery.docs[0].ref
-    .collection("internal")
-    .doc("tasksAnswers")
+    .collection('internal')
+    .doc('tasksAnswers')
     .get();
 
   if (!answersDoc.exists) {
     throw new https.HttpsError(
-      "not-found",
-      "User assessment document not found"
+      'not-found',
+      'User assessment document not found'
     );
   }
 
@@ -370,7 +370,7 @@ const submitTask = async (data) => {
   const duration = moment(currentTime).diff(answersData.startTime.toDate());
 
   if (duration > TWENTY_FIVE_MINS) {
-    throw new https.HttpsError("aborted", "Time limit exceeded");
+    throw new https.HttpsError('aborted', 'Time limit exceeded');
   }
 
   const tasks = [...answersData.tasks];
@@ -422,7 +422,7 @@ const submitTask = async (data) => {
  * @return {Promise<void>} A promise that resolves when the function is complete.
  */
 const onTaskAnsUpdate = firestore
-  .document("enrolledPlayers/{enrolledPlayerDocId}/internal/tasksAnswers")
+  .document('enrolledPlayers/{enrolledPlayerDocId}/internal/tasksAnswers')
   .onUpdate(async (change, context) => {
     const currentTime = new Date();
     const { challengeId, duration, endTime, startTime, tasks, totalScore } =
@@ -441,13 +441,13 @@ const onTaskAnsUpdate = firestore
       userId,
       actualDuration: moment(currentTime).diff(
         startTime?.toDate(),
-        "milliseconds"
+        'milliseconds'
       ),
     });
 
     /* check if challenge is in progress */
     if (
-      moment(currentTime).diff(startTime?.toDate(), "milliseconds") <
+      moment(currentTime).diff(startTime?.toDate(), 'milliseconds') <
         TWENTY_FIVE_MINS &&
       tasks?.find(({ status }) =>
         [STATUS.NOT_STARTED, STATUS.IN_PROGRESS].includes(status)
@@ -464,13 +464,13 @@ const onTaskAnsUpdate = firestore
 
     /* get loaderboard */
     const leaderboardDoc = await db
-      .collection("leaderboards")
+      .collection('leaderboards')
       .doc(challengeId)
       .get();
 
     if (!leaderboardDoc.exists) {
       throw new https.HttpsError(
-        "not-found",
+        'not-found',
         `Leaderboard document ${challengeId} not found`
       );
     }
@@ -480,22 +480,22 @@ const onTaskAnsUpdate = firestore
 
     if (players.find(({ id }) => id === userId)) {
       throw new https.HttpsError(
-        "aborted",
+        'aborted',
         `User ${userId} already exists in leaderboard for challenge ${challengeId}`
       );
     }
 
     /* get user doc */
-    const userDoc = await db.collection("users").doc(userId).get();
+    const userDoc = await db.collection('users').doc(userId).get();
     if (!userDoc.exists) {
-      throw new https.HttpsError("not-found", `User ${userId} not found`);
+      throw new https.HttpsError('not-found', `User ${userId} not found`);
     }
     const userData = userDoc.data();
 
     players.push({
       id: userId,
       fullName: userData?.fullName,
-      avatarId: userData?.avatarId || "",
+      avatarId: userData?.avatarId || '',
       totalScore,
       duration,
       startTime,
@@ -521,12 +521,12 @@ const onTaskAnsUpdate = firestore
  * @return {Promise<void>} A promise that resolves once the update is complete.
  */
 const updateEnrolledPlayers = pubsub
-  .schedule("every 5 minutes")
+  .schedule('every 5 minutes')
   .onRun(async () => {
     const currentTime = new Date();
     const enrolledPlayers = await db
-      .collection("enrolledPlayers")
-      .where("status", "==", STATUS.IN_PROGRESS)
+      .collection('enrolledPlayers')
+      .where('status', '==', STATUS.IN_PROGRESS)
       .get();
 
     if (enrolledPlayers.empty) {
@@ -536,8 +536,8 @@ const updateEnrolledPlayers = pubsub
     await Promise.all(
       enrolledPlayers.docs.map(async (player) => {
         const tasksAnswers = await player.ref
-          .collection("internal")
-          .doc("tasksAnswers")
+          .collection('internal')
+          .doc('tasksAnswers')
           .get();
         if (!tasksAnswers.exists) return;
 
@@ -545,7 +545,7 @@ const updateEnrolledPlayers = pubsub
 
         /* check if challenge is in progress */
         if (
-          moment(currentTime).diff(startTime?.toDate(), "milliseconds") <
+          moment(currentTime).diff(startTime?.toDate(), 'milliseconds') <
             TWENTY_FIVE_MINS &&
           tasks?.find(({ status }) =>
             [STATUS.NOT_STARTED, STATUS.IN_PROGRESS].includes(status)

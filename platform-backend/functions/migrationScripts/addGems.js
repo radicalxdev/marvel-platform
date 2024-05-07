@@ -1,5 +1,5 @@
-const admin = require("firebase-admin");
-const { https, logger } = require("firebase-functions");
+const admin = require('firebase-admin');
+const { https, logger } = require('firebase-functions');
 
 /**
  * Adds gems to a user's account.
@@ -14,7 +14,7 @@ const addGems = https.onCall(async ({ gems, userId }, context) => {
   logger.log(`Migration - add ${gems} gems - started`);
 
   // Check if gems parameter is provided
-  if (!gems) return logger.log("Gems parameter required");
+  if (!gems) return logger.log('Gems parameter required');
 
   let docsToUpdate;
 
@@ -23,12 +23,12 @@ const addGems = https.onCall(async ({ gems, userId }, context) => {
     // Fetch the user document with the specified userId
     docsToUpdate = await admin
       .firestore()
-      .collection("users")
-      .where("id", "==", userId)
+      .collection('users')
+      .where('id', '==', userId)
       .get();
   } else {
     // If no userId is specified, Fetch all user documents
-    docsToUpdate = await admin.firestore().collection("users").get();
+    docsToUpdate = await admin.firestore().collection('users').get();
   }
 
   let docsUpdated = 0;
@@ -54,7 +54,7 @@ const addGems = https.onCall(async ({ gems, userId }, context) => {
   );
 
   logger.log(`${docsUpdated} challenge docs updated`);
-  logger.log("Migration - addGems - ended");
+  logger.log('Migration - addGems - ended');
 });
 
 module.exports = {

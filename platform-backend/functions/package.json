@@ -8,7 +8,9 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "prepare": "cd ../.. && husky install platform-backend/functions/.husky"
+    "lint:fix": "eslint --ext .js ./ --fix",
+    "format": "prettier --write .",
+    "prepare": "cd ../.. && husky platform-backend/functions/.husky"
   },
   "engines": {
     "node": "18"
@@ -23,11 +25,15 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.24.5",
+    "@stylistic/eslint-plugin-js": "^1.8.0",
     "eslint": "^8.9.0",
     "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
     "firebase-functions-test": "^0.2.0",
     "husky": "^9.0.11",
-    "prettier": "^2.8.8"
+    "prettier": "^3.2.5"
   },
   "private": true
 }
