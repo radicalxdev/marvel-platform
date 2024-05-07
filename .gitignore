@@ -73,11 +73,12 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+*.env
+*.env.development.local
+*.env.test.local
+*.env.production.local
+*.env.local
+*.env.local
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -134,5 +135,5 @@ dist
 /platform-backend/functions/node_modules/
 
 # Ignore front-end build output
-/platform-front-end/build/
-/platform-front-end/node_modules/
+/platform-frontend/build/
+/platform-frontend/node_modules/
