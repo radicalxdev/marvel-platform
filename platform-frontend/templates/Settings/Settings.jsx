@@ -5,7 +5,6 @@ import { Grid, Typography, useTheme } from '@mui/material';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
 import ChangePassword from './ChangePassword';
-import EditAvatar from './EditAvatar';
 import ProfileForm from './ProfileForm';
 
 import styles from './styles';
@@ -33,9 +32,6 @@ const Settings = () => {
         </Grid>
         <Grid {...styles.profileHeaderGridProps}>
           <Typography {...styles.profileHeaderProps}>User Profile</Typography>
-        </Grid>
-        <Grid {...styles.editAvatarGridProps}>
-          <EditAvatar />
         </Grid>
         <Grid {...styles.profileFormGridProps}>
           <ProfileForm />
