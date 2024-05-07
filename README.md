@@ -5,11 +5,12 @@ This is an AI teaching assistant project that combines a front-end and back-end 
 
 To set up the project, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/project-name.git`
-2. Navigate to the project directory: `cd project-name`
-3. Install dependencies for the front-end: `cd front-end && npm install`
-4. Install dependencies for the back-end: `cd ../backend && npm install`
-5. Start the development servers: `cd ../front-end && npm run dev` and `cd ../backend && run the emulator for local testing`
+1. Clone the repository: `git clone https://github.com/radicalx/rex-ai.git`
+2. Navigate to back-end project directory: `cd platform-backend/functions`
+3. Install dependencies for the back-end: `npm install`
+4. Navigate to front-end project directory: `cd platform-frontend`
+5. Install dependencies for the front-end: `npm install`
+6. Start the development servers: `cd platform-frontend && npm run dev` and `cd platform-backend/functions && run the emulator for local testing`
 
 ## Contributing
 
