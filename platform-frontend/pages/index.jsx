@@ -1,18 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import MainAppLayout from '@/layouts/MainAppLayout';
 import FeaturedMissions from '@/templates/FeaturedMissions';
 
-import CHALLENGES from '@/constants/challenges';
-
-import { firestore } from '@/redux/store';
-import fetchChallenges from '@/redux/thunks/challenges';
-
 const Missions = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -21,10 +15,6 @@ const Missions = () => {
   const { data, loading, error } = useSelector(
     (state) => state.challenges.mission
   );
-
-  useEffect(() => {
-    dispatch(fetchChallenges({ firestore, challengeType: CHALLENGES.MISSION }));
-  }, []);
 
   const handleContinueMission = () => {
     router.push(`/${selectedMaskedId}/dashboard`);

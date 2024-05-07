@@ -9,8 +9,7 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "lint:fix": "eslint --ext .js ./ --fix",
-    "format": "prettier --write .",
-    "prepare": "cd ../.. && husky platform-backend/functions/.husky"
+    "format": "prettier --write ."
   },
   "engines": {
     "node": "18"
