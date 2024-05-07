@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import fetchUserData from '../thunks/user';
 
 const initialState = {

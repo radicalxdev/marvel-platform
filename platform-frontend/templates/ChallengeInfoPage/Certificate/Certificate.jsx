@@ -1,13 +1,13 @@
-import { Grid, useTheme } from '@mui/material';
 import { ArrowDownwardOutlined } from '@mui/icons-material';
+import { Grid, useTheme } from '@mui/material';
 import Image from 'next/image';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import PrimaryDialog from '@/components/PrimaryDialog';
 
-import { shimmerEffect, toBase64 } from '@/utils/MiscellaneousUtils';
-
 import styles from './styles';
+
+import { shimmerEffect, toBase64 } from '@/utils/MiscellaneousUtils';
 
 const Certificate = (props) => {
   const { open, toggleOpen, enrolledChallenge } = props;

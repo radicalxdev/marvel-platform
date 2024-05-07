@@ -1,26 +1,26 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import LogRocket from 'logrocket';
+
 import { applyActionCode } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
+import LogRocket from 'logrocket';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { auth } from '@/redux/store';
+import { APP_ENV, AUTH_MODES } from '@/constants/auth';
+import ALERT_COLORS from '@/constants/notification';
+import ROUTES from '@/constants/routes';
+
+import { amplitude } from './useAmplitudeInit';
 
 import {
   setEmailVerified,
   setLoading,
   setTotalUsers,
 } from '@/redux/slices/authSlice';
-import fetchUserData from '@/redux/thunks/user';
+import { auth } from '@/redux/store';
 import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
-
-import { amplitude } from './useAmplitudeInit';
+import fetchUserData from '@/redux/thunks/user';
 import createStripeCustomer from '@/services/user/createStripeCustomer';
-
-import ROUTES from '@/constants/routes';
-import { APP_ENV, AUTH_MODES } from '@/constants/auth';
-import ALERT_COLORS from '@/constants/notification';
 
 const redirectRegex = /\/redirect.*/;
 

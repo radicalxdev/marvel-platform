@@ -1,22 +1,22 @@
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import {
-  leaderboardsRegex,
-  homeRegex,
-  rewardsRegex,
-  settingsRegex,
-  paymentsRegex,
-  hackathonsRegex,
-} from '@/regex/routes';
+import HackathonIcon from '@/assets/svg/hackathonSvg.svg';
+import HomeIcon from '@/assets/svg/HomeIcon.svg';
+import JoystickIcon from '@/assets/svg/joystick.svg';
 
 import ROUTES from '@/constants/routes';
 
-import HomeIcon from '@/assets/svg/HomeIcon.svg';
-import HackathonIcon from '@/assets/svg/hackathonSvg.svg';
-import JoystickIcon from '@/assets/svg/joystick.svg';
-
 import styles from './styles';
+
+import {
+  hackathonsRegex,
+  homeRegex,
+  leaderboardsRegex,
+  paymentsRegex,
+  rewardsRegex,
+  settingsRegex,
+} from '@/regex/routes';
 
 const PAGES = [
   {

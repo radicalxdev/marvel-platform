@@ -1,9 +1,10 @@
-import { useRouter } from 'next/router';
 import { Grid } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import MissionChat from '../MissionChat';
-import MissionInfo from './MissionInfo';
+
 import HackathonOverview from './HackathonOverview';
+import MissionInfo from './MissionInfo';
 
 import styles from './styles';
 

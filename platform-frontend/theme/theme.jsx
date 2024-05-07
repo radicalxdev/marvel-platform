@@ -3,13 +3,13 @@ import { createTheme } from '@mui/material/styles';
 
 import SvgIcon from '@mui/material/SvgIcon';
 
-import ErrorOutline from '@/assets/svg/_ErrorOutline.svg';
-import WarningAmberOutlined from '@/assets/svg/_WarningAmberOutlined.svg';
-import InfoOutlined from '@/assets/svg/_InfoOutlined.svg';
-import CheckCircleOutlined from '@/assets/svg/_CheckCircleOutlined.svg';
-import CheckBoxOutlineBlank from '@/assets/svg/_CheckBoxOutlineBlankOutlined.svg';
-import IndeterminateCheckBo from '@/assets/svg/_IndeterminateCheckBoxFilled.svg';
 import CheckBoxFilled from '@/assets/svg/_CheckBoxFilled.svg';
+import CheckBoxOutlineBlank from '@/assets/svg/_CheckBoxOutlineBlankOutlined.svg';
+import CheckCircleOutlined from '@/assets/svg/_CheckCircleOutlined.svg';
+import ErrorOutline from '@/assets/svg/_ErrorOutline.svg';
+import IndeterminateCheckBo from '@/assets/svg/_IndeterminateCheckBoxFilled.svg';
+import InfoOutlined from '@/assets/svg/_InfoOutlined.svg';
+import WarningAmberOutlined from '@/assets/svg/_WarningAmberOutlined.svg';
 
 const globalTheme = createTheme({
   palette: {

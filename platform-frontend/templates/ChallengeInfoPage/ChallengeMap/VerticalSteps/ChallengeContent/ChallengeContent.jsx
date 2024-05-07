@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { Box, Grid, StepContent, Typography } from '@mui/material';
+import Image from 'next/image';
 
 import LockedIcon from '@/assets/svg/LockedIcon.svg';
 

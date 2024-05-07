@@ -1,5 +1,5 @@
-import { Dialog, Grid, IconButton, Typography } from '@mui/material';
 import { CloseRounded } from '@mui/icons-material';
+import { Dialog, Grid, IconButton, Typography } from '@mui/material';
 
 import styles from './styles';
 

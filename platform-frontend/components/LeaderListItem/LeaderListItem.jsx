@@ -1,15 +1,18 @@
 import { useState } from 'react';
+
 import { Divider, Grid, IconButton, Typography } from '@mui/material';
-import Image from 'next/image';
 import moment from 'moment';
+import Image from 'next/image';
 
 import AvatarPlaceholder from '@/assets/images/AvatarPlaceholder.png';
+
+import styles from './styles';
+
 import {
   generateRandomColour,
   getUserAvatarImage,
 } from '@/utils/MiscellaneousUtils';
 
-import styles from './styles';
 /**
  * Renders a leader list item.
  *

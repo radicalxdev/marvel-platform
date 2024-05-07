@@ -1,4 +1,4 @@
-import { Snackbar, Alert } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
 
 import ALERT_COLORS from '@/constants/notification';
 

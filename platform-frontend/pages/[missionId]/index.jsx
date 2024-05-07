@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
+
 import { useRouter } from 'next/router';
-import { firestore } from '@/redux/store';
 
 import useQuestMap from '@/hooks/useQuestMap';
 
-import MainAppLayout from '@/layouts/MainAppLayout';
 import PaymentPageSkeleton from '@/components/PaymentPageSkeleton';
+import MainAppLayout from '@/layouts/MainAppLayout';
 import ChallengeInfoPage from '@/templates/ChallengeInfoPage';
 
-import fetchDetails from '@/services/challenges/fetchDetails';
-
-import ROUTES from '@/constants/routes';
 import CHALLENGES from '@/constants/challenges';
+import ROUTES from '@/constants/routes';
+
+import { firestore } from '@/redux/store';
+import fetchDetails from '@/services/challenges/fetchDetails';
 
 /**
  * Renders the Mission Individaul Page component, which displays information about a mission and allows the user to purchase it.

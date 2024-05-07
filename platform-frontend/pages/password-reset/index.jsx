@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import ResetPassword from '@/templates/Reset/ResetPassword';
-import PasswordUpdated from '@/templates/Reset/PasswordUpdated';
 import AuthLayout from '@/layouts/AuthLayout';
+import PasswordUpdated from '@/templates/Reset/PasswordUpdated';
+import ResetPassword from '@/templates/Reset/ResetPassword';
 
 const Reset = () => {
   const [isPasswordInput, setIsPasswordInput] = useState(true);

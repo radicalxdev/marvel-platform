@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
+
 import { useRouter } from 'next/router';
+
 import {
-  load as loadIntercom,
   boot as bootIntercom,
+  load as loadIntercom,
   update as updateIntercom,
 } from './Intercom';
 

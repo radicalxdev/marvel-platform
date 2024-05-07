@@ -1,9 +1,10 @@
 import { Grid } from '@mui/material';
 
-import HeaderCard from './HeaderCard';
 import RewardsListingCard from '@/components/RewardsListingCard';
 
 import REWARDS from '@/constants/rewards';
+
+import HeaderCard from './HeaderCard';
 
 import styles from './styles';
 

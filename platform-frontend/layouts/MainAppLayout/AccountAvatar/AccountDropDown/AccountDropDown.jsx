@@ -1,17 +1,17 @@
 import { Divider, Grid, Menu, MenuItem, Typography } from '@mui/material';
 import { signOut } from 'firebase/auth';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-
-import { auth } from '@/redux/store';
+import { useSelector } from 'react-redux';
 
 import SubscribedIcon from '@/assets/svg/IndicatorIcon.svg';
-import ROUTES from '@/constants/routes';
-import { STRIPE_ROLE } from '@/constants/roles';
 
-import { setIntercom } from '@/utils/IntegrationUtils';
+import { STRIPE_ROLE } from '@/constants/roles';
+import ROUTES from '@/constants/routes';
 
 import styles from './styles';
+
+import { auth } from '@/redux/store';
+import { setIntercom } from '@/utils/IntegrationUtils';
 
 /**
  * Renders an account dropdown menu.

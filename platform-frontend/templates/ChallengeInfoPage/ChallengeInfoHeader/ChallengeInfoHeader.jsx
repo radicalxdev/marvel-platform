@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
+
+import { ArrowBack, Check } from '@mui/icons-material';
 import {
   Button,
   Chip,
@@ -12,15 +12,12 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { ArrowBack, Check } from '@mui/icons-material';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
-import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import AvatarIcon from '@/components/AvatarIcon';
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import StatisticChip from '@/components/StatisticChip';
-import Registration from './Registration';
-import LearnMore from './LearnMore';
-
-import { shimmerEffect, toBase64 } from '@/utils/MiscellaneousUtils';
 
 import CoinsSvg from '@/assets/svg/coin.svg';
 import DiamondSvg from '@/assets/svg/diamond.svg';
@@ -28,7 +25,12 @@ import UserSvg from '@/assets/svg/user.svg';
 
 import ROUTES from '@/constants/routes';
 
+import LearnMore from './LearnMore';
+import Registration from './Registration';
+
 import styles from './styles';
+
+import { shimmerEffect, toBase64 } from '@/utils/MiscellaneousUtils';
 
 const ChallengeInfoHeader = (props) => {
   const {

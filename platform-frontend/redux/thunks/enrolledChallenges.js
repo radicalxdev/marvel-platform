@@ -1,5 +1,5 @@
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import { transformEnrolledDoc } from '@/utils/FirebaseUtils';
 

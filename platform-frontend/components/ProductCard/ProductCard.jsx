@@ -1,28 +1,27 @@
 import { useContext, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Grid, Typography, useTheme } from '@mui/material';
-import Image from 'next/image';
 
 import { createCheckoutSession } from '@invertase/firestore-stripe-payments';
-import { payments } from '@/redux/store';
-
-import GradientOutlinedButton from '../GradientOutlinedButton';
-
-import { formatStripeAmount } from '@/utils/IntegrationUtils';
-import { AuthContext } from '@/providers/GlobalProvider';
-
-import createPortalLink from '@/services/user/createStripePortalLink';
+import { Grid, Typography, useTheme } from '@mui/material';
+import Image from 'next/image';
+import { useSelector } from 'react-redux';
 
 import GreenCheckmark from '@/assets/svg/green-checkmark.svg';
 
 import ALERT_COLORS from '@/constants/notification';
 import {
   PAYMENT_INTERVALS,
-  PAYMENT_PLANS,
   PAYMENT_PLAN_BANNERS,
+  PAYMENT_PLANS,
 } from '@/constants/plans';
 
+import GradientOutlinedButton from '../GradientOutlinedButton';
+
 import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
+import { payments } from '@/redux/store';
+import createPortalLink from '@/services/user/createStripePortalLink';
+import { formatStripeAmount } from '@/utils/IntegrationUtils';
 
 /**
  * Generates a card component to display different prices for a particular product.

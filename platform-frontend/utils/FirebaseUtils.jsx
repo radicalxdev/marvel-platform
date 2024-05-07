@@ -27,5 +27,4 @@ const convertToUnixTimestamp = (date) => {
   return unixTimestamp;
 };
 
-
 export { parseFirebaseText, convertToUnixTimestamp };

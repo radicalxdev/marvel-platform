@@ -3,18 +3,18 @@ import {
   Step,
   StepConnector,
   Stepper,
-  Typography,
   styled,
+  Typography,
 } from '@mui/material';
 import { stepConnectorClasses } from '@mui/material/StepConnector';
-
-import ChallengeStepLabel from './ChallengeStepLabel';
-import ChallengeContent from './ChallengeContent';
-import { CustomStepLabel } from './ChallengeStepLabel/ChallengeStepLabel';
 
 import Trophy from '@/assets/svg/trophy.svg';
 
 import STATUS from '@/constants/mission';
+
+import ChallengeContent from './ChallengeContent';
+import ChallengeStepLabel from './ChallengeStepLabel';
+import { CustomStepLabel } from './ChallengeStepLabel/ChallengeStepLabel';
 
 import styles from './styles';
 

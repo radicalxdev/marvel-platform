@@ -1,9 +1,10 @@
 import { httpsCallable } from 'firebase/functions';
+
+import CHALLENGES from '@/constants/challenges';
+
 import { functions } from '@/redux/store';
 
 import { amplitudeTracker } from '@/utils/IntegrationUtils';
-
-import CHALLENGES from '@/constants/challenges';
 
 /**
  * Starts a challenge enrollment process for a user.

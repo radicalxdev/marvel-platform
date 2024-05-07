@@ -1,10 +1,9 @@
 import { Grid, Typography } from '@mui/material';
 
-import VerticalSteps from './VerticalSteps';
-
 import STATUS from '@/constants/mission';
 
 import styles from './styles';
+import VerticalSteps from './VerticalSteps';
 
 const ChallengeMap = (props) => {
   const {

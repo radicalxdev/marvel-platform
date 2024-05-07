@@ -1,24 +1,26 @@
-import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
+
 import {
   Button,
   Grid,
-  StepLabel,
-  Typography,
   stepConnectorClasses,
   stepIconClasses,
+  StepLabel,
   stepLabelClasses,
   styled,
+  Typography,
   useTheme,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
-import { AuthContext } from '@/providers/GlobalProvider';
 
 import CHALLENGES from '@/constants/challenges';
 import ALERT_COLORS from '@/constants/notification';
 
 import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
 
 const CustomStepLabel = styled((props) => (
   <StepLabel

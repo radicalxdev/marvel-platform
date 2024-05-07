@@ -1,15 +1,17 @@
 import { useState } from 'react';
+
 import { Button, Grid, Typography } from '@mui/material';
 import moment from 'moment';
 
+import Certificate from './Certificate';
 import ChallengeInfoHeader from './ChallengeInfoHeader';
+import ChallengeMap from './ChallengeMap';
 import ChallengeScenario from './ChallengeScenario';
 import IntroVideo from './IntroVideo';
-import ChallengeMap from './ChallengeMap';
-import Certificate from './Certificate';
+
+import styles from './styles';
 
 import sharedStyles from '@/styles/shared/sharedStyles';
-import styles from './styles';
 
 /**
  * Renders the Challenge Info Page component, which displays information about a specific challenge.

@@ -1,24 +1,27 @@
 import { useContext, useState } from 'react';
+
 import { Grid, IconButton, useTheme } from '@mui/material';
+import { updateProfile } from 'firebase/auth';
 import { FormContainer } from 'react-hook-form-mui';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProfile } from 'firebase/auth';
-import { auth, firestore } from '@/redux/store';
-import fetchUserData from '@/redux/thunks/user';
-
-import { AuthContext } from '@/providers/GlobalProvider';
 
 import useWatchFields from '@/hooks/useWatchFields';
-import updateUserProfile from '@/services/users/updateUserProfile';
 
-import ProfileInputField from '../ProfileInputField';
-import ChangeEmailAddress from '../ChangeEmailAddress';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import ALERT_COLORS from '@/constants/notification';
 import PencilIcon from '@/assets/svg/Pencil.svg';
 
+import ALERT_COLORS from '@/constants/notification';
+
+import ChangeEmailAddress from '../ChangeEmailAddress';
+import ProfileInputField from '../ProfileInputField';
+
 import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
+import { auth, firestore } from '@/redux/store';
+import fetchUserData from '@/redux/thunks/user';
+import updateUserProfile from '@/services/users/updateUserProfile';
 
 const DEFAULT_ERR_STATE = {
   email: false,

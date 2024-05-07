@@ -1,9 +1,9 @@
 import { Grid, Link, Typography, useTheme } from '@mui/material';
 
-import MainAppLayout from '@/layouts/MainAppLayout';
-import ListingsPage from '@/components/ListingsPage';
-import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import AvatarIcon from '@/components/AvatarIcon';
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
+import ListingsPage from '@/components/ListingsPage';
+import MainAppLayout from '@/layouts/MainAppLayout';
 
 import Ebay from '@/assets/svg/partners/Ebay.svg';
 import EY from '@/assets/svg/partners/EY.svg';

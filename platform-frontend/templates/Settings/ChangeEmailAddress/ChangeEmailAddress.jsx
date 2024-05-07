@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { FormContainer } from 'react-hook-form-mui';
+
+import { ArrowBack, Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Grid,
   IconButton,
@@ -9,25 +9,26 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { ArrowBack, Visibility, VisibilityOff } from '@mui/icons-material';
 import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 import { httpsCallable } from 'firebase/functions';
-
-import { amplitudeTracker } from '@/utils/IntegrationUtils';
-
-import { auth, functions } from '@/redux/store';
-import { AuthContext } from '@/providers/GlobalProvider';
-
-import BackDropModal from '@/components/BackDropModal';
-import GradientOutlinedButton from '@/components/GradientOutlinedButton';
-import ProfileInputField from '../ProfileInputField';
+import { FormContainer } from 'react-hook-form-mui';
+import { useSelector } from 'react-redux';
 
 import useWatchFields from '@/hooks/useWatchFields';
 
+import BackDropModal from '@/components/BackDropModal';
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
+
 import ALERT_COLORS from '@/constants/notification';
-import AUTH_REGEX from '@/regex/auth';
+
+import ProfileInputField from '../ProfileInputField';
 
 import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
+import { auth, functions } from '@/redux/store';
+import AUTH_REGEX from '@/regex/auth';
+import { amplitudeTracker } from '@/utils/IntegrationUtils';
 
 const PAGE_STEPS = {
   PASSWORD: 0,

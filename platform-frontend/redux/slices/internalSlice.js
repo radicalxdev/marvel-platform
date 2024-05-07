@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import fetchInternals from '../thunks/internals';
 
 const initialState = {

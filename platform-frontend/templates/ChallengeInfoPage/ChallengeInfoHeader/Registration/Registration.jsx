@@ -1,31 +1,31 @@
 import { useContext, useState } from 'react';
+
+import { Grid, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Typography, useTheme } from '@mui/material';
 
-import PrimaryDialog from '@/components/PrimaryDialog';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
+import PrimaryDialog from '@/components/PrimaryDialog';
 import StatisticChip from '@/components/StatisticChip';
 
-import startChallenge from '@/services/challenges/startChallenge';
-import { AuthContext } from '@/providers/GlobalProvider';
-
-import { firestore } from '@/redux/store';
-import fetchUserData from '@/redux/thunks/user';
-import { updateChallengeDoc } from '@/redux/slices/challengesSlice';
-import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
-import { reset as resetEnrolledChallenges } from '@/redux/slices/enrolledChallengesSlice';
-
 import CoinIcon from '@/assets/svg/coin2.svg';
+import DevIcon from '@/assets/svg/DevIcon.svg';
 import DiamondIcon from '@/assets/svg/diamond2.svg';
 import RobotIcon from '@/assets/svg/robotIcon.svg';
-import DevIcon from '@/assets/svg/DevIcon.svg';
 import ImageURLs from '@/assets/urls';
 
 import ALERT_COLORS from '@/constants/notification';
 import { EXPEDITIONS } from '@/constants/quests';
 
 import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
+import { updateChallengeDoc } from '@/redux/slices/challengesSlice';
+import { reset as resetEnrolledChallenges } from '@/redux/slices/enrolledChallengesSlice';
+import { firestore } from '@/redux/store';
+import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
+import fetchUserData from '@/redux/thunks/user';
+import startChallenge from '@/services/challenges/startChallenge';
 
 const Registration = (props) => {
   const { open, toggleOpen, isPreEnroll, isActive, challengeDoc } = props;

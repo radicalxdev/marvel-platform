@@ -1,11 +1,12 @@
 import { useState } from 'react';
+
 import { Grid, Typography, useTheme } from '@mui/material';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
+import ChangePassword from './ChangePassword';
 import EditAvatar from './EditAvatar';
 import ProfileForm from './ProfileForm';
-import ChangePassword from './ChangePassword';
 
 import styles from './styles';
 

@@ -1,9 +1,10 @@
-import { Backdrop, Grid, Modal } from '@mui/material';
 import { useEffect } from 'react';
 
-import { disableScroll } from '@/utils/MiscellaneousUtils';
+import { Backdrop, Grid, Modal } from '@mui/material';
 
 import styles from './styles';
+
+import { disableScroll } from '@/utils/MiscellaneousUtils';
 
 /**
  * Creates a backdrop modal component with the given properties.

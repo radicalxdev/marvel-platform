@@ -1,4 +1,6 @@
 import { useContext, useState } from 'react';
+
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -8,30 +10,33 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { FormContainer } from 'react-hook-form-mui';
-import { useSelector } from 'react-redux';
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
 } from 'firebase/auth';
+import { FormContainer } from 'react-hook-form-mui';
+import { useSelector } from 'react-redux';
+
+import useWatchFields from '@/hooks/useWatchFields';
+
+import BackDropModal from '@/components/BackDropModal';
+
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
+
+import { VALIDATION_STATES } from '@/constants/auth';
+
+import ALERT_COLORS from '@/constants/notification';
+
+import ProfileInputField from '../ProfileInputField';
+
+import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
 import { auth } from '@/redux/store';
 import AUTH_REGEX from '@/regex/auth';
 
-import { AuthContext } from '@/providers/GlobalProvider';
-
-import BackDropModal from '@/components/BackDropModal';
-import GradientOutlinedButton from '@/components/GradientOutlinedButton';
-import ProfileInputField from '../ProfileInputField';
-
 import { passwordCheck } from '@/utils/AuthUtils';
-import useWatchFields from '@/hooks/useWatchFields';
-
-import { VALIDATION_STATES } from '@/constants/auth';
-import ALERT_COLORS from '@/constants/notification';
-
-import styles from './styles';
 
 const DEFAULT_FORM_VALUES = {
   currentPassword: '',

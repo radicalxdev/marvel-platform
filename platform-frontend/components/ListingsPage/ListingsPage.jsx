@@ -1,9 +1,9 @@
 import { Grid } from '@mui/material';
 
-import MainAppLayout from '@/layouts/MainAppLayout';
+import IntroductionCard from '@/components/IntroductionCard';
 import ListingsCard from '@/components/ListingsCard';
 import QuestDialog from '@/components/QuestDialog';
-import IntroductionCard from '@/components/IntroductionCard';
+import MainAppLayout from '@/layouts/MainAppLayout';
 
 import styles from './styles';
 

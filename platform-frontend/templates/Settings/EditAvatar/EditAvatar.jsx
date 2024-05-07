@@ -1,9 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
 
-import Image from 'next/image';
 import {
   Avatar,
   CircularProgress,
@@ -12,24 +8,28 @@ import {
   Typography,
 } from '@mui/material';
 import { AvatarCreator } from '@readyplayerme/rpm-react-sdk';
-import { auth, firestore } from '@/redux/store';
-
-import { AuthContext } from '@/providers/GlobalProvider';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
 import BackDropModal from '@/components/BackDropModal';
-import { setUserData } from '@/redux/slices/userSlice';
 
+import PencilIcon from '@/assets/svg/Pencil.svg';
+
+import ALERT_COLORS from '@/constants/notification';
+
+import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
+import { setUserData } from '@/redux/slices/userSlice';
+import { auth, firestore } from '@/redux/store';
+import updateUserProfile from '@/services/users/updateUserProfile';
 import { amplitudeTracker } from '@/utils/IntegrationUtils';
 import {
   getRandomAvatarColour,
   getUserAvatarImage,
 } from '@/utils/MiscellaneousUtils';
-import updateUserProfile from '@/services/users/updateUserProfile';
-
-import ALERT_COLORS from '@/constants/notification';
-import PencilIcon from '@/assets/svg/Pencil.svg';
-
-import styles from './styles';
 
 const EditAvatar = () => {
   const {

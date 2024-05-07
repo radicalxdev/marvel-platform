@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
 import { Grid, Typography, useTheme } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import IntroductionCard from '@/components/IntroductionCard';
