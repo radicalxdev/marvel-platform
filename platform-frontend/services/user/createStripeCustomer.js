@@ -1,4 +1,5 @@
 import { httpsCallable } from 'firebase/functions';
+
 import { functions } from '@/redux/store';
 
 /**

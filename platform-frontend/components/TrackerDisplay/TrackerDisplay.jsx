@@ -1,13 +1,13 @@
-import { Grid, IconButton } from '@mui/material';
 import { CloseRounded } from '@mui/icons-material';
+import { Grid, IconButton } from '@mui/material';
 
-import ProgressBar from '@/components/TrackerDisplay/ProgressBar';
 import AssessmentTimer from '@/components/TrackerDisplay/AssessmentTimer';
-import TrackerDialog from './TrackerDialog';
+import ProgressBar from '@/components/TrackerDisplay/ProgressBar';
 
 import { ASSESSMENT_DIALOG_STATES } from '@/constants/assessment';
 
 import styles from './styles';
+import TrackerDialog from './TrackerDialog';
 
 /**
  * Renders the TrackerDisplay component.

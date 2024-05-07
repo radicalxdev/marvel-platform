@@ -1,27 +1,30 @@
 import { useContext, useState } from 'react';
-import { useRouter } from 'next/router';
 
-import { useDispatch } from 'react-redux';
 import { Grid, Link, useTheme } from '@mui/material';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { useRouter } from 'next/router';
+
 import { FormContainer } from 'react-hook-form-mui';
+import { useDispatch } from 'react-redux';
 
 import AuthTextField from '@/components/AuthTextField';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import { AuthContext } from '@/providers/GlobalProvider';
-
-import { auth } from '@/redux/store';
-import { setLoading } from '@/redux/slices/authSlice';
-
-import ALERT_COLORS from '@/constants/notification';
-import ROUTES from '@/constants/routes';
 import { AUTH_ERROR_MESSAGES } from '@/constants/auth';
+import ALERT_COLORS from '@/constants/notification';
 
-import AUTH_REGEX from '@/regex/auth';
+import ROUTES from '@/constants/routes';
+
+import styles from './styles';
 
 import sharedStyles from '@/styles/shared/sharedStyles';
-import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
+
+import { setLoading } from '@/redux/slices/authSlice';
+import { auth } from '@/redux/store';
+
+import AUTH_REGEX from '@/regex/auth';
 
 const DEFAULT_FORM_VALUES = {
   email: '',

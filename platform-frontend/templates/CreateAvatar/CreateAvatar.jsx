@@ -1,25 +1,28 @@
 import { useContext, useState } from 'react';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
-import { useDispatch, useSelector } from 'react-redux';
-import { AvatarCreator } from '@readyplayerme/rpm-react-sdk';
+
 import { Grid, Typography, useTheme } from '@mui/material';
+import { AvatarCreator } from '@readyplayerme/rpm-react-sdk';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import Carousel from 'react-material-ui-carousel';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { auth, firestore } from '@/redux/store';
-import { setLoading } from '@/redux/slices/authSlice';
-import fetchUserData from '@/redux/thunks/user';
-import updateUserProfile from '@/services/users/updateUserProfile';
-
-import { AuthContext } from '@/providers/GlobalProvider';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import PrimaryDialog from '@/components/PrimaryDialog';
 
-import ROUTES from '@/constants/routes';
 import ALERT_COLORS from '@/constants/notification';
-import DEFAULT_AVATARS from '@/mock/defaultAvatars';
+import ROUTES from '@/constants/routes';
 
 import styles from './styles';
+
+import DEFAULT_AVATARS from '@/mock/defaultAvatars';
+
+import { AuthContext } from '@/providers/GlobalProvider';
+
+import { setLoading } from '@/redux/slices/authSlice';
+import { auth, firestore } from '@/redux/store';
+import fetchUserData from '@/redux/thunks/user';
+import updateUserProfile from '@/services/users/updateUserProfile';
 
 /**
  * Create and render an avatar selection interface, allowing the user to choose an avatar from a set of default options or create their own avatar.

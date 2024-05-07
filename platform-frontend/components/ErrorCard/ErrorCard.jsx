@@ -1,4 +1,4 @@
-import { Grid, Typography, Button } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 
 import styles from './styles';
 

@@ -1,16 +1,17 @@
 import { Button, Chip, Grid, Typography, useTheme } from '@mui/material';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
-import { useQuestData } from '@/context/QuestContext';
-import { shimmerEffect, toBase64 } from '@/utils/MiscellaneousUtils';
 import useTimer from '@/hooks/useTimer';
-
-import GradientOutlinedButton from '../GradientOutlinedButton';
 
 import CHALLENGES from '@/constants/challenges';
 
+import GradientOutlinedButton from '../GradientOutlinedButton';
+
 import styles from './styles';
+
+import { useQuestData } from '@/context/QuestContext';
+import { shimmerEffect, toBase64 } from '@/utils/MiscellaneousUtils';
 
 /**
  * Renders a challenge card component with an image, title, and overview.

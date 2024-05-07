@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Grid, Typography } from '@mui/material';
-import Image from 'next/image';
-import moment from 'moment';
 
-import { convertToUnixTimestamp } from '@/utils/FirebaseUtils';
+import { Grid, Typography } from '@mui/material';
+import moment from 'moment';
+import Image from 'next/image';
+
 import useTimer from '@/hooks/useTimer';
+
+import AssessmentStart from '@/assets/images/AssessmentStart.png';
+import AvatarImage from '@/assets/images/ReXWalking.png';
+import LoaderArt1 from '@/assets/svg/ArtWork1.svg';
+
+import LoaderArt2 from '@/assets/svg/ArtWork2.svg';
 
 import { ASSESSMENT_PAGES } from '@/constants/assessment';
 
-import LoaderArt1 from '@/assets/svg/ArtWork1.svg';
-import LoaderArt2 from '@/assets/svg/ArtWork2.svg';
-import AvatarImage from '@/assets/images/ReXWalking.png';
-import AssessmentStart from '@/assets/images/AssessmentStart.png';
-
 import styles from './styles';
+
+import { convertToUnixTimestamp } from '@/utils/FirebaseUtils';
 
 const AssessmentLoader = (props) => {
   const { handleTransition } = props;

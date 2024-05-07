@@ -1,14 +1,14 @@
-import { useRouter } from 'next/router';
 import { Grid, Link, Typography, useTheme } from '@mui/material';
 import { signOut } from 'firebase/auth';
-
-import { auth } from '@/redux/store';
+import { useRouter } from 'next/router';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
 import ROUTES from '@/constants/routes';
 
 import styles from './styles';
+
+import { auth } from '@/redux/store';
 
 const PasswordUpdated = () => {
   const router = useRouter();

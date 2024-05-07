@@ -3,6 +3,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import moment from 'moment';
 
 import fetchLastEnrolledPlayersAvatars from './fetchLastEnrolledPlayersAvatars';
+
 import { convertToUnixTimestamp } from '@/utils/FirebaseUtils';
 
 /**

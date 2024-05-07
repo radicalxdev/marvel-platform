@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 
-import Settings from '@/templates/Settings';
 import MainAppLayout from '@/layouts/MainAppLayout';
+import Settings from '@/templates/Settings';
 
 import sharedStyles from '@/styles/shared/sharedStyles';
 

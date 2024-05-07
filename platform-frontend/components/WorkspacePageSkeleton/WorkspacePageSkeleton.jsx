@@ -1,5 +1,6 @@
-import { Grid, Skeleton } from '@mui/material';
 import React from 'react';
+
+import { Grid, Skeleton } from '@mui/material';
 
 import styles from './styles';
 

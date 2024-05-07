@@ -1,10 +1,11 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { httpsCallable } from 'firebase/functions';
-import { auth, functions } from '@/redux/store';
+
+import { AUTH_ERROR_MESSAGES } from '@/constants/auth';
 
 import { sendVerification } from './manageUser';
 
-import { AUTH_ERROR_MESSAGES } from '@/constants/auth';
+import { auth, functions } from '@/redux/store';
 
 const signUp = async (email, password, fullName) => {
   try {

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import fetchLastEnrolledPlayersAvatars from '../thunks/fetchLastEnrolledPlayersAvatars';
 import fetchChallenges from '../thunks/challenges';
+import fetchLastEnrolledPlayersAvatars from '../thunks/fetchLastEnrolledPlayersAvatars';
 
 const initialState = {
   quest: { data: null, loading: true, error: null },

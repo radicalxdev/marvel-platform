@@ -1,36 +1,38 @@
 import { useEffect, useState } from 'react';
-import Head from 'next/head';
-import { Button, Grid, useMediaQuery } from '@mui/material';
+
 import { ArrowBack } from '@mui/icons-material';
+import { Button, Grid, useMediaQuery } from '@mui/material';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading } from '@/redux/slices/authSlice';
-import { firestore } from '@/redux/store';
-import fetchInternals from '@/redux/thunks/internals';
 
-import StatisticChip from '@/components/StatisticChip';
-import Loader from '@/components/Loader';
 import AppDisabled from '@/components/AppDisabled';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
+import Loader from '@/components/Loader';
 import QuestDialog from '@/components/QuestDialog';
-import SystemAlert from './SystemAlert';
-
-import AccountAvatar from './AccountAvatar';
-import NavMenu from './NavMenu';
-import Header from './Header';
-import MobileNavMenu from './MobileNavMenu';
-import WorkspaceHeader from './WorkspaceHeader';
+import StatisticChip from '@/components/StatisticChip';
 
 import CoinIcon from '@/assets/svg/coin2.svg';
 import DiamondIcon from '@/assets/svg/diamond2.svg';
 import LargeLogo from '@/assets/svg/Radical_AI.svg';
+import FaviconLogo from '@/assets/svg/RadicalXFavicon.svg';
 import RadicalXMobileLogo from '@/assets/svg/RadicalXMobileLogo';
 import ArrowLeft from '@/assets/svg/arrowLeftGreenGradient.svg';
-import FaviconLogo from '@/assets/svg/RadicalXFavicon.svg';
 
 import ROUTES from '@/constants/routes';
 
+import AccountAvatar from './AccountAvatar';
+import Header from './Header';
+import MobileNavMenu from './MobileNavMenu';
+import NavMenu from './NavMenu';
+
 import styles from './styles';
+import SystemAlert from './SystemAlert';
+import WorkspaceHeader from './WorkspaceHeader';
+
+import { setLoading } from '@/redux/slices/authSlice';
+import { firestore } from '@/redux/store';
+import fetchInternals from '@/redux/thunks/internals';
 
 /**
  * Renders the main application layout.

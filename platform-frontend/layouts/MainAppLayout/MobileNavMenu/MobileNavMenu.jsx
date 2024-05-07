@@ -4,14 +4,15 @@ import { useRouter } from 'next/router';
 import PrimaryMenuSelector from '@/components/PrimaryMenuSelector';
 
 import ROUTES from '@/constants/routes';
+
+import styles from './styles';
+
 import {
-  leaderboardsRegex,
   homeRegex,
+  leaderboardsRegex,
   questsRegex,
   rewardsRegex,
 } from '@/regex/routes';
-
-import styles from './styles';
 
 const MENU_ITEMS = [
   {

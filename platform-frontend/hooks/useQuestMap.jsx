@@ -1,21 +1,22 @@
-import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { Timestamp } from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { firestore } from '@/redux/store';
-import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
-import { updateEnrolledChallenge } from '@/redux/slices/enrolledChallengesSlice';
-import fetchChallenges from '@/redux/thunks/challenges';
+import CHALLENGES from '@/constants/challenges';
+import STATUS from '@/constants/mission';
 
-import { getMapProps } from '@/utils/ChallengeUtils';
+import ALERT_COLORS from '@/constants/notification';
 
 import { AuthContext } from '@/providers/GlobalProvider';
-import updateEnrolPlayerDoc from '@/services/chatbot/updateEnrolPlayerDoc';
+import { updateEnrolledChallenge } from '@/redux/slices/enrolledChallengesSlice';
+import { firestore } from '@/redux/store';
+import fetchChallenges from '@/redux/thunks/challenges';
+import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
 
-import STATUS from '@/constants/mission';
-import ALERT_COLORS from '@/constants/notification';
-import CHALLENGES from '@/constants/challenges';
+import updateEnrolPlayerDoc from '@/services/chatbot/updateEnrolPlayerDoc';
+import { getMapProps } from '@/utils/ChallengeUtils';
 
 /**
  * Generates a hook to handle Quest mapping.

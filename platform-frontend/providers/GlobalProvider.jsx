@@ -1,14 +1,15 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
-import { Provider, useDispatch } from 'react-redux';
-import { onAuthStateChanged } from 'firebase/auth';
-import store, { auth, firestore, functions } from '@/redux/store';
 
-import SnackBar from '@/components/SnackBar';
+import { onAuthStateChanged } from 'firebase/auth';
+import { Provider, useDispatch } from 'react-redux';
 
 import useRedirect from '@/hooks/useRedirect';
 
+import SnackBar from '@/components/SnackBar';
+
 import { setLoading, setUser } from '@/redux/slices/authSlice';
 import { setUserData } from '@/redux/slices/userSlice';
+import store, { auth, firestore, functions } from '@/redux/store';
 
 const AuthContext = createContext();
 

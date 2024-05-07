@@ -1,12 +1,13 @@
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { Grid, Skeleton, Typography } from '@mui/material';
-import { shimmerEffect, toBase64 } from '@/utils/MiscellaneousUtils';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
 import CHALLENGES from '@/constants/challenges';
 
 import styles from './styles';
+
+import { shimmerEffect, toBase64 } from '@/utils/MiscellaneousUtils';
 
 /**
  * Generates the header component for the workspace.

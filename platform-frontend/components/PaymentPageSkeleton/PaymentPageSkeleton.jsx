@@ -1,8 +1,10 @@
-import { Grid, Skeleton } from '@mui/material';
 import React from 'react';
 
-import sharedStyles from '@/styles/shared/sharedStyles';
+import { Grid, Skeleton } from '@mui/material';
+
 import styles from './styles';
+
+import sharedStyles from '@/styles/shared/sharedStyles';
 
 const PaymentPageSkeleton = () => {
   const renderHeaderSkeleton = () => {

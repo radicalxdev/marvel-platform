@@ -1,8 +1,9 @@
-import Image from 'next/image';
 import { useState } from 'react';
 
-import AvatarPlaceholder from '@/assets/images/AvatarPlaceholder.png';
+import Image from 'next/image';
+
 import AvatarFullBody from '@/assets/images/AvatarFullBody.png';
+import AvatarPlaceholder from '@/assets/images/AvatarPlaceholder.png';
 
 import styles from './styles';
 

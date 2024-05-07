@@ -1,33 +1,35 @@
 import { useContext, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { Button, CircularProgress, Grid, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { Timestamp } from 'firebase/firestore';
-
-import { firestore } from '@/redux/store';
-
-import TimerUnit from '@/components/TimerUnit';
-import GradientOutlinedButton from '../GradientOutlinedButton';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useTimer from '@/hooks/useTimer';
 
-import fetchLastEnrolledPlayersAvatars from '@/redux/thunks/fetchLastEnrolledPlayersAvatars';
+import TimerUnit from '@/components/TimerUnit';
+
+import ArrowRight from '@/assets/svg/arrowRight.svg';
+
+import CHALLENGES from '@/constants/challenges';
+import ALERT_COLORS from '@/constants/notification';
+import ROUTES from '@/constants/routes';
+
+import GradientOutlinedButton from '../GradientOutlinedButton';
+
+import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
 import { updateLastEnrolledPlayersAvatars } from '@/redux/slices/challengesSlice';
 import { reset as resetEnrolledChallenges } from '@/redux/slices/enrolledChallengesSlice';
 import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
+import fetchLastEnrolledPlayersAvatars from '@/redux/thunks/fetchLastEnrolledPlayersAvatars';
 import fetchUserData from '@/redux/thunks/user';
 
 import startChallenge from '@/services/challenges/startChallenge';
 import updateEnrolPlayerDoc from '@/services/chatbot/updateEnrolPlayerDoc';
-import { AuthContext } from '@/providers/GlobalProvider';
 
-import ArrowRight from '@/assets/svg/arrowRight.svg';
-
-import ROUTES from '@/constants/routes';
-import CHALLENGES from '@/constants/challenges';
-import ALERT_COLORS from '@/constants/notification';
-
-import styles from './styles';
+import { firestore } from '@/redux/store';
 
 /**
  * Generates a countdown timer component for a challenge.

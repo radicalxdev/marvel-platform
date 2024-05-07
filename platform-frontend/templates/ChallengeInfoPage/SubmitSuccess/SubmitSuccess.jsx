@@ -1,20 +1,23 @@
 import { useContext, useState } from 'react';
+
+import { ArrowBack } from '@mui/icons-material';
+import { Button, Grid, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Grid, Typography, useTheme } from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
-import { auth, firestore } from '@/redux/store';
 
-import { AuthContext } from '@/providers/GlobalProvider';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
-import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
+
+import CheckmarkSvg from '@/assets/svg/CheckmarkSvg.svg';
+import CurlsIcon from '@/assets/svg/curls.svg';
 
 import ALERT_COLORS from '@/constants/notification';
 
-import CurlsIcon from '@/assets/svg/curls.svg';
-import CheckmarkSvg from '@/assets/svg/CheckmarkSvg.svg';
-
 import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
+import { auth, firestore } from '@/redux/store';
+
+import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
 
 const SubmitSuccess = (props) => {
   const { setIsSuccessScreen, startMissionTask, totalLevels } = props;

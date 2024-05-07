@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Grid,
   IconButton,
@@ -8,20 +9,21 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { confirmPasswordReset } from 'firebase/auth';
-import { auth } from '@/redux/store';
+import { useRouter } from 'next/router';
 
-import ProfileInputField from '@/templates/Settings/ProfileInputField';
+import useWatchFields from '@/hooks/useWatchFields';
+
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import Loader from '@/components/Loader';
-
-import AUTH_REGEX from '@/regex/auth';
-import useWatchFields from '@/hooks/useWatchFields';
+import ProfileInputField from '@/templates/Settings/ProfileInputField';
 
 import ROUTES from '@/constants/routes';
 
 import styles from './styles';
+
+import { auth } from '@/redux/store';
+import AUTH_REGEX from '@/regex/auth';
 
 const WATCH_FIELDS = [
   {

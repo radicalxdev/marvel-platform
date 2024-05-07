@@ -1,21 +1,24 @@
 import { useState } from 'react';
+
 import { Grid, Typography } from '@mui/material';
 
 import { useDispatch } from 'react-redux';
-import { firestore } from '@/redux/store';
 
-import fetchChallenges from '@/redux/thunks/challenges';
-import { reset } from '@/redux/slices/challengesSlice';
-import { QuestProvider } from '@/context/QuestContext';
-
-import ErrorCard from '@/components/ErrorCard';
 import ChallengeCard from '@/components/ChallengeCard';
-import ListingsFilters from './ListingsFilters';
+
 import ChallengeCardSkeleton from '@/components/ChallengeCardSkeleton';
+import ErrorCard from '@/components/ErrorCard';
 
 import { QUEST_FILTERS } from '@/constants/quests';
 
+import ListingsFilters from './ListingsFilters';
+
 import styles from './styles';
+
+import { QuestProvider } from '@/context/QuestContext';
+import { reset } from '@/redux/slices/challengesSlice';
+import { firestore } from '@/redux/store';
+import fetchChallenges from '@/redux/thunks/challenges';
 
 const DEFAULT_QUESTS = [
   {

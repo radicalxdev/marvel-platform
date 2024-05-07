@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import {
   Avatar,
   Button,
@@ -10,13 +11,16 @@ import {
 import Image from 'next/image';
 
 import MasterChat from '@/templates/MasterChat';
-import OptionItem from './OptionItem';
 
 import ReXIconAvatar from '@/assets/images/RexIconAvatar.png';
-import { shimmerEffect, toBase64 } from '@/utils/MiscellaneousUtils';
+
+import OptionItem from './OptionItem';
 
 import styles from './styles';
+
 import sharedStyles from '@/styles/shared/sharedStyles';
+
+import { shimmerEffect, toBase64 } from '@/utils/MiscellaneousUtils';
 
 /**
  * Renders the chat interface component.

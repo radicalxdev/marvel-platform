@@ -1,17 +1,19 @@
 import { useState } from 'react';
+
 import { Grid, Link, Typography, useTheme } from '@mui/material';
-import { auth } from '@/redux/store';
-import AUTH_REGEX from '@/regex/auth';
 
 import useWatchFields from '@/hooks/useWatchFields';
 
 import AuthTextField from '@/components/AuthTextField';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import { sendPasswordReset } from '@/services/user/manageUser';
 import { FORGOT_PASSWORD_STEPS } from '@/constants/auth';
 
 import styles from './styles';
+
+import { auth } from '@/redux/store';
+import AUTH_REGEX from '@/regex/auth';
+import { sendPasswordReset } from '@/services/user/manageUser';
 
 const DEFAULT_ERR_STATE = {
   email: false,

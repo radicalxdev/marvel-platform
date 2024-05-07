@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import Image from 'next/image';
+
+import { CancelRounded } from '@mui/icons-material';
 import {
   Button,
   CircularProgress,
@@ -9,18 +10,20 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { CancelRounded } from '@mui/icons-material';
-
-import GradientOutlinedChip from '../GradientOutlinedChip';
-import GradientOutlinedButton from '../GradientOutlinedButton';
-import QuestOutlinedButton from './QuestOutlinedButton';
+import Image from 'next/image';
 
 import ReXAvatar from '@/assets/images/ReXAvatarDialog.png';
 
-import { disableScroll } from '@/utils/MiscellaneousUtils';
+import GradientOutlinedButton from '../GradientOutlinedButton';
+import GradientOutlinedChip from '../GradientOutlinedChip';
+
+import QuestOutlinedButton from './QuestOutlinedButton';
 
 import styles from './styles';
+
 import sharedStyles from '@/styles/shared/sharedStyles';
+
+import { disableScroll } from '@/utils/MiscellaneousUtils';
 
 /**
  * Renders a dialog component for a quest.

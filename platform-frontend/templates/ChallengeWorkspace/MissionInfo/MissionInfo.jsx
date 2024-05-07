@@ -1,27 +1,27 @@
-import { useContext, useEffect, useState, useRef } from 'react';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useContext, useEffect, useRef, useState } from 'react';
+
+import { Publish } from '@mui/icons-material';
 import { Button, Grid, Tab, Tabs, Typography, useTheme } from '@mui/material';
 import { Timestamp } from 'firebase/firestore';
-import { Publish } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { firestore } from '@/redux/store';
-import { updateEnrolledChallenge } from '@/redux/slices/enrolledChallengesSlice';
-
-import updateEnrolPlayerDoc from '@/services/chatbot/updateEnrolPlayerDoc';
-import generateCertificate from '@/services/challenges/generateCertificate';
-import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
-
-import OverviewPanel from '../OverviewPanel';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
-
-import { AuthContext } from '@/providers/GlobalProvider';
 
 import CHALLENGES from '@/constants/challenges';
 import STATUS from '@/constants/mission';
 import ALERT_COLORS from '@/constants/notification';
 
+import OverviewPanel from '../OverviewPanel';
+
 import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
+import { updateEnrolledChallenge } from '@/redux/slices/enrolledChallengesSlice';
+import { firestore } from '@/redux/store';
+import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
+import generateCertificate from '@/services/challenges/generateCertificate';
+import updateEnrolPlayerDoc from '@/services/chatbot/updateEnrolPlayerDoc';
 
 const MissionInfo = (props) => {
   const { tasks, isLesson, taskStatus, setIsSuccessScreen, totalLevels } =

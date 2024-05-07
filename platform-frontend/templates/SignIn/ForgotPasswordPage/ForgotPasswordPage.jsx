@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { IconButton } from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
 
-import EnterEmailView from './EnterEmailView';
-import CheckInbox from './CheckInbox';
+import { ArrowBack } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 
 import { FORGOT_PASSWORD_STEPS } from '@/constants/auth';
+
+import CheckInbox from './CheckInbox';
+import EnterEmailView from './EnterEmailView';
 
 import sharedStyles from '@/styles/shared/sharedStyles';
 

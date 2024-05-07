@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@emotion/react';
-import { GoogleAnalytics } from 'nextjs-google-analytics';
 import { useRouter } from 'next/router';
+import { GoogleAnalytics } from 'nextjs-google-analytics';
 
 import useAmplitudeInit from '@/hooks/useAmplitudeInit';
 import useLogRocketInit from '@/hooks/useLogRocketInit';

@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { useEffect, useState } from 'react';
+
+import moment from 'moment';
 
 const DEFAULT_TIME = {
   days: '00',

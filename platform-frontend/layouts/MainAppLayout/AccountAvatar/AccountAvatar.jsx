@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
+
+import { Avatar, Badge, Grid, IconButton, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
-import { Avatar, Badge, Grid, IconButton, Skeleton } from '@mui/material';
+
+import AvatarPlaceholder from '@/assets/images/AvatarPlaceholder.png';
 
 import AccountDropDown from './AccountDropDown';
 
-import AvatarPlaceholder from '@/assets/images/AvatarPlaceholder.png';
+import styles from './styles';
+
+import { setIntercom } from '@/utils/IntegrationUtils';
 import {
   getRandomAvatarColour,
   getUserAvatarImage,
 } from '@/utils/MiscellaneousUtils';
-import { setIntercom } from '@/utils/IntegrationUtils';
-
-import styles from './styles';
 
 /**
  * Renders an account avatar with a pop-up menu for user actions.

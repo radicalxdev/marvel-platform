@@ -1,7 +1,14 @@
 import { useState } from 'react';
+
 import { Button, Grid, MenuItem } from '@mui/material';
 
 import PrimaryMenuSelector from '@/components/PrimaryMenuSelector';
+
+import ArrowDown from '@/assets/svg/ArrowDownPurple.svg';
+import FireSvg from '@/assets/svg/fireSvg.svg';
+
+import TimeSvg from '@/assets/svg/Time.svg';
+import VerifiedSvg from '@/assets/svg/verifiedSvg.svg';
 
 import {
   DIFFICULTY_LEVELS,
@@ -9,15 +16,11 @@ import {
   QUEST_FILTERS,
 } from '@/constants/quests';
 
-import { filterChallenges } from '@/utils/ChallengeUtils';
-
-import FireSvg from '@/assets/svg/fireSvg.svg';
-import TimeSvg from '@/assets/svg/Time.svg';
-import VerifiedSvg from '@/assets/svg/verifiedSvg.svg';
-import ArrowDown from '@/assets/svg/ArrowDownPurple.svg';
+import styles from './styles';
 
 import questsStyles from '@/styles/questsStyles';
-import styles from './styles';
+
+import { filterChallenges } from '@/utils/ChallengeUtils';
 
 const STATUS_FILTERS = [
   {

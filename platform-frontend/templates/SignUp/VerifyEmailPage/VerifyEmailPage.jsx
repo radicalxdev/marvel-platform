@@ -1,17 +1,18 @@
-import { useState, useContext, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useContext, useEffect, useState } from 'react';
+
 import { Grid, Typography, useTheme } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import { AuthContext } from '@/providers/GlobalProvider';
-import { sendVerification } from '@/services/user/manageUser';
+import RocketIcon from '@/assets/svg/rocket.svg';
 
 import ALERT_COLORS from '@/constants/notification';
 
-import RocketIcon from '@/assets/svg/rocket.svg';
-
 import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
+import { sendVerification } from '@/services/user/manageUser';
 
 const VerifyEmailPage = (props) => {
   const { email } = props;

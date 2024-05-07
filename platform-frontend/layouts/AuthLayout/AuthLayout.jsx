@@ -1,18 +1,20 @@
 import { useEffect } from 'react';
+
+import { Box, Card, Grid, useMediaQuery } from '@mui/material';
 import Head from 'next/head';
 import Image from 'next/image';
-import { Box, Card, Grid, useMediaQuery } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading } from '@/redux/slices/authSlice';
 
-import Loader from '@/components/Loader';
 import AppDisabled from '@/components/AppDisabled';
+import Loader from '@/components/Loader';
 
-import ImageURLs from '@/assets/urls';
 import Star from '@/assets/svg/Star_3.svg';
 import Star2 from '@/assets/svg/Star_4.svg';
+import ImageURLs from '@/assets/urls';
 
 import styles from './styles';
+
+import { setLoading } from '@/redux/slices/authSlice';
 
 /**
  * Renders the authentication layout component that wraps the children components

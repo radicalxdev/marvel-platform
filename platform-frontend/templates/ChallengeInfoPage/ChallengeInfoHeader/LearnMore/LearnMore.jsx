@@ -3,8 +3,8 @@ import { Grid, Typography } from '@mui/material';
 import emoji from 'remark-emoji';
 import remarkGfm from 'remark-gfm';
 
-import PrimaryDialog from '@/components/PrimaryDialog';
 import MemoizedReactMarkdown from '@/components/MemoizedMarkdown';
+import PrimaryDialog from '@/components/PrimaryDialog';
 
 import styles from './styles';
 

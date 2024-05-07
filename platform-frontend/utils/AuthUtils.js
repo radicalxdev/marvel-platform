@@ -1,6 +1,6 @@
-import AUTH_REGEX, { PASSWORD_REGEX } from '@/regex/auth';
-
 import { VALIDATION_STATES } from '@/constants/auth';
+
+import AUTH_REGEX, { PASSWORD_REGEX } from '@/regex/auth';
 
 const { SUCCESS, WARNING, DISABLED } = VALIDATION_STATES;
 

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
+import AuthForm from '@/components/AuthForm';
 import AuthLayout from '@/layouts/AuthLayout';
 
-import SignInForm from '@/templates/SignIn/SignInForm';
 import ForgotPasswordPage from '@/templates/SignIn/ForgotPasswordPage';
-import AuthForm from '@/components/AuthForm';
+import SignInForm from '@/templates/SignIn/SignInForm';
 
 import ROUTES from '@/constants/routes';
 

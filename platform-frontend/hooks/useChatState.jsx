@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+
 import { useDispatch } from 'react-redux';
 
-import { resetChat } from '@/redux/slices/chatSlice';
 import { ASSESSMENT_PAGES } from '@/constants/assessment';
+
+import { resetChat } from '@/redux/slices/chatSlice';
 
 /**
  * Generates the chat state for the chat component.

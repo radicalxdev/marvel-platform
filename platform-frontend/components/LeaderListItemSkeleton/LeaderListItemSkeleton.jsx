@@ -1,6 +1,7 @@
 import { Divider, Grid, Skeleton } from '@mui/material';
 
 import leaderListStyles from '../LeaderListItem/styles';
+
 import styles from './styles';
 
 /**

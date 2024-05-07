@@ -1,10 +1,11 @@
 import { useState } from 'react';
+
 import { Card, Grid, Skeleton, useTheme } from '@mui/material';
 import Image from 'next/image';
 
-import GradientOutlinedChip from '../GradientOutlinedChip';
-
 import CoinsSvg from '@/assets/svg/coin.svg';
+
+import GradientOutlinedChip from '../GradientOutlinedChip';
 
 import styles from './styles';
 

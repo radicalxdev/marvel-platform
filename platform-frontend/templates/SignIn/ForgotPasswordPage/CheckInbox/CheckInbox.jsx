@@ -1,12 +1,14 @@
-import { Grid, Typography, Link, useTheme } from '@mui/material';
-import { auth } from '@/redux/store';
+import { Grid, Link, Typography, useTheme } from '@mui/material';
 
-import { sendPasswordReset } from '@/services/user/manageUser';
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
 import CartoonLetter from '@/assets/svg/CartoonLetter.svg';
 
 import styles from './styles';
-import GradientOutlinedButton from '@/components/GradientOutlinedButton';
+
+import { auth } from '@/redux/store';
+
+import { sendPasswordReset } from '@/services/user/manageUser';
 
 const CheckInbox = (props) => {
   const { goBack, enteredEmail } = props;

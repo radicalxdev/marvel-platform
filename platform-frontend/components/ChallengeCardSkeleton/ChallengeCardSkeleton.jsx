@@ -1,7 +1,8 @@
 import { Grid, Skeleton } from '@mui/material';
 
-import styles from './styles';
 import questCardStyles from '../ChallengeCard/styles';
+
+import styles from './styles';
 
 /**
  * Renders a skeleton component for a challenge card with image, title, and details.
