@@ -1,22 +1,21 @@
-import { configureStore } from '@reduxjs/toolkit';
-import LogRocket from 'logrocket';
 import { getStripePayments } from '@invertase/firestore-stripe-payments';
+import { configureStore } from '@reduxjs/toolkit';
 
+import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getFunctions } from 'firebase/functions';
 
-import { initializeApp } from 'firebase/app';
+import LogRocket from 'logrocket';
 
 import authReducer from './slices/authSlice';
-import userReducer from './slices/userSlice';
-import enrolledChallengesReducer from './slices/enrolledChallengesSlice';
 import challengesReducer from './slices/challengesSlice';
+import enrolledChallengesReducer from './slices/enrolledChallengesSlice';
 import internalReducer from './slices/internalSlice';
-
-import { logRocketStateSanitizer } from '@/utils/IntegrationUtils';
+import userReducer from './slices/userSlice';
 
 import firebaseConfig from '@/firebase/config';
+import { logRocketStateSanitizer } from '@/utils/IntegrationUtils';
 
 const app = initializeApp(firebaseConfig);
 
