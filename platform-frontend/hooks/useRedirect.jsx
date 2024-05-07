@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import { applyActionCode } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
-import LogRocket from 'logrocket';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,17 +9,13 @@ import { APP_ENV, AUTH_MODES } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 import ROUTES from '@/constants/routes';
 
-import { amplitude } from './useAmplitudeInit';
-
 import {
   setEmailVerified,
   setLoading,
   setTotalUsers,
 } from '@/redux/slices/authSlice';
 import { auth } from '@/redux/store';
-import fetchEnrolledChallenges from '@/redux/thunks/enrolledChallenges';
 import fetchUserData from '@/redux/thunks/user';
-import createStripeCustomer from '@/services/user/createStripeCustomer';
 
 const redirectRegex = /\/redirect.*/;
 
@@ -31,48 +26,8 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
   const { route, asPath, query } = router;
   const { data: authData, loading } = useSelector((state) => state.auth);
 
-  const initializeAnalyticsTools = (user, enrolledChallenges) => {
-    // Set the user's name and email in amplitude
-    const identify = new amplitude.Identify();
-    if (user)
-      Object.keys(user).forEach((key) => {
-        identify?.set(key, user[key]);
-      });
-
-    const noOfEnrolledChallenges = enrolledChallenges
-      ? Object.keys(enrolledChallenges)?.length
-      : 0;
-
-    identify?.set('challenges_enrolled', noOfEnrolledChallenges);
-
-    // Set amplitude user id
-    amplitude?.setUserId(auth.currentUser?.uid);
-    amplitude?.identify(identify);
-
-    // Initialize LogRocket
-    LogRocket?.identify(auth.currentUser?.uid, user);
-  };
-
-  const createStripeAccountForUser = async (user) => {
-    // If a stripe id exists, return.
-    if (!user || user?.stripeId) return;
-
-    const { id, email } = user;
-
-    await createStripeCustomer({
-      id,
-      email,
-    });
-  };
-
   const fetchUserRelatedData = async (id) => {
-    const user = await dispatch(fetchUserData({ firestore, id }));
-    const enrolledChallenges = await dispatch(
-      fetchEnrolledChallenges({ firestore, id })
-    );
-
-    initializeAnalyticsTools(user?.payload, enrolledChallenges?.payload);
-    createStripeAccountForUser(user?.payload);
+    await dispatch(fetchUserData({ firestore, id }));
   };
 
   const fetchTotalUsers = async () => {

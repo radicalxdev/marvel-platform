@@ -20,8 +20,6 @@ import styles from './styles';
 
 import questsStyles from '@/styles/questsStyles';
 
-import { filterChallenges } from '@/utils/ChallengeUtils';
-
 const STATUS_FILTERS = [
   {
     status: QUEST_FILTERS.LIVE,
@@ -57,13 +55,7 @@ const CATEGORIES = [
  * @return {JSX.Element} The rendered component.
  */
 const ListingsFilters = (props) => {
-  const {
-    currentStatus,
-    setChallengeStatus,
-    setFilteredChallenges,
-    data,
-    isExpedition,
-  } = props;
+  const { currentStatus, setChallengeStatus, isExpedition } = props;
 
   const disableOtherFilters = false;
 
@@ -78,35 +70,14 @@ const ListingsFilters = (props) => {
 
   const handleChangeStatusFilter = (status) => {
     setChallengeStatus(status);
-    filterChallenges(
-      data,
-      status,
-      activeDifficultyLevel,
-      activeCareerInterest,
-      setFilteredChallenges
-    );
   };
 
   const handleActiveCareerInterest = (activeCareerId) => {
     setActiveCareerInterest(activeCareerId);
-    filterChallenges(
-      data,
-      currentStatus,
-      activeDifficultyLevel,
-      activeCareerId,
-      setFilteredChallenges
-    );
   };
 
   const handleActiveDifficultyLevel = (difficultyId) => {
     setActiveDifficultyLevel(difficultyId);
-    filterChallenges(
-      data,
-      currentStatus,
-      difficultyId,
-      activeCareerInterest,
-      setFilteredChallenges
-    );
   };
 
   const renderCareerInterestOptions = () => {
