@@ -1,7 +1,8 @@
 const firebaseDocsToArray = (docs) => {
   const array = [];
   docs.forEach((doc) =>
-    array.push({ ...doc.data(), id: doc.id, ref: doc.ref }));
+    array.push({ ...doc.data(), id: doc.id, ref: doc.ref })
+  );
   return array;
 };
 

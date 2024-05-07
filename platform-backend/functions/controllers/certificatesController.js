@@ -1,12 +1,12 @@
-const admin = require("firebase-admin");
-const { Bannerbear } = require("bannerbear");
-const moment = require("moment");
-const { logger } = require("firebase-functions");
-const { onCall } = require("firebase-functions/v2/https");
+const admin = require('firebase-admin');
+const { Bannerbear } = require('bannerbear');
+const moment = require('moment');
+const { logger } = require('firebase-functions');
+const { onCall } = require('firebase-functions/v2/https');
 
 const bb = new Bannerbear(process.env.BANNER_BEAR_API_KEY);
 
-const TEMPLAT_ID = "4KnlWBbKv1exDOQGgm";
+const TEMPLAT_ID = '4KnlWBbKv1exDOQGgm';
 
 /**
  * Generates a certificate using the provided props.
@@ -17,16 +17,16 @@ const TEMPLAT_ID = "4KnlWBbKv1exDOQGgm";
  * @return {Promise} A promise that resolves to the generated certificate.
  */
 const generateCertificate = async (props) => {
-  logger.log("process.env: ", process.env);
+  logger.log('process.env: ', process.env);
   const { fullName, challengeId } = props;
 
   const challengeDoc = await admin
     .firestore()
-    .collection("challenges")
+    .collection('challenges')
     .doc(challengeId)
     .get();
 
-  if (!challengeDoc.exists) throw new "Challenge does not exist"();
+  if (!challengeDoc.exists) throw new 'Challenge does not exist'();
 
   const challengeData = challengeDoc.data();
 
@@ -35,20 +35,20 @@ const generateCertificate = async (props) => {
     {
       modifications: [
         {
-          name: "awardee_name",
+          name: 'awardee_name',
           text: fullName,
           color: null,
           background: null,
         },
         {
-          name: "course",
-          text: challengeData.name || "",
+          name: 'course',
+          text: challengeData.name || '',
           color: null,
           background: null,
         },
         {
-          name: "date",
-          text: moment().format("MMMM D, YYYY"),
+          name: 'date',
+          text: moment().format('MMMM D, YYYY'),
           color: null,
           background: null,
         },
@@ -67,7 +67,7 @@ const generateCertificate = async (props) => {
  */
 const generateChallengeCertificate = onCall(async (request) => {
   try {
-    logger.log("request data: ", request.data);
+    logger.log('request data: ', request.data);
 
     if (
       !request.data.fullName ||
@@ -75,8 +75,8 @@ const generateChallengeCertificate = onCall(async (request) => {
       !request.data.userId ||
       !request.data.journeyId
     ) {
-      logger.log("fullName, challengeId or userId is missing");
-      throw new Error("fullName, challengeId or userId is missing");
+      logger.log('fullName, challengeId or userId is missing');
+      throw new Error('fullName, challengeId or userId is missing');
     }
 
     const { fullName, challengeId, journeyId, userId } = request.data;
@@ -85,15 +85,15 @@ const generateChallengeCertificate = onCall(async (request) => {
 
     const enrolledPlayerDocs = await admin
       .firestore()
-      .collection("enrolledPlayers")
-      .where("challengeId", "==", challengeId)
-      .where("journeyId", "==", journeyId)
-      .where("userId", "==", userId)
+      .collection('enrolledPlayers')
+      .where('challengeId', '==', challengeId)
+      .where('journeyId', '==', journeyId)
+      .where('userId', '==', userId)
       .get();
 
     if (enrolledPlayerDocs.empty) {
-      logger.log("enrolledPlayerRef is empty");
-      throw new Error("enrolledPlayerRef is empty");
+      logger.log('enrolledPlayerRef is empty');
+      throw new Error('enrolledPlayerRef is empty');
     }
 
     const enrolledPlayerDoc = enrolledPlayerDocs.docs[0];
@@ -105,12 +105,12 @@ const generateChallengeCertificate = onCall(async (request) => {
       },
     });
 
-    logger.log("certificate generated successfully");
-    return { status: "success" };
+    logger.log('certificate generated successfully');
+    return { status: 'success' };
   } catch (error) {
     logger.log(error);
     throw new Error(
-      "An error occurred while generating the certificate",
+      'An error occurred while generating the certificate',
       error
     );
   }

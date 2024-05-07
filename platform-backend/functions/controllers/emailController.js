@@ -1,17 +1,17 @@
-const admin = require("firebase-admin");
-const { logger } = require("firebase-functions");
-const { onDocumentUpdated } = require("firebase-functions/v2/firestore");
-const Brevo = require("@getbrevo/brevo");
+const admin = require('firebase-admin');
+const { logger } = require('firebase-functions');
+const { onDocumentUpdated } = require('firebase-functions/v2/firestore');
+const Brevo = require('@getbrevo/brevo');
 
-const { emailValidation } = require("../utils/StringUtil");
-const { STATUS } = require("../constants");
-const { generateCertificate } = require("./certificatesController");
+const { emailValidation } = require('../utils/StringUtil');
+const { STATUS } = require('../constants');
+const { generateCertificate } = require('./certificatesController');
 
 /* Brevo Configuration */
 const defaultClient = Brevo.ApiClient.instance;
-const apiKey = defaultClient.authentications["api-key"];
+const apiKey = defaultClient.authentications['api-key'];
 apiKey.apiKey = [process.env.BREVO_API_KEY];
-const partnerKey = defaultClient.authentications["partner-key"];
+const partnerKey = defaultClient.authentications['partner-key'];
 partnerKey.apiKey = process.env.BREVO_API_KEY;
 const apiInstance = new Brevo.TransactionalEmailsApi();
 const sendSmtpEmail = new Brevo.SendSmtpEmail();
@@ -24,7 +24,7 @@ const sendSmtpEmail = new Brevo.SendSmtpEmail();
  * @param {function} event - the event object containing information about the update
  * @return {Promise} a promise that resolves when the welcome email is sent successfully or rejects with an error
  */
-const welcome = onDocumentUpdated("users/{userId}", async (event) => {
+const welcome = onDocumentUpdated('users/{userId}', async (event) => {
   const avatarIdBefore = event.data.before.data()?.avatarId;
   const avatarIdAfter = event.data.after.data()?.avatarId;
 
@@ -33,8 +33,8 @@ const welcome = onDocumentUpdated("users/{userId}", async (event) => {
   const TEMPLATE_ID = 9;
 
   const userDoc = event.data.data();
-  const { email, fullName = "" } = userDoc;
-  const FName = fullName.split(" ")?.[0] || null;
+  const { email, fullName = '' } = userDoc;
+  const FName = fullName.split(' ')?.[0] || null;
 
   if (!emailValidation(email)) {
     logger.error(`Email for ${event.params.userId} is not valid.`);
@@ -57,14 +57,14 @@ const welcome = onDocumentUpdated("users/{userId}", async (event) => {
 
 /**
  * This function is triggered when a document is updated in the "enrolledPlayers" collection. It handles the completion of a quest by a player.
- * It sends an email to the player's email address notifying them that they have completed the quest. 
+ * It sends an email to the player's email address notifying them that they have completed the quest.
  * It then generates a certificate for the player if they have completed the quest.
  *
  * @param {type} event - the event object containing information about the document update
  * @return {type} description of return value
  */
 const questCompletion = onDocumentUpdated(
-  "enrolledPlayers/{enrollId}",
+  'enrolledPlayers/{enrollId}',
   async (event) => {
     const TEMPLATE_ID_QUEST_COMPLETION_FIRST = 11;
     const TEMPLATE_ID_QUEST_COMPLETION = 12;
@@ -78,23 +78,24 @@ const questCompletion = onDocumentUpdated(
         status !== STATUS.COMPLETED ||
         enrollDoc?.certificate ||
         beforeEnrollDoc?.status === enrollDoc?.status
-      )
+      ) {
         return;
+      }
 
       const allUserQuests = await admin
         .firestore()
-        .collection("enrolledPlayers")
-        .where("userId", "==", userId)
+        .collection('enrolledPlayers')
+        .where('userId', '==', userId)
         .get();
       const isFirstQuest = allUserQuests.size === 1;
 
       const userRef = await admin
         .firestore()
-        .collection("users")
+        .collection('users')
         .doc(userId)
         .get();
       const { email, fullName } = userRef.data();
-      const FirstName = fullName.split(" ")?.[0] || null;
+      const FirstName = fullName.split(' ')?.[0] || null;
 
       sendSmtpEmail.templateId = isFirstQuest
         ? TEMPLATE_ID_QUEST_COMPLETION_FIRST

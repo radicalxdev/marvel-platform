@@ -1,6 +1,6 @@
-const admin = require("firebase-admin");
-const functions = require("firebase-functions");
-const moment = require("moment");
+const admin = require('firebase-admin');
+const functions = require('firebase-functions');
+const moment = require('moment');
 
 const db = admin.firestore();
 
@@ -55,8 +55,8 @@ const calculateScore = (
 // For future use
 const calculateAllScores = functions.https.onCall(async () => {
   const doc = await db
-    .collection("enrolledPlayers")
-    .where("status", "==", "completed")
+    .collection('enrolledPlayers')
+    .where('status', '==', 'completed')
     .get();
   await Promise.all(
     doc.docs.map(async (doc) => {

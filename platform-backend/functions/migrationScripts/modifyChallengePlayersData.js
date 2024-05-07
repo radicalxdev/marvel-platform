@@ -1,6 +1,6 @@
-const admin = require("firebase-admin");
-const { https, logger } = require("firebase-functions");
-const { firebaseDocsToArray } = require("../utils/ArrayUtil");
+const admin = require('firebase-admin');
+const { https, logger } = require('firebase-functions');
+const { firebaseDocsToArray } = require('../utils/ArrayUtil');
 
 /**
  * Modify challenge players data.
@@ -17,23 +17,23 @@ const modifyChallengePlayersData = () =>
     logger.log(`Migration - modify ${type} challenges  - started`);
 
     // Check if type or capacity is missing
-    if (!type || !capacity) return logger.log("Missing parameters");
+    if (!type || !capacity) return logger.log('Missing parameters');
 
     // Fetch challenge documents with the specified type
     const challengeDocs = await admin
       .firestore()
-      .collection("challenges")
-      .where("type", "==", type)
+      .collection('challenges')
+      .where('type', '==', type)
       .get();
 
     // Fetch enrolled players documents
     const enrolledPlayersDocs = await admin
       .firestore()
-      .collection("enrolledPlayers")
+      .collection('enrolledPlayers')
       .get();
 
     // Check if no challenges are found
-    if (challengeDocs.empty) return logger.log("No challenges  found");
+    if (challengeDocs.empty) return logger.log('No challenges  found');
 
     // Convert Firestore document snapshots to array of JavaScript objects
     const challenges = firebaseDocsToArray(challengeDocs);
@@ -69,7 +69,7 @@ const modifyChallengePlayersData = () =>
     // Log the number of challenge documents updated
     logger.log(`${docsUpdated} challenge docs updated`);
     // Log the end of the migration process
-    logger.log("Migration - modifyChallengePlayersData - ended");
+    logger.log('Migration - modifyChallengePlayersData - ended');
   });
 
 module.exports = {

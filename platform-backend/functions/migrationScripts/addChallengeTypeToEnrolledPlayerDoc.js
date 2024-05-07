@@ -1,18 +1,18 @@
-const admin = require("firebase-admin");
-const { https, logger } = require("firebase-functions");
-const { firebaseDocsToArray } = require("../utils/ArrayUtil");
+const admin = require('firebase-admin');
+const { https, logger } = require('firebase-functions');
+const { firebaseDocsToArray } = require('../utils/ArrayUtil');
 
 const addChallengeTypeToEnrolledPlayerDoc = https.onCall(async () => {
-  logger.log("Migration - addChallengeTypeToEnrolledPlayerDoc - started");
-  const challengesDocs = await admin.firestore().collection("challenges").get();
+  logger.log('Migration - addChallengeTypeToEnrolledPlayerDoc - started');
+  const challengesDocs = await admin.firestore().collection('challenges').get();
   const enrolledPlayerDocs = await admin
     .firestore()
-    .collection("enrolledPlayers")
+    .collection('enrolledPlayers')
     .get();
 
   // If no challenges or enrolled players, return
   if (challengesDocs.empty || enrolledPlayerDocs.empty) {
-    logger.log("Migration - addChallengeTypeToEnrolledPlayerDoc - ended");
+    logger.log('Migration - addChallengeTypeToEnrolledPlayerDoc - ended');
     return;
   }
 
@@ -41,7 +41,7 @@ const addChallengeTypeToEnrolledPlayerDoc = https.onCall(async () => {
   );
 
   logger.log(`${docsUpdated} challenge docs updated`);
-  logger.log("Migration - addChallengeTypeToEnrolledPlayerDoc - ended");
+  logger.log('Migration - addChallengeTypeToEnrolledPlayerDoc - ended');
 });
 
 module.exports = {

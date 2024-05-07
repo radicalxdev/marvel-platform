@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-const crypto = require("crypto");
+const crypto = require('crypto');
 
 /**
  * Validates an email address.
@@ -24,14 +24,14 @@ const emailValidation = (email) => {
 const generateToken = (length) => {
   const token = crypto
     .randomBytes(Math.ceil(length / 2))
-    .toString("hex")
+    .toString('hex')
     .slice(0, length);
 
   return Buffer.from(token)
-    .toString("base64")
-    .replace(/\//g, "_")
-    .replace(/\+/g, "-")
-    .replace(/=/g, "");
+    .toString('base64')
+    .replace(/\//g, '_')
+    .replace(/\+/g, '-')
+    .replace(/=/g, '');
 };
 
 module.exports = {

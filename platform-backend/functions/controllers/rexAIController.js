@@ -1,9 +1,9 @@
-const admin = require("firebase-admin");
+const admin = require('firebase-admin');
 
-const { onCall, HttpsError } = require("firebase-functions/v2/https");
-const { default: axios } = require("axios");
-const { logger } = require("firebase-functions/v1");
-const { Timestamp } = require("firebase-admin/firestore");
+const { onCall, HttpsError } = require('firebase-functions/v2/https');
+const { default: axios } = require('axios');
+const { logger } = require('firebase-functions/v1');
+const { Timestamp } = require('firebase-admin/firestore');
 
 const DEBUG = process.env.DEBUG;
 
@@ -24,16 +24,16 @@ const communicator = onCall(async (props) => {
   try {
     DEBUG &&
       logger.log(
-        "Communicator variables:",
+        'Communicator variables:',
         `API_KEY: ${process.env.REX_API_KEY_V2}`,
         `ENDPOINT: ${process.env.REX_ENDPOINT_V2}`
       );
-    DEBUG && logger.log("Communicator started, data:", props.data);
+    DEBUG && logger.log('Communicator started, data:', props.data);
 
     const { messages, user, challengeId, level, botType } = props.data;
     const headers = {
-      "API-Key": process.env.REX_API_KEY_V2,
-      "Content-Type": "application/json",
+      'API-Key': process.env.REX_API_KEY_V2,
+      'Content-Type': 'application/json',
     };
 
     const resp = await axios.post(
@@ -42,12 +42,12 @@ const communicator = onCall(async (props) => {
       { headers }
     );
 
-    DEBUG && logger.log("Communicator response:", resp.data);
+    DEBUG && logger.log('Communicator response:', resp.data);
 
-    return { status: "success", data: resp.data };
+    return { status: 'success', data: resp.data };
   } catch (error) {
-    logger.log("Communicator error:", error);
-    throw new HttpsError("internal", error.message);
+    logger.log('Communicator error:', error);
+    throw new HttpsError('internal', error.message);
   }
 });
 
@@ -61,26 +61,26 @@ const communicator = onCall(async (props) => {
  * @param {string} props.bot - The bot involved in the communication.
  * @return {object} The response from the server.
  */
-const ReXCommunicator = async (props) => {
+const reXCommunicator = async (props) => {
   try {
-    DEBUG && logger.log("Communicator started, data:", props.data);
+    DEBUG && logger.log('Communicator started, data:', props.data);
     const { messages, user, challengeId, level, botType } = props.data;
 
     DEBUG &&
       logger.log(
-        "Communicator variables:",
+        'Communicator variables:',
         `API_KEY: ${process.env.REX_API_KEY_V2}`,
         `ENDPOINT: ${process.env.REX_ENDPOINT_V2}`
       );
 
     const headers = {
-      "API-Key": process.env.REX_API_KEY_V2,
-      "Content-Type": "application/json",
+      'API-Key': process.env.REX_API_KEY_V2,
+      'Content-Type': 'application/json',
     };
 
     DEBUG &&
       logger.log(
-        "Stringified JSON",
+        'Stringified JSON',
         JSON.stringify({ messages, user, challengeId, level, botType })
       );
 
@@ -90,12 +90,12 @@ const ReXCommunicator = async (props) => {
       { headers }
     );
 
-    DEBUG && logger.log("Communicator response:", resp.data);
+    DEBUG && logger.log('Communicator response:', resp.data);
 
-    return { status: "success", data: resp.data };
+    return { status: 'success', data: resp.data };
   } catch (error) {
     DEBUG && logger.log(error);
-    throw new HttpsError("internal", error.message);
+    throw new HttpsError('internal', error.message);
   }
 };
 
@@ -113,34 +113,34 @@ const ReXCommunicator = async (props) => {
  */
 const communicatorV2 = onCall(async (props) => {
   try {
-    DEBUG && logger.log("Communicator started, data:", props.data);
+    DEBUG && logger.log('Communicator started, data:', props.data);
 
     DEBUG &&
       logger.log(
-        "Communicator variables:",
+        'Communicator variables:',
         process.env.REX_API_KEY_V2,
         process.env.REX_ENDPOINT_V2
       );
 
     const { message, id } = props.data;
 
-    DEBUG && logger.log("Message: ", message);
-    DEBUG && logger.log("ID:", id);
+    DEBUG && logger.log('Message: ', message);
+    DEBUG && logger.log('ID:', id);
 
     const chatSession = await admin
       .firestore()
-      .collection("chatSessions")
+      .collection('chatSessions')
       .doc(id)
       .get();
 
     if (!chatSession.exists) {
-      logger.log("Chat session not found: ", id);
-      throw new HttpsError("not-found", "Chat session not found");
+      logger.log('Chat session not found: ', id);
+      throw new HttpsError('not-found', 'Chat session not found');
     }
 
     const { user, challengeId, botType, level, messages } = chatSession.data();
 
-    DEBUG && logger.log("Chat session: ", chatSession.data());
+    DEBUG && logger.log('Chat session: ', chatSession.data());
 
     let truncatedMessages = messages;
 
@@ -163,13 +163,13 @@ const communicatorV2 = onCall(async (props) => {
       botType,
     };
 
-    DEBUG && logger.log("ReXPayload: ", ReXPayload);
+    DEBUG && logger.log('ReXPayload: ', ReXPayload);
     // Communicate to ReX AI
-    const response = await ReXCommunicator({
+    const response = await reXCommunicator({
       data: ReXPayload,
     });
 
-    DEBUG && logger.log("ReX Response: ", response, "type", typeof response);
+    DEBUG && logger.log('ReX Response: ', response, 'type', typeof response);
 
     // Add response to chat session
     const updatedResponseMessages = updatedMessages.concat(
@@ -182,17 +182,18 @@ const communicatorV2 = onCall(async (props) => {
     );
     await chatSession.ref.update({ messages: updatedResponseMessages });
 
-    if (DEBUG)
+    if (DEBUG) {
       logger.log(
-        "Updated chat session: ",
+        'Updated chat session: ',
         (await chatSession.ref.get())?.data()
       );
-    logger.log("Successfully communicated");
+    }
+    logger.log('Successfully communicated');
 
-    return { status: "success" };
+    return { status: 'success' };
   } catch (error) {
     DEBUG && logger.log(error);
-    throw new HttpsError("internal", error.message);
+    throw new HttpsError('internal', error.message);
   }
 });
 
@@ -207,23 +208,23 @@ const communicatorV2 = onCall(async (props) => {
  */
 const getUserChatSessions = onCall(async (props) => {
   try {
-    DEBUG && logger.log("Communicator started, userId:", props.data?.userId);
+    DEBUG && logger.log('Communicator started, userId:', props.data?.userId);
 
     const { userId } = props.data;
 
     if (!userId) {
-      throw new HttpsError("invalid-argument", "userId is required");
+      throw new HttpsError('invalid-argument', 'userId is required');
     }
 
     const chatSessions = await admin
       .firestore()
-      .collection("chatSessions")
-      .where("user.id", "==", userId)
+      .collection('chatSessions')
+      .where('user.id', '==', userId)
       .get();
 
     if (chatSessions.empty) {
-      logger.log("No chat sessions found for user: ", userId);
-      throw new HttpsError("not-found", "No chat sessions found for user");
+      logger.log('No chat sessions found for user: ', userId);
+      throw new HttpsError('not-found', 'No chat sessions found for user');
     }
 
     // Retrieve user's chat sessions
@@ -236,11 +237,11 @@ const getUserChatSessions = onCall(async (props) => {
       logger.log(
         `Chat sessions found for user ${userId}: ${retrievedChatSessions}`
       );
-    logger.log("Successfully retrieved chat sessions");
-    return { status: "success", data: retrievedChatSessions };
+    logger.log('Successfully retrieved chat sessions');
+    return { status: 'success', data: retrievedChatSessions };
   } catch (error) {
     logger.error(error);
-    throw new HttpsError("internal", error.message);
+    throw new HttpsError('internal', error.message);
   }
 });
 
@@ -262,13 +263,13 @@ const getUserChatSessions = onCall(async (props) => {
  */
 const createChatSession = onCall(async (props) => {
   try {
-    DEBUG && logger.log("Communicator started, data:", props.data);
+    DEBUG && logger.log('Communicator started, data:', props.data);
 
     const { user, challengeId, level, message, botType } = props.data;
 
     if (!user || !challengeId || !level || !message || !botType) {
-      logger.log("Missing required fields", props.data);
-      throw new HttpsError("invalid-argument", "Missing required fields");
+      logger.log('Missing required fields', props.data);
+      throw new HttpsError('invalid-argument', 'Missing required fields');
     }
 
     const triggerMessage = {
@@ -278,10 +279,10 @@ const createChatSession = onCall(async (props) => {
 
     const chatSession = await admin
       .firestore()
-      .collection("chatSessions")
-      .where("user.id", "==", user.id)
-      .where("challengeId", "==", challengeId)
-      .where("level", "==", level)
+      .collection('chatSessions')
+      .where('user.id', '==', user.id)
+      .where('challengeId', '==', challengeId)
+      .where('level', '==', level)
       .get();
 
     // Check if chat session exists, if so, return it
@@ -290,17 +291,17 @@ const createChatSession = onCall(async (props) => {
         ...chatSession.docs[0].data(),
         id: chatSession.docs[0].id,
       };
-      DEBUG && logger.log("Found chat session: ", foundChatSession);
-      logger.log("Chat session found");
-      return { status: "chat-found", data: foundChatSession };
+      DEBUG && logger.log('Found chat session: ', foundChatSession);
+      logger.log('Chat session found');
+      return { status: 'chat-found', data: foundChatSession };
     }
 
-    logger.log("Creating chat session");
+    logger.log('Creating chat session');
 
     // Create new chat session if it doesn't exist
     const chatSessionRef = await admin
       .firestore()
-      .collection("chatSessions")
+      .collection('chatSessions')
       .add({
         messages: [triggerMessage],
         user,
@@ -312,7 +313,7 @@ const createChatSession = onCall(async (props) => {
       });
 
     // Send trigger message to ReX AI
-    const response = await ReXCommunicator({
+    const response = await reXCommunicator({
       data: {
         messages: [triggerMessage],
         user,
@@ -322,10 +323,10 @@ const createChatSession = onCall(async (props) => {
       },
     });
 
-    DEBUG && logger.log("response: ", response, "type", typeof response);
+    DEBUG && logger.log('response: ', response, 'type', typeof response);
 
     const { messages } = (await chatSessionRef.get()).data();
-    DEBUG && logger.log("updated messages: ", messages);
+    DEBUG && logger.log('updated messages: ', messages);
 
     // Add response to chat session
     const updatedResponseMessages = messages.concat(
@@ -343,22 +344,22 @@ const createChatSession = onCall(async (props) => {
     });
 
     const updatedChatSession = await chatSessionRef.get();
-    DEBUG && logger.log("Updated chat session: ", updatedChatSession.data());
+    DEBUG && logger.log('Updated chat session: ', updatedChatSession.data());
 
     const createdChatSession = {
       ...updatedChatSession.data(),
       id: updatedChatSession.id,
     };
-    DEBUG && logger.log("Created chat session: ", createdChatSession);
+    DEBUG && logger.log('Created chat session: ', createdChatSession);
 
-    logger.log("Successfully communicated");
+    logger.log('Successfully communicated');
     return {
-      status: "created",
+      status: 'created',
       data: createdChatSession,
     };
   } catch (error) {
     logger.error(error);
-    throw new HttpsError("internal", error.message);
+    throw new HttpsError('internal', error.message);
   }
 });
 

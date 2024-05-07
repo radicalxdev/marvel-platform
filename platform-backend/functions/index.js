@@ -1,16 +1,16 @@
-const admin = require("firebase-admin");
+const admin = require('firebase-admin');
 // const { secrets } = require("firebase-extensions");
 
 admin.initializeApp();
 
-const userController = require("./controllers/userController");
-const challengeController = require("./controllers/challengeController");
-const playerController = require("./controllers/playerController");
-const emailController = require("./controllers/emailController");
-const certificateController = require("./controllers/certificatesController");
-const rexAIController = require("./controllers/rexAIController");
-const paymentsController = require("./controllers/paymentsController");
-const squadsController = require("./controllers/squadsController");
+const userController = require('./controllers/userController');
+const challengeController = require('./controllers/challengeController');
+const playerController = require('./controllers/playerController');
+const emailController = require('./controllers/emailController');
+const certificateController = require('./controllers/certificatesController');
+const rexAIController = require('./controllers/rexAIController');
+const paymentsController = require('./controllers/paymentsController');
+const squadsController = require('./controllers/squadsController');
 
 /* Migration Scripts */
 // const {

@@ -1,14 +1,14 @@
-const admin = require("firebase-admin");
-const { logger, https, firestore } = require("firebase-functions/v1");
-const { onRequest, onCall } = require("firebase-functions/v1/https");
-const { onCustomEventPublished } = require("firebase-functions/v2/eventarc");
-const Stripe = require("stripe");
-const stripeClient = Stripe(process.env.STRIPE_API_KEY);
+const admin = require('firebase-admin');
+const { logger, https, firestore } = require('firebase-functions/v1');
+const { onRequest, onCall } = require('firebase-functions/v1/https');
+const { onCustomEventPublished } = require('firebase-functions/v2/eventarc');
+const stripe = require('stripe');
+const stripeClient = stripe(process.env.STRIPE_API_KEY);
 
 const {
   SUBSCRIPTION_MONTHLY_DIAMONDS,
   STRIPE_EVENTS,
-} = require("../constants");
+} = require('../constants');
 
 const channel = process.env.STRIPE_EVENTS_CHANNEL;
 const region = process.env.STRIPE_EVENTS_REGION;
@@ -33,13 +33,13 @@ const addGemsOnCheckoutSessionCompleted = onCustomEventPublished(
     try {
       const { customer, amount_total } = event.data;
 
-      process.env.DEBUG && logger.log("checkout session completed", event.data);
+      process.env.DEBUG && logger.log('checkout session completed', event.data);
 
       // Retrieve user doc based on stripeId
       const userRef = await admin
         .firestore()
-        .collection("users")
-        .where("stripeId", "==", customer)
+        .collection('users')
+        .where('stripeId', '==', customer)
         .limit(1)
         .get();
 
@@ -67,7 +67,7 @@ const addGemsOnCheckoutSessionCompleted = onCustomEventPublished(
         );
       }
     } catch (error) {
-      logger.log("Error updating gems", error);
+      logger.log('Error updating gems', error);
     }
   }
 );
@@ -95,14 +95,14 @@ const addGemsOnCustomerSubscriptionUpdated = onCustomEventPublished(
         plan: { product },
       } = event.data;
 
-      process.env.DEBUG && logger.log("checkout session updated", event.data);
-      process.env.DEBUG && logger.log("plan", event.data.plan);
+      process.env.DEBUG && logger.log('checkout session updated', event.data);
+      process.env.DEBUG && logger.log('plan', event.data.plan);
 
       // Retrieve user doc based on stripeId
       const userRef = await admin
         .firestore()
-        .collection("users")
-        .where("stripeId", "==", customer)
+        .collection('users')
+        .where('stripeId', '==', customer)
         .limit(1)
         .get();
 
@@ -114,7 +114,7 @@ const addGemsOnCustomerSubscriptionUpdated = onCustomEventPublished(
 
       const productRef = await admin
         .firestore()
-        .collection("products")
+        .collection('products')
         .doc(product)
         .get();
 
@@ -123,7 +123,7 @@ const addGemsOnCustomerSubscriptionUpdated = onCustomEventPublished(
         return;
       }
 
-      process.env.DEBUG && logger.log("retrieved product", productRef.data());
+      process.env.DEBUG && logger.log('retrieved product', productRef.data());
 
       const {
         metadata: { gems },
@@ -150,7 +150,7 @@ const addGemsOnCustomerSubscriptionUpdated = onCustomEventPublished(
         );
       }
     } catch (error) {
-      logger.log("Error updating gems", error);
+      logger.log('Error updating gems', error);
     }
   }
 );
@@ -176,9 +176,9 @@ const downgradeUserToFreePlanOnSubscriptionCancel = onCustomEventPublished(
         customer,
         items: [{ price: freePlanPriceId }],
       });
-      logger.log("Re-subscribed user to free plan", subscription, customer);
+      logger.log('Re-subscribed user to free plan', subscription, customer);
     } catch (error) {
-      logger.log("Error updating gems", error);
+      logger.log('Error updating gems', error);
     }
   }
 );
@@ -192,16 +192,16 @@ const downgradeUserToFreePlanOnSubscriptionCancel = onCustomEventPublished(
  */
 const addNewUserToFreePlan = onRequest(async (req, res) => {
   try {
-    logger.log("body", req.body);
-    //the cloud function should not execute for any other event
-    if (req.body.type === "customer.created") {
+    logger.log('body', req.body);
+    // the cloud function should not execute for any other event
+    if (req.body.type === 'customer.created') {
       const { data } = req.body;
-      logger.log("data", data);
+      logger.log('data', data);
 
       if (!data.object.id || !data.object.metadata.firebaseUID) {
         return res
           .status(400)
-          .json({ message: "customerId and userId are required" });
+          .json({ message: 'customerId and userId are required' });
       }
 
       const subscription = await stripeClient.subscriptions.create({
@@ -209,17 +209,17 @@ const addNewUserToFreePlan = onRequest(async (req, res) => {
         items: [{ price: freePlanPriceId }],
       });
 
-      logger.log("freePlanId", freePlanPriceId);
-      logger.log("subs", subscription, data.object.id);
+      logger.log('freePlanId', freePlanPriceId);
+      logger.log('subs', subscription, data.object.id);
 
       return res
         .status(200)
-        .json({ message: "Subscription created successfully" });
+        .json({ message: 'Subscription created successfully' });
     } else {
-      return res.status(200).json({ message: "Unhandled event type" });
+      return res.status(200).json({ message: 'Unhandled event type' });
     }
   } catch (error) {
-    logger.error("error", error);
+    logger.error('error', error);
     return res.status(500).json({ message: error.message });
   }
 });
@@ -248,13 +248,13 @@ const createCustomerRecord = async ({ email, uid }) => {
       email: customer.email,
       stripeId: customer.id,
       stripeLink: `https://dashboard.stripe.com${
-        customer.livemode ? "" : "/test"
+        customer.livemode ? '' : '/test'
       }/customers/${customer.id}`,
     };
 
     await admin
       .firestore()
-      .collection("users")
+      .collection('users')
       .doc(uid)
       .set(customerRecord, { merge: true });
     logger.log(
@@ -273,10 +273,10 @@ const createCustomerRecord = async ({ email, uid }) => {
  * Create a stripe customer record when a new user doc is created on signup
  */
 const createStripeCustomerOnUserCreated = firestore
-  .document("/users/{id}")
+  .document('/users/{id}')
   .onCreate(async (snap, context) => {
     const { email, fullName, id } = snap.data();
-    logger.log("User created", id);
+    logger.log('User created', id);
     try {
       if (!email || !id) {
         logger.log(`Error creating customer record for user ${id}`);
@@ -290,7 +290,7 @@ const createStripeCustomerOnUserCreated = firestore
     } catch (error) {
       logger.log(`Error creating customer record for user ${fullName} - ${id}`);
       logger.log(error);
-      throw new https.HttpsError("internal", error.message);
+      throw new https.HttpsError('internal', error.message);
     }
   });
 
@@ -312,8 +312,8 @@ const createStripeCustomerForCurrentUsers = onCall(async (data, context) => {
     const { userId, email } = data;
 
     if (userId !== context.auth.uid) {
-      logger.log("Auth Error", "Unauthorized access");
-      throw new https.HttpsError("unauthenticated", "Unauthorized access");
+      logger.log('Auth Error', 'Unauthorized access');
+      throw new https.HttpsError('unauthenticated', 'Unauthorized access');
     }
 
     await createCustomerRecord({
@@ -321,10 +321,10 @@ const createStripeCustomerForCurrentUsers = onCall(async (data, context) => {
       uid: userId,
     });
 
-    logger.log("freePlanId", freePlanPriceId);
-    return { status: 200, message: "Subscription created successfully" };
+    logger.log('freePlanId', freePlanPriceId);
+    return { status: 200, message: 'Subscription created successfully' };
   } catch (error) {
-    logger.error("error", error);
+    logger.error('error', error);
     return { status: 500, message: error.message };
   }
 });

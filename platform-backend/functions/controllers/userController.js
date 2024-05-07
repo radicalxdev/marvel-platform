@@ -1,5 +1,5 @@
-const admin = require("firebase-admin");
-const { https, logger } = require("firebase-functions");
+const admin = require('firebase-admin');
+const { https, logger } = require('firebase-functions');
 
 const DEBUG = process.env.DEBUG;
 
@@ -16,12 +16,12 @@ exports.signUpUser = https.onCall(async (data, context) => {
 
   if (!email || !fullName || !uid) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Please provide all required fields"
+      'failed-precondition',
+      'Please provide all required fields'
     );
   }
 
-  const userRef = admin.firestore().collection("users").doc(uid);
+  const userRef = admin.firestore().collection('users').doc(uid);
   const userDoc = {
     id: uid,
     email,
@@ -31,7 +31,7 @@ exports.signUpUser = https.onCall(async (data, context) => {
     diamonds: 300,
   };
   await userRef.set(userDoc);
-  return { status: "success", message: "User document created successfully" };
+  return { status: 'success', message: 'User document created successfully' };
 });
 
 /**
@@ -52,25 +52,25 @@ exports.updateEmail = https.onCall(async (data, context) => {
 
   if (!uid || !newEmail) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Please provide all required fields"
+      'failed-precondition',
+      'Please provide all required fields'
     );
   }
 
-  const userDoc = await admin.firestore().collection("users").doc(uid).get();
+  const userDoc = await admin.firestore().collection('users').doc(uid).get();
 
   if (!userDoc.exists) {
-    throw new https.HttpsError("not-found", "User not found");
+    throw new https.HttpsError('not-found', 'User not found');
   }
 
   try {
     await admin.auth().updateUser(uid, { email: newEmail });
   } catch (error) {
-    throw new https.HttpsError("not-found", "User not found");
+    throw new https.HttpsError('not-found', 'User not found');
   }
 
   await userDoc.ref.update({ email: newEmail });
-  return { status: "success", message: "User email updated successfully" };
+  return { status: 'success', message: 'User email updated successfully' };
 });
 
 /**
@@ -85,50 +85,51 @@ exports.updateEmail = https.onCall(async (data, context) => {
 exports.updateProfile = https.onCall(async (data, context) => {
   const { profileData } = data;
 
-  if (DEBUG) console.log("updateProfile", profileData);
+  if (DEBUG) console.log('updateProfile', profileData);
   if (!profileData) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Please provide all required fields"
+      'failed-precondition',
+      'Please provide all required fields'
     );
   }
 
   // Check if profileData is an object
-  if (typeof profileData !== "object") {
+  if (typeof profileData !== 'object') {
     throw new https.HttpsError(
-      "invalid-argument",
-      "Profile data must be an object"
+      'invalid-argument',
+      'Profile data must be an object'
     );
   }
 
   // If user attemps to modify diamonds or coins, then throw error
   const updateFieldKeys = Object.keys(profileData);
-  if (DEBUG) logger.log("fieldKeys", updateFieldKeys);
-  if (["coins", "diamonds"].includes(updateFieldKeys)) {
-    logger.log("Cannot update your own diamonds or coins");
+  if (DEBUG) logger.log('fieldKeys', updateFieldKeys);
+  if (['coins', 'diamonds'].includes(updateFieldKeys)) {
+    logger.log('Cannot update your own diamonds or coins');
     throw new https.HttpsError(
-      "permission-denied",
-      "Cannot update your own diamonds or coins"
+      'permission-denied',
+      'Cannot update your own diamonds or coins'
     );
   }
 
   try {
     const userDoc = await admin
       .firestore()
-      .collection("users")
+      .collection('users')
       .doc(context.auth.uid)
       .get();
 
-    if (!userDoc.exists)
-      throw new https.HttpsError("not-found", "User not found");
+    if (!userDoc.exists) {
+      throw new https.HttpsError('not-found', 'User not found');
+    }
 
-    if (DEBUG) logger.log("userDoc", userDoc?.data());
+    if (DEBUG) logger.log('userDoc', userDoc?.data());
 
     await userDoc.ref.update({ ...profileData });
-    logger.log("User profile updated successfully");
-    return { status: "success", message: "User profile updated successfully" };
+    logger.log('User profile updated successfully');
+    return { status: 'success', message: 'User profile updated successfully' };
   } catch (error) {
-    logger.log("Failed to update user profile", error);
-    throw new https.HttpsError("update-fail", "Failed to update user profile");
+    logger.log('Failed to update user profile', error);
+    throw new https.HttpsError('update-fail', 'Failed to update user profile');
   }
 });

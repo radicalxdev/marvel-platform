@@ -1,13 +1,13 @@
-const admin = require("firebase-admin");
-const { https, logger } = require("firebase-functions");
-const { generateToken } = require("../utils/StringUtil");
-const { v4: uuidv4 } = require("uuid");
-const { SQUAD_STATUS, SQUAD_ROLE } = require("../constants");
+const admin = require('firebase-admin');
+const { https, logger } = require('firebase-functions');
+const { generateToken } = require('../utils/StringUtil');
+const { v4: uuidv4 } = require('uuid');
+const { SQUAD_STATUS, SQUAD_ROLE } = require('../constants');
 
 const DEBUG = process.env.DEBUG;
 
-const DEFAULT_SQUAD_DOC = ["name", "region", "proficiency", "coverBg", "focus"];
-const ADD_MEMBER_PROPS = ["newMemberId", "inviteToken", "squadId"];
+const DEFAULT_SQUAD_DOC = ['name', 'region', 'proficiency', 'coverBg', 'focus'];
+const ADD_MEMBER_PROPS = ['newMemberId', 'inviteToken', 'squadId'];
 
 /**
  * Adds the userId to the squad's invitations list using the userId and squadId.
@@ -22,37 +22,41 @@ exports.sendInvite = https.onCall(async (data, context) => {
   // If squadId and userId values are not passed, it throws an Error.
   if (!squadId || !userId) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Please provide all required fields: squadId and userId"
+      'failed-precondition',
+      'Please provide all required fields: squadId and userId'
     );
   }
   // Check if userId is a string.
-  if (typeof userId !== "string")
-    throw new https.HttpsError("invalid-argument", "userId must be a string.");
+  if (typeof userId !== 'string') {
+    throw new https.HttpsError('invalid-argument', 'userId must be a string.');
+  }
   // Check if squadId is a string.
-  if (typeof squadId !== "string")
-    throw new https.HttpsError("invalid-argument", "squadId must be a string.");
+  if (typeof squadId !== 'string') {
+    throw new https.HttpsError('invalid-argument', 'squadId must be a string.');
+  }
 
   const squadDoc = await admin
     .firestore()
-    .collection("squads")
+    .collection('squads')
     .doc(squadId)
     .get();
 
   // If squad document does not exists, throws an error.
-  if (!squadDoc.exists)
-    throw new https.HttpsError("not-found", "Squad not found");
+  if (!squadDoc.exists) {
+    throw new https.HttpsError('not-found', 'Squad not found');
+  }
 
-  DEBUG && logger.log("squadDoc", squadDoc?.data());
+  DEBUG && logger.log('squadDoc', squadDoc?.data());
 
   const { invitations } = squadDoc.data();
 
   // If the user is already on the invitation list, it throws an error.
-  if (invitations.includes(userId))
+  if (invitations.includes(userId)) {
     throw new https.HttpsError(
-      "already-exists",
-      "User is already on invitation list"
+      'already-exists',
+      'User is already on invitation list'
     );
+  }
 
   try {
     // Updates the squadDoc invitations list adding the new userId.
@@ -60,17 +64,17 @@ exports.sendInvite = https.onCall(async (data, context) => {
       invitations: [...invitations, userId],
     });
 
-    DEBUG && logger.log("squadDoc", squadDoc?.data());
+    DEBUG && logger.log('squadDoc', squadDoc?.data());
 
     return {
-      status: "success",
-      message: "User added to invitations list succesfully.",
+      status: 'success',
+      message: 'User added to invitations list succesfully.',
     };
   } catch (error) {
-    DEBUG && logger.log("Failed to update invitations list", error);
+    DEBUG && logger.log('Failed to update invitations list', error);
     throw new https.HttpsError(
-      "update-fail",
-      "Failed to update invitations list."
+      'update-fail',
+      'Failed to update invitations list.'
     );
   }
 });
@@ -85,80 +89,89 @@ exports.sendInvite = https.onCall(async (data, context) => {
  */
 exports.inviteResponse = https.onCall(async (data, context) => {
   const { userId, squadId, response, inviteToken } = data;
-  DEBUG && logger.log("data", data);
+  DEBUG && logger.log('data', data);
   if (
     !squadId ||
     !userId ||
     response === undefined ||
     response === null ||
-    typeof response !== "boolean"
+    typeof response !== 'boolean'
   ) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Please provide all required fields: squadId, userId and response"
+      'failed-precondition',
+      'Please provide all required fields: squadId, userId and response'
     );
   }
   // Check if userId is a string.
-  if (typeof userId !== "string")
-    throw new https.HttpsError("invalid-argument", "userId must be a string.");
+  if (typeof userId !== 'string') {
+    throw new https.HttpsError('invalid-argument', 'userId must be a string.');
+  }
 
   // Check if squadId is a string.
-  if (typeof squadId !== "string")
-    throw new https.HttpsError("invalid-argument", "squadId must be a string.");
+  if (typeof squadId !== 'string') {
+    throw new https.HttpsError('invalid-argument', 'squadId must be a string.');
+  }
 
   // Check if inviteToken is a string.
-  if (inviteToken && typeof inviteToken !== "string")
+  if (inviteToken && typeof inviteToken !== 'string') {
     throw new https.HttpsError(
-      "invalid-argument",
-      "inviteToken must be a string."
+      'invalid-argument',
+      'inviteToken must be a string.'
     );
+  }
 
-  const squadsCollection = await admin.firestore().collection("squads").get();
+  const squadsCollection = await admin.firestore().collection('squads').get();
 
-  if (squadsCollection.empty)
-    throw new https.HttpsError("not-found", "Squads collection not found");
+  if (squadsCollection.empty) {
+    throw new https.HttpsError('not-found', 'Squads collection not found');
+  }
 
   // If user is already a member of a squad throws an error
   squadsCollection.forEach((currSquad) => {
     const { members } = currSquad.data();
-    if (members.some((member) => member.userId === userId))
+    if (members.some((member) => member.userId === userId)) {
       throw new https.HttpsError(
-        "failed-precondition",
-        "User is already a member of a squad."
+        'failed-precondition',
+        'User is already a member of a squad.'
       );
+    }
   });
 
   const squadDoc = await admin
     .firestore()
-    .collection("squads")
+    .collection('squads')
     .doc(squadId)
     .get();
 
   // If squad document does not exists, throws an error.
-  if (!squadDoc.exists)
-    throw new https.HttpsError("not-found", "Squad not found");
+  if (!squadDoc.exists) {
+    throw new https.HttpsError('not-found', 'Squad not found');
+  }
 
-  DEBUG && logger.log("squadDoc", squadDoc?.data());
+  DEBUG && logger.log('squadDoc', squadDoc?.data());
 
   const { members, status, inviteToken: validInviteToken } = squadDoc.data();
 
-  if (status !== SQUAD_STATUS.ACTIVE || members.length > 5)
+  if (status !== SQUAD_STATUS.ACTIVE || members.length > 5) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Squad is already full or not seeking members."
+      'failed-precondition',
+      'Squad is already full or not seeking members.'
     );
+  }
 
-  if (members.some((member) => member.userId === userId))
+  if (members.some((member) => member.userId === userId)) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "User is already a member on the squad."
+      'failed-precondition',
+      'User is already a member on the squad.'
     );
+  }
 
   let updateDoc;
   // User accepted invite by invitation link
   if (inviteToken) {
-    if (inviteToken !== validInviteToken)
-      throw new https.HttpsError("not-found", "Invalid invite token");
+    if (inviteToken !== validInviteToken) {
+      throw new https.HttpsError('not-found', 'Invalid invite token');
+    }
 
     updateDoc = {
       members: [...members, { userId, role: SQUAD_ROLE.MEMBER }],
@@ -169,11 +182,12 @@ exports.inviteResponse = https.onCall(async (data, context) => {
     const { invitations } = squadDoc.data();
 
     // If the user is not on the invitation list, it throws an error.
-    if (!invitations.includes(userId))
+    if (!invitations.includes(userId)) {
       throw new https.HttpsError(
-        "already-exists",
-        "User is not on the invitation list"
+        'already-exists',
+        'User is not on the invitation list'
       );
+    }
 
     // Updates the squadDoc invitations list removing the userId.
     const updatedInvitations = invitations.filter((id) => id !== userId);
@@ -194,21 +208,25 @@ exports.inviteResponse = https.onCall(async (data, context) => {
 
   try {
     await squadDoc.ref.update(updateDoc);
-    DEBUG && logger.log("squadDoc", squadDoc?.data());
+    DEBUG && logger.log('squadDoc', squadDoc?.data());
+
+    const responseMessage = () => {
+      if (inviteToken) return 'Squad\u0027s members list updated succesfully.';
+      if (response) {
+        return 'Squad\u0027s invitation and members list updated succesfully.';
+      }
+      return 'User has declined invitation.';
+    };
 
     return {
-      status: "success",
-      message: inviteToken
-        ? "Squad's members list updated succesfully."
-        : response
-        ? "Squad's invitation and members list updated succesfully."
-        : "User has declined invitation.",
+      status: 'success',
+      message: responseMessage(),
     };
   } catch (error) {
-    DEBUG && logger.log("Failed to update invitations list", error);
+    DEBUG && logger.log('Failed to update invitations list', error);
     throw new https.HttpsError(
-      "update-fail",
-      "Failed to update invitations list."
+      'update-fail',
+      'Failed to update invitations list.'
     );
   }
 });
@@ -224,75 +242,81 @@ exports.inviteResponse = https.onCall(async (data, context) => {
 exports.createSquad = https.onCall(async (data, context) => {
   const { name, region, proficiency, coverBg, focus } = data;
 
-  DEBUG && logger.log("squadData", data);
+  DEBUG && logger.log('squadData', data);
 
   // Validate required fields
   if (!name || !focus || !proficiency || !region || !coverBg) {
     const missingFields = DEFAULT_SQUAD_DOC?.filter((key) => !data[key]);
 
-    DEBUG && logger.log("missingFields", missingFields);
+    DEBUG && logger.log('missingFields', missingFields);
 
     // Throws an error: "Please provide all required missing fields"
     throw new https.HttpsError(
-      "failed-precondition",
-      `Please provide all required missing fields: ${missingFields.join(", ")}`
+      'failed-precondition',
+      `Please provide all required missing fields: ${missingFields.join(', ')}`
     );
   }
 
   // If the type of variable name is string, it continues. Else throws an error: Name must be string
-  if (typeof name !== "string")
-    throw new https.HttpsError("invalid-argument", "name must be type string.");
+  if (typeof name !== 'string') {
+    throw new https.HttpsError('invalid-argument', 'name must be type string.');
+  }
 
   // Throws an error if focus is not an array of strings
   if (
     !(
       Array.isArray(focus) &&
       focus.length > 0 &&
-      focus.every((item) => typeof item === "string")
+      focus.every((item) => typeof item === 'string')
     )
-  )
+  ) {
     throw new https.HttpsError(
-      "invalid-argument",
-      "focus must be an array of strings."
+      'invalid-argument',
+      'focus must be an array of strings.'
     );
+  }
 
   // Validates with the PROFICIENCY constant, if is not it throws an error
-  if (typeof proficiency !== "string")
+  if (typeof proficiency !== 'string') {
     throw new https.HttpsError(
-      "invalid-argument",
-      "proficiency must be a string."
+      'invalid-argument',
+      'proficiency must be a string.'
     );
+  }
 
   // If the type of variable region is string, it continues. Else throws an error: Region must be type string
-  if (typeof region !== "string")
+  if (typeof region !== 'string') {
     throw new https.HttpsError(
-      "invalid-argument",
-      "region must be type string."
+      'invalid-argument',
+      'region must be type string.'
     );
+  }
 
   // If the type of variable coverBG is string, it continues. Else throws an error: CoverBg must be type string
-  if (typeof coverBg !== "string")
+  if (typeof coverBg !== 'string') {
     throw new https.HttpsError(
-      "invalid-argument",
-      "coverBg must be type string."
+      'invalid-argument',
+      'coverBg must be type string.'
     );
+  }
 
   // Check if squad name is unique
   const squadSnapshot = await admin
     .firestore()
-    .collection("squads")
-    .where("name", "==", name)
+    .collection('squads')
+    .where('name', '==', name)
     .get();
 
-  DEBUG && logger.log("squadSnapshot", squadSnapshot);
+  DEBUG && logger.log('squadSnapshot', squadSnapshot);
 
-  if (!squadSnapshot.empty)
+  if (!squadSnapshot.empty) {
     throw new https.HttpsError(
-      "already-exists",
-      "A squad with this name already exists"
+      'already-exists',
+      'A squad with this name already exists'
     );
+  }
 
-  const squadsCollection = await admin.firestore().collection("squads").get();
+  const squadsCollection = await admin.firestore().collection('squads').get();
 
   // Loops through the squads collection and looks if the user is already a leader.
   squadsCollection.forEach((doc) => {
@@ -300,11 +324,12 @@ exports.createSquad = https.onCall(async (data, context) => {
     const leadFound = members.some(
       (member) => member.userId === context?.auth?.uid
     );
-    if (leadFound)
+    if (leadFound) {
       throw new https.HttpsError(
-        "already-exists",
-        "User already leads a squad."
+        'already-exists',
+        'User already leads a squad.'
       );
+    }
   });
 
   const inviteToken = generateToken(12);
@@ -314,7 +339,7 @@ exports.createSquad = https.onCall(async (data, context) => {
     role: SQUAD_ROLE.ADMIN,
   };
   // Create a document reference without saving it
-  const squadRef = admin.firestore().collection("squads").doc();
+  const squadRef = admin.firestore().collection('squads').doc();
   const squadId = squadRef.id; // Get the auto-generated ID
 
   try {
@@ -335,19 +360,19 @@ exports.createSquad = https.onCall(async (data, context) => {
       invitations: [],
     };
 
-    DEBUG && logger.log("squadDoc", squadDoc);
+    DEBUG && logger.log('squadDoc', squadDoc);
 
     // Add the squad to Firestore
     await squadRef.set(squadDoc);
 
     return {
-      status: "success",
-      message: "Squad created successfully",
+      status: 'success',
+      message: 'Squad created successfully',
       data: { inviteToken },
     };
   } catch (error) {
-    DEBUG && logger.log("internal", error);
-    throw new https.HttpsError("internal", "Failed to create squad");
+    DEBUG && logger.log('internal', error);
+    throw new https.HttpsError('internal', 'Failed to create squad');
   }
 });
 
@@ -367,42 +392,46 @@ exports.addSquadMember = https.onCall(async (data, context) => {
     const missingFields = ADD_MEMBER_PROPS?.filter((key) => !data[key]);
     // Throws an error: "Please provide all required missing fields"
     throw new https.HttpsError(
-      "failed-precondition",
-      `Please provide all required missing fields: ${missingFields.join(", ")}`
+      'failed-precondition',
+      `Please provide all required missing fields: ${missingFields.join(', ')}`
     );
   }
 
   const squadDoc = await admin
     .firestore()
-    .collection("squads")
+    .collection('squads')
     .doc(squadId)
     .get();
 
-  if (!squadDoc.exists)
-    throw new https.HttpsError("not-found", "Squad not found");
+  if (!squadDoc.exists) {
+    throw new https.HttpsError('not-found', 'Squad not found');
+  }
 
   const { members, status, inviteToken: validInviteToken } = squadDoc.data();
 
-  if (inviteToken !== validInviteToken)
-    throw new https.HttpsError("not-found", "Invalid token");
+  if (inviteToken !== validInviteToken) {
+    throw new https.HttpsError('not-found', 'Invalid token');
+  }
 
   // Checks if squad is already full or not seeking
-  if (members.length === 6 || status !== SQUAD_STATUS.ACTIVE)
+  if (members.length === 6 || status !== SQUAD_STATUS.ACTIVE) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Squad is already full or not seeking members."
+      'failed-precondition',
+      'Squad is already full or not seeking members.'
     );
+  }
 
   // Checks if newMemberId is already on the members list.
   const userAlreadyExists = members?.some(
     (member) => member.userId === newMemberId
   );
 
-  if (userAlreadyExists)
+  if (userAlreadyExists) {
     throw new https.HttpsError(
-      "already-exists",
-      "User is already on the squad"
+      'already-exists',
+      'User is already on the squad'
     );
+  }
 
   try {
     const updatedMembers = [
@@ -422,9 +451,12 @@ exports.addSquadMember = https.onCall(async (data, context) => {
 
     await squadDoc.ref.update(updateSquad);
 
-    return { status: "success", message: "Squad member updated successfully" };
+    return { status: 'success', message: 'Squad member updated successfully' };
   } catch (error) {
-    throw new https.HttpsError("internal", "Failed to update squad's members.");
+    throw new https.HttpsError(
+      'internal',
+      'Failed to update squad\u0027s members.'
+    );
   }
 });
 
@@ -440,37 +472,39 @@ exports.addSquadMember = https.onCall(async (data, context) => {
  * Throws appropriate HTTPS errors if validation fails or if the transaction cannot be completed.
  */
 exports.squadApplication = https.onCall(async (data, context) => {
-  DEBUG && logger.log("Received data:", data);
+  DEBUG && logger.log('Received data:', data);
 
   const { squadId, applicationDetails } = data;
 
   // Validate squadId and applicationDetails presence
-  if (!squadId)
-    throw new https.HttpsError("invalid-argument", "Squad ID is required.");
+  if (!squadId) {
+    throw new https.HttpsError('invalid-argument', 'Squad ID is required.');
+  }
 
-  if (!applicationDetails)
+  if (!applicationDetails) {
     throw new https.HttpsError(
-      "invalid-argument",
-      "Application details are required."
+      'invalid-argument',
+      'Application details are required.'
     );
+  }
 
   // Define and check the squad document
-  const squadRef = admin.firestore().collection("squads").doc(squadId);
+  const squadRef = admin.firestore().collection('squads').doc(squadId);
   const squadDoc = await squadRef.get();
-  DEBUG && logger.log("Fetched squad document:", squadDoc.data());
+  DEBUG && logger.log('Fetched squad document:', squadDoc.data());
   const { status, openRoles, applications } = squadDoc.data();
 
   if (!squadDoc.exists) {
-    DEBUG && logger.log("Squad document not found:", squadId);
-    throw new https.HttpsError("not-found", "Squad not found.");
+    DEBUG && logger.log('Squad document not found:', squadId);
+    throw new https.HttpsError('not-found', 'Squad not found.');
   }
 
   // Check if squad is active
   if (status !== SQUAD_STATUS.ACTIVE) {
-    DEBUG && logger.log("Squad is not active, cannot accept applications.");
+    DEBUG && logger.log('Squad is not active, cannot accept applications.');
     throw new https.HttpsError(
-      "failed-precondition",
-      "Squad is not accepting applications."
+      'failed-precondition',
+      'Squad is not accepting applications.'
     );
   }
 
@@ -481,10 +515,10 @@ exports.squadApplication = https.onCall(async (data, context) => {
   // Check if the roleId exists in the OpenRoles of the squad
   const roleExists = openRoles?.some((role) => role.id === roleId);
   if (!roleExists) {
-    DEBUG && logger.log("Invalid roleId provided:", roleId);
+    DEBUG && logger.log('Invalid roleId provided:', roleId);
     throw new https.HttpsError(
-      "invalid-argument",
-      "The specified role ID does not exist in the squad."
+      'invalid-argument',
+      'The specified role ID does not exist in the squad.'
     );
   }
 
@@ -499,7 +533,7 @@ exports.squadApplication = https.onCall(async (data, context) => {
     availability,
     links,
   };
-  DEBUG && logger.log("Application object prepared:", application);
+  DEBUG && logger.log('Application object prepared:', application);
 
   // Check if the application already exists for the user and role
   const applicationAlreadyExists = applications?.some(
@@ -509,18 +543,18 @@ exports.squadApplication = https.onCall(async (data, context) => {
   if (applicationAlreadyExists) {
     DEBUG &&
       logger.log(
-        "An application from this user and for this role already exists.",
+        'An application from this user and for this role already exists.',
         `userId: ${userId}`,
         `roleId: ${roleId}`
       );
     throw new https.HttpsError(
-      "already-exists",
-      "An application from this user and for this role already exists."
+      'already-exists',
+      'An application from this user and for this role already exists.'
     );
   }
 
   // Get user doc ref
-  const userRef = admin.firestore().collection("users").doc(context.auth.uid);
+  const userRef = admin.firestore().collection('users').doc(context.auth.uid);
 
   try {
     // Update user profile
@@ -532,7 +566,7 @@ exports.squadApplication = https.onCall(async (data, context) => {
       experience,
     });
     DEBUG &&
-      logger.log("Updated user profile:", {
+      logger.log('Updated user profile:', {
         availability,
         timezone,
         links,
@@ -544,20 +578,20 @@ exports.squadApplication = https.onCall(async (data, context) => {
     const newApplications = [...applications, application];
     DEBUG &&
       logger.log(
-        "Adding application to squad's applications array:",
+        'Adding application to squad\u0027s applications array:',
         application
       );
     await squadRef.update({ applications: newApplications });
     DEBUG &&
       logger.log(
-        "Application added to squad's applications array successfully."
+        'Application added to squad\u0027s applications array successfully.'
       );
 
-    return { success: true, message: "Application submitted successfully." };
+    return { success: true, message: 'Application submitted successfully.' };
   } catch (error) {
-    logger.log("Operation failed with error:", error);
+    logger.log('Operation failed with error:', error);
     throw new https.HttpsError(
-      "unknown",
+      'unknown',
       `An error occurred while submitting the application: ${error.message}`
     );
   }
@@ -583,39 +617,39 @@ exports.applicationResponse = https.onCall(async (data, context) => {
 
   DEBUG &&
     logger.log(
-      "squadId:",
+      'squadId:',
       squadId,
-      "userId:",
+      'userId:',
       userId,
-      "response:",
+      'response:',
       response,
-      "applicationId:",
+      'applicationId:',
       applicationId
     );
 
-  if (!squadId || !userId || !applicationId || typeof response !== "boolean") {
+  if (!squadId || !userId || !applicationId || typeof response !== 'boolean') {
     throw new https.HttpsError(
-      "invalid-argument",
-      "The function must be called with 'squadId', 'userId', 'response' and 'applicationId'. "
+      'invalid-argument',
+      'The function must be called with squadId, userId, response and applicationId.'
     );
   }
 
-  const squadRef = admin.firestore().collection("squads").doc(squadId);
+  const squadRef = admin.firestore().collection('squads').doc(squadId);
   const squadDoc = await squadRef.get();
 
-  DEBUG && logger.log("squad document", squadDoc.data());
+  DEBUG && logger.log('squad document', squadDoc.data());
 
   if (!squadDoc.exists) {
-    throw new https.HttpsError("not-found", "Squad not found");
+    throw new https.HttpsError('not-found', 'Squad not found');
   }
 
   const { applications, members, status } = squadDoc.data();
 
   if (status !== SQUAD_STATUS.ACTIVE || members.length > 5) {
-    DEBUG && logger.log("Squad is already full or not seeking members.");
+    DEBUG && logger.log('Squad is already full or not seeking members.');
     throw new https.HttpsError(
-      "failed-precondition",
-      "Squad is already full or not seeking members."
+      'failed-precondition',
+      'Squad is already full or not seeking members.'
     );
   }
 
@@ -624,20 +658,21 @@ exports.applicationResponse = https.onCall(async (data, context) => {
   );
 
   if (applicationIndex === -1) {
-    throw new https.HttpsError("not-found", "Application not found");
+    throw new https.HttpsError('not-found', 'Application not found');
   }
 
-  if (members.some((member) => member.userId === userId))
+  if (members.some((member) => member.userId === userId)) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "User is already a member on the squad."
+      'failed-precondition',
+      'User is already a member on the squad.'
     );
+  }
 
   const newApplications = applications.filter(
     (app) => app.id !== applicationId
   );
 
-  DEBUG && logger.log("new applications", newApplications);
+  DEBUG && logger.log('new applications', newApplications);
 
   const newMember = { userId, role: SQUAD_ROLE.MEMBER };
 
@@ -654,27 +689,27 @@ exports.applicationResponse = https.onCall(async (data, context) => {
         applications: newApplications,
       };
 
-  DEBUG && logger.log("update data", updateDoc);
+  DEBUG && logger.log('update data', updateDoc);
 
   try {
     DEBUG &&
       logger.log(
         response
-          ? "Approving application, updating members and squad status."
-          : "Denying application, removing from applications array."
+          ? 'Approving application, updating members and squad status.'
+          : 'Denying application, removing from applications array.'
       );
     await squadRef.update(updateDoc);
     return {
-      status: "success",
+      status: 'success',
       message: response
-        ? "Application approved and member added successfully."
-        : "Application denied and removed successfully.",
+        ? 'Application approved and member added successfully.'
+        : 'Application denied and removed successfully.',
     };
   } catch (error) {
-    logger.log("Failed to update the squad document:", error);
-    throw new functions.https.HttpsError(
-      "unknown",
-      "An error occurred while updating the squad document: " + error.message
+    logger.log('Failed to update the squad document:', error);
+    throw new https.HttpsError(
+      'unknown',
+      'An error occurred while updating the squad document: ' + error.message
     );
   }
 });
@@ -692,38 +727,39 @@ exports.updateSquadInfo = https.onCall(async (data, context) => {
 
   if (!updatedData || !squadId) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Please provide updatedData and squadId"
+      'failed-precondition',
+      'Please provide updatedData and squadId'
     );
   }
 
   // Get the squad data from firestore
   const squadDoc = await admin
     .firestore()
-    .collection("squads")
+    .collection('squads')
     .doc(squadId)
     .get();
 
-  if (!squadDoc.exists)
-    throw new https.HttpsError("not-found", "Squad not found");
+  if (!squadDoc.exists) {
+    throw new https.HttpsError('not-found', 'Squad not found');
+  }
   // Check if updatedData is an object
-  if (typeof updatedData !== "object") {
+  if (typeof updatedData !== 'object') {
     throw new https.HttpsError(
-      "invalid-argument",
-      "The updatedData must be an object"
+      'invalid-argument',
+      'The updatedData must be an object'
     );
   }
 
   try {
     await squadDoc.ref.update({ ...updatedData });
     return {
-      status: "success",
-      message: "Squad info data updated successfully",
+      status: 'success',
+      message: 'Squad info data updated successfully',
     };
   } catch (error) {
     throw new https.HttpsError(
-      "update-fail",
-      "Failed to update the squad info data"
+      'update-fail',
+      'Failed to update the squad info data'
     );
   }
 });
@@ -741,20 +777,20 @@ exports.addSquadRole = https.onCall(async (data, context) => {
 
   if (!role || !proficiency || !squadId) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Please provide role, proficiency, and squadId"
+      'failed-precondition',
+      'Please provide role, proficiency, and squadId'
     );
   }
 
   // Get the squad data from firestore
   const squadDoc = await admin
     .firestore()
-    .collection("squads")
+    .collection('squads')
     .doc(squadId)
     .get();
 
   if (!squadDoc.exists) {
-    throw new https.HttpsError("not-found", "Squad not found");
+    throw new https.HttpsError('not-found', 'Squad not found');
   }
 
   const { openRoles } = squadDoc.data();
@@ -764,11 +800,11 @@ exports.addSquadRole = https.onCall(async (data, context) => {
   try {
     await squadDoc.ref.update({ openRoles: updatedOpenRoles });
     return {
-      status: "success",
-      message: "Squad role added successfully",
+      status: 'success',
+      message: 'Squad role added successfully',
     };
   } catch (error) {
-    throw new https.HttpsError("update-fail", "Failed to add the squad role");
+    throw new https.HttpsError('update-fail', 'Failed to add the squad role');
   }
 });
 
@@ -785,20 +821,21 @@ exports.editSquadRole = https.onCall(async (data, context) => {
 
   if (!roleData || !squadId || !roleId) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Please provide roleData, squadId, and roleId"
+      'failed-precondition',
+      'Please provide roleData, squadId, and roleId'
     );
   }
 
   // Get the squad data from firestore
   const squadDoc = await admin
     .firestore()
-    .collection("squads")
+    .collection('squads')
     .doc(squadId)
     .get();
 
-  if (!squadDoc.exists)
-    throw new https.HttpsError("not-found", "Squad not found");
+  if (!squadDoc.exists) {
+    throw new https.HttpsError('not-found', 'Squad not found');
+  }
 
   const { openRoles } = squadDoc.data();
 
@@ -806,7 +843,7 @@ exports.editSquadRole = https.onCall(async (data, context) => {
   const roleDoc = openRoles?.find((role) => role?.id === roleId);
 
   // If not found, throw an error
-  if (!roleDoc) throw new https.HttpsError("not-found", "Squad role not found");
+  if (!roleDoc) throw new https.HttpsError('not-found', 'Squad role not found');
 
   // Update the role in the openRoles array
   const updatedOpenRoles = openRoles?.map((role) => {
@@ -819,13 +856,13 @@ exports.editSquadRole = https.onCall(async (data, context) => {
   try {
     await squadDoc.ref.update({ openRoles: updatedOpenRoles });
     return {
-      status: "success",
-      message: "Squad role modified successfully",
+      status: 'success',
+      message: 'Squad role modified successfully',
     };
   } catch (error) {
     throw new https.HttpsError(
-      "update-fail",
-      "Failed to modify the squad role"
+      'update-fail',
+      'Failed to modify the squad role'
     );
   }
 });
@@ -843,22 +880,23 @@ exports.deleteSquadRole = https.onCall(async (data, context) => {
 
   if (!roleId || !squadId) {
     throw new https.HttpsError(
-      "failed-precondition",
-      "Please provide squadRole and squadId"
+      'failed-precondition',
+      'Please provide squadRole and squadId'
     );
   }
   // Get the squad data from firestore
   const squadDoc = await admin
     .firestore()
-    .collection("squads")
+    .collection('squads')
     .doc(squadId)
     .get();
 
-  if (!squadDoc.exists)
-    throw new https.HttpsError("not-found", "Squad not found");
+  if (!squadDoc.exists) {
+    throw new https.HttpsError('not-found', 'Squad not found');
+  }
 
-  if (typeof roleId !== "string") {
-    throw new https.HttpsError("invalid-argument", "roleId must be an string");
+  if (typeof roleId !== 'string') {
+    throw new https.HttpsError('invalid-argument', 'roleId must be an string');
   }
 
   const { openRoles } = squadDoc.data();
@@ -867,13 +905,13 @@ exports.deleteSquadRole = https.onCall(async (data, context) => {
   try {
     await squadDoc.ref.update({ openRoles: updatedOpenRoles });
     return {
-      status: "success",
-      message: "Squad role data deleted successfully",
+      status: 'success',
+      message: 'Squad role data deleted successfully',
     };
   } catch (error) {
     throw new https.HttpsError(
-      "update-fail",
-      "Failed to update the squad info data"
+      'update-fail',
+      'Failed to update the squad info data'
     );
   }
 });

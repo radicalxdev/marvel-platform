@@ -1,28 +1,30 @@
-const admin = require("firebase-admin");
-const { https, logger } = require("firebase-functions");
-const { DIFFICULTY } = require("../constants");
+const admin = require('firebase-admin');
+const { https, logger } = require('firebase-functions');
+const { DIFFICULTY } = require('../constants');
 
 const addDifficultyToChallenges = https.onCall(async () => {
-  logger.log("Migration - addDifficultyToChallenges - started");
-  const challengesDocs = await admin.firestore().collection("challenges").get();
+  logger.log('Migration - addDifficultyToChallenges - started');
+  const challengesDocs = await admin.firestore().collection('challenges').get();
 
   let docsUpdated = 0;
-  await Promise.all(challengesDocs.docs.map(async (challengeDoc) => {
-    const challengeData = challengeDoc.data();
-    const { difficulty } = challengeData;
+  await Promise.all(
+    challengesDocs.docs.map(async (challengeDoc) => {
+      const challengeData = challengeDoc.data();
+      const { difficulty } = challengeData;
 
-    if (difficulty) return;
+      if (difficulty) return;
 
-    await challengeDoc.ref.update({
-      difficulty: DIFFICULTY.BEGINNER,
-    });
-    docsUpdated += 1;
+      await challengeDoc.ref.update({
+        difficulty: DIFFICULTY.BEGINNER,
+      });
+      docsUpdated += 1;
 
-    return;
-  }));
+      return;
+    })
+  );
 
   logger.log(`${docsUpdated} challenge docs updated`);
-  logger.log("Migration - addDifficultyToChallenges - ended");
+  logger.log('Migration - addDifficultyToChallenges - ended');
 });
 
 module.exports = {
