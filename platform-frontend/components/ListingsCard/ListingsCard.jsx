@@ -2,8 +2,6 @@ import { useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import { useDispatch } from 'react-redux';
-
 import ChallengeCard from '@/components/ChallengeCard';
 
 import ChallengeCardSkeleton from '@/components/ChallengeCardSkeleton';
@@ -16,9 +14,6 @@ import ListingsFilters from './ListingsFilters';
 import styles from './styles';
 
 import { QuestProvider } from '@/context/QuestContext';
-import { reset } from '@/redux/slices/challengesSlice';
-import { firestore } from '@/redux/store';
-import fetchChallenges from '@/redux/thunks/challenges';
 
 const DEFAULT_QUESTS = [
   {
@@ -108,17 +103,8 @@ const DEFAULT_QUESTS = [
  * @return {JSX.Element} The rendered ListingsCard component.
  */
 const ListingsCard = (props) => {
-  const {
-    data,
-    loading,
-    error,
-    enrolledChallenges,
-    isExpedition,
-    toggleOpen,
-    challengeType,
-  } = props;
-
-  const dispatch = useDispatch();
+  const { data, loading, error, enrolledChallenges, isExpedition, toggleOpen } =
+    props;
 
   const disableFilters = true;
 
@@ -142,10 +128,7 @@ const ListingsCard = (props) => {
     }
   };
 
-  const handleRetry = () => {
-    dispatch(reset(challengeType));
-    return dispatch(fetchChallenges({ firestore, challengeType }));
-  };
+  const handleRetry = () => {};
 
   const renderErrorCard = () => {
     return (
