@@ -9,10 +9,10 @@
     "plugin:import/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "next/babel",
+    "prettier",
     "next/core-web-vitals"
   ],
-  "plugins": ["import", "prettier"],
+  "plugins": ["import", "prettier", "simple-import-sort"],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -50,7 +50,8 @@
       "error",
       {
         "ignoreCase": true,
-        "allowSeparatedGroups": true
+        "allowSeparatedGroups": true,
+        "ignoreDeclarationSort": true
       }
     ],
     "import/order": [

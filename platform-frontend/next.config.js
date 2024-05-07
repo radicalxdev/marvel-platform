@@ -1,7 +1,4 @@
-const withTM = require('next-transpile-modules')([
-  '@invertase/firestore-stripe-payments',
-  'react-syntax-highlighter',
-]);
+const withTM = require('next-transpile-modules')(['react-syntax-highlighter']);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
