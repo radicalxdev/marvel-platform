@@ -3,6 +3,7 @@ const styles = {
     container: true,
     item: true,
     mobileSmall: 3,
+    maxWidth: '320px',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',

@@ -9,7 +9,7 @@ const styles = {
   contentGridProps: (extraContentProps) => ({
     container: true,
     item: true,
-    mobileSmall: 9,
+    mobileSmall: true,
     justifyContent: 'center',
     height: '100%',
     sx: (theme) => ({

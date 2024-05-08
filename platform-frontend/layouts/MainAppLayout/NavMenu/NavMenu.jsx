@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 
 import HackathonIcon from '@/assets/svg/hackathonSvg.svg';
 import HomeIcon from '@/assets/svg/HomeIcon.svg';
-import JoystickIcon from '@/assets/svg/joystick.svg';
 
 import ROUTES from '@/constants/routes';
 
@@ -20,22 +19,16 @@ import {
 
 const PAGES = [
   {
-    name: 'Missions',
+    name: 'Kai Tools',
     link: ROUTES.HOME,
     icon: <HomeIcon />,
     id: 'page_1',
   },
   {
-    name: 'Hackathons',
-    link: ROUTES.HACKATHONS,
+    name: 'Kai Chatbot',
+    link: ROUTES.CHAT,
     icon: <HackathonIcon />,
     id: 'page_2',
-  },
-  {
-    name: 'Leaderboard',
-    link: ROUTES.LEADERBOARDS,
-    icon: <JoystickIcon />,
-    id: 'page_3',
   },
 ];
 
