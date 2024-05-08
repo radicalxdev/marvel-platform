@@ -14,7 +14,10 @@ const styles = {
   logoGridProps: {
     container: true,
     item: true,
+    columnGap: 3,
     mobileSmall: 'auto',
+    justifyContent: 'center',
+    alignItems: 'center',
     mb: 8,
   },
   logoutGridProps: {
@@ -39,6 +42,35 @@ const styles = {
         borderColor: (theme) => theme.palette.primary.main,
       },
     },
+  },
+  logoImageGridProps: {
+    container: true,
+    item: true,
+    mobileSmall: 'auto',
+    height: 'auto',
+    cursor: 'pointer',
+    '&:hover': {
+      opacity: 0.8,
+    },
+  },
+  titleGridProps: {
+    container: true,
+    item: true,
+    mobileSmall: true,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  titleProps: {
+    fontFamily: 'Ethnocentric Regular',
+    fontSize: '36px',
+    color: 'white',
+  },
+  subtitleProps: {
+    fontFamily: 'Satoshi Bold',
+    fontSize: '16px',
+    color: '#AD83FF',
+    textAlign: 'left',
   },
 };
 
