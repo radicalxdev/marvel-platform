@@ -23,6 +23,7 @@ module.exports = {
   /* ReX AI */
   communicator: rexAIController.communicator,
   communicatorV2: rexAIController.communicatorV2,
+  communicatorV3: rexAIController.communicatorV3,
   createChatSession: rexAIController.createChatSession,
   getUserChatSessions: rexAIController.getUserChatSessions,
 
