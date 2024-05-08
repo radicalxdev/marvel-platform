@@ -9,7 +9,7 @@ const styles = {
     alignItems: 'flex-start',
     px: { laptop: 2, desktop: 3, desktopMedium: 4 },
     py: { laptop: 4, desktop: 5, desktopMedium: 6 },
-    bgcolor: (theme) => theme.palette.Dark_Colors.Dark[2],
+    bgcolor: (theme) => theme.palette.Dark_Colors.Dark[6],
   },
   logoGridProps: {
     container: true,

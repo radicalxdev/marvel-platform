@@ -274,6 +274,7 @@ const globalTheme = createTheme({
         3: '#262A35',
         4: '#35383F',
         5: '#242731',
+        6: '#1F2022',
       },
     },
     Greyscale: {
