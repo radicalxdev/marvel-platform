@@ -1,34 +1,33 @@
 const styles = {
   mainGridProps: {
+    container: true,
     item: true,
-    container: true,
-    display: { tablet: 'flex', mobileSmall: 'none' },
-    width: 'auto',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    height: '100%',
-  },
-  menuGridProps: {
-    container: true,
-    columnGap: { mobileSmall: 1, desktop: 3 },
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    mobileSmall: true,
+    rowGap: { laptop: 2, desktop: 4 },
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   menuItemProps: {
-    variant: 'customMenuItem',
     sx: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      px: { mobileSmall: '2px', desktop: 1 },
-      py: '4px',
-      height: (theme) => `calc(100% - ${theme.spacing(3)})`,
+      px: 0,
+      py: 0,
+      width: '100%',
+      borderRadius: '24px',
+      color: (theme) => theme.palette.Common.White['100p'],
+      transition: (theme) => theme.transitions.create(['all']),
+      ':hover': {
+        background: 'none',
+        color: (theme) => theme.palette.primary.main,
+      },
     },
   },
   innerMenuGridProps: {
     container: true,
-    justifyContent: 'center',
+    mobileSmall: 12,
+    columnGap: 4,
+
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   menuIconGridProps: {
@@ -36,7 +35,7 @@ const styles = {
     item: true,
     justifyContent: 'center',
     alignItems: 'center',
-    mobileSmall: 12,
+    mobileSmall: 'auto',
     sx: {
       svg: {
         transform: { mobileSmall: 'scale(0.8)', desktop: 'scale(1)' },
@@ -46,9 +45,9 @@ const styles = {
   menuTitleGridProps: {
     container: true,
     item: true,
-    justifyContent: 'center',
+    justifyContent: 'flex-start˝',
     alignItems: 'center',
-    mobileSmall: 12,
+    mobileSmall: true,
     fontSize: { mobileSmall: '16px', desktop: '18px' },
   },
 };

@@ -2,24 +2,14 @@ import { useEffect } from 'react';
 
 import { Grid, useMediaQuery } from '@mui/material';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppDisabled from '@/components/AppDisabled';
 
 import Loader from '@/components/Loader';
-import StatisticChip from '@/components/StatisticChip';
 
-import CoinIcon from '@/assets/svg/coin2.svg';
-import DiamondIcon from '@/assets/svg/diamond2.svg';
-import LargeLogo from '@/assets/svg/Radical_AI.svg';
-
-import ROUTES from '@/constants/routes';
-
-import AccountAvatar from './AccountAvatar';
-import Header from './Header';
-import MobileNavMenu from './MobileNavMenu';
-import NavMenu from './NavMenu';
+import Header from './SideMenu';
 
 import styles from './styles';
 import SystemAlert from './SystemAlert';
@@ -41,9 +31,8 @@ import { setLoading } from '@/redux/slices/authSlice';
  * @return {ReactNode} The rendered main application layout.
  */
 const MainAppLayout = (props) => {
-  const { children, extraContentProps, isPaymentPage, removeNav } = props;
+  const { children, extraContentProps, removeNav } = props;
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
@@ -54,63 +43,12 @@ const MainAppLayout = (props) => {
 
   const alertActive = false;
   const isLoading = auth.loading || !user.data || !auth.data;
-  const shouldShowFaviconLogo = isPaymentPage;
-  const disableNavMenu = true;
 
   useEffect(() => {
     dispatch(setLoading(false));
   }, []);
 
   if (isLoading) return <Loader />;
-
-  const renderLargeLogo = () => {
-    if (isTabletScreen || shouldShowFaviconLogo) return null;
-    return <LargeLogo />;
-  };
-
-  const renderCompanyLogo = () => {
-    return (
-      <Grid onClick={() => router.push(ROUTES.HOME)} {...styles.logoGridProps}>
-        {renderLargeLogo()}
-      </Grid>
-    );
-  };
-
-  const renderMenu = () => {
-    if (disableNavMenu) return null;
-
-    if (isPaymentPage && isTabletScreen) return null;
-
-    return (
-      <>
-        <MobileNavMenu />
-        <NavMenu />
-      </>
-    );
-  };
-
-  const renderLogout = () => {
-    return (
-      <Grid {...styles.accountDetailsGridProps}>
-        <Grid item>
-          <StatisticChip
-            stat={user?.data?.diamonds}
-            icon={<DiamondIcon />}
-            {...styles.diamondProps}
-          />
-        </Grid>
-        <Grid item>
-          <StatisticChip
-            stat={user?.data?.coins}
-            icon={<CoinIcon />}
-            {...styles.coinsProps}
-          />
-        </Grid>
-        <AccountAvatar />
-        {/* Place the logout UI here */}
-      </Grid>
-    );
-  };
 
   const renderHead = () => {
     return (
@@ -120,17 +58,11 @@ const MainAppLayout = (props) => {
     );
   };
 
-  const HeaderItems = {
-    logo: renderCompanyLogo(),
-    menu: renderMenu(),
-    logout: renderLogout(),
-  };
-
   const renderApp = () => {
     return (
       <>
         <SystemAlert active={alertActive} />
-        {!removeNav && <Header {...HeaderItems} />}
+        {!removeNav && <Header />}
         <Grid {...styles.contentGridProps(extraContentProps)}>{children}</Grid>
       </>
     );

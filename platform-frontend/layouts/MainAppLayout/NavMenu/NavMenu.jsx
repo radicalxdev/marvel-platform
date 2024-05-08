@@ -72,21 +72,19 @@ const NavMenu = () => {
 
   return (
     <Grid {...styles.mainGridProps}>
-      <Grid {...styles.menuGridProps}>
-        {PAGES.map((page) => (
-          <MenuItem
-            key={page.id}
-            active={setActive(page.id).toString()}
-            onClick={() => handleRoute(page.link, page.id)}
-            {...styles.menuItemProps}
-          >
-            <Grid {...styles.innerMenuGridProps}>
-              <Grid {...styles.menuIconGridProps}>{page.icon}</Grid>
-              <Grid {...styles.menuTitleGridProps}>{page.name}</Grid>
-            </Grid>
-          </MenuItem>
-        ))}
-      </Grid>
+      {PAGES.map((page) => (
+        <MenuItem
+          key={page.id}
+          active={setActive(page.id).toString()}
+          onClick={() => handleRoute(page.link, page.id)}
+          {...styles.menuItemProps}
+        >
+          <Grid {...styles.innerMenuGridProps}>
+            <Grid {...styles.menuIconGridProps}>{page.icon}</Grid>
+            <Grid {...styles.menuTitleGridProps}>{page.name}</Grid>
+          </Grid>
+        </MenuItem>
+      ))}
     </Grid>
   );
 };
