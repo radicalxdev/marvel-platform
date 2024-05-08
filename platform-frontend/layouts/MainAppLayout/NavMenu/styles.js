@@ -8,20 +8,23 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
-  menuItemProps: {
+  menuItemProps: (isActive) => ({
     sx: {
       px: 0,
       py: 0,
       width: '100%',
       borderRadius: '24px',
-      color: (theme) => theme.palette.Common.White['100p'],
+      color: (theme) =>
+        isActive
+          ? theme.palette.primary.main
+          : theme.palette.Common.White['100p'],
       transition: (theme) => theme.transitions.create(['all']),
       ':hover': {
         background: 'none',
         color: (theme) => theme.palette.primary.main,
       },
     },
-  },
+  }),
   innerMenuGridProps: {
     container: true,
     mobileSmall: 12,
