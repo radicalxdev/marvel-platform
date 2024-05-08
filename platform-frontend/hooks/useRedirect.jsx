@@ -116,7 +116,7 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
           await applyActionCode(auth, oobCode);
 
           dispatch(setEmailVerified(true));
-          router.push(`${ROUTES.CREATE_AVATAR}`);
+          router.push(`${ROUTES.HOME}`);
         } catch (error) {
           handleOpenSnackBar(ALERT_COLORS.ERROR, 'Unable to verify email');
           router.push(`${ROUTES.SIGNUP}`);
