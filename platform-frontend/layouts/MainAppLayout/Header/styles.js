@@ -1,14 +1,15 @@
 const styles = {
-  mainGridProps: (height) => ({
+  mainGridProps: {
     container: true,
     item: true,
-    desktopLarge: 12,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    px: { laptop: 5, tablet: 3, mobile: 2, mobileSmall: '12px' },
-    height: `${height}px`,
-    bgcolor: (theme) => theme.palette.Dark_Colors.Dark[1],
-  }),
+    mobileSmall: 3,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    px: { laptop: 2, desktop: 3, desktopMedium: 4 },
+    py: { laptop: 4, desktop: 5, desktopMedium: 6 },
+    bgcolor: (theme) => theme.palette.Dark_Colors.Dark[2],
+  },
   subGridProps: {
     container: true,
     alignItems: 'center',

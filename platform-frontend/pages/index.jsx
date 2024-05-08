@@ -1,36 +1,12 @@
-import { useState } from 'react';
-
-import { useRouter } from 'next/router';
-
 import MainAppLayout from '@/layouts/MainAppLayout';
-import FeaturedMissions from '@/templates/FeaturedMissions';
+import HomePage from '@/templates/HomePage';
 
-const Missions = () => {
-  const router = useRouter();
-
-  const [open, setOpen] = useState(false);
-  const [selectedMaskedId, setSelectedMaskedId] = useState(null);
-
-  const handleContinueMission = () => {
-    router.push(`/${selectedMaskedId}/dashboard`);
-  };
-
-  const toggleOpen = (maskId) => {
-    setSelectedMaskedId(maskId);
-    setOpen(!open);
-  };
-
-  return (
-    <FeaturedMissions
-      open={open}
-      toggleOpen={toggleOpen}
-      handleContinueMission={handleContinueMission}
-    />
-  );
+const Home = () => {
+  return <HomePage />;
 };
 
-Missions.getLayout = function getLayout(page) {
+Home.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };
 
-export default Missions;
+export default Home;

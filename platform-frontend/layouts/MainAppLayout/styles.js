@@ -1,17 +1,19 @@
 const styles = {
   mainGridProps: {
+    position: 'relative',
     container: true,
-    width: '100vw',
+    mobileSmall: 12,
+    minHeight: '100vh',
+    height: '100vh',
   },
-  contentGridProps: (extraContentProps, headerHeight) => ({
+  contentGridProps: (extraContentProps) => ({
     container: true,
-    justifyContent: 'center',
     item: true,
-    desktopLarge: 12,
-    minHeight: `calc(100vh - ${headerHeight}px)`,
-    height: 'auto',
+    mobileSmall: 9,
+    justifyContent: 'center',
+    height: '100%',
     sx: (theme) => ({
-      background: theme.palette.Background.primary,
+      background: theme.palette.Common.White['100p'],
       py: {
         desktopLarge: 5,
         desktop: 4,
