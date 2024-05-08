@@ -9,7 +9,7 @@ import AppDisabled from '@/components/AppDisabled';
 
 import Loader from '@/components/Loader';
 
-import Header from './SideMenu';
+import SideMenu from './SideMenu';
 
 import styles from './styles';
 import SystemAlert from './SystemAlert';
@@ -62,7 +62,7 @@ const MainAppLayout = (props) => {
     return (
       <>
         <SystemAlert active={alertActive} />
-        {!removeNav && <Header />}
+        {!removeNav && <SideMenu />}
         <Grid {...styles.contentGridProps(extraContentProps)}>{children}</Grid>
       </>
     );
