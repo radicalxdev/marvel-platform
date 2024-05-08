@@ -8,14 +8,7 @@ import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-import {
-  hackathonsRegex,
-  homeRegex,
-  leaderboardsRegex,
-  paymentsRegex,
-  rewardsRegex,
-  settingsRegex,
-} from '@/regex/routes';
+import { chatRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
   {
@@ -42,20 +35,12 @@ const NavMenu = () => {
   const { pathname } = router;
 
   const setActive = (id) => {
-    const isNotHomePage = [
-      leaderboardsRegex.test(pathname),
-      rewardsRegex.test(pathname),
-      settingsRegex.test(pathname),
-      paymentsRegex.test(pathname),
-      hackathonsRegex.test(pathname),
-    ].includes(true);
+    const isNotHomePage = [chatRegex.test(pathname)].includes(true);
 
     if (id === 'page_1')
       return isNotHomePage ? false : homeRegex.test(pathname);
 
-    if (id === 'page_2') return hackathonsRegex.test(pathname);
-
-    return leaderboardsRegex.test(pathname);
+    return chatRegex.test(pathname);
   };
 
   const handleRoute = (link, id) => {
@@ -68,9 +53,8 @@ const NavMenu = () => {
       {PAGES.map((page) => (
         <MenuItem
           key={page.id}
-          active={setActive(page.id).toString()}
           onClick={() => handleRoute(page.link, page.id)}
-          {...styles.menuItemProps}
+          {...styles.menuItemProps(setActive(page.id))}
         >
           <Grid {...styles.innerMenuGridProps}>
             <Grid {...styles.menuIconGridProps}>{page.icon}</Grid>
