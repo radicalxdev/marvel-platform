@@ -1,8 +1,8 @@
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import HackathonIcon from '@/assets/svg/hackathonSvg.svg';
-import HomeIcon from '@/assets/svg/HomeIcon.svg';
+import AddBlockSvg from '@/assets/svg/add-block.svg';
+import HomeIcon from '@/assets/svg/Home.svg';
 
 import ROUTES from '@/constants/routes';
 
@@ -27,7 +27,7 @@ const PAGES = [
   {
     name: 'Kai Chatbot',
     link: ROUTES.CHAT,
-    icon: <HackathonIcon />,
+    icon: <AddBlockSvg />,
     id: 'page_2',
   },
 ];
