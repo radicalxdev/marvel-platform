@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 
-// import ToolCard from '../ToolCard';
+import ToolCard from '../ToolCard';
 
 import styles from './styles';
 
@@ -18,7 +18,9 @@ const ToolsListingContainer = (props) => {
   const renderTitle = () => {
     return (
       <Grid {...styles.headerGridProps}>
-        <Typography {...styles.categoryTitleProps}>{category}</Typography>
+        <Typography {...styles.categoryTitleProps}>
+          {category} {`(${data?.length})`}
+        </Typography>
       </Grid>
     );
   };
@@ -26,12 +28,11 @@ const ToolsListingContainer = (props) => {
   const renderCards = () => {
     return (
       <Grid {...styles.containerGridProps}>
-        {data?.map((tool) => (
-          // <RewardCard key={quest.id} image={quest.image} coins={quest.coins} />
-          <Grid container item mobileSmall={3} key={tool?.id}>
-            {tool?.name}
-          </Grid>
-        ))}
+        <Grid {...styles.innerListGridProps}>
+          {data?.map((tool) => (
+            <ToolCard key={tool.id} {...tool} />
+          ))}
+        </Grid>
       </Grid>
     );
   };

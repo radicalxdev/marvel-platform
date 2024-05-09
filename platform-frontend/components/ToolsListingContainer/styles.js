@@ -12,9 +12,17 @@ const styles = {
     container: true,
     item: true,
     mobileSmall: true,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  innerListGridProps: {
+    container: true,
+    item: true,
+    mobileSmall: 12,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    gap: 3,
+    columnSpacing: 3,
+    rowSpacing: 5,
   },
   headerGridProps: {
     container: true,
