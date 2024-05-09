@@ -291,7 +291,7 @@ const communicatorV3 = onCall(async (props) => {
     ]);
     await chatSession.ref.update({ messages: updatedMessages });
 
-    // Construct payload for kaiCommunicator
+    // Construct payload for the kaiCommunicator 
     const KaiPayload = {
       messages: updatedMessages,
       user,
