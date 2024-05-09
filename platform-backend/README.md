@@ -1,71 +1,21 @@
-# platform-backend - RadicalX MVP Backend
+# Kai AI
+This is an AI teaching assistant project that combines a front-end and back-end application. The front-end is located in the `platform-frontend` directory, and the back-end is located in the `platform-backend` directory.
 
-This project is a backend for a RadicalX MVP application. It uses Firebase cloud functions to provide the necessary operations required in the MVP.
+## Setup
 
-## Getting Started
+To set up the project, follow these steps:
 
-To get started, you will need to:
+1. Clone the repository: `git clone https://github.com/radicalx/rex-ai.git`
+2. Navigate to back-end project directory: `cd platform-backend/functions`
+3. Install dependencies for the back-end: `npm install`
+4. Navigate to front-end project directory: `cd platform-frontend`
+5. Install dependencies for the front-end: `npm install`
+6. Start the development servers: `cd platform-frontend && npm run dev` and `cd platform-backend/functions && run the emulator for local testing`
 
-1. Install the Firebase CLI
-2. Initialize a Firebase project
-3. Install the dependencies
-4. Deploy the functions
+## Contributing
 
-### Installing the Firebase CLI
+If you would like to contribute to the project, please follow the guidelines in the `CONTRIBUTING.md` file.
 
-You can install the Firebase CLI by running the following command:
+## License
 
-
-`npm install -g firebase-tools`
-
-
-### Initializing a Firebase project
-
-Once you have installed the Firebase CLI, you can initialize a Firebase project by running the following command:
-
-
-```
-firebase init
-```
-
-
-This will create a new directory for your project and prompt you to select a project type. Select "Backend" for this project.
-
-### Installing the dependencies
-
-The project uses the following dependencies:
-
-
-```
-firebase-functions
-```
-
-
-You can install these dependencies by running the following command:
-
-```
-npm install
-```
-
-### Deploying the functions
-
-To deploy the functions, you can run the following command:
-
-```
-firebase deploy
-```
-
-This will deploy the functions to Firebase Cloud Functions.
-
-## Features
-
-This project provides the following features:
-
-* Start Mission Flow
-* Generate leaderboard reports  
-* Automatic commencement and termination of missions
-* Determining mission winners based on leaderboard standings
-
-## Usage
-
-This project is used to build the Backend for RadicalX MVP application.
+This project is licensed under the [MIT License](LICENSE).

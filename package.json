@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "husky": "^9.0.11"
+  },
+  "dependencies": {
+    "package.json": "^2.0.1"
   }
 }
