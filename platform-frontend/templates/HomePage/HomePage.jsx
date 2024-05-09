@@ -1,5 +1,7 @@
 import { Grid, Typography } from '@mui/material';
 
+import ToolsListingContainer from '@/components/ToolsListingContainer';
+
 import styles from './styles';
 
 const DEFAULT_TOOLS = [
@@ -26,7 +28,6 @@ const DEFAULT_TOOLS = [
 const HomePage = (props) => {
   const { data, loading, error } = props;
 
-  console.log(data, loading, error);
   const renderTitle = () => {
     return (
       <Grid {...styles.titleGridProps}>
@@ -42,27 +43,10 @@ const HomePage = (props) => {
     );
   };
 
-  const renderTools = () => {
-    return (
-      <Grid {...styles.toolsGridProps}>
-        <Grid {...styles.headerGridProps}>
-          <Typography {...styles.categoryTitleProps}>All Tools</Typography>
-        </Grid>
-        <Grid {...styles.toolsContainerGridProps}>
-          {DEFAULT_TOOLS?.map((tool) => (
-            <Grid {...styles.toolGridProps} key={tool.id}>
-              <Typography {...styles.toolTitleProps}>{tool.name}</Typography>
-            </Grid>
-          ))}
-        </Grid>
-      </Grid>
-    );
-  };
-
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
-      {renderTools()}
+      <ToolsListingContainer data={DEFAULT_TOOLS} category="All Tools" />
     </Grid>
   );
 };
