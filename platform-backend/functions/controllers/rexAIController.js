@@ -201,7 +201,7 @@ const communicatorV2 = onCall(async (props) => {
  * Simulates communication with a Kai AI endpoint.
  *
  * @param {object} props - The properties of the communication.
- * @param {object} props.data - The payload containing messages, user, tool, and botType.
+ * @param {object} props.data - The payload containing messages, user, tool.
  * @return {object} The response from the AI service.
  */
 const kaiCommunicator = async (props) => {
@@ -223,10 +223,7 @@ const kaiCommunicator = async (props) => {
     };
 
     DEBUG &&
-      logger.log(
-        'Stringified JSON',
-        JSON.stringify({ messages, user, tool })
-      );
+      logger.log('Stringified JSON', JSON.stringify({ messages, user, tool }));
 
     const resp = await axios.post(
       process.env.KAI_ENDPOINT,
@@ -285,13 +282,19 @@ const communicatorV3 = onCall(async (props) => {
       truncatedMessages = messages.slice(messages.length - 65);
     }
 
-    // Add message to chat session
+    // Update message structure here
     const updatedMessages = truncatedMessages.concat([
-      { ...message, timestamp: Timestamp.fromMillis(Date.now()), payload: message.payload },
+      {
+        role: 'user', // or dynamically set based on context
+        type: 'text', // assuming text type for all messages
+        timestamp: new Date().toISOString(), // ISO 8601 format string
+        payload: message.payload, // assuming payload is directly from the input message
+      },
     ]);
+
     await chatSession.ref.update({ messages: updatedMessages });
 
-    // Construct payload for the kaiCommunicator 
+    // Construct payload for the kaiCommunicator
     const KaiPayload = {
       messages: updatedMessages,
       user,
@@ -302,11 +305,11 @@ const communicatorV3 = onCall(async (props) => {
       data: KaiPayload,
     });
 
-    // Update Firestore with the new messages including responses from kaiCommunicator
+    // Process response and update Firestore
     const updatedResponseMessages = updatedMessages.concat(
       response.data.messages.map((msg) => ({
         ...msg,
-        timestamp: Timestamp.fromMillis(Date.now()),
+        timestamp: new Date().toISOString(), // ensure consistent timestamp format
       }))
     );
 
