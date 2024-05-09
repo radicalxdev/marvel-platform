@@ -1,60 +1,46 @@
-import { useState } from 'react';
+import { Card, Grid, Typography } from '@mui/material';
 
-import { Card, Grid, Skeleton, useTheme } from '@mui/material';
 import Image from 'next/image';
 
-import CoinsSvg from '@/assets/svg/coin.svg';
-
-import GradientOutlinedChip from '../GradientOutlinedChip';
-
 import styles from './styles';
+
+import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
 
 /**
  * Returns a RewardCard component with an image and a chip displaying the amount of coins.
  *
  * @return {JSX.Element} The RewardCard component.
  */
-const RewardCard = (props) => {
-  const { image, coins } = props;
-
-  const [loading, setLoading] = useState(false);
-
-  const theme = useTheme();
+const ToolCard = (props) => {
+  const { name, image, description } = props;
 
   const renderImage = () => {
     return (
-      <>
-        {loading && <Skeleton {...styles.imageSkeleton} />}
-        <Image
-          src={image}
-          onLoadingComplete={() => setLoading(false)}
-          {...styles.imageProps}
-        />
-      </>
+      <Grid {...styles.imageGridProps}>
+        <Image src={image} alt="kai logo" {...styles.imageProps} />
+      </Grid>
     );
   };
 
-  const renderChip = () => (
-    <Grid {...styles.chipGridConfig}>
-      <GradientOutlinedChip
-        color="yellow"
-        bgcolor={theme.palette.Dark_Colors.Dark[1]}
-        text={coins}
-        size={2}
-        icon={<CoinsSvg />}
-        gap="0px"
-      />
-    </Grid>
-  );
+  const renderTitle = () => {
+    return (
+      <Grid {...styles.contentGridProps}>
+        <Typography {...styles.titleProps}>{name}</Typography>
+        <Typography {...styles.descriptionProps}>{description}</Typography>
+      </Grid>
+    );
+  };
 
   return (
-    <Grid {...styles.mainGridConfig}>
-      <Card {...styles.cardConfig}>
-        {renderImage()}
-        {!loading && renderChip()}
+    <Grid {...styles.mainGridProps}>
+      <Card {...styles.cardProps(getRandomBackgroundColor())}>
+        <Grid {...styles.toolDetailsGridProps}>
+          {renderImage()}
+          {renderTitle()}
+        </Grid>
       </Card>
     </Grid>
   );
 };
 
-export default RewardCard;
+export default ToolCard;
