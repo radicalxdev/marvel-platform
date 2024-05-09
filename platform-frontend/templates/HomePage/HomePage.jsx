@@ -23,7 +23,10 @@ const DEFAULT_TOOLS = [
   },
 ];
 
-const HomePage = () => {
+const HomePage = (props) => {
+  const { data, loading, error } = props;
+
+  console.log(data, loading, error);
   const renderTitle = () => {
     return (
       <Grid {...styles.titleGridProps}>
