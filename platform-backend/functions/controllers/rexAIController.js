@@ -4,6 +4,7 @@ const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
 const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
+const { BOT_TYPE } = require('../constants');
 
 const DEBUG = process.env.DEBUG;
 
@@ -200,15 +201,15 @@ const communicatorV2 = onCall(async (props) => {
 /**
  * Simulates communication with a Kai AI endpoint.
  *
- * @param {object} props - The properties of the communication.
+ * @param {object} payload - The properties of the communication.
  * @param {object} props.data - The payload containing messages, user, tool.
  * @return {object} The response from the AI service.
  */
-const kaiCommunicator = async (props) => {
+const kaiCommunicator = async (payload) => {
   try {
-    DEBUG && logger.log('kaiCommunicator started, data:', props.data);
+    DEBUG && logger.log('kaiCommunicator started, data:', payload.data);
 
-    const { messages, user, tool } = props.data;
+    const { messages, user, tool, type } = payload.data;
 
     DEBUG &&
       logger.log(
@@ -222,12 +223,17 @@ const kaiCommunicator = async (props) => {
       'Content-Type': 'application/json',
     };
 
-    DEBUG &&
-      logger.log('Stringified JSON', JSON.stringify({ messages, user, tool }));
+    const rexPayload = {
+      user,
+      type,
+      ...(type === BOT_TYPE.CHAT ? messages : tool),
+    };
+
+    DEBUG && logger.log('Stringified JSON', JSON.stringify(rexPayload));
 
     const resp = await axios.post(
       process.env.KAI_ENDPOINT,
-      JSON.stringify({ messages, user, tool }),
+      JSON.stringify(rexPayload),
       { headers }
     );
 
@@ -385,10 +391,8 @@ const getUserChatSessions = onCall(async (props) => {
  * @param {Object} props - The properties passed to the function.
  * @param {Object} props.data - The data object containing the user, challenge, message, and botType.
  * @param {Object} props.data.user - The user object.
- * @param {Object} props.data.challengeId - The challenge id.
- * @param {Object} props.data.level - The task id.
  * @param {Object} props.data.message - The message object.
- * @param {Object} props.data.botType - The bot type.
+ * @param {Object} props.data.type - The bot type.
  *
  * @return {Promise<Object>} - A promise that resolves to an object containing the status and data of the chat sessions.
  * @throws {HttpsError} Throws an error if there is an internal error.
@@ -397,9 +401,9 @@ const createChatSession = onCall(async (props) => {
   try {
     DEBUG && logger.log('Communicator started, data:', props.data);
 
-    const { user, challengeId, level, message, botType } = props.data;
+    const { user, message, type } = props.data;
 
-    if (!user || !challengeId || !level || !message || !botType) {
+    if (!user || !message || type) {
       logger.log('Missing required fields', props.data);
       throw new HttpsError('invalid-argument', 'Missing required fields');
     }
@@ -413,8 +417,6 @@ const createChatSession = onCall(async (props) => {
       .firestore()
       .collection('chatSessions')
       .where('user.id', '==', user.id)
-      .where('challengeId', '==', challengeId)
-      .where('level', '==', level)
       .get();
 
     // Check if chat session exists, if so, return it
@@ -437,21 +439,16 @@ const createChatSession = onCall(async (props) => {
       .add({
         messages: [triggerMessage],
         user,
-        challengeId,
-        level,
-        botType,
         createdAt: Timestamp.fromMillis(Date.now()),
         updatedAt: Timestamp.fromMillis(Date.now()),
       });
 
     // Send trigger message to ReX AI
-    const response = await reXCommunicator({
+    const response = await kaiCommunicator({
       data: {
         messages: [triggerMessage],
         user,
-        challengeId,
-        level,
-        botType,
+        type,
       },
     });
 
