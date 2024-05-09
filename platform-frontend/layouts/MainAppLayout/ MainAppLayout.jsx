@@ -22,12 +22,7 @@ import { setLoading } from '@/redux/slices/authSlice';
  * @param {Object} props - The properties passed to the component.
  * @param {ReactNode} props.children - The child components to render.
  * @param {Object} props.extraContentProps - The additional properties for the extra content.
- * @param {boolean} props.isPaymentPage - Indicates if the page is a payment page.
  * @param {boolean} props.removeNav - Indicates if the navigation should be removed.
- * @param {string} props.backButtonUrl - The URL to navigate to when the back button is clicked.
- * @param {boolean} props.isMissionWorkspace - Indicates if the workspace is a mission workspace.
- * @param {boolean} props.isLessonWorkspace - Indicates if the workspace is a lesson workspace.
- * @param {boolean} props.isHackathonWorskpace - Indicates if the workspace is a hackathon workspace.
  * @return {ReactNode} The rendered main application layout.
  */
 const MainAppLayout = (props) => {
