@@ -198,6 +198,135 @@ const communicatorV2 = onCall(async (props) => {
 });
 
 /**
+ * Simulates communication with a Kai AI endpoint.
+ *
+ * @param {object} props - The properties of the communication.
+ * @param {object} props.data - The payload containing messages, user, tool, and botType.
+ * @return {object} The response from the AI service.
+ */
+const kaiCommunicator = async (props) => {
+  try {
+    DEBUG && logger.log('kaiCommunicator started, data:', props.data);
+
+    const { messages, user, tool } = props.data;
+
+    DEBUG &&
+      logger.log(
+        'Communicator variables:',
+        `API_KEY: ${process.env.KAI_API_KEY}`,
+        `ENDPOINT: ${process.env.KAI_ENDPOINT}`
+      );
+
+    const headers = {
+      'API-Key': process.env.KAI_API_KEY,
+      'Content-Type': 'application/json',
+    };
+
+    DEBUG &&
+      logger.log(
+        'Stringified JSON',
+        JSON.stringify({ messages, user, tool })
+      );
+
+    const resp = await axios.post(
+      process.env.KAI_ENDPOINT,
+      JSON.stringify({ messages, user, tool }),
+      { headers }
+    );
+
+    DEBUG && logger.log('kaiCommunicator response:', resp.data);
+
+    return { status: 'success', data: resp.data };
+  } catch (error) {
+    DEBUG && logger.log('kaiCommunicator error:', error);
+    throw new HttpsError('internal', error.message);
+  }
+};
+
+/**
+ * Manages communications for a specific chat session with a chatbot, updating and retrieving messages.
+ *
+ * @param {object} props - The properties of the communication.
+ * @param {object} props.data - The data object containing the message and id.
+ * @param {string} props.data.id - The id of the chat session.
+ * @param {string} props.data.message - The message object.
+ * @return {object} The response object containing the status and data.
+ */
+const communicatorV3 = onCall(async (props) => {
+  try {
+    DEBUG && logger.log('Communicator started, data:', props.data);
+
+    const { message, id } = props.data;
+
+    DEBUG &&
+      logger.log(
+        'Communicator variables:',
+        `API_KEY: ${process.env.KAI_API_KEY}`,
+        `ENDPOINT: ${process.env.KAI_ENDPOINT}`
+      );
+
+    const chatSession = await admin
+      .firestore()
+      .collection('chatSessions')
+      .doc(id)
+      .get();
+
+    if (!chatSession.exists) {
+      logger.log('Chat session not found: ', id);
+      throw new HttpsError('not-found', 'Chat session not found');
+    }
+
+    const { user, tool, messages } = chatSession.data();
+
+    let truncatedMessages = messages;
+
+    // Check if messages length exceeds 50, if so, truncate
+    if (messages.length > 100) {
+      truncatedMessages = messages.slice(messages.length - 65);
+    }
+
+    // Add message to chat session
+    const updatedMessages = truncatedMessages.concat([
+      { ...message, timestamp: Timestamp.fromMillis(Date.now()), payload: message.payload },
+    ]);
+    await chatSession.ref.update({ messages: updatedMessages });
+
+    // Construct payload for the kaiCommunicator 
+    const KaiPayload = {
+      messages: updatedMessages,
+      user,
+      tool,
+    };
+
+    const response = await kaiCommunicator({
+      data: KaiPayload,
+    });
+
+    // Update Firestore with the new messages including responses from kaiCommunicator
+    const updatedResponseMessages = updatedMessages.concat(
+      response.data.messages.map((msg) => ({
+        ...msg,
+        timestamp: Timestamp.fromMillis(Date.now()),
+      }))
+    );
+
+    await chatSession.ref.update({ messages: updatedResponseMessages });
+
+    if (DEBUG) {
+      logger.log(
+        'Updated chat session: ',
+        (await chatSession.ref.get()).data()
+      );
+    }
+
+    return { status: 'success' };
+  } catch (error) {
+    DEBUG && logger.log('CommunicatorV3 error:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+/**
  * This function retrieves all existing chat sessions for a user.
  *
  * @param {Object} props.data - The data object containing the user, challenge, message, and botType.
@@ -366,6 +495,7 @@ const createChatSession = onCall(async (props) => {
 module.exports = {
   communicator,
   communicatorV2,
+  communicatorV3,
   getUserChatSessions,
   createChatSession,
 };
