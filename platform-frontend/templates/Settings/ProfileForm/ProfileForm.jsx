@@ -21,7 +21,7 @@ import styles from './styles';
 import { AuthContext } from '@/providers/GlobalProvider';
 import { auth, firestore } from '@/redux/store';
 import fetchUserData from '@/redux/thunks/user';
-import updateUserProfile from '@/services/users/updateUserProfile';
+import updateUserProfile from '@/services/user/updateUserProfile';
 
 const DEFAULT_ERR_STATE = {
   email: false,

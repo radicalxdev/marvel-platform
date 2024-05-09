@@ -85,7 +85,7 @@ const styles = {
           ...(inverted && {
             background: theme.palette.Background.gradient[color],
             WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: active ? 'white' : 'transparent',
+            WebkitTextFillColor: active ? 'white' : textColor || 'transparent',
           }),
         },
         svg: {
