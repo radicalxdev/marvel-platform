@@ -1,8 +1,12 @@
 import { Grid, Typography } from '@mui/material';
 
-import ToolCard from '../ToolCard';
+import ToolCard, { ToolCardSkeleton } from '../ToolCard';
 
 import styles from './styles';
+
+const DEFAULT_TOOLS = new Array(8)
+  .fill()
+  .map((_, index) => ({ id: index + 1 }));
 
 /**
  * Renders the Tools Listings component.
@@ -13,7 +17,7 @@ import styles from './styles';
  * @return {JSX.Element} The rendered Tools Listings component.
  */
 const ToolsListingContainer = (props) => {
-  const { data, category } = props;
+  const { data, loading, category } = props;
 
   const renderTitle = () => {
     return (
@@ -37,10 +41,22 @@ const ToolsListingContainer = (props) => {
     );
   };
 
+  const renderLoader = () => {
+    return (
+      <Grid {...styles.containerGridProps}>
+        <Grid {...styles.innerListGridProps}>
+          {DEFAULT_TOOLS?.map((tool) => (
+            <ToolCardSkeleton key={tool.id} />
+          ))}
+        </Grid>
+      </Grid>
+    );
+  };
+
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
-      {renderCards()}
+      {loading ? renderLoader() : renderCards()}
     </Grid>
   );
 };
