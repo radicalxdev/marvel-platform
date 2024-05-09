@@ -38,7 +38,7 @@ const DEFAULT_TOOLS = [
 ];
 
 const HomePage = (props) => {
-  const { data, loading, error } = props;
+  const { data, loading } = props;
 
   const renderTitle = () => {
     return (
@@ -58,7 +58,11 @@ const HomePage = (props) => {
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
-      <ToolsListingContainer data={DEFAULT_TOOLS} category="All Tools" />
+      <ToolsListingContainer
+        data={DEFAULT_TOOLS}
+        loading={loading}
+        category="All Tools"
+      />
     </Grid>
   );
 };

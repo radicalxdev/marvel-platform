@@ -9,9 +9,9 @@ import styles from './styles';
 import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
 
 /**
- * Returns a RewardCard component with an image and a chip displaying the amount of coins.
+ * Returns a Tool Card component with an image and a chip displaying the amount of coins.
  *
- * @return {JSX.Element} The RewardCard component.
+ * @return {JSX.Element} The Tool Card component.
  */
 const ToolCard = (props) => {
   const { id, name, image, description } = props;
