@@ -279,7 +279,7 @@ const communicatorV3 = onCall(async (props) => {
       throw new HttpsError('not-found', 'Chat session not found');
     }
 
-    const { user, tool, messages } = chatSession.data();
+    const { user, type, messages } = chatSession.data();
 
     let truncatedMessages = messages;
 
@@ -291,10 +291,8 @@ const communicatorV3 = onCall(async (props) => {
     // Update message structure here
     const updatedMessages = truncatedMessages.concat([
       {
-        role: 'user', // or dynamically set based on context
-        type: 'text', // assuming text type for all messages
-        timestamp: new Date().toISOString(), // ISO 8601 format string
-        payload: message.payload, // assuming payload is directly from the input message
+        ...message,
+        timestamp: Timestamp.fromMillis(Date.now()), // ISO 8601 format string
       },
     ]);
 
@@ -303,19 +301,21 @@ const communicatorV3 = onCall(async (props) => {
     // Construct payload for the kaiCommunicator
     const KaiPayload = {
       messages: updatedMessages,
+      type,
       user,
-      tool,
     };
 
     const response = await kaiCommunicator({
       data: KaiPayload,
     });
 
+    DEBUG && logger.log('kaiCommunicator response:', response.data);
+
     // Process response and update Firestore
     const updatedResponseMessages = updatedMessages.concat(
-      response.data.messages.map((msg) => ({
+      response.data?.messages.map((msg) => ({
         ...msg,
-        timestamp: new Date().toISOString(), // ensure consistent timestamp format
+        timestamp: Timestamp.fromMillis(Date.now()), // ensure consistent timestamp format
       }))
     );
 
