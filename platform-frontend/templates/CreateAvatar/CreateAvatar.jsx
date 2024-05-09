@@ -22,7 +22,7 @@ import { AuthContext } from '@/providers/GlobalProvider';
 import { setLoading } from '@/redux/slices/authSlice';
 import { auth, firestore } from '@/redux/store';
 import fetchUserData from '@/redux/thunks/user';
-import updateUserProfile from '@/services/users/updateUserProfile';
+import updateUserProfile from '@/services/user/updateUserProfile';
 
 /**
  * Create and render an avatar selection interface, allowing the user to choose an avatar from a set of default options or create their own avatar.
