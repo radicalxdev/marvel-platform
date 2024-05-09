@@ -2,6 +2,8 @@ import { Card, Grid, Typography } from '@mui/material';
 
 import Image from 'next/image';
 
+import { useRouter } from 'next/router';
+
 import styles from './styles';
 
 import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
@@ -12,7 +14,13 @@ import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
  * @return {JSX.Element} The RewardCard component.
  */
 const ToolCard = (props) => {
-  const { name, image, description } = props;
+  const { id, name, image, description } = props;
+
+  const router = useRouter();
+
+  const handleRoute = () => {
+    return router.push(`/${id}`);
+  };
 
   const renderImage = () => {
     return (
@@ -32,7 +40,7 @@ const ToolCard = (props) => {
   };
 
   return (
-    <Grid {...styles.mainGridProps}>
+    <Grid onClick={handleRoute} {...styles.mainGridProps}>
       <Card {...styles.cardProps(getRandomBackgroundColor())}>
         <Grid {...styles.toolDetailsGridProps}>
           {renderImage()}

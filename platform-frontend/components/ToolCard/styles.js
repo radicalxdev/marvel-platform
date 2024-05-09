@@ -17,6 +17,11 @@ const styles = {
       overflow: 'hidden',
       p: 2,
       background: backgroundColor,
+      transition: (theme) => theme.transitions.create('all'),
+      '&:hover': {
+        cursor: 'pointer',
+        transform: 'scale(1.05)',
+      },
     },
   }),
   toolDetailsGridProps: {
