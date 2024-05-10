@@ -1,5 +1,12 @@
 const styles = {
-  mainGridProps: (color, inverted, extraProps, disabled, loading) => ({
+  mainGridProps: (
+    color,
+    inverted,
+    extraProps,
+    disabled,
+    loading,
+    disableHover
+  ) => ({
     container: true,
     justifyContent: 'center',
     alignItems: 'center',
@@ -13,14 +20,16 @@ const styles = {
         if (inverted) return 'transparent';
         return theme.palette.Background.gradient[color];
       },
-      '&:hover': {
-        ...(inverted && {
-          background: () => {
-            if (disabled || loading) return theme.palette.Greyscale[650];
-            return theme.palette.Background.gradient[color];
-          },
-        }),
-      },
+      ...(!disableHover && {
+        '&:hover': {
+          ...(inverted && {
+            background: () => {
+              if (disabled || loading) return theme.palette.Greyscale[650];
+              return theme.palette.Background.gradient[color];
+            },
+          }),
+        },
+      }),
     }),
   }),
   buttonProps: (
@@ -29,10 +38,12 @@ const styles = {
     active,
     extraButtonProps,
     inverted,
-    textColor,
+    onHoverTextColor,
     disabled,
     loading,
-    backgroundColor
+    backgroundColor,
+    textColor,
+    disableHover
   ) => ({
     sx: (theme) => ({
       display: 'flex',
@@ -61,8 +72,8 @@ const styles = {
         }),
         color: () => {
           if (disabled || loading) return theme.palette.Greyscale[400];
-          if (inverted) return 'black';
-          return '';
+          if (inverted) return textColor || 'black';
+          return onHoverTextColor;
         },
         height: '100%',
         width: 'auto',
@@ -72,27 +83,34 @@ const styles = {
         },
       },
       '&:hover': {
-        boxShadow: 'none',
-        ...(inverted && {
-          background:
-            disabled || loading ? theme.palette.Greyscale[650] : bgcolor,
-        }),
-        span: {
-          ...(!inverted && {
-            WebkitTextFillColor:
-              textColor || theme.palette.Common.White['100p'],
-          }),
+        ...(!disableHover && {
+          boxShadow: 'none',
           ...(inverted && {
-            background: theme.palette.Background.gradient[color],
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: active ? 'white' : textColor || 'transparent',
+            background:
+              disabled || loading ? theme.palette.Greyscale[650] : bgcolor,
           }),
-        },
-        svg: {
-          color: !inverted
-            ? theme.palette.Common.White['100p']
-            : theme.palette.Background.gradient[color],
-        },
+          span: {
+            ...(!inverted && {
+              WebkitTextFillColor:
+                onHoverTextColor || theme.palette.Common.White['100p'],
+            }),
+            ...(inverted && {
+              background: theme.palette.Background.gradient[color],
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: active ? 'white' : 'transparent',
+            }),
+          },
+          svg: {
+            color: !inverted
+              ? onHoverTextColor
+              : theme.palette.Background.gradient[color],
+          },
+        }),
+        ...(disableHover && {
+          backgroundColor,
+          color: 'inherit',
+          cursor: 'default',
+        }),
       },
     }),
   }),

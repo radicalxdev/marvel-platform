@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 
 import {
-  ArrowBack,
   ArrowDownwardOutlined,
   InfoOutlined,
   Settings,
@@ -22,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
+import ArrowBack from '@/assets/svg/arrow-back.svg';
 import NavigationIcon from '@/assets/svg/Navigation.svg';
 
 import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
@@ -275,26 +275,21 @@ const ChatInterface = () => {
   const renderTopChatContent = () => {
     return (
       <Grid {...styles.topChat.topChatGridProps}>
-        {!openSettingsChat &&
-          !infoChatOpened &&
-          (chatMessages?.length !== 0 || !!chatMessages) && (
-            <Grid {...styles.topChat.leftTopChatGridProps}>
-              <Grid item>
-                <GradientOutlinedButton
-                  bgcolor={theme.palette.Common.White['100p']}
-                  icon={
-                    <ArrowBack
-                      sx={{ color: theme.palette.Common.White['100p'] }}
-                    />
-                  }
-                  iconPlacement="left"
-                  textColor="white"
-                  text="Back To Home"
-                  {...styles.topChat.outlinedButtonProps}
-                />
-              </Grid>
+        {chatMessages?.length > 0 && !!chatMessages && (
+          <Grid {...styles.topChat.leftTopChatGridProps}>
+            <Grid item>
+              <GradientOutlinedButton
+                bgcolor={theme.palette.Common.White['100p']}
+                icon={<ArrowBack />}
+                textColor={theme.palette.Greyscale[500]}
+                iconPlacement="left"
+                onHoverTextColor={theme.palette.Background.grey1}
+                text="Back To Home"
+                {...styles.topChat.outlinedButtonProps}
+              />
             </Grid>
-          )}
+          </Grid>
+        )}
       </Grid>
     );
   };
