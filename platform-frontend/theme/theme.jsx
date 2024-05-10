@@ -188,6 +188,7 @@ const globalTheme = createTheme({
       green: '#1ED494',
       darkgray: '#131313',
       gray: '#9B9B9B',
+      grey1: '#D9D9D9',
       green1: '#1AD6A1',
       chip: {
         yellow: 'rgba(255, 207, 35, 1)',
@@ -258,6 +259,7 @@ const globalTheme = createTheme({
         errorDark: '#701210',
         success: '#01EFB4',
         grey: '#898989',
+        grey1: '#D9D9D9',
         basicPurple: '#6949FF',
         white: '#FFFFFF',
         headerBorderGradient:
@@ -323,7 +325,6 @@ const globalTheme = createTheme({
     A400: 'rgba(41, 121, 255, 1)',
     A700: 'rgba(41, 98, 255, 1)',
   },
-
   typography: {
     h1: {
       fontStyle: 'normal',

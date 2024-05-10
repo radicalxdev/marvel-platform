@@ -89,7 +89,7 @@ const styles = {
       },
     },
     outlinedButtonProps: {
-      color: 'grey',
+      color: 'grey1',
       inverted: true,
       extraProps: {
         padding: '2px',
@@ -209,7 +209,8 @@ const styles = {
         fieldSet: {
           display: 'none',
         },
-        background: (theme) => (error ? theme.palette.error.main : '#D9D9D9'),
+        background: (theme) =>
+          error ? theme.palette.error.main : theme.palette.Background.grey1,
         borderRadius: '50px',
       },
     }),
