@@ -34,16 +34,19 @@ import styles from './styles';
 import {
   openInfoChat,
   resetChat,
+  setChatSession,
   setError,
   setFullyScrolled,
   setInput,
   setMessages,
   setMore,
+  setSessionLoaded,
   setStreaming,
   setStreamingDone,
   setTyping,
 } from '@/redux/slices/chatSlice';
 import { firestore } from '@/redux/store';
+import createChatSession from '@/services/chatbot/createChatSession';
 import sendMessage from '@/services/chatbot/sendMessage';
 
 const ChatInterface = () => {
@@ -55,7 +58,7 @@ const ChatInterface = () => {
     more,
     input,
     typing,
-    sessions,
+    chat,
     sessionLoaded,
     openSettingsChat,
     infoChatOpened,
@@ -64,12 +67,48 @@ const ChatInterface = () => {
     streaming,
     error,
   } = useSelector((state) => state.chat);
+  const { data: userData } = useSelector((state) => state.user);
 
-  const currentSession = sessions?.defaultUser;
-  const sessionMessages = currentSession?.messages;
+  const sessionId = localStorage.getItem('sessionId');
+
+  const currentSession = chat?.[sessionId];
+  const chatMessages = currentSession?.messages;
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
 
   useEffect(() => {
+    const startConversation = async () => {
+      dispatch(setTyping(true));
+
+      // Define the chat payload
+      const chatPayload = {
+        user: {
+          id: userData?.id,
+          fullName: userData?.fullName,
+          email: userData?.email,
+        },
+        type: 'chat',
+        message: {
+          role: MESSAGE_ROLE.SYSTEM,
+          type: MESSAGE_TYPES.TEXT,
+          payload: {
+            text: '/start',
+          },
+        },
+      };
+
+      // Send a chat session
+      const { status, data } = await createChatSession(chatPayload, dispatch);
+
+      // Remove typing bubble
+      dispatch(setTyping(false));
+      if (status === 'created') dispatch(setStreaming(true));
+
+      // Set chat session
+      dispatch(setChatSession(data));
+      dispatch(setSessionLoaded(true));
+    };
+
+    if (!currentSession) startConversation();
     return () => {
       dispatch(resetChat());
     };
@@ -89,7 +128,7 @@ const ChatInterface = () => {
 
       const sessionRef = query(
         collection(firestore, 'chatSessions'),
-        where('id', '==', currentSession?.id)
+        where('id', '==', sessionId)
       );
 
       unsubscribe = onSnapshot(sessionRef, async (snapshot) => {
@@ -168,7 +207,12 @@ const ChatInterface = () => {
     );
     dispatch(setTyping(true));
 
-    await sendMessage({ message, id: currentSession?.id }, dispatch);
+    const response = await sendMessage(
+      { message, id: currentSession?.id },
+      dispatch
+    );
+
+    console.log(response);
   };
 
   const handleQuickReply = async (option) => {
@@ -234,29 +278,28 @@ const ChatInterface = () => {
   };
 
   const renderTopChatContent = () => {
-    if ((sessionMessages?.length === 0 || !sessionMessages) && !infoChatOpened)
-      return null;
-    
     return (
       <Grid {...styles.topChat.topChatGridProps}>
-        {!openSettingsChat && !infoChatOpened && (
-          <Grid {...styles.topChat.leftTopChatGridProps}>
-            <Grid item>
-              <GradientOutlinedButton
-                bgcolor={theme.palette.Common.White['100p']}
-                icon={
-                  <ArrowBack
-                    sx={{ color: theme.palette.Common.White['100p'] }}
-                  />
-                }
-                iconPlacement="left"
-                textColor="white"
-                text="Back To Home"
-                {...styles.topChat.outlinedButtonProps}
-              />
+        {!openSettingsChat &&
+          !infoChatOpened &&
+          (chatMessages?.length !== 0 || !!chatMessages) && (
+            <Grid {...styles.topChat.leftTopChatGridProps}>
+              <Grid item>
+                <GradientOutlinedButton
+                  bgcolor={theme.palette.Common.White['100p']}
+                  icon={
+                    <ArrowBack
+                      sx={{ color: theme.palette.Common.White['100p'] }}
+                    />
+                  }
+                  iconPlacement="left"
+                  textColor="white"
+                  text="Back To Home"
+                  {...styles.topChat.outlinedButtonProps}
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        )}
+          )}
       </Grid>
     );
   };
@@ -265,8 +308,8 @@ const ChatInterface = () => {
     if (
       !openSettingsChat &&
       !infoChatOpened &&
-      sessionMessages?.length !== 0 &&
-      !!sessionMessages
+      chatMessages?.length !== 0 &&
+      !!chatMessages
     )
       return (
         <Grid
@@ -278,13 +321,13 @@ const ChatInterface = () => {
             onScroll={handleOnScroll}
             {...styles.centerChat.messagesGridProps}
           >
-            {sessionMessages?.map(
+            {chatMessages?.map(
               (message, index) =>
                 message?.role !== MESSAGE_ROLE.SYSTEM && (
                   <Message
                     ref={messagesContainerRef}
                     {...message}
-                    messagesLength={sessionMessages?.length}
+                    messagesLength={chatMessages?.length}
                     messageNo={index + 1}
                     onQuickReply={handleQuickReply}
                     streaming={streaming}
@@ -302,7 +345,7 @@ const ChatInterface = () => {
   };
 
   const renderCenterChatContentNoMessages = () => {
-    if ((sessionMessages?.length === 0 || !sessionMessages) && !infoChatOpened)
+    if ((chatMessages?.length === 0 || !chatMessages) && !infoChatOpened)
       return <CenterChatContentNoMessages />;
     return null;
   };

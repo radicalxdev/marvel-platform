@@ -8,6 +8,7 @@ const initialState = {
   input: '',
   error: null,
   emaChat: {},
+  chat: {},
   sessions: {},
   typing: false,
   chatUser: null,
@@ -32,17 +33,6 @@ const chatSlice = createSlice({
       ...initialState,
       sessions: state.sessions,
     }),
-    // eslint-disable-next-line no-unused-vars
-    resetExplainMyAnswer: (state, _) => {
-      state.emaChat = {
-        ...state.emaChat,
-        messages: [],
-        questionId: '',
-        choice: '',
-        level: '',
-      };
-      state.input = '';
-    },
     setInput: (state, action) => {
       state.input = action.payload;
     },
@@ -65,7 +55,7 @@ const chatSlice = createSlice({
       state.openSettingsChat = false;
     },
     setMessages: (state, action) => {
-      const { role, response, challengeId, level } = action.payload;
+      const { id, role, response } = action.payload;
 
       if (role === MESSAGE_ROLE.HUMAN) {
         const message = {
@@ -78,17 +68,11 @@ const chatSlice = createSlice({
 
         return {
           ...state,
-          sessions: {
-            ...state.sessions,
-            [challengeId]: {
-              ...state.sessions?.[challengeId],
-              [level]: {
-                ...state.sessions?.[challengeId]?.[level],
-                messages: [
-                  ...(state.sessions[challengeId]?.[level]?.messages || []),
-                  message,
-                ],
-              },
+          chat: {
+            ...state.chat,
+            [id]: {
+              ...state.chat[id],
+              messages: [...(state.chat[id]?.messages || []), message],
             },
           },
           input: '',
@@ -97,17 +81,11 @@ const chatSlice = createSlice({
 
       return {
         ...state,
-        sessions: {
-          ...state.sessions,
-          [challengeId]: {
-            ...state.sessions?.[challengeId],
-            [level]: {
-              ...state.sessions?.[challengeId]?.[level],
-              messages: [
-                ...(state.sessions?.[challengeId]?.[level]?.messages || []),
-                response,
-              ],
-            },
+        chat: {
+          ...state.chat,
+          [id]: {
+            ...state.chat[id],
+            messages: [...(state.chat[id]?.messages || []), response],
           },
         },
         input: '',
@@ -122,15 +100,14 @@ const chatSlice = createSlice({
     setChatSession: (state, action) => {
       const session = action.payload;
 
-      const updatedSessions = {
-        ...state.sessions,
-        [session.challengeId]: {
-          ...state.sessions?.[session.challengeId],
-          [session.level]: session,
-        },
+      localStorage.setItem('sessionId', session.id);
+
+      const updateChat = {
+        ...state.chat,
+        [session.id]: session,
       };
 
-      state.sessions = updatedSessions;
+      state.chat = updateChat;
     },
     setTyping: (state, action) => {
       state.typing = action.payload;
