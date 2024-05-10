@@ -104,6 +104,11 @@ const styles = {
             color: !inverted
               ? onHoverTextColor
               : theme.palette.Background.gradient[color],
+            path: {
+              stroke: !inverted
+                ? onHoverTextColor
+                : theme.palette.Background.gradient[color],
+            },
           },
         }),
         ...(disableHover && {

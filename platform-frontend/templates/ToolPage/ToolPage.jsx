@@ -1,8 +1,9 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, useTheme } from '@mui/material';
 
-import ToolsListingContainer from '@/components/ToolsListingContainer';
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
 import ToolImage from '@/assets/images/BookImage.png';
+import ArrowBack from '@/assets/svg/purple-arrow-back.svg';
 
 import styles from './styles';
 
@@ -11,7 +12,6 @@ const DEFAULT_TOOLS = [
     id: 1,
     name: 'Kai Tools',
     image: ToolImage,
-    maskedToolUrl: 'kai-tools',
     description:
       'Kai Tools is a collection of AI tools that can be used to help you with your AI learning journey.',
   },
@@ -19,7 +19,6 @@ const DEFAULT_TOOLS = [
     id: 2,
     name: 'Kai Chatbot',
     image: ToolImage,
-    maskedToolUrl: 'kai-chatbot',
     description:
       'Kai Chatbot is a chatbot that can help you with your AI learning journey.',
   },
@@ -27,7 +26,6 @@ const DEFAULT_TOOLS = [
     id: 3,
     name: 'Kai AI',
     image: ToolImage,
-    maskedToolUrl: 'kai-ai',
     description:
       'Kai AI is a collection of AI tools that can be used to help you with your AI learning journey.',
   },
@@ -35,39 +33,38 @@ const DEFAULT_TOOLS = [
     id: 4,
     name: 'Quiz Generator',
     image: ToolImage,
-    maskedToolUrl: 'quiz-generator',
     description:
       'Quiz Generator is a collection of AI tools that can be used to help you with your AI learning journey.',
   },
 ];
 
-const HomePage = (props) => {
-  const { data, loading } = props;
-
-  const renderTitle = () => {
+const ToolPage = () => {
+  const theme = useTheme();
+  const renderBackButton = () => {
     return (
-      <Grid {...styles.titleGridProps}>
-        <Typography {...styles.titleProps}>
-          Welcome to{' '}
-          <Typography {...styles.highlightTextProps}>Kai Tools</Typography> 👋
-        </Typography>
-        <Typography {...styles.subtitleProps}>
-          Made for{' '}
-          <Typography {...styles.highlightTextProps}>educators</Typography>
-        </Typography>
+      <Grid {...styles.backButtonGridProps}>
+        <GradientOutlinedButton
+          bgcolor={theme.palette.Common.White['100p']}
+          icon={<ArrowBack />}
+          textColor={theme.palette.Greyscale[500]}
+          iconPlacement="left"
+          onHoverTextColor={theme.palette.Common.White['100p']}
+          text="Back"
+          {...styles.outlinedButtonProps}
+        />
       </Grid>
     );
   };
 
+  const renderForm = () => {
+    return <Grid {...styles.formGridProps}>Form</Grid>;
+  };
+
   return (
     <Grid {...styles.mainGridProps}>
-      {renderTitle()}
-      <ToolsListingContainer
-        data={DEFAULT_TOOLS}
-        loading={loading}
-        category="All Tools"
-      />
+      {renderBackButton()}
+      {renderForm()}
     </Grid>
   );
 };
-export default HomePage;
+export default ToolPage;
