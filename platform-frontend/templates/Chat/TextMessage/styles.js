@@ -15,7 +15,9 @@ const styles = {
       fontFamily: 'Satoshi Medium',
       fontSize: { laptop: '16px', desktop: '18px', desktopMedium: '20px' },
       color: (theme) =>
-        isMyMessage ? theme.palette.Dark_Colors.Dark[1] : 'white',
+        isMyMessage
+          ? theme.palette.Common.White['100p']
+          : theme.palette.Common.Black['100p'],
       ol: {
         ml: 4,
       },
@@ -45,18 +47,27 @@ const styles = {
       },
     },
   }),
+  aiNameProps: {
+    sx: {
+      width: '100%',
+      fontFamily: 'Satoshi Medium',
+      fontSize: { laptop: '14px', desktop: '16px', desktopMedium: '18px' },
+      color: (theme) => theme.palette.primary.main,
+    },
+  },
   messageWrapperProps: (isMyMessage) => ({
     position: 'relative',
     container: true,
     item: true,
     width: 'auto',
     maxWidth: '100%',
+    flexDirection: !isMyMessage && 'column',
     sx: {
-      borderRadius: '18px',
+      borderRadius: '50px',
       px: isMyMessage && { laptop: 2, desktop: 2.5, desktopMedium: 3 },
       py: isMyMessage && { laptop: 1, desktop: 1.5, desktopMedium: 2 },
       textAlign: 'left',
-      background: (theme) => isMyMessage && theme.palette.Background.green,
+      background: (theme) => isMyMessage && theme.palette.primary.main,
     },
   }),
 };

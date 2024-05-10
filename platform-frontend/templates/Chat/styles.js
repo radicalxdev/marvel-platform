@@ -213,9 +213,9 @@ const styles = {
         borderRadius: '50px',
       },
     }),
-    chatInputProps: (renderSendIcon, error) => ({
+    chatInputProps: (renderSendIcon, error, input) => ({
       type: 'text',
-      placeholder: !error && 'Talk with ReX',
+      placeholder: !error && 'Send a message',
       autoComplete: 'off',
       notched: false,
       sx: { width: '100%', height: '100%' },
@@ -224,7 +224,7 @@ const styles = {
         sx: (theme) => ({
           bgcolor: '#D9D9D9',
           borderRadius: '50px',
-          color: theme.palette.Greyscale[499],
+          color: input ? '#333333' : theme.palette.Greyscale[499],
           pl: { laptop: '6px', desktop: '10px' },
           pr: { laptop: '8px', desktop: '10px' },
           height: '100%',
