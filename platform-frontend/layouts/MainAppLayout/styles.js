@@ -6,14 +6,14 @@ const styles = {
     minHeight: '100vh',
     height: '100vh',
   },
-  contentGridProps: (extraContentProps) => ({
+  contentGridProps: (extraContentProps, isToolPage) => ({
     container: true,
     item: true,
     mobileSmall: true,
     justifyContent: 'center',
     height: '100%',
     sx: (theme) => ({
-      background: theme.palette.Common.White['100p'],
+      background: isToolPage ? '#B3B3B3' : theme.palette.Common.White['100p'],
       py: {
         desktopLarge: 5,
         desktop: 4,

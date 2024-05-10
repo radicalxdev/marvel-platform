@@ -23,7 +23,7 @@ const ToolsListingContainer = (props) => {
     return (
       <Grid {...styles.headerGridProps}>
         <Typography {...styles.categoryTitleProps}>
-          {category} {`(${data?.length})`}
+          {category} {data && `(${data?.length})`}
         </Typography>
       </Grid>
     );

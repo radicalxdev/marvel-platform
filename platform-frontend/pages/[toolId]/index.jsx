@@ -27,7 +27,7 @@ const IndividualToolPage = () => {
 };
 
 IndividualToolPage.getLayout = function getLayout(page) {
-  return <MainAppLayout backButtonUrl={ROUTES.HOME}>{page}</MainAppLayout>;
+  return <MainAppLayout isToolPage>{page}</MainAppLayout>;
 };
 
 export default IndividualToolPage;

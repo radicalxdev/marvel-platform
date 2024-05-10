@@ -23,10 +23,11 @@ import { setLoading } from '@/redux/slices/authSlice';
  * @param {ReactNode} props.children - The child components to render.
  * @param {Object} props.extraContentProps - The additional properties for the extra content.
  * @param {boolean} props.removeNav - Indicates if the navigation should be removed.
+ * @param {boolean} props.isToolPage - Indicates if the layout is for a tool page.
  * @return {ReactNode} The rendered main application layout.
  */
 const MainAppLayout = (props) => {
-  const { children, extraContentProps, removeNav } = props;
+  const { children, extraContentProps, removeNav, isToolPage } = props;
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
@@ -58,7 +59,9 @@ const MainAppLayout = (props) => {
       <>
         <SystemAlert active={alertActive} />
         {!removeNav && <SideMenu />}
-        <Grid {...styles.contentGridProps(extraContentProps)}>{children}</Grid>
+        <Grid {...styles.contentGridProps(extraContentProps, isToolPage)}>
+          {children}
+        </Grid>
       </>
     );
   };
