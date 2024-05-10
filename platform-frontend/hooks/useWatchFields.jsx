@@ -5,7 +5,14 @@ import { VALIDATION_STATES } from '@/constants/auth';
 const { SUCCESS, ERROR, DEFAULT } = VALIDATION_STATES;
 
 const useWatchFields = (fieldConfigs) => {
-  const { register, watch, control, reset } = useForm();
+  const {
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+    control,
+    reset,
+  } = useForm();
 
   const newFieldStates = {};
 
@@ -31,6 +38,8 @@ const useWatchFields = (fieldConfigs) => {
     register,
     watch,
     control,
+    errors,
+    handleSubmit,
     fieldStates: newFieldStates,
     reset,
   };
