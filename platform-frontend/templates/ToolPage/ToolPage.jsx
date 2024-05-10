@@ -1,45 +1,20 @@
 import { Grid, useTheme } from '@mui/material';
 
+import { useRouter } from 'next/router';
+
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import ToolImage from '@/assets/images/BookImage.png';
 import ArrowBack from '@/assets/svg/purple-arrow-back.svg';
+
+import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-const DEFAULT_TOOLS = [
-  {
-    id: 1,
-    name: 'Kai Tools',
-    image: ToolImage,
-    description:
-      'Kai Tools is a collection of AI tools that can be used to help you with your AI learning journey.',
-  },
-  {
-    id: 2,
-    name: 'Kai Chatbot',
-    image: ToolImage,
-    description:
-      'Kai Chatbot is a chatbot that can help you with your AI learning journey.',
-  },
-  {
-    id: 3,
-    name: 'Kai AI',
-    image: ToolImage,
-    description:
-      'Kai AI is a collection of AI tools that can be used to help you with your AI learning journey.',
-  },
-  {
-    id: 4,
-    name: 'Quiz Generator',
-    image: ToolImage,
-    description:
-      'Quiz Generator is a collection of AI tools that can be used to help you with your AI learning journey.',
-  },
-];
-
 const ToolPage = () => {
   const theme = useTheme();
+  const router = useRouter();
+
+  const handleRoute = () => router.push(ROUTES.HOME);
   const renderBackButton = () => {
     return (
       <Grid {...styles.backButtonGridProps}>
@@ -49,6 +24,7 @@ const ToolPage = () => {
           textColor={theme.palette.Greyscale[500]}
           iconPlacement="left"
           onHoverTextColor={theme.palette.Common.White['100p']}
+          clickHandler={handleRoute}
           text="Back"
           {...styles.outlinedButtonProps}
         />
