@@ -207,12 +207,7 @@ const ChatInterface = () => {
     );
     dispatch(setTyping(true));
 
-    const response = await sendMessage(
-      { message, id: currentSession?.id },
-      dispatch
-    );
-
-    console.log(response);
+    await sendMessage({ message, id: currentSession?.id }, dispatch);
   };
 
   const handleQuickReply = async (option) => {
@@ -377,7 +372,8 @@ const ChatInterface = () => {
               focused={false}
               {...styles.bottomChatContent.chatInputProps(
                 renderSendIcon,
-                !!error
+                !!error,
+                input
               )}
             />
           </Grid>
