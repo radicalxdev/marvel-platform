@@ -2,44 +2,7 @@ import { Grid, Typography } from '@mui/material';
 
 import ToolsListingContainer from '@/components/ToolsListingContainer';
 
-import ToolImage from '@/assets/images/BookImage.png';
-
 import styles from './styles';
-
-const DEFAULT_TOOLS = [
-  {
-    id: 1,
-    name: 'Kai Tools',
-    image: ToolImage,
-    maskedToolUrl: 'kai-tools',
-    description:
-      'Kai Tools is a collection of AI tools that can be used to help you with your AI learning journey.',
-  },
-  {
-    id: 2,
-    name: 'Kai Chatbot',
-    image: ToolImage,
-    maskedToolUrl: 'kai-chatbot',
-    description:
-      'Kai Chatbot is a chatbot that can help you with your AI learning journey.',
-  },
-  {
-    id: 3,
-    name: 'Kai AI',
-    image: ToolImage,
-    maskedToolUrl: 'kai-ai',
-    description:
-      'Kai AI is a collection of AI tools that can be used to help you with your AI learning journey.',
-  },
-  {
-    id: 4,
-    name: 'Quiz Generator',
-    image: ToolImage,
-    maskedToolUrl: 'quiz-generator',
-    description:
-      'Quiz Generator is a collection of AI tools that can be used to help you with your AI learning journey.',
-  },
-];
 
 const HomePage = (props) => {
   const { data, loading } = props;
@@ -63,7 +26,7 @@ const HomePage = (props) => {
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
       <ToolsListingContainer
-        data={DEFAULT_TOOLS}
+        data={data}
         loading={loading}
         category="All Tools"
       />

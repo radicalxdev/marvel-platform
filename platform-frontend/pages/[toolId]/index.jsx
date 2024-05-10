@@ -2,9 +2,8 @@ import { useRouter } from 'next/router';
 
 import useToolProps from '@/hooks/useToolProps';
 
-import PaymentPageSkeleton from '@/components/PaymentPageSkeleton';
 import MainAppLayout from '@/layouts/MainAppLayout';
-import ToolPage from '@/templates/ToolPage';
+import ToolPage, { ToolPageSkeleton } from '@/templates/ToolPage';
 
 import CHALLENGES from '@/constants/challenges';
 import ROUTES from '@/constants/routes';
@@ -19,10 +18,10 @@ const IndividualToolPage = () => {
 
   const { toolDoc, loading, ...toolProps } = useToolProps(CHALLENGES.MISSION);
 
-  //   if (loading || !toolDoc) {
-  //     if (!toolDoc && !loading) router.push(ROUTES.HOME);
-  //     return <PaymentPageSkeleton />;
-  //   }
+  if (loading || !toolDoc) {
+    if (!toolDoc && !loading) router.push(ROUTES.HOME);
+    return <ToolPageSkeleton />;
+  }
 
   return <ToolPage toolDoc={toolDoc} {...toolProps} />;
 };

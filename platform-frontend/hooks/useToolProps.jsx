@@ -19,9 +19,7 @@ const useToolProps = () => {
     query: { toolId },
   } = router;
 
-  const { data: tools, loading, error } = useSelector((state) => state.tools);
-
-  console.log(tools, loading, error);
+  const { data: tools, loading } = useSelector((state) => state.tools);
 
   const toolDoc = tools?.find((tool) => tool?.maskedToolUrl === toolId);
 
@@ -30,7 +28,7 @@ const useToolProps = () => {
       await dispatch(fetchTools({ firestore }));
     };
 
-    if (!loading && !tools) fetchKaiTools();
+    if (!tools) fetchKaiTools();
   }, []);
 
   return {

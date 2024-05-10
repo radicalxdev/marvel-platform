@@ -48,7 +48,7 @@ const styles = {
     extraButtonProps: {
       fontFamily: 'Satoshi Medium',
       fontSize: { laptop: '14px', desktop: '15px', desktopMedium: '16px' },
-      px: { laptop: 3, desktop: 4, desktopMedium: 5 },
+      px: { laptop: 1, desktop: 2, desktopMedium: 3 },
     },
   },
 };

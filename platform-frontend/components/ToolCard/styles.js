@@ -2,7 +2,7 @@ const styles = {
   mainGridProps: {
     container: true,
     item: true,
-    desktop: 3,
+    desktopLarge: 3,
     laptop: 4,
   },
   cardProps: (backgroundColor) => ({
@@ -12,7 +12,8 @@ const styles = {
       justifyContent: 'center',
       alignItems: 'flex-end',
       position: 'relative',
-      height: '150px',
+      height: '200px',
+      width: '100%',
       borderRadius: '10px',
       overflow: 'hidden',
       p: 2,

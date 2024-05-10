@@ -1,1 +1,4 @@
-export { default } from './ToolPage';
+import ToolPage from './ToolPage';
+import ToolPageSkeleton from './Skeleton';
+
+export { ToolPage as default, ToolPageSkeleton };
