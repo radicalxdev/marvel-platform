@@ -14,12 +14,12 @@ import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
  * @return {JSX.Element} The Tool Card component.
  */
 const ToolCard = (props) => {
-  const { id, name, image, description } = props;
+  const { maskedToolUrl, name, image, description } = props;
 
   const router = useRouter();
 
   const handleRoute = () => {
-    return router.push(`/${id}`);
+    return router.push(`/${maskedToolUrl}`);
   };
 
   const renderImage = () => {
