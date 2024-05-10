@@ -223,17 +223,17 @@ const kaiCommunicator = async (payload) => {
       'Content-Type': 'application/json',
     };
 
-    const rexPayload = {
+    const kaiPayload = {
       user,
       type,
       ...(type === BOT_TYPE.CHAT ? messages : tool),
     };
 
-    DEBUG && logger.log('Stringified JSON', JSON.stringify(rexPayload));
+    DEBUG && logger.log('Stringified JSON', JSON.stringify(kaiPayload));
 
     const resp = await axios.post(
       process.env.KAI_ENDPOINT,
-      JSON.stringify(rexPayload),
+      JSON.stringify(kaiPayload),
       { headers }
     );
 
@@ -336,6 +336,73 @@ const communicatorV3 = onCall(async (props) => {
 });
 
 /**
+ * Manages communications for a specific tool session with the AI, sending tool inputs and updating the session.
+ *
+ * @param {object} props - The properties of the communication.
+ * @param {object} props.data - The data object containing the tool details and id.
+ * @param {string} props.data.id - The id of the tool session.
+ * @param {array} props.data.inputs - The array of inputs for the tool.
+ * @return {object} The response object containing the status and data.
+ */
+const toolCommunicatorV1 = onCall(async (props) => {
+  try {
+    DEBUG && logger.log('toolCommunicator started, data:', props.data);
+
+    const { inputs, id } = props.data;
+
+    DEBUG &&
+      logger.log(
+        'toolCommunicator variables:',
+        `API_KEY: ${process.env.KAI_API_KEY}`,
+        `ENDPOINT: ${process.env.KAI_ENDPOINT}`
+      );
+
+    const toolSession = await admin
+      .firestore()
+      .collection('tools')
+      .doc(id)
+      .get();
+
+    if (!toolSession.exists) {
+      logger.log('Tool session not found: ', id);
+      throw new HttpsError('not-found', 'Tool session not found');
+    }
+
+    const { user, type } = toolSession.data();
+
+    const toolData = {
+      inputs: inputs,
+    };
+
+    // Construct payload for the kaiCommunicator
+    const KaiPayload = {
+      tool: toolData,
+      type,
+      user,
+    };
+
+    const response = await kaiCommunicator({
+      data: KaiPayload,
+    });
+
+    DEBUG && logger.log('kaiCommunicator response:', response.data);
+
+    // Process response and update Firestore
+    await toolSession.ref.update({ lastUpdated: Timestamp.fromMillis(Date.now()) });
+
+    if (DEBUG) {
+      logger.log('Updated tool session: ', (await toolSession.ref.get()).data());
+    }
+
+    return { status: 'success' };
+  } catch (error) {
+    DEBUG && logger.log('toolCommunicator error:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+
+/**
  * This function retrieves all existing chat sessions for a user.
  *
  * @param {Object} props.data - The data object containing the user, challenge, message, and botType.
@@ -382,6 +449,10 @@ const getUserChatSessions = onCall(async (props) => {
     throw new HttpsError('internal', error.message);
   }
 });
+
+
+
+
 
 /**
  * This creates a chat session for a user.
@@ -496,6 +567,7 @@ module.exports = {
   communicator,
   communicatorV2,
   communicatorV3,
+  toolCommunicatorV1,
   getUserChatSessions,
   createChatSession,
 };
