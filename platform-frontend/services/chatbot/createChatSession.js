@@ -12,6 +12,7 @@ import { functions } from '@/redux/store';
  */
 const createChatSession = async (payload, dispatch) => {
   try {
+    console.log(payload);
     const createSession = httpsCallable(functions, 'createChatSession');
     const response = await createSession(payload);
 
