@@ -5,7 +5,6 @@ import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import MainAppLayout from '@/layouts/MainAppLayout';
 
 import Planet from '@/assets/svg/planet.svg';
-import Rocket from '@/assets/svg/rocket2.svg';
 import Star from '@/assets/svg/Star_3.svg';
 import YellowStar from '@/assets/svg/yellowStar.svg';
 
@@ -53,9 +52,10 @@ const PageNotFound = () => {
     return (
       <Grid {...pageNotFoundStyles.buttonGridProps}>
         <GradientOutlinedButton
-          bgcolor={theme.palette.Dark_Colors.Dark[1]}
+          bgcolor={theme.palette.Common.White['100p']}
           clickHandler={handleRouteToHome}
           text="Go to Homepage"
+          textColor="white"
           {...pageNotFoundStyles.submitButtonProps}
         />
       </Grid>
@@ -100,9 +100,6 @@ const PageNotFound = () => {
         </Box>
         <Box {...pageNotFoundStyles.planetProps}>
           <Planet />
-        </Box>
-        <Box {...pageNotFoundStyles.rocketProps}>
-          <Rocket />
         </Box>
         <Box {...pageNotFoundStyles.star1Props}>
           <Star />

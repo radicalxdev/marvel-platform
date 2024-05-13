@@ -8,6 +8,7 @@ import { getFunctions } from 'firebase/functions';
 import LogRocket from 'logrocket';
 
 import authReducer from './slices/authSlice';
+import toolsReducer from './slices/toolsSlice';
 import userReducer from './slices/userSlice';
 
 import firebaseConfig from '@/firebase/config';
@@ -23,6 +24,7 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     user: userReducer,
+    tools: toolsReducer,
   },
   middleware: (gDM) =>
     gDM({ serializableCheck: false }).concat(

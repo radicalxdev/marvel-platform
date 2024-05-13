@@ -109,11 +109,102 @@ const disableScroll = (open) => {
   };
 };
 
+/**
+ * Generates a random radial gradient based on predefined colors, angle, and focus points.
+ *
+ * @return {string} The generated radial gradient.
+ */
+const getRandomRadialGradient = () => {
+  const colors = [
+    '#DD57FF',
+    '#DE4FE1',
+    '#FE2FC4',
+    '#A40000',
+    '#FF5733',
+    '#C70039',
+    '#900C3F',
+    '#581845',
+    '#DAF7A6',
+    '#FFC300',
+    '#33FFCE',
+    '#33FF57',
+    '#339FFF',
+    '#3333FF',
+  ];
+
+  let gradient = 'radial-gradient(134.7% 134.61% at 46.37% 109.73%, ';
+
+  // radial-gradient(, #DD57FF 0%, #DE4FE1 32.5%, #FE2FC4 63.5%, #A40000 100%)
+
+  if (colors === null) {
+    throw new Error('Colors array is null');
+  }
+
+  const gradientArray = new Array(4).fill(0).map((color, index, arr) => {
+    const stop = index !== arr.length - 1 ? index * 32.5 : 100;
+    const randomColorIndex = Math.floor(Math.random() * colors.length);
+    const randomColor = colors[randomColorIndex];
+
+    if (randomColor === null) {
+      throw new Error('Random color is null');
+    }
+
+    return `${randomColor} ${stop}%, `;
+  });
+
+  gradient += gradientArray.join('');
+  gradient = gradient.slice(0, -2); // Remove the last comma and space
+  gradient += ')';
+
+  return gradient;
+};
+
+const getRandomBackgroundColor = () => {
+  const colors = [
+    '#DD57FF',
+    '#DE4FE1',
+    '#FE2FC4',
+    '#A40000',
+    '#FF5733',
+    '#C70039',
+    '#900C3F',
+    '#581845',
+    '#DAF7A6',
+    '#FFC300',
+    '#33FFCE',
+    '#33FF57',
+    '#339FFF',
+    '#3333FF',
+  ];
+
+  let usedColors = [];
+
+  const getRandomColor = () => {
+    let randomColorIndex;
+    do {
+      randomColorIndex = Math.floor(Math.random() * colors.length);
+    } while (usedColors.includes(randomColorIndex));
+
+    const color = colors[randomColorIndex];
+    usedColors.push(randomColorIndex);
+
+    if (usedColors.length === colors.length) {
+      usedColors = []; // Reset used colors when all colors have been used
+    }
+
+    return color;
+  };
+
+  return getRandomColor();
+};
+
 export {
   toBase64,
   shimmerEffect,
   generateRandomColour,
   getRandomAvatarColour,
   getUserAvatarImage,
+  getRandomRadialGradient,
+  getRandomBackgroundColor,
   disableScroll,
 };
