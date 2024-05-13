@@ -13,11 +13,11 @@ const styles = {
       fontFamily: 'Satoshi Bold',
       fontSize: { laptop: '16px', desktopMedium: '18px' },
       background: theme.palette.Common.White['100p'],
-      borderRadius: '54px',
+      borderRadius: '5px',
       color: 'black',
-      px: 4,
       ...extraInputProps,
       transition: theme.transitions.create('all'),
+      px: 1.5,
       fieldset: {
         transition: theme.transitions.create('all'),
       },
@@ -35,13 +35,17 @@ const styles = {
       'label + &': {
         marginTop: 2,
       },
+      ':hover': {
+        fieldset: {
+          borderColor: 'inherit !important',
+        },
+      },
     }),
   }),
   inputLabelProps: (error, extraInputLabelProps) => ({
     error,
     shrink: true,
     sx: {
-      marginLeft: '.5rem',
       top: '-10px',
       color: 'black',
       fontSize: { laptop: '24px', desktop: '26px' },

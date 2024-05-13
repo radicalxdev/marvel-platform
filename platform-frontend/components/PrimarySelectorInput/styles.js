@@ -28,10 +28,11 @@ const styles = {
             background: bgColor,
             color: 'black',
             '& .MuiMenuItem-root': {
+              fontFamily: 'Satoshi Bold',
               fontSize: { laptop: '14px', desktop: '18px' },
               paddingLeft: '32px !important',
               '&:hover': {
-                background: `${theme.palette.Background.gradient[color]}29`,
+                background: `${theme.palette.Background[color]}60`,
               },
             },
             '& .Mui-selected': {
@@ -52,15 +53,19 @@ const styles = {
         color: 'black',
       },
     },
-    InputProps: {
+    inputProps: {
       notched: false,
+      sx: {
+        alignItems: 'flex-start',
+        fontFamily: 'Satoshi Bold',
+        pl: 3,
+      },
     },
     sx: {
-      alignItems: 'flex-start',
+      fontSize: { laptop: '16px', desktopMedium: '18px' },
       '& .MuiOutlinedInput-root': {
         backgroundColor: bgColor,
-        borderRadius: '30px',
-        paddingLeft: '25px',
+        borderRadius: '5px',
       },
       '& .MuiOutlinedInput-notchedOutline': {
         border: 'none',
@@ -74,11 +79,17 @@ const styles = {
       width: '100%',
       '& input::placeholder': {
         fontStyle: 'italic',
-        color: (theme) => theme.palette.Background.gray,
+        color: (theme) => `${theme.palette.Background.gray} !important`,
+        sx: {
+          WebkitTextFillColor: 'rgba(0, 0, 0, 0.5)',
+        },
       },
       '& input::-webkit-input-placeholder': {
         fontStyle: 'italic',
-        color: (theme) => theme.palette.Background.gray,
+        color: (theme) => `${theme.palette.Background.gray} !important`,
+        sx: {
+          WebkitTextFillColor: 'rgba(0, 0, 0, 0.5)',
+        },
       },
       notched: false,
       ...extraInputProps,

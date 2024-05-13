@@ -7,7 +7,7 @@ import { SelectElement } from 'react-hook-form-mui';
 import styles from './styles';
 
 /**
- * Generates a reusable input text field component with a required title and an optional description.
+ * Generates a reusable selector component with a required title and an optional description.
  *
  * @param {object} props - The properties for the component.
  * @param {string} props.id - The id of the input field.
@@ -24,7 +24,7 @@ import styles from './styles';
  *
  * @return {JSX.Element} - The rendered profile input field component.
  */
-const PrimaryFormSelectInput = forwardRef((props, ref) => {
+const PrimarySelectorInput = forwardRef((props, ref) => {
   const {
     id,
     label,
@@ -72,4 +72,4 @@ const PrimaryFormSelectInput = forwardRef((props, ref) => {
   return <SelectElement {...SelectMenuConfig} {...otherProps} />;
 });
 
-export default PrimaryFormSelectInput;
+export default PrimarySelectorInput;
