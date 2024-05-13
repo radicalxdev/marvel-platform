@@ -3,33 +3,32 @@ const styles = {
     position: 'relative',
     container: true,
     mobileSmall: 12,
-    minHeight: '100vh',
     height: '100vh',
+    maxHeight: '100vh',
   },
-  contentGridProps: (extraContentProps) => ({
+  contentGridProps: (extraContentProps, isToolPage) => ({
     container: true,
     item: true,
     mobileSmall: true,
     justifyContent: 'center',
-    height: '100%',
+    alignItems: 'flex-start',
     sx: (theme) => ({
-      background: theme.palette.Common.White['100p'],
+      position: 'relative',
+      background: isToolPage
+        ? theme.palette.Background.white2
+        : theme.palette.Common.White['100p'],
       py: {
         desktopLarge: 5,
         desktop: 4,
         laptop: 5,
-        tablet: '28px',
-        mobile: 3,
-        mobileSmall: 3,
       },
       px: {
         desktopLarge: 5,
         desktop: 4,
         laptop: 5,
-        tablet: 5,
-        mobile: 5,
-        mobileSmall: '12px',
       },
+      overflow: 'scroll',
+      maxHeight: '100vh',
       ...extraContentProps,
     }),
   }),

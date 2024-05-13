@@ -4,6 +4,8 @@ import Image from 'next/image';
 
 import { useRouter } from 'next/router';
 
+import ToolImage from '@/assets/images/BookImage.png';
+
 import styles from './styles';
 
 import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
@@ -14,18 +16,18 @@ import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
  * @return {JSX.Element} The Tool Card component.
  */
 const ToolCard = (props) => {
-  const { id, name, image, description } = props;
+  const { maskedToolUrl, coverBg, name, logo, description } = props;
 
   const router = useRouter();
 
   const handleRoute = () => {
-    return router.push(`/${id}`);
+    return router.push(`/${maskedToolUrl}`);
   };
 
   const renderImage = () => {
     return (
       <Grid {...styles.imageGridProps}>
-        <Image src={image} alt="kai logo" {...styles.imageProps} />
+        <Image src={logo || ToolImage} alt="kai logo" {...styles.imageProps} />
       </Grid>
     );
   };
@@ -41,7 +43,7 @@ const ToolCard = (props) => {
 
   return (
     <Grid onClick={handleRoute} {...styles.mainGridProps}>
-      <Card {...styles.cardProps(getRandomBackgroundColor())}>
+      <Card {...styles.cardProps(coverBg || getRandomBackgroundColor())}>
         <Grid {...styles.toolDetailsGridProps}>
           {renderImage()}
           {renderTitle()}

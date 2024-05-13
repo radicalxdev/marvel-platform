@@ -10,10 +10,16 @@ const fetchTools = createAsyncThunk('tools/fetch', async ({ firestore }) => {
 
     if (toolsDocsSnapshot.empty) return null;
 
-    const tools = toolsDocsSnapshot.docs?.map((doc) => ({
-      id: doc?.id,
-      ...doc.data(),
-    }));
+    const tools = toolsDocsSnapshot.docs?.map((doc) => {
+      const { name, ...toolData } = doc.data();
+      const maskedToolUrl = name.replace(' ', '-');
+      return {
+        id: doc?.id,
+        name,
+        maskedToolUrl,
+        ...toolData,
+      };
+    });
 
     return tools;
   } catch (error) {
