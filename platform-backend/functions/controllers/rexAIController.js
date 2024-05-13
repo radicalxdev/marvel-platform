@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-
+const functions = require('firebase-functions');
 const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
 const { logger } = require('firebase-functions/v1');
@@ -213,7 +213,7 @@ const kaiCommunicator = async (payload) => {
   try {
     DEBUG && logger.log('kaiCommunicator started, data:', payload.data);
 
-    const { messages, user, tool, type } = payload.data;
+    const { messages, user, tool_data, type } = payload.data;
 
     const API_KEY = 'AIzaSyBT0cxIrvcSUL8Ylfmrt8gra9BYb_K20kE';
     const ENDPOINT = 'https://kai-ai-f63c8.wl.r.appspot.com/submit-tool';
@@ -233,7 +233,7 @@ const kaiCommunicator = async (payload) => {
     const kaiPayload = {
       user,
       type,
-      ...(type === BOT_TYPE.CHAT ? messages : tool),
+      ...(type === BOT_TYPE.CHAT ? messages : tool_data),
     };
 
     DEBUG && logger.log('Stringified JSON', JSON.stringify(kaiPayload));
@@ -489,7 +489,8 @@ app.post('/toolCommunicatorV2', multerMiddleware, async (req, res) => {
 
     // Parse user and tool_data from JSON string if needed
     const parsedUser = typeof user === 'string' ? JSON.parse(user) : user;
-    const parsedToolData = typeof tool_data === 'string' ? JSON.parse(tool_data) : tool_data;
+    const parsedToolData =
+      typeof tool_data === 'string' ? JSON.parse(tool_data) : tool_data;
 
     // Deconstruct parsedToolData
     const { tool_id, inputs } = parsedToolData;
@@ -502,11 +503,14 @@ app.post('/toolCommunicatorV2', multerMiddleware, async (req, res) => {
         tool_data: {
           tool_id: tool_id, // Ensure tool_id is included
           inputs: inputs,
-          file: file && file[0] ? {
-            buffer: file[0].buffer,
-            originalname: file[0].originalname,
-            mimetype: file[0].mimetype,
-          } : undefined,
+          file:
+            file && file[0]
+              ? {
+                  buffer: file[0].buffer,
+                  originalname: file[0].originalname,
+                  mimetype: file[0].mimetype,
+                }
+              : undefined,
         },
       },
     };
@@ -523,7 +527,9 @@ app.post('/toolCommunicatorV2', multerMiddleware, async (req, res) => {
   } catch (error) {
     const DEBUG = true;
     DEBUG && logger.error('toolCommunicatorV2 error:', error);
-    res.status(500).send({ error: 'Internal Server Error', message: error.message });
+    res
+      .status(500)
+      .send({ error: 'Internal Server Error', message: error.message });
   }
 });
 
