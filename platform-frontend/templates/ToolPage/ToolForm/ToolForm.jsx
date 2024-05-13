@@ -1,54 +1,51 @@
-// import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { Grid, Typography, useTheme } from '@mui/material';
 import { FormContainer } from 'react-hook-form-mui';
+import { useDispatch } from 'react-redux';
 
 import useWatchFields from '@/hooks/useWatchFields';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
-
 import PrimaryFileUpload from '@/components/PrimaryFileUpload';
-import PrimaryFormSelectInput from '@/components/PrimaryFormSelectInput';
-
+import PrimarySelectorInput from '@/components/PrimarySelectorInput';
 import PrimaryTextFieldInput from '@/components/PrimaryTextFieldInput';
 
 import { INPUT_TYPES } from '@/constants/inputs';
+import ALERT_COLORS from '@/constants/notification';
 
 import styles from './styles';
 
-// import { AuthContext } from '@/providers/GlobalProvider';
+import { AuthContext } from '@/providers/GlobalProvider';
+import submitPrompt from '@/services/tools/submitPrompt';
 
 const ToolForm = (props) => {
   const { inputs } = props;
   const theme = useTheme();
-  //   const { handleOpenSnackBar } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const { handleOpenSnackBar } = useContext(AuthContext);
 
   const { register, control, handleSubmit, getValues, setValue, errors } =
     useWatchFields([]);
 
-  //   const handleSubmitForm = async (values) => {
-  //     try {
-  //       setLoading(true);
+  const [loading, setLoading] = useState();
 
-  //       const { pinnedLinks } = values;
+  const handleSubmitForm = async (values) => {
+    try {
+      setLoading(true);
+      await submitPrompt(values, dispatch);
 
-  //       await editSquadInfo({ pinnedLinks }, squadDoc?.id);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      handleOpenSnackBar(
+        ALERT_COLORS.ERROR,
+        error.message || 'Couldn\u0027t send prompt'
+      );
+    }
+  };
 
-  //       setLoading(false);
-  //       handleOpenSnackBar(ALERT_COLORS.SUCCESS, 'Updated squad successfully');
-
-  //       dispatch(fetchSquads(firestore));
-  //       toggleOpen();
-  //     } catch (error) {
-  //       setLoading(false);
-  //       handleOpenSnackBar(
-  //         ALERT_COLORS.ERROR,
-  //         error.message || 'Couldn\u0027t update squad'
-  //       );
-  //     }
-  //   };
-
-  const renderNameInput = (inputProps) => {
+  const renderTitleInput = (inputProps) => {
     const { name, label } = inputProps;
     return (
       <Grid key={name} {...styles.inputGridProps}>
@@ -58,6 +55,7 @@ const ToolForm = (props) => {
           title={label}
           error={errors?.[name]}
           control={control}
+          placeholder="Enter Title"
           helperText={errors?.[name]?.message}
           validation={{
             required: 'Field is required',
@@ -83,13 +81,14 @@ const ToolForm = (props) => {
 
     return (
       <Grid key={name} {...styles.inputGridProps}>
-        <PrimaryFormSelectInput
+        <PrimarySelectorInput
           id={name}
           name={name}
           label={renderLabel()}
           displayEmpty
           color="purple"
           bgColor="#ffffff"
+          placeholder="Enter No. of Questions"
           error={errors?.[name]}
           menuList={new Array(max)
             .fill()
@@ -108,14 +107,10 @@ const ToolForm = (props) => {
     );
   };
 
-  const pdf = getValues('PDFs');
-
   const renderFileUpload = (inputProps) => {
     const { name, label } = inputProps;
 
     const files = getValues(name);
-
-    console.log(files);
 
     return (
       <Grid key={name} {...styles.inputGridProps}>
@@ -139,6 +134,10 @@ const ToolForm = (props) => {
           setValue={setValue}
           validation={{
             required: 'Please upload a file.',
+            validate: {
+              lessThanThree: (v) =>
+                parseInt(v, 10) < 10 || 'Should be less than 3 files',
+            },
           }}
         />
       </Grid>
@@ -153,7 +152,7 @@ const ToolForm = (props) => {
           bgcolor={theme.palette.Common.White['100p']}
           text="Generate"
           textColor={theme.palette.Common.White['100p']}
-          //   loading={loading}
+          loading={loading}
           onHoverTextColor={theme.palette.Background.purple}
           type="submit"
           inverted
@@ -166,7 +165,7 @@ const ToolForm = (props) => {
   const SwitchInput = ({ inputProps }) => {
     switch (inputProps?.type) {
       case INPUT_TYPES.TEXT:
-        return renderNameInput(inputProps);
+        return renderTitleInput(inputProps);
       case INPUT_TYPES.NUMBER:
         return renderSelectorInput(inputProps);
       case INPUT_TYPES.FILE:
@@ -181,7 +180,7 @@ const ToolForm = (props) => {
       FormProps={{
         id: 'tool-form',
       }}
-      onSuccess={handleSubmit((values) => console.log(values))}
+      onSuccess={handleSubmit(handleSubmitForm)}
     >
       <Grid {...styles.formProps}>
         <Grid {...styles.mainContentGridProps}>

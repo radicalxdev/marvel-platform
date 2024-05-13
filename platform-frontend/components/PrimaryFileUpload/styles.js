@@ -6,6 +6,10 @@ const styles = {
         div: {
           columnGap: 1,
         },
+        WebkitTextFillColor: 'rgba(0, 0, 0, 0.5)',
+      },
+      '& .MuiOutlinedInput': {
+        border: '2px solid black',
       },
       '& .MuiOutlinedInput-notchedOutline': {
         border: '2px solid black',
@@ -18,9 +22,13 @@ const styles = {
       },
       width: '100%',
       backgroundColor: bgColor,
-      borderRadius: '30px',
+      borderRadius: '5px',
       whiteSpace: 'wrap',
-      pl: 3,
+      px: 1.5,
+      fieldset: {
+        borderColor: (theme) =>
+          `${theme.palette.Common.Black['100p']} !important`,
+      },
       '& input::placeholder': {
         fontStyle: 'italic',
         color: (theme) => theme.palette.Background.gray,

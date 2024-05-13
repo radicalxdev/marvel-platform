@@ -63,6 +63,12 @@ const PrimaryFileUpload = forwardRef((props, ref) => {
     }
   };
 
+  const handleOnDelete = (fileIndex) => {
+    const newFiles = files?.filter((file, index) => index !== fileIndex);
+    setFiles(newFiles);
+    setValue(name, files);
+  };
+
   const renderLabel = () => {
     return (
       <Grid id={`${id}-label`} {...styles.labelGridProps}>
@@ -89,7 +95,7 @@ const PrimaryFileUpload = forwardRef((props, ref) => {
             <Chip
               key={i}
               label={value?.name}
-              onDelete={() => {}}
+              onDelete={() => handleOnDelete(i)}
               {...styles.chipProps}
             />
           );
@@ -131,12 +137,14 @@ const PrimaryFileUpload = forwardRef((props, ref) => {
       <MultiSelectElement
         ref={ref}
         name={name}
-        // disabled
         error={error}
         renderValue={(value) => renderPlaceholder(value)}
         labelId={`${id}-label`}
         endAdornment={renderEndIcon()}
         multiple
+        formControlProps={{
+          disabled: true,
+        }}
         onChange={(event, newValue) => {
           event.preventDefault();
           setFiles(newValue);
