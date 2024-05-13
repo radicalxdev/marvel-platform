@@ -215,15 +215,18 @@ const kaiCommunicator = async (payload) => {
 
     const { messages, user, tool, type } = payload.data;
 
+    const API_KEY = 'AIzaSyBT0cxIrvcSUL8Ylfmrt8gra9BYb_K20kE';
+    const ENDPOINT = 'https://kai-ai-f63c8.wl.r.appspot.com/submit-tool';
+
     DEBUG &&
       logger.log(
         'Communicator variables:',
-        `API_KEY: ${process.env.KAI_API_KEY}`,
-        `ENDPOINT: ${process.env.KAI_ENDPOINT}`
+        `API_KEY: ${API_KEY}`,
+        `ENDPOINT: ${ENDPOINT}`
       );
 
     const headers = {
-      'API-Key': process.env.KAI_API_KEY,
+      'API-Key': API_KEY,
       'Content-Type': 'application/json',
     };
 
@@ -235,11 +238,9 @@ const kaiCommunicator = async (payload) => {
 
     DEBUG && logger.log('Stringified JSON', JSON.stringify(kaiPayload));
 
-    const resp = await axios.post(
-      process.env.KAI_ENDPOINT,
-      JSON.stringify(kaiPayload),
-      { headers }
-    );
+    const resp = await axios.post(ENDPOINT, JSON.stringify(kaiPayload), {
+      headers,
+    });
 
     DEBUG && logger.log('kaiCommunicator response:', resp.data);
 
@@ -392,10 +393,15 @@ const toolCommunicatorV1 = onCall(async (props) => {
     DEBUG && logger.log('kaiCommunicator response:', response.data);
 
     // Process response and update Firestore
-    await toolSession.ref.update({ lastUpdated: Timestamp.fromMillis(Date.now()) });
+    await toolSession.ref.update({
+      lastUpdated: Timestamp.fromMillis(Date.now()),
+    });
 
     if (DEBUG) {
-      logger.log('Updated tool session: ', (await toolSession.ref.get()).data());
+      logger.log(
+        'Updated tool session: ',
+        (await toolSession.ref.get()).data()
+      );
     }
 
     return { status: 'success' };
@@ -404,7 +410,6 @@ const toolCommunicatorV1 = onCall(async (props) => {
     throw new HttpsError('internal', error.message);
   }
 });
-
 
 /**
  * This function retrieves all existing chat sessions for a user.
@@ -457,7 +462,7 @@ const getUserChatSessions = onCall(async (props) => {
 // Configure multer for file uploads
 const multerMiddleware = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 } // 10 MB
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
 }).fields([{ name: 'file', maxCount: 3 }]); // Adjust this based on your expected files
 
 // Enable JSON and URL-encoded form body parsing
@@ -475,33 +480,52 @@ app.use(bodyParser.urlencoded({ extended: true }));
  */
 app.post('/toolCommunicatorV2', multerMiddleware, async (req, res) => {
   try {
+    const DEBUG = true;
     DEBUG && logger.log('toolCommunicatorV2 started, request data:', req.body);
 
+    // Deconstruct request body and files
     const { user, type, tool_data } = req.body;
-    const files = req.files;
+    const { file } = req.files || {};
 
     // Parse user and tool_data from JSON string if needed
     const parsedUser = typeof user === 'string' ? JSON.parse(user) : user;
     const parsedToolData = typeof tool_data === 'string' ? JSON.parse(tool_data) : tool_data;
-    const file = files && files.file ? files.file[0] : undefined;
 
-    DEBUG && logger.log('Parsed data:', { user: parsedUser, tool_data: parsedToolData, file });
+    // Deconstruct parsedToolData
+    const { tool_id, inputs } = parsedToolData;
 
-    const response = await processToolData(parsedUser, type, parsedToolData, file);
-    res.status(200).send({ status: 'success', data: response });
+    // Prepare payload for kaiCommunicator
+    const payload = {
+      data: {
+        user: parsedUser,
+        type: type,
+        tool_data: {
+          tool_id: tool_id, // Ensure tool_id is included
+          inputs: inputs,
+          file: file && file[0] ? {
+            buffer: file[0].buffer,
+            originalname: file[0].originalname,
+            mimetype: file[0].mimetype,
+          } : undefined,
+        },
+      },
+    };
+
+    DEBUG && logger.log('Prepared payload for kaiCommunicator:', payload);
+
+    // Call kaiCommunicator with constructed payload
+    const response = await kaiCommunicator(payload);
+
+    // Process response from AI API
+    DEBUG && logger.log('Response from AI API:', response);
+
+    res.status(200).send({ status: 'success', data: response.data });
   } catch (error) {
+    const DEBUG = true;
     DEBUG && logger.error('toolCommunicatorV2 error:', error);
     res.status(500).send({ error: 'Internal Server Error', message: error.message });
   }
 });
-
-async function processToolData(user, type, toolData, file) {
-  DEBUG && logger.log('Processing tool data:', { user, type, toolData, file });
-  // Add processing logic here
-  return 'Data Processed';
-}
-
-
 
 /**
  * This creates a chat session for a user.
