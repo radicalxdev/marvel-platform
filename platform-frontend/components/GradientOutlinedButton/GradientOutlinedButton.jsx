@@ -5,21 +5,23 @@ import styles from './styles';
 /**
  * Function for rendering a gradient outlined button with optional icon, text, and loading state.
  *
- * @param {object} props - Object containing the following button properties:
- *  @param {object} props.color -   string representing the color of the button
- *  @param {object} props.id -   string representing the id of the button
- *  @param {object} props.icon  - icon element to be displayed on the button
- *  @param {object} props.iconPlacement -  string representing the placement of the icon
- *  @param {object} props.text -  string representing the text to be displayed on the button
- *  @param {object} props.loading -  boolean representing the loading state of the button
- *  @param {object} props.disabled -  boolean representing whethere the button should be disabled
- *  @param {object} props.bgcolor  - string representing the background color of the button
- *  @param {object} props.clickHandler  - function to be called on button click
- *  @param {object} props.active -  boolean representing the active state of the button
- *  @param {object} props.inverted -  boolean representing the inverted state of the button
- *  @param {object} props.extraProps - extra properties for the button
- *  @param {object} props.extraButtonProps - extra properties for the button component
- *  @param {object} props.otherProps - other properties for the button
+ * @param {Object} props - Object containing the following button properties:
+ *  @param {string} props.color -   string representing the gradient selected for the button
+ *  @param {string} props.id -   string representing the id of the button
+ *  @param {svg} props.icon  - icon element to be displayed on the button
+ *  @param {string} props.iconPlacement -  string representing the placement of the icon
+ *  @param {string} props.text -  string representing the text to be displayed on the button
+ *  @param {boolean} props.loading -  boolean representing the loading state of the button
+ *  @param {boolean} props.disabled -  boolean representing whether the button should be disabled
+ *  @param {boolean} props.disableHover -  boolean representing whether the button hover effect should be disabled
+ *  @param {string} props.bgcolor  - string representing the background color of the button
+ *  @param {Function} props.clickHandler  - function to be called on button click
+ *  @param {boolean} props.active -  boolean representing the active state of the button
+ *  @param {boolean} props.inverted -  boolean representing the inverted state of the button
+ *  @param {string} props.onHoverTextColor -  string representing the text color when hovering over the button. Active when Props inverted is true
+ *  @param {Object} props.extraProps - extra properties for the button
+ *  @param {Object} props.extraButtonProps - extra properties for the button component
+ *  @param {Object} props.otherProps - other properties for the button
  *
  * @return {JSX.Element} Rendered button component
  */
@@ -32,7 +34,9 @@ const GradientOutlinedButton = (props) => {
     text,
     loading,
     disabled,
+    disableHover,
     bgcolor,
+    onHoverTextColor,
     clickHandler,
     active,
     inverted,
@@ -72,7 +76,14 @@ const GradientOutlinedButton = (props) => {
 
   return (
     <Grid
-      {...styles.mainGridProps(color, inverted, extraProps, disabled, loading)}
+      {...styles.mainGridProps(
+        color,
+        inverted,
+        extraProps,
+        disabled,
+        loading,
+        disableHover
+      )}
     >
       <Button
         id={id || 'button-selector'}
@@ -84,10 +95,12 @@ const GradientOutlinedButton = (props) => {
           active,
           extraButtonProps,
           inverted,
-          textColor,
+          onHoverTextColor,
           disabled,
           loading,
-          setBackgroundColor()
+          setBackgroundColor(),
+          textColor,
+          disableHover
         )}
         {...otherProps}
       >

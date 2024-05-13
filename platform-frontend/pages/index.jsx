@@ -1,36 +1,31 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 
-import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
 import MainAppLayout from '@/layouts/MainAppLayout';
-import FeaturedMissions from '@/templates/FeaturedMissions';
+import HomePage from '@/templates/HomePage';
 
-const Missions = () => {
-  const router = useRouter();
+import { firestore } from '@/redux/store';
+import fetchTools from '@/redux/thunks/tools';
 
-  const [open, setOpen] = useState(false);
-  const [selectedMaskedId, setSelectedMaskedId] = useState(null);
+const Home = () => {
+  const { data, loading, error } = useSelector((state) => state.tools);
 
-  const handleContinueMission = () => {
-    router.push(`/${selectedMaskedId}/dashboard`);
-  };
+  const dispatch = useDispatch();
 
-  const toggleOpen = (maskId) => {
-    setSelectedMaskedId(maskId);
-    setOpen(!open);
-  };
+  useEffect(() => {
+    const fetchKaiTools = async () => {
+      await dispatch(fetchTools({ firestore }));
+    };
 
-  return (
-    <FeaturedMissions
-      open={open}
-      toggleOpen={toggleOpen}
-      handleContinueMission={handleContinueMission}
-    />
-  );
+    fetchKaiTools();
+  }, []);
+
+  return <HomePage data={data} loading={loading} error={error} />;
 };
 
-Missions.getLayout = function getLayout(page) {
+Home.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };
 
-export default Missions;
+export default Home;

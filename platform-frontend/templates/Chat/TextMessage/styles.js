@@ -1,0 +1,75 @@
+const styles = {
+  mainGridProps: (isMyMessage) => ({
+    container: true,
+    item: true,
+    mobileSmall: 12,
+    alignItems: 'center',
+    justifyContent: isMyMessage ? 'flex-end' : 'flex-start',
+    mt: 3,
+  }),
+  messageProps: (isMyMessage) => ({
+    sx: {
+      width: '100%',
+      textWrap: 'wrap',
+      wordWrap: 'break-word',
+      fontFamily: 'Satoshi Medium',
+      fontSize: { laptop: '16px', desktop: '18px', desktopMedium: '20px' },
+      color: (theme) =>
+        isMyMessage
+          ? theme.palette.Common.White['100p']
+          : theme.palette.Common.Black['100p'],
+      ol: {
+        ml: 4,
+      },
+      ul: {
+        ml: 4,
+      },
+      pre: {
+        fontFamily: 'inherit',
+        fontSize: 'inherit',
+        div: {
+          code: { whiteSpace: 'pre-wrap !important' },
+          overflow: 'auto',
+        },
+      },
+      p: {
+        code: { whiteSpace: 'pre-wrap !important', overflow: 'auto' },
+        'p:not(:last-child)': {
+          marginBottom: '16px',
+        },
+        'ul:not(:last-child)': {
+          marginBottom: '16px',
+        },
+        li: {
+          marginBottom: '16px',
+          p: { marginBottom: '0px !important' },
+        },
+      },
+    },
+  }),
+  aiNameProps: {
+    sx: {
+      width: '100%',
+      fontFamily: 'Satoshi Medium',
+      fontSize: { laptop: '14px', desktop: '16px', desktopMedium: '18px' },
+      color: (theme) => theme.palette.primary.main,
+    },
+  },
+  messageWrapperProps: (isMyMessage) => ({
+    position: 'relative',
+    container: true,
+    item: true,
+    width: 'auto',
+    maxWidth: '100%',
+    flexDirection: !isMyMessage && 'column',
+    sx: {
+      borderRadius: '50px',
+      px: isMyMessage && { laptop: 2, desktop: 2.5, desktopMedium: 3 },
+      py: isMyMessage && { laptop: 1, desktop: 1.5, desktopMedium: 2 },
+      textAlign: 'left',
+      background: (theme) => isMyMessage && theme.palette.primary.main,
+    },
+  }),
+};
+
+export default styles;
