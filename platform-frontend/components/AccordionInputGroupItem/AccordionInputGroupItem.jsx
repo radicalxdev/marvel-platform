@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import { Edit } from '@mui/icons-material';
 import {
   Accordion,
@@ -21,23 +19,20 @@ import styles from './styles';
  * @param {string} props.title - The title of the accordion.
  * @param {JSX.Elemmnt} props.children - The content rendered within the accordion.
  * @param {Object} props.extraAccordionDetailsProps - Additional props to be passed to the AccordionDetails component.
- * @param {Object} props.errors - An object containing the errors for the form.
  *
  * @return {JSX.Element} The AccordionInputGroupItem component.
  */
 const AccordionInputGroupItem = (props) => {
-  const { title, children, response, extraAccordionDetailsProps, hasError } =
-    props;
+  const {
+    title,
+    children,
+    response,
+    open,
+    toggleOpen,
+    extraAccordionDetailsProps,
+  } = props;
 
   const theme = useTheme();
-
-  const [open, setOpen] = useState(!response);
-
-  const toggleOpen = () => setOpen(!open);
-
-  useEffect(() => {
-    if (hasError) setOpen(true);
-  }, [hasError]);
 
   const renderEditButton = () => {
     return (

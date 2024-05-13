@@ -35,7 +35,6 @@ const PrimaryFileUpload = forwardRef((props, ref) => {
     control,
     showCheckbox,
     showChips,
-    options,
     setValue,
     getValues,
     multiple,
@@ -47,7 +46,9 @@ const PrimaryFileUpload = forwardRef((props, ref) => {
 
   const fileInputRef = useRef();
 
-  const [files, setFiles] = useState([]);
+  const defaultValues = getValues(name) || [];
+
+  const [files, setFiles] = useState(defaultValues);
 
   const handleCarouselFiles = (e) => {
     const selectedFiles = e.target.files;
@@ -123,7 +124,6 @@ const PrimaryFileUpload = forwardRef((props, ref) => {
     id,
     name: id,
     control,
-    options,
     displayEmpty,
     showCheckbox,
     showChips,
@@ -138,16 +138,13 @@ const PrimaryFileUpload = forwardRef((props, ref) => {
         ref={ref}
         name={name}
         error={error}
+        options={[]}
         renderValue={(value) => renderPlaceholder(value)}
         labelId={`${id}-label`}
         endAdornment={renderEndIcon()}
         multiple
         formControlProps={{
           disabled: true,
-        }}
-        onChange={(event, newValue) => {
-          event.preventDefault();
-          setFiles(newValue);
         }}
         {...SelectMultiMenuConfig}
         {...otherProps}

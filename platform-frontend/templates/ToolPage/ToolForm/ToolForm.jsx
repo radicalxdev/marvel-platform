@@ -14,6 +14,8 @@ import PrimaryTextFieldInput from '@/components/PrimaryTextFieldInput';
 import { INPUT_TYPES } from '@/constants/inputs';
 import ALERT_COLORS from '@/constants/notification';
 
+import TOOLS from '@/constants/tools';
+
 import styles from './styles';
 
 import { AuthContext } from '@/providers/GlobalProvider';
@@ -23,24 +25,63 @@ import {
   setResponse,
 } from '@/redux/slices/toolsSlice';
 import submitPrompt from '@/services/tools/submitPrompt';
+import submitPromptV2 from '@/services/tools/submitPromptV2';
 
 const ToolForm = (props) => {
-  const { inputs } = props;
+  const { id, inputs, name } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
   const { handleOpenSnackBar } = useContext(AuthContext);
 
+  const isQuizify = name === TOOLS.GEMINI_QUIZIFY;
+
   const { communicatorLoading } = useSelector((state) => state.tools);
+  const { data: userData } = useSelector((state) => state.user);
 
   const { register, control, handleSubmit, getValues, setValue, errors } =
     useWatchFields([]);
 
-  const handleSubmitForm = async (values) => {
+  const handleSubmitMultiForm = async (values) => {
     try {
-      console.log(values);
+      const { files, ...toolData } = values;
+
+      const updateData = Object.entries(toolData).map(([FieldName, value]) => ({
+        FieldName,
+        value,
+      }));
       dispatch(setPrompt(values));
       dispatch(setCommunicatorLoading(true));
-      const response = await submitPrompt(values, dispatch);
+
+      const response = await submitPromptV2(
+        {
+          tool_data: { tool_id: id, inputs: updateData },
+          type: 'tool',
+          user: {
+            id: userData?.id,
+            fullName: userData?.fullName,
+            email: userData?.email,
+          },
+        },
+        files
+      );
+
+      dispatch(setResponse(response));
+      dispatch(setCommunicatorLoading(false));
+    } catch (error) {
+      dispatch(setCommunicatorLoading(false));
+      handleOpenSnackBar(
+        ALERT_COLORS.ERROR,
+        error.message || 'Couldn\u0027t send prompt'
+      );
+    }
+  };
+
+  const handleSubmitForm = async (values) => {
+    try {
+      dispatch(setPrompt(values));
+      dispatch(setCommunicatorLoading(true));
+
+      const response = await submitPrompt(values);
 
       dispatch(setResponse(response));
       dispatch(setCommunicatorLoading(false));
@@ -54,17 +95,17 @@ const ToolForm = (props) => {
   };
 
   const renderTitleInput = (inputProps) => {
-    const { name, label } = inputProps;
+    const { name: inputName, placeholder, label } = inputProps;
     return (
-      <Grid key={name} {...styles.inputGridProps}>
+      <Grid key={inputName} {...styles.inputGridProps}>
         <PrimaryTextFieldInput
-          id={name}
-          name={name}
+          id={inputName}
+          name={inputName}
           title={label}
-          error={errors?.[name]}
+          error={errors?.[inputName]}
           control={control}
-          placeholder="Enter Title"
-          helperText={errors?.[name]?.message}
+          placeholder={placeholder}
+          helperText={errors?.[inputName]?.message}
           validation={{
             required: 'Field is required',
           }}
@@ -75,12 +116,12 @@ const ToolForm = (props) => {
   };
 
   const renderSelectorInput = (inputProps) => {
-    const { name, label, max = 10 } = inputProps;
+    const { name: inputName, label, placeholder, max = 10 } = inputProps;
 
     const renderLabel = () => {
       return (
         <Grid {...styles.labelGridProps}>
-          <Typography {...styles.labelProps(errors?.[name])}>
+          <Typography {...styles.labelProps(errors?.[inputName])}>
             {label}
           </Typography>
         </Grid>
@@ -88,20 +129,20 @@ const ToolForm = (props) => {
     };
 
     return (
-      <Grid key={name} {...styles.inputGridProps}>
+      <Grid key={inputName} {...styles.inputGridProps}>
         <PrimarySelectorInput
-          id={name}
-          name={name}
+          id={inputName}
+          name={inputName}
           label={renderLabel()}
           displayEmpty
           color="purple"
           bgColor="#ffffff"
-          placeholder="Enter No. of Questions"
-          error={errors?.[name]}
+          placeholder={placeholder}
+          error={errors?.[inputName]}
           menuList={new Array(max)
             .fill()
             ?.map((item, index) => ({ id: index + 1, label: index + 1 }))}
-          helperText={errors?.[name]?.message}
+          helperText={errors?.[inputName]?.message}
           control={control}
           ref={register}
           extraInputProps={{
@@ -116,23 +157,20 @@ const ToolForm = (props) => {
   };
 
   const renderFileUpload = (inputProps) => {
-    const { name, label } = inputProps;
-
-    const files = getValues(name);
+    const { name: inputName, label } = inputProps;
 
     return (
-      <Grid key={name} {...styles.inputGridProps}>
+      <Grid key={inputName} {...styles.inputGridProps}>
         <PrimaryFileUpload
-          id={name}
-          name={name}
+          id={inputName}
+          name={inputName}
           multiple
           placeholder="Choose Files to Upload"
           label={label}
-          error={errors?.[name]}
-          helperText={errors?.[name]?.message}
+          error={errors?.[inputName]}
+          helperText={errors?.[inputName]?.message}
           color="purple"
           bgColor="#ffffff"
-          options={files?.map((item) => item?.name) || []}
           control={control}
           getValues={getValues}
           ref={register}
@@ -144,7 +182,7 @@ const ToolForm = (props) => {
             required: 'Please upload a file.',
             validate: {
               lessThanThree: (v) =>
-                parseInt(v, 10) < 10 || 'Should be less than 3 files',
+                parseInt(v?.length, 10) < 10 || 'Should be less than 3 files',
             },
           }}
         />
@@ -188,7 +226,9 @@ const ToolForm = (props) => {
       FormProps={{
         id: 'tool-form',
       }}
-      onSuccess={handleSubmit(handleSubmitForm)}
+      onSuccess={handleSubmit(
+        isQuizify ? handleSubmitMultiForm : handleSubmitForm
+      )}
     >
       <Grid {...styles.formProps}>
         <Grid {...styles.mainContentGridProps}>
