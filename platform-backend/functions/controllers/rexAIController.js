@@ -482,10 +482,9 @@ app.post('/toolCommunicatorV2', multerMiddleware, async (req, res) => {
 
     // Deconstruct request body and files
     const { user, type, tool_data } = req.body;
-    const { file } = req.files || {};
+    const files = req.files;
 
-
-    // Deconstruct parsedToolData
+    // Deconstruct tool_data
     const { tool_id, inputs } = tool_data;
 
     // Prepare payload for kaiCommunicator
@@ -496,14 +495,11 @@ app.post('/toolCommunicatorV2', multerMiddleware, async (req, res) => {
         tool_data: {
           tool_id: tool_id, // Ensure tool_id is included
           inputs: inputs,
-          file:
-            file && file[0]
-              ? {
-                  buffer: file[0].buffer,
-                  originalname: file[0].originalname,
-                  mimetype: file[0].mimetype,
-                }
-              : undefined,
+          file: files.map(file => ({
+            buffer: file.buffer,
+            originalname: file.originalname,
+            mimetype: file.mimetype,
+          })),
         },
       },
     };
