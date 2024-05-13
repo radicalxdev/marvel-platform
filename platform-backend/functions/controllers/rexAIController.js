@@ -5,6 +5,10 @@ const { default: axios } = require('axios');
 const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
 const { BOT_TYPE } = require('../constants');
+const express = require('express');
+const multer = require('multer');
+const bodyParser = require('body-parser');
+const app = express();
 
 const DEBUG = process.env.DEBUG;
 
@@ -450,7 +454,52 @@ const getUserChatSessions = onCall(async (props) => {
   }
 });
 
+// Configure multer for file uploads
+const multerMiddleware = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 } // 10 MB
+}).fields([{ name: 'file', maxCount: 3 }]); // Adjust this based on your expected files
 
+// Enable JSON and URL-encoded form body parsing
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+/**
+ * Handles tool communications by processing input data and optional file uploads.
+ * It supports both JSON and form-data requests to accommodate different client implementations.
+ *
+ * @param {Request} req - The Express request object, which includes form data and files.
+ * @param {Response} res - The Express response object used to send back the HTTP response.
+ * @return {void} Sends a response to the client based on the processing results.
+ * @throws {HttpsError} Throws an error if processing fails or data is invalid.
+ */
+app.post('/toolCommunicatorV2', multerMiddleware, async (req, res) => {
+  try {
+    DEBUG && logger.log('toolCommunicatorV2 started, request data:', req.body);
+
+    const { user, type, tool_data } = req.body;
+    const files = req.files;
+
+    // Parse user and tool_data from JSON string if needed
+    const parsedUser = typeof user === 'string' ? JSON.parse(user) : user;
+    const parsedToolData = typeof tool_data === 'string' ? JSON.parse(tool_data) : tool_data;
+    const file = files && files.file ? files.file[0] : undefined;
+
+    DEBUG && logger.log('Parsed data:', { user: parsedUser, tool_data: parsedToolData, file });
+
+    const response = await processToolData(parsedUser, type, parsedToolData, file);
+    res.status(200).send({ status: 'success', data: response });
+  } catch (error) {
+    DEBUG && logger.error('toolCommunicatorV2 error:', error);
+    res.status(500).send({ error: 'Internal Server Error', message: error.message });
+  }
+});
+
+async function processToolData(user, type, toolData, file) {
+  DEBUG && logger.log('Processing tool data:', { user, type, toolData, file });
+  // Add processing logic here
+  return 'Data Processed';
+}
 
 
 
@@ -568,6 +617,7 @@ module.exports = {
   communicatorV2,
   communicatorV3,
   toolCommunicatorV1,
+  toolCommunicatorV2: functions.https.onRequest(app),
   getUserChatSessions,
   createChatSession,
 };

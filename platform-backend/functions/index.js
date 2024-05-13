@@ -25,6 +25,7 @@ module.exports = {
   communicatorV2: rexAIController.communicatorV2,
   communicatorV3: rexAIController.communicatorV3,
   toolCommunicatorV1: rexAIController.toolCommunicatorV1,
+  toolCommunicatorV2: rexAIController.toolCommunicatorV2,
   createChatSession: rexAIController.createChatSession,
   getUserChatSessions: rexAIController.getUserChatSessions,
 
