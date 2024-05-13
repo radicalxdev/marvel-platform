@@ -11,7 +11,8 @@ const styles = {
     item: true,
     mobileSmall: true,
     justifyContent: 'center',
-    height: '100%',
+    minHeight: '100%',
+    overflow: 'auto',
     sx: (theme) => ({
       background: isToolPage ? '#B3B3B3' : theme.palette.Common.White['100p'],
       py: {

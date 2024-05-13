@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 
-import { ExpandMore } from '@mui/icons-material';
+import { Edit } from '@mui/icons-material';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Fade,
+  Grid,
+  useTheme,
 } from '@mui/material';
+
+import GradientOutlinedButton from '../GradientOutlinedButton';
 
 import styles from './styles';
 
@@ -24,7 +28,9 @@ import styles from './styles';
 const AccordionInputGroupItem = (props) => {
   const { title, children, extraAccordionDetailsProps, hasError } = props;
 
-  const [open, setOpen] = useState(!!hasError);
+  const theme = useTheme();
+
+  const [open, setOpen] = useState(hasError ? !!hasError : true);
 
   const toggleOpen = () => setOpen(!open);
 
@@ -32,20 +38,38 @@ const AccordionInputGroupItem = (props) => {
     if (hasError) setOpen(true);
   }, [hasError]);
 
+  const renderEditButton = () => {
+    return (
+      <GradientOutlinedButton
+        bgcolor={theme.palette.Common.White['100p']}
+        icon={<Edit sx={{ color: theme.palette.primary.main }} />}
+        textColor={theme.palette.Greyscale[500]}
+        iconPlacement="left"
+        onHoverTextColor={theme.palette.Common.White['100p']}
+        clickHandler={toggleOpen}
+        text="Edit Prompt"
+        {...styles.outlinedButtonProps}
+      />
+    );
+  };
+
   const renderSummary = () => {
     return (
       <AccordionSummary
-        expandIcon={<ExpandMore />}
+        expandIcon={null}
         id={`${title}-id`}
         {...styles.accordionSummaryProps}
       >
-        {title}
+        <Grid {...styles.titleGridProps}>
+          {title}
+          {renderEditButton()}
+        </Grid>
       </AccordionSummary>
     );
   };
 
   return (
-    <Accordion expanded={open} onChange={toggleOpen} {...styles.accordianProps}>
+    <Accordion expanded={open} {...styles.accordianProps}>
       {renderSummary()}
       <Fade in>
         <AccordionDetails

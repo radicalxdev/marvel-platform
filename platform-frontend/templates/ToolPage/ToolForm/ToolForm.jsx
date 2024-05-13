@@ -7,9 +7,12 @@ import useWatchFields from '@/hooks/useWatchFields';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
+import PrimaryFileUpload from '@/components/PrimaryFileUpload';
 import PrimaryFormSelectInput from '@/components/PrimaryFormSelectInput';
 
 import PrimaryTextFieldInput from '@/components/PrimaryTextFieldInput';
+
+import { INPUT_TYPES } from '@/constants/inputs';
 
 import styles from './styles';
 
@@ -20,7 +23,8 @@ const ToolForm = (props) => {
   const theme = useTheme();
   //   const { handleOpenSnackBar } = useContext(AuthContext);
 
-  const { register, control, handleSubmit, errors } = useWatchFields([]);
+  const { register, control, handleSubmit, getValues, setValue, errors } =
+    useWatchFields([]);
 
   //   const handleSubmitForm = async (values) => {
   //     try {
@@ -104,6 +108,43 @@ const ToolForm = (props) => {
     );
   };
 
+  const pdf = getValues('PDFs');
+
+  const renderFileUpload = (inputProps) => {
+    const { name, label } = inputProps;
+
+    const files = getValues(name);
+
+    console.log(files);
+
+    return (
+      <Grid key={name} {...styles.inputGridProps}>
+        <PrimaryFileUpload
+          id={name}
+          name={name}
+          multiple
+          placeholder="Choose Files to Upload"
+          label={label}
+          error={errors?.[name]}
+          helperText={errors?.[name]?.message}
+          color="purple"
+          bgColor="#ffffff"
+          options={files?.map((item) => item?.name) || []}
+          control={control}
+          getValues={getValues}
+          ref={register}
+          showChips
+          showCheckbox
+          displayEmpty
+          setValue={setValue}
+          validation={{
+            required: 'Please upload a file.',
+          }}
+        />
+      </Grid>
+    );
+  };
+
   const renderActionButtons = () => {
     return (
       <Grid mt={4} {...styles.actionButtonGridProps}>
@@ -122,6 +163,19 @@ const ToolForm = (props) => {
     );
   };
 
+  const SwitchInput = ({ inputProps }) => {
+    switch (inputProps?.type) {
+      case INPUT_TYPES.TEXT:
+        return renderNameInput(inputProps);
+      case INPUT_TYPES.NUMBER:
+        return renderSelectorInput(inputProps);
+      case INPUT_TYPES.FILE:
+        return renderFileUpload(inputProps);
+      default:
+        return null;
+    }
+  };
+
   return (
     <FormContainer
       FormProps={{
@@ -131,11 +185,9 @@ const ToolForm = (props) => {
     >
       <Grid {...styles.formProps}>
         <Grid {...styles.mainContentGridProps}>
-          {inputs?.map((input) =>
-            input?.type === 'string'
-              ? renderNameInput(input)
-              : renderSelectorInput(input)
-          )}
+          {inputs?.map((input) => (
+            <SwitchInput key={input?.name} inputProps={input} />
+          ))}
         </Grid>
         {renderActionButtons()}
       </Grid>
