@@ -2,11 +2,8 @@ const styles = {
   mainGridProps: {
     container: true,
     item: true,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    height: '100%',
-    overflowY: 'auto',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
     rowGap: 5,
     px: { laptop: 4, desktop: 5, desktopMedium: 6 },
     py: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
@@ -14,8 +11,8 @@ const styles = {
   backButtonGridProps: {
     container: true,
     item: true,
-    width: '100%',
-    flexDirection: 'column',
+    mobileSmall: 12,
+    height: 'auto',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
@@ -36,7 +33,7 @@ const styles = {
   formGridProps: {
     container: true,
     item: true,
-    mobileSmall: 'auto',
+    mobileSmall: 12,
     flexDirection: 'column',
     justifyContent: 'flex-start',
   },
@@ -50,6 +47,17 @@ const styles = {
       fontFamily: 'Satoshi Medium',
       fontSize: { laptop: '14px', desktop: '15px', desktopMedium: '16px' },
       px: { laptop: 1, desktop: 2, desktopMedium: 3 },
+    },
+  },
+  responseGridProps: {
+    container: true,
+    item: true,
+    mobileSmall: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '10px',
+    sx: {
+      background: (theme) => theme.palette.Common.White['100p'],
     },
   },
 };

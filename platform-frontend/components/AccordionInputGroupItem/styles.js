@@ -2,7 +2,7 @@ const styles = {
   accordianProps: {
     sx: {
       background: (theme) => theme.palette.Common.White['100p'],
-      borderRadius: '30px !important',
+      borderRadius: '10px !important',
       width: '100%',
     },
   },

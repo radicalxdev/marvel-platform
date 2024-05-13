@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 import { Grid, Typography, useTheme } from '@mui/material';
 import { FormContainer } from 'react-hook-form-mui';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useWatchFields from '@/hooks/useWatchFields';
 
@@ -17,6 +17,11 @@ import ALERT_COLORS from '@/constants/notification';
 import styles from './styles';
 
 import { AuthContext } from '@/providers/GlobalProvider';
+import {
+  setCommunicatorLoading,
+  setPrompt,
+  setResponse,
+} from '@/redux/slices/toolsSlice';
 import submitPrompt from '@/services/tools/submitPrompt';
 
 const ToolForm = (props) => {
@@ -25,19 +30,22 @@ const ToolForm = (props) => {
   const dispatch = useDispatch();
   const { handleOpenSnackBar } = useContext(AuthContext);
 
+  const { communicatorLoading } = useSelector((state) => state.tools);
+
   const { register, control, handleSubmit, getValues, setValue, errors } =
     useWatchFields([]);
 
-  const [loading, setLoading] = useState();
-
   const handleSubmitForm = async (values) => {
     try {
-      setLoading(true);
-      await submitPrompt(values, dispatch);
+      console.log(values);
+      dispatch(setPrompt(values));
+      dispatch(setCommunicatorLoading(true));
+      const response = await submitPrompt(values, dispatch);
 
-      setLoading(false);
+      dispatch(setResponse(response));
+      dispatch(setCommunicatorLoading(false));
     } catch (error) {
-      setLoading(false);
+      dispatch(setCommunicatorLoading(false));
       handleOpenSnackBar(
         ALERT_COLORS.ERROR,
         error.message || 'Couldn\u0027t send prompt'
@@ -152,7 +160,7 @@ const ToolForm = (props) => {
           bgcolor={theme.palette.Common.White['100p']}
           text="Generate"
           textColor={theme.palette.Common.White['100p']}
-          loading={loading}
+          loading={communicatorLoading}
           onHoverTextColor={theme.palette.Background.purple}
           type="submit"
           inverted

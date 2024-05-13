@@ -186,6 +186,7 @@ const globalTheme = createTheme({
       red: '#FF5252',
       blue: '#50A0FF',
       green: '#1ED494',
+      white2: '#F3F3F3',
       darkgray: '#131313',
       gray: '#9B9B9B',
       grey1: '#D9D9D9',
