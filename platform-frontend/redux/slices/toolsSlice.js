@@ -2,10 +2,22 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import fetchTools from '../thunks/tools';
 
-const initialState = {
+const toolsState = {
   data: null,
   loading: true,
   error: null,
+};
+
+const communicator = {
+  prompt: null,
+  response: null,
+  communicatorLoading: false,
+  formOpen: true,
+};
+
+const initialState = {
+  ...toolsState,
+  ...communicator,
 };
 
 const tools = createSlice({
@@ -13,6 +25,19 @@ const tools = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
+    resetCommunicator: (state) => ({ ...state, ...communicator }),
+    setCommunicatorLoading: (state, action) => {
+      state.communicatorLoading = action.payload;
+    },
+    setPrompt: (state, action) => {
+      state.prompt = action.payload;
+    },
+    setFormOpen: (state, action) => {
+      state.formOpen = action.payload;
+    },
+    setResponse: (state, action) => {
+      state.response = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -30,6 +55,13 @@ const tools = createSlice({
   },
 });
 
-export const { reset } = tools.actions;
+export const {
+  reset,
+  setCommunicatorLoading,
+  setPrompt,
+  setResponse,
+  setFormOpen,
+  resetCommunicator,
+} = tools.actions;
 
 export default tools.reducer;
