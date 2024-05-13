@@ -13,10 +13,14 @@ import ArrowBack from '@/assets/svg/purple-arrow-back.svg';
 
 import ROUTES from '@/constants/routes';
 
+import TOOLS from '@/constants/tools';
+
+import FlashCardList from './FlashCardList';
+import MultipleChoiceResponse from './MultipleChoiceResponse';
 import styles from './styles';
 import ToolForm from './ToolForm';
 
-import { resetCommunicator } from '@/redux/slices/toolsSlice';
+import { resetCommunicator, setFormOpen } from '@/redux/slices/toolsSlice';
 
 const ToolPage = (props) => {
   const { toolDoc } = props;
@@ -24,7 +28,9 @@ const ToolPage = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { response } = useSelector((state) => state.tools);
+  const { response, formOpen } = useSelector((state) => state.tools);
+
+  const { name } = toolDoc;
 
   useEffect(() => {
     return () => {
@@ -58,22 +64,31 @@ const ToolPage = (props) => {
           title={toolDoc?.name}
           extraAccordionDetailsProps={{ px: 10 }}
           response={response}
+          open={formOpen}
+          toggleOpen={() => dispatch(setFormOpen(!formOpen))}
         >
-          <ToolForm inputs={toolDoc?.inputs} />
+          <ToolForm inputs={toolDoc?.inputs} id={toolDoc?.id} name={name} />
         </AccordionInputGroupItem>
       </Grid>
     );
   };
 
   const renderResponse = () => {
-    return <Grid {...styles.responseGridProps}>Response</Grid>;
+    switch (name) {
+      case TOOLS.GEMINI_DYNAMO:
+        return <FlashCardList />;
+      case TOOLS.GEMINI_QUIZIFY:
+        return <MultipleChoiceResponse />;
+      default:
+        return null;
+    }
   };
 
   return (
     <Grid {...styles.mainGridProps}>
       {renderBackButton()}
       {renderForm()}
-      {renderResponse()}
+      {!formOpen && response && renderResponse()}
     </Grid>
   );
 };

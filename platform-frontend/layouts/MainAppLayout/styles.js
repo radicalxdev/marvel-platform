@@ -11,6 +11,7 @@ const styles = {
     item: true,
     mobileSmall: true,
     justifyContent: 'center',
+    alignItems: 'flex-start',
     sx: (theme) => ({
       position: 'relative',
       background: isToolPage
@@ -27,7 +28,6 @@ const styles = {
         laptop: 5,
       },
       overflow: 'scroll',
-      height: '100vh',
       maxHeight: '100vh',
       ...extraContentProps,
     }),
