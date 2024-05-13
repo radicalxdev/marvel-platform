@@ -75,40 +75,39 @@ const ChatInterface = () => {
   const chatMessages = currentSession?.messages;
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
 
-  useEffect(() => {
-    const startConversation = async () => {
-      dispatch(setTyping(true));
+  const startConversation = async () => {
+    dispatch(setTyping(true));
 
-      // Define the chat payload
-      const chatPayload = {
-        user: {
-          id: userData?.id,
-          fullName: userData?.fullName,
-          email: userData?.email,
+    // Define the chat payload
+    const chatPayload = {
+      user: {
+        id: userData?.id,
+        fullName: userData?.fullName,
+        email: userData?.email,
+      },
+      type: 'chat',
+      message: {
+        role: MESSAGE_ROLE.SYSTEM,
+        type: MESSAGE_TYPES.TEXT,
+        payload: {
+          text: '/start',
         },
-        type: 'chat',
-        message: {
-          role: MESSAGE_ROLE.SYSTEM,
-          type: MESSAGE_TYPES.TEXT,
-          payload: {
-            text: '/start',
-          },
-        },
-      };
-
-      // Send a chat session
-      const { status, data } = await createChatSession(chatPayload, dispatch);
-
-      // Remove typing bubble
-      dispatch(setTyping(false));
-      if (status === 'created') dispatch(setStreaming(true));
-
-      // Set chat session
-      dispatch(setChatSession(data));
-      dispatch(setSessionLoaded(true));
+      },
     };
 
-    if (!currentSession) startConversation();
+    // Send a chat session
+    const { status, data } = await createChatSession(chatPayload, dispatch);
+
+    // Remove typing bubble
+    dispatch(setTyping(false));
+    if (status === 'created') dispatch(setStreaming(true));
+
+    // Set chat session
+    dispatch(setChatSession(data));
+    dispatch(setSessionLoaded(true));
+  };
+
+  useEffect(() => {
     return () => {
       dispatch(resetChat());
     };
@@ -189,6 +188,11 @@ const ChatInterface = () => {
       setTimeout(() => {
         dispatch(setError(null));
       }, 3000);
+      return;
+    }
+
+    if (!chatMessages) {
+      await startConversation();
       return;
     }
 
