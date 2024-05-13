@@ -10,6 +10,8 @@ const useWatchFields = (fieldConfigs) => {
     watch,
     formState: { errors },
     handleSubmit,
+    getValues,
+    setValue,
     control,
     reset,
   } = useForm();
@@ -39,6 +41,8 @@ const useWatchFields = (fieldConfigs) => {
     watch,
     control,
     errors,
+    getValues,
+    setValue,
     handleSubmit,
     fieldStates: newFieldStates,
     reset,

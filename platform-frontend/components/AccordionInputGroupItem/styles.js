@@ -19,8 +19,29 @@ const styles = {
       fontSize: { laptop: '20px', desktop: '24px' },
       color: 'black',
       display: 'flex',
-      justifyContent: 'center',
+      justifyContent: 'center !important',
       alignItems: 'center',
+    },
+  },
+  titleGridProps: {
+    container: true,
+    item: true,
+    justifyContent: 'center',
+    alignItems: 'center',
+    mobileSmall: 12,
+  },
+  outlinedButtonProps: {
+    color: 'purple',
+    extraProps: {
+      position: 'absolute',
+      right: (theme) => theme.spacing(4),
+      padding: '2px',
+      height: { laptop: '40px', desktop: '42px', desktopMedium: '45px' },
+    },
+    extraButtonProps: {
+      fontFamily: 'Satoshi Medium',
+      fontSize: { laptop: '14px', desktop: '15px', desktopMedium: '16px' },
+      px: { laptop: 1, desktop: 2, desktopMedium: 3 },
     },
   },
 };
