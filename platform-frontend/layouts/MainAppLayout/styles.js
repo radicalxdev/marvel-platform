@@ -1,33 +1,34 @@
 const styles = {
   mainGridProps: {
+    position: 'relative',
     container: true,
-    width: '100vw',
+    mobileSmall: 12,
+    height: '100vh',
+    maxHeight: '100vh',
   },
-  contentGridProps: (extraContentProps, headerHeight) => ({
+  contentGridProps: (extraContentProps, isToolPage) => ({
     container: true,
-    justifyContent: 'center',
     item: true,
-    desktopLarge: 12,
-    minHeight: `calc(100vh - ${headerHeight}px)`,
-    height: 'auto',
+    mobileSmall: true,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
     sx: (theme) => ({
-      background: theme.palette.Background.primary,
+      position: 'relative',
+      background: isToolPage
+        ? theme.palette.Background.white2
+        : theme.palette.Common.White['100p'],
       py: {
         desktopLarge: 5,
         desktop: 4,
         laptop: 5,
-        tablet: '28px',
-        mobile: 3,
-        mobileSmall: 3,
       },
       px: {
         desktopLarge: 5,
         desktop: 4,
         laptop: 5,
-        tablet: 5,
-        mobile: 5,
-        mobileSmall: '12px',
       },
+      overflow: 'scroll',
+      maxHeight: '100vh',
       ...extraContentProps,
     }),
   }),
