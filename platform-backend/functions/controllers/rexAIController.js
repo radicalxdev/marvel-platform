@@ -215,18 +215,15 @@ const kaiCommunicator = async (payload) => {
 
     const { messages, user, tool_data, type } = payload.data;
 
-    const API_KEY = 'AIzaSyBT0cxIrvcSUL8Ylfmrt8gra9BYb_K20kE';
-    const ENDPOINT = 'https://kai-ai-f63c8.wl.r.appspot.com/submit-tool';
-
     DEBUG &&
       logger.log(
         'Communicator variables:',
-        `API_KEY: ${API_KEY}`,
-        `ENDPOINT: ${ENDPOINT}`
+        `API_KEY: ${process.env.KAI_API_KEY}`,
+        `ENDPOINT: ${process.env.KAI_ENDPOINT}`
       );
 
     const headers = {
-      'API-Key': API_KEY,
+      'API-Key': process.env.KAI_API_KEY,
       'Content-Type': 'application/json',
     };
 
@@ -487,18 +484,14 @@ app.post('/toolCommunicatorV2', multerMiddleware, async (req, res) => {
     const { user, type, tool_data } = req.body;
     const { file } = req.files || {};
 
-    // Parse user and tool_data from JSON string if needed
-    const parsedUser = typeof user === 'string' ? JSON.parse(user) : user;
-    const parsedToolData =
-      typeof tool_data === 'string' ? JSON.parse(tool_data) : tool_data;
 
     // Deconstruct parsedToolData
-    const { tool_id, inputs } = parsedToolData;
+    const { tool_id, inputs } = tool_data;
 
     // Prepare payload for kaiCommunicator
     const payload = {
       data: {
-        user: parsedUser,
+        user,
         type: type,
         tool_data: {
           tool_id: tool_id, // Ensure tool_id is included
