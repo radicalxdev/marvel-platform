@@ -26,11 +26,12 @@ import styles from './styles';
  * @return {JSX.Element} The AccordionInputGroupItem component.
  */
 const AccordionInputGroupItem = (props) => {
-  const { title, children, extraAccordionDetailsProps, hasError } = props;
+  const { title, children, response, extraAccordionDetailsProps, hasError } =
+    props;
 
   const theme = useTheme();
 
-  const [open, setOpen] = useState(hasError ? !!hasError : true);
+  const [open, setOpen] = useState(!response);
 
   const toggleOpen = () => setOpen(!open);
 
@@ -47,7 +48,7 @@ const AccordionInputGroupItem = (props) => {
         iconPlacement="left"
         onHoverTextColor={theme.palette.Common.White['100p']}
         clickHandler={toggleOpen}
-        text="Edit Prompt"
+        text={`${open ? 'Hide' : 'Edit'} Prompt`}
         {...styles.outlinedButtonProps}
       />
     );
@@ -62,7 +63,7 @@ const AccordionInputGroupItem = (props) => {
       >
         <Grid {...styles.titleGridProps}>
           {title}
-          {renderEditButton()}
+          {response && renderEditButton()}
         </Grid>
       </AccordionSummary>
     );

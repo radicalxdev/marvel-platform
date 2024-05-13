@@ -6,7 +6,7 @@ const styles = {
         div: {
           columnGap: 1,
         },
-        WebkitTextFillColor: 'rgba(0, 0, 0, 0.5)',
+        WebkitTextFillColor: 'rgba(0, 0, 0, 0.5) !important',
       },
       '& .MuiOutlinedInput': {
         border: '2px solid black',

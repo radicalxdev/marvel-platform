@@ -156,7 +156,6 @@ const PrimaryFileUpload = forwardRef((props, ref) => {
         type="file"
         ref={fileInputRef}
         style={{ display: 'none' }}
-        onLoadCapture={(value) => console.log(value)}
         onChange={handleCarouselFiles}
         multiple={multiple}
       />
