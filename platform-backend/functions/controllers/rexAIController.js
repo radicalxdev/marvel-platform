@@ -484,23 +484,6 @@ const createChatSession = onCall(async (props) => {
       timestamp: Timestamp.fromMillis(Date.now()),
     };
 
-    const chatSession = await admin
-      .firestore()
-      .collection('chatSessions')
-      .where('user.id', '==', user.id)
-      .get();
-
-    // Check if chat session exists, if so, return it
-    if (!chatSession.empty) {
-      const foundChatSession = {
-        ...chatSession.docs[0].data(),
-        id: chatSession.docs[0].id,
-      };
-      DEBUG && logger.log('Found chat session: ', foundChatSession);
-      logger.log('Chat session found');
-      return { status: 'chat-found', data: foundChatSession };
-    }
-
     logger.log('Creating chat session');
 
     // Create new chat session if it doesn't exist
