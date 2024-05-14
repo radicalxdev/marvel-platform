@@ -226,7 +226,7 @@ const kaiCommunicator = async (payload) => {
     const kaiPayload = {
       user,
       type,
-      ...(type === BOT_TYPE.CHAT ? messages : tool),
+      ...(type === BOT_TYPE.CHAT ? { messages } : { tool_data: tool }),
     };
 
     DEBUG && logger.log('Stringified JSON', JSON.stringify(kaiPayload));
