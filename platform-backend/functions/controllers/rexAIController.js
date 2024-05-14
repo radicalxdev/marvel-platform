@@ -523,19 +523,24 @@ const createChatSession = onCall(async (props) => {
       },
     });
 
-    DEBUG && logger.log('response: ', response, 'type', typeof response);
+    DEBUG && logger.log('response: ', response?.data, 'type', typeof response);
 
     const { messages } = (await chatSessionRef.get()).data();
     DEBUG && logger.log('updated messages: ', messages);
 
     // Add response to chat session
     const updatedResponseMessages = messages.concat(
-      Array.isArray(response.data?.messages)
-        ? response.data?.messages.map((message) => ({
+      Array.isArray(response.data?.data?.messages)
+        ? response.data?.data?.messages.map((message) => ({
             ...message,
             timestamp: Timestamp.fromMillis(Date.now()),
           }))
-        : [{ ...response.data, timestamp: Timestamp.fromMillis(Date.now()) }]
+        : [
+            {
+              ...response.data?.data,
+              timestamp: Timestamp.fromMillis(Date.now()),
+            },
+          ]
     );
 
     await chatSessionRef.update({
