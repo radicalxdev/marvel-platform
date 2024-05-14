@@ -78,7 +78,7 @@ const ToolForm = (props) => {
 
   const handleSubmitForm = async (values) => {
     try {
-      console.log(values);
+
       dispatch(setPrompt(values));
       dispatch(setCommunicatorLoading(true));
 
