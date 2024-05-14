@@ -7,18 +7,9 @@ const pageNotFoundStyles = {
     alignItems: 'center',
     height: 'auto',
     overflow: 'hidden',
-    width: { laptop: '1450px' },
     maxWidth: { laptop: '1450px' },
-    minWidth: {
-      desktop: '1200px',
-      laptop: '944px',
-      tablet: '688px',
-      mobileSmall: 0,
-    },
     sx: {
       borderRadius: '22px',
-      backgroundImage:
-        'linear-gradient(180deg, #181A20 67.89%, rgba(24, 26, 32, 0.00) 115.44%)',
     },
   },
   mainContentGridProps: {
@@ -46,8 +37,6 @@ const pageNotFoundStyles = {
     width: '810px',
     height: '810px',
     sx: {
-      backgroundImage:
-        'radial-gradient(50% 50% at 50% 50%, #00355C 0%, rgba(0, 75, 86, 0.00) 100%)',
       opacity: 0.5,
       borderRadius: '655px',
       transform: 'translate(-25%, 0px)',
@@ -59,8 +48,6 @@ const pageNotFoundStyles = {
     width: '400px',
     height: '400px',
     sx: {
-      backgroundImage:
-        'radial-gradient(50% 50% at 50% 50%, #005C40 0%, rgba(0, 75, 86, 0.00) 100%)',
       opacity: 0.5,
       borderRadius: '655px',
       transform: 'translate(25%, -35%)',
@@ -73,8 +60,6 @@ const pageNotFoundStyles = {
     width: '600px',
     height: '600px',
     sx: {
-      backgroundImage:
-        'radial-gradient(50% 50% at 50% 50%, #00355C 0%, rgba(0, 75, 86, 0.00) 100%)',
       opacity: 0.5,
       borderRadius: '655px',
       transform: 'translate(35%, 10%)',
@@ -100,7 +85,7 @@ const pageNotFoundStyles = {
     justifyContent: 'center',
   },
   subtitleProps: {
-    color: 'white',
+    color: 'black',
     textAlign: 'center',
     fontFamily: 'Satoshi Black',
     fontSize: { laptop: '42px', desktop: '46px', desktopMedium: '50px' },
@@ -115,7 +100,7 @@ const pageNotFoundStyles = {
     mb: 3,
   },
   bodyProps: {
-    color: 'white',
+    color: 'black',
     textAlign: 'center',
     fontFamily: 'Satoshi Medium',
     fontSize: '18px',
@@ -149,13 +134,13 @@ const pageNotFoundStyles = {
     fontFamily: 'Ethnocentric Regular Italics',
     sx: {
       textShadow: '0px 4px 30px rgba(26, 214, 161, 0.24)',
-      background: (theme) => theme.palette.Background.gradient.blue2,
+      background: (theme) => theme.palette.primary.main,
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
     },
   },
   submitButtonProps: {
-    color: 'blue2',
+    color: 'purple',
     inverted: true,
     extraProps: {
       padding: '2px',

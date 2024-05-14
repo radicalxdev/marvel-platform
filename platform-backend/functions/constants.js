@@ -27,6 +27,8 @@ const MESSAGE_ROLES = {
 
 const BOT_TYPE = {
   MISSION: 'mission',
+  CHAT: 'chat',
+  TOOL: 'tool',
   TEACH_ME: 'teach_me',
   EXPLAIN_MY_ANSWER: 'ema',
   PLAY_GAME: 'play_game',
