@@ -1,7 +1,17 @@
 const admin = require('firebase-admin');
-// const { secrets } = require("firebase-extensions");
+const path = require('path');
 
-admin.initializeApp();
+// const { secrets } = require("firebase-extensions");
+const serviceAccount = require(
+  path.resolve('../../', 'kai-ai-f63c8-319de35f99bd.json')
+);
+
+const serviceFile = process.env.SERVICE_FILE;
+
+admin.initializeApp({
+  credential: admin.credential.cert(JSON.parse(serviceFile) || serviceAccount),
+  storageBucket: process.env.FIREBASE_CONFIG['storageBucket'],
+});
 
 const userController = require('./controllers/userController');
 const rexAIController = require('./controllers/rexAIController');
