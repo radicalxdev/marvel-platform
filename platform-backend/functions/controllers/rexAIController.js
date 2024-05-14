@@ -319,7 +319,7 @@ app.post('/', (req, res) => {
       console.log('Uploads:', uploads);
       console.log('data:', JSON.parse(data?.data));
       DEBUG && logger.log('data:', JSON.parse(data?.data));
-      const noUploads = uploads.length === 0;
+      // const noUploads = uploads.length === 0;
 
       const {
         tool_data: { inputs, ...otherToolData },
@@ -332,10 +332,7 @@ app.post('/', (req, res) => {
           ...otherData,
           tool_data: {
             ...otherToolData,
-            inputs: [
-              ...inputs,
-              ...(!noUploads && { name: 'files', value: results }),
-            ],
+            inputs: [...inputs, { name: 'files', value: results }],
           },
         },
       });

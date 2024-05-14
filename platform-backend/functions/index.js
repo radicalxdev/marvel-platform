@@ -6,11 +6,9 @@ const serviceAccount = require(
   path.resolve('../../', 'kai-ai-f63c8-319de35f99bd.json')
 );
 
-const serviceFile = process.env.SERVICE_FILE;
-
 admin.initializeApp({
-  credential: admin.credential.cert(JSON.parse(serviceFile) || serviceAccount),
-  storageBucket: process.env.FIREBASE_CONFIG['storageBucket'],
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: 'kai-ai-f63c8.appspot.com',
 });
 
 const userController = require('./controllers/userController');
