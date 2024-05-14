@@ -226,7 +226,7 @@ const kaiCommunicator = async (payload) => {
     const kaiPayload = {
       user,
       type,
-      ...(type === BOT_TYPE.CHAT ? messages : tool),
+      ...(type === BOT_TYPE.CHAT ? { messages } : { tool_data: tool }),
     };
 
     DEBUG && logger.log('Stringified JSON', JSON.stringify(kaiPayload));
@@ -313,7 +313,7 @@ const communicatorV3 = onCall(async (props) => {
 
     // Process response and update Firestore
     const updatedResponseMessages = updatedMessages.concat(
-      response.data?.messages.map((msg) => ({
+      response.data?.data?.map((msg) => ({
         ...msg,
         timestamp: Timestamp.fromMillis(Date.now()), // ensure consistent timestamp format
       }))
@@ -479,27 +479,10 @@ const createChatSession = onCall(async (props) => {
       throw new HttpsError('invalid-argument', 'Missing required fields');
     }
 
-    const triggerMessage = {
+    const initialMessage = {
       ...message,
       timestamp: Timestamp.fromMillis(Date.now()),
     };
-
-    const chatSession = await admin
-      .firestore()
-      .collection('chatSessions')
-      .where('user.id', '==', user.id)
-      .get();
-
-    // Check if chat session exists, if so, return it
-    if (!chatSession.empty) {
-      const foundChatSession = {
-        ...chatSession.docs[0].data(),
-        id: chatSession.docs[0].id,
-      };
-      DEBUG && logger.log('Found chat session: ', foundChatSession);
-      logger.log('Chat session found');
-      return { status: 'chat-found', data: foundChatSession };
-    }
 
     logger.log('Creating chat session');
 
@@ -508,8 +491,9 @@ const createChatSession = onCall(async (props) => {
       .firestore()
       .collection('chatSessions')
       .add({
-        messages: [triggerMessage],
+        messages: [initialMessage],
         user,
+        type,
         createdAt: Timestamp.fromMillis(Date.now()),
         updatedAt: Timestamp.fromMillis(Date.now()),
       });
@@ -517,25 +501,30 @@ const createChatSession = onCall(async (props) => {
     // Send trigger message to ReX AI
     const response = await kaiCommunicator({
       data: {
-        messages: [triggerMessage],
+        messages: [initialMessage],
         user,
         type,
       },
     });
 
-    DEBUG && logger.log('response: ', response, 'type', typeof response);
+    DEBUG && logger.log('response: ', response?.data, 'type', typeof response);
 
     const { messages } = (await chatSessionRef.get()).data();
     DEBUG && logger.log('updated messages: ', messages);
 
     // Add response to chat session
     const updatedResponseMessages = messages.concat(
-      Array.isArray(response.data?.messages)
-        ? response.data?.messages.map((message) => ({
+      Array.isArray(response.data?.data)
+        ? response.data?.data?.map((message) => ({
             ...message,
             timestamp: Timestamp.fromMillis(Date.now()),
           }))
-        : [{ ...response.data, timestamp: Timestamp.fromMillis(Date.now()) }]
+        : [
+            {
+              ...response.data?.data,
+              timestamp: Timestamp.fromMillis(Date.now()),
+            },
+          ]
     );
 
     await chatSessionRef.update({
