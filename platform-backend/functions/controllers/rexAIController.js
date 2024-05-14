@@ -1,4 +1,5 @@
 const admin = require('firebase-admin');
+const storage = admin.storage();
 const functions = require('firebase-functions');
 const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
@@ -6,6 +7,7 @@ const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
 const { BOT_TYPE } = require('../constants');
 const express = require('express');
+const { v4: uuidv4 } = require('uuid');
 const busboy = require('busboy');
 const app = express();
 
@@ -21,20 +23,21 @@ const DEBUG = process.env.DEBUG;
 const kaiCommunicator = async (payload) => {
   try {
     DEBUG && logger.log('kaiCommunicator started, data:', payload.data);
+    console.log(payload.data);
 
-    const { messages, user, tool_data, files, type } = payload.data;
-
-    console.log(files);
+    const { messages, user, tool_data, type } = payload.data;
 
     const isToolCommunicator = type === BOT_TYPE.TOOL;
     const KAI_API_KEY = 'AIzaSyBT0cxIrvcSUL8Ylfmrt8gra9BYb_K20kE';
     const KAI_ENDPOINT = 'https://kai-ai-f63c8.wl.r.appspot.com/submit-tool';
+
     DEBUG &&
       logger.log(
         'Communicator variables:',
         `API_KEY: ${KAI_API_KEY}`,
         `ENDPOINT: ${KAI_ENDPOINT}`
       );
+
     console.log(
       'Communicator variables:',
       `API_KEY: ${KAI_API_KEY}`,
@@ -43,43 +46,15 @@ const kaiCommunicator = async (payload) => {
 
     const headers = {
       'API-Key': KAI_API_KEY,
-      'Content-Type': isToolCommunicator
-        ? 'multipart/form-data'
-        : 'application/json',
+      'Content-Type': 'application/json',
     };
 
-    console.log(headers);
-
-    let kaiPayload;
-
-    if (isToolCommunicator) {
-      const formData = new FormData();
-
-      // Append payload to the form data
-      formData.append('data', JSON.stringify({ user, type, tool_data }));
-
-      // Append files to the form data
-      // formData.append(`files`, files[0]);
-
-      // if (!!files && files?.length > 0) {
-      //   files.forEach((file, index) => {
-      //     formData.append(`files${index}`, file?.buffer, {
-      //       filename: file.originalName,
-      //       contentType: file.mimeType,
-      //     });
-      //   });
-      // }
-      formData.append('files', files);
-
-      kaiPayload = formData;
-    } else {
-      kaiPayload = { user, type, messages };
-    }
-
-    console.log(
-      'Stringified JSON',
-      isToolCommunicator ? kaiPayload : JSON.stringify(kaiPayload)
-    );
+    const kaiPayload = {
+      user,
+      type,
+      ...(isToolCommunicator ? { tool_data } : { messages }),
+    };
+    console.log('Stringified JSON', JSON.stringify(kaiPayload));
 
     const resp = await axios.post(KAI_ENDPOINT, kaiPayload, {
       headers,
@@ -196,7 +171,7 @@ const toolCommunicatorV1 = onCall(async (props) => {
   try {
     DEBUG && logger.log('toolCommunicator started, data:', props.data);
 
-    const { inputs, id } = props.data;
+    const { inputs } = props.data;
 
     DEBUG &&
       logger.log(
@@ -205,18 +180,18 @@ const toolCommunicatorV1 = onCall(async (props) => {
         `ENDPOINT: ${process.env.KAI_ENDPOINT}`
       );
 
-    const toolSession = await admin
-      .firestore()
-      .collection('tools')
-      .doc(id)
-      .get();
+    // const toolDoc = await admin
+    //   .firestore()
+    //   .collection('tools')
+    //   .doc(id)
+    //   .get();
 
-    if (!toolSession.exists) {
-      logger.log('Tool session not found: ', id);
-      throw new HttpsError('not-found', 'Tool session not found');
-    }
+    // if (!toolDoc.exists) {
+    //   logger.log('Tool not found: ', id);
+    //   throw new HttpsError('not-found', 'Tool not found');
+    // }
 
-    const { user, type } = toolSession.data();
+    // const { user, type } = toolDoc.data();
 
     const toolData = {
       inputs: inputs,
@@ -225,8 +200,6 @@ const toolCommunicatorV1 = onCall(async (props) => {
     // Construct payload for the kaiCommunicator
     const KaiPayload = {
       tool: toolData,
-      type,
-      user,
     };
 
     const response = await kaiCommunicator({
@@ -234,18 +207,6 @@ const toolCommunicatorV1 = onCall(async (props) => {
     });
 
     DEBUG && logger.log('kaiCommunicator response:', response.data);
-
-    // Process response and update Firestore
-    await toolSession.ref.update({
-      lastUpdated: Timestamp.fromMillis(Date.now()),
-    });
-
-    if (DEBUG) {
-      logger.log(
-        'Updated tool session: ',
-        (await toolSession.ref.get()).data()
-      );
-    }
 
     return { status: 'success' };
   } catch (error) {
@@ -313,69 +274,76 @@ const getUserChatSessions = onCall(async (props) => {
  */
 app.post('/', (req, res) => {
   const bb = busboy({ headers: req.headers });
-  const files = [];
-  const data = {};
 
-  // Handle file uploads
-  bb.on('file', (fieldname, file, filename) => {
-    console.log('fieldname', fieldname);
-    console.log('file', file);
-    console.log('filename', filename);
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
 
-    let fileBuffer = Buffer.from('');
+  const uploads = [];
+  const data = [];
+  bb.on('file', (fieldname, file, info) => {
+    const { filename } = info;
+    const fileId = uuidv4();
+    const filePath = `uploads/${fileId}-${filename}`;
+    const fileWriteStream = storage.bucket().file(filePath).createWriteStream();
 
-    file.on('data', (data) => {
-      fileBuffer = Buffer.concat([fileBuffer, data]);
+    file.pipe(fileWriteStream);
+
+    const uploadPromise = new Promise((resolve, reject) => {
+      fileWriteStream.on('finish', () => {
+        storage
+          .bucket()
+          .file(filePath)
+          .getSignedUrl({
+            action: 'read',
+            expires: '03-01-2500', // set expiration as needed
+          })
+          .then((urls) => {
+            resolve({ filePath, url: urls[0], filename });
+          })
+          .catch(reject);
+      });
+
+      fileWriteStream.on('error', reject);
     });
 
-    file.on('end', () => {
-      if (filename) {
-        // This check ensures that a file was actually uploaded
-        files.push({
-          buffer: fileBuffer,
-          originalName: filename?.filename,
-          mimeType: filename?.mimeType,
-        });
-      }
-    });
+    uploads.push(uploadPromise);
   });
 
-  // Handle text fields
-  bb.on('field', (fieldname, val) => {
-    data[fieldname] = val;
+  bb.on('field', (name, value) => {
+    data[name] = value;
   });
 
-  // Finish processing and respond
   bb.on('finish', async () => {
     try {
-      console.log('toolCommunicatorV2 started, request data:', data);
-      const { user, type, tool_data } = JSON.parse(data?.data);
+      console.log('Uploads:', uploads);
+      console.log('data:', JSON.parse(data?.data));
+      DEBUG && logger.log('data:', JSON.parse(data?.data));
+      const noUploads = uploads.length === 0;
 
-      const payload = {
+      const {
+        tool_data: { inputs, ...otherToolData },
+        ...otherData
+      } = JSON.parse(data?.data);
+
+      const results = await Promise.all(uploads);
+      const response = await kaiCommunicator({
         data: {
-          user,
-          type,
-          tool_data,
-          files,
+          ...otherData,
+          tool_data: {
+            ...otherToolData,
+            inputs: [
+              ...inputs,
+              ...(!noUploads && { name: 'files', value: results }),
+            ],
+          },
         },
-      };
+      });
 
-      console.log('Prepared payload for kaiCommunicator:', payload);
-      DEBUG && logger.log('files', files);
-
-      // Call kaiCommunicator with constructed payload
-      // const response = { data: 'dummy' };
-
-      const response = await kaiCommunicator(payload);
-
-      console.log('Response from AI API:', response);
-
-      res.status(200).send({ status: 'success', data: response.data });
+      res.status(200).json({ success: true, data: response.data });
     } catch (error) {
-      console.error('toolCommunicatorV2 error:', error);
-      res
-        .status(500)
-        .send({ error: 'Internal Server Error', message: error.message });
+      console.error('Error processing request:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   });
 
