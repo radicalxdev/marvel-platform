@@ -133,7 +133,7 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
 
       if (mode === AUTH_MODES.VERIFY_EMAIL) {
         if (auth.currentUser?.emailVerified) {
-          router.push(ROUTES.CREATE_AVATAR);
+          router.push(ROUTES.HOME);
           return;
         }
 
