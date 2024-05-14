@@ -71,11 +71,16 @@ const ChatInterface = () => {
 
   const sessionId = localStorage.getItem('sessionId');
 
-  const currentSession = chat?.[sessionId];
+  const currentSession = chat;
   const chatMessages = currentSession?.messages;
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
 
   const startConversation = async (message) => {
+    dispatch(
+      setMessages({
+        role: MESSAGE_ROLE.AI,
+      })
+    );
     dispatch(setTyping(true));
 
     // Define the chat payload
@@ -138,7 +143,6 @@ const ChatInterface = () => {
             if (lastMessage?.role === MESSAGE_ROLE.AI) {
               dispatch(
                 setMessages({
-                  id: sessionId,
                   role: MESSAGE_ROLE.AI,
                   response: lastMessage,
                 })
@@ -204,14 +208,13 @@ const ChatInterface = () => {
 
     dispatch(
       setMessages({
-        id: sessionId,
         role: MESSAGE_ROLE.HUMAN,
       })
     );
 
     dispatch(setTyping(true));
 
-    await sendMessage({ message, id: currentSession?.id }, dispatch);
+    await sendMessage({ message, id: sessionId }, dispatch);
   };
 
   const handleQuickReply = async (option) => {
