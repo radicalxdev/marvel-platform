@@ -55,7 +55,7 @@ const chatSlice = createSlice({
       state.openSettingsChat = false;
     },
     setMessages: (state, action) => {
-      const { id, role, response } = action.payload;
+      const { role, response } = action.payload;
 
       if (role === MESSAGE_ROLE.HUMAN) {
         const message = {
@@ -70,10 +70,7 @@ const chatSlice = createSlice({
           ...state,
           chat: {
             ...state.chat,
-            [id]: {
-              ...state.chat[id],
-              messages: [...(state.chat[id]?.messages || []), message],
-            },
+            messages: [...(state.chat?.messages || []), message],
           },
           input: '',
         };
@@ -83,10 +80,7 @@ const chatSlice = createSlice({
         ...state,
         chat: {
           ...state.chat,
-          [id]: {
-            ...state.chat[id],
-            messages: [...(state.chat[id]?.messages || []), response],
-          },
+          messages: [...(state.chat?.messages || []), response],
         },
         input: '',
       };
@@ -102,12 +96,7 @@ const chatSlice = createSlice({
 
       localStorage.setItem('sessionId', session.id);
 
-      const updateChat = {
-        ...state.chat,
-        [session.id]: session,
-      };
-
-      state.chat = updateChat;
+      state.chat = session;
     },
     setTyping: (state, action) => {
       state.typing = action.payload;

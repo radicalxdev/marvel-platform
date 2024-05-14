@@ -17,6 +17,7 @@ const createChatSession = async (payload, dispatch) => {
 
     return response.data;
   } catch (err) {
+    console.log(err);
     dispatch(setError('Error! Couldn\u0027t send message'));
     dispatch(setStreaming(false));
     dispatch(setTyping(false));

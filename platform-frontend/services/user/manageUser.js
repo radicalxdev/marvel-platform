@@ -2,7 +2,7 @@ import { sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 
 const sendVerification = (user) => {
   return sendEmailVerification(user, {
-    url: `${process.env.NEXT_PUBLIC_LINK}/createavatar`,
+    url: `${process.env.NEXT_PUBLIC_LINK}/`,
     handleCodeInApp: true,
   });
 };
