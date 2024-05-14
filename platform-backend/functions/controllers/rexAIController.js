@@ -22,28 +22,66 @@ const kaiCommunicator = async (payload) => {
   try {
     DEBUG && logger.log('kaiCommunicator started, data:', payload.data);
 
-    const { messages, user, tool_data, type } = payload.data;
+    const { messages, user, tool_data, files, type } = payload.data;
 
+    console.log(files);
+
+    const isToolCommunicator = type === BOT_TYPE.TOOL;
+    const KAI_API_KEY = 'AIzaSyBT0cxIrvcSUL8Ylfmrt8gra9BYb_K20kE';
+    const KAI_ENDPOINT = 'https://kai-ai-f63c8.wl.r.appspot.com/submit-tool';
+    DEBUG &&
+      logger.log(
+        'Communicator variables:',
+        `API_KEY: ${KAI_API_KEY}`,
+        `ENDPOINT: ${KAI_ENDPOINT}`
+      );
     console.log(
       'Communicator variables:',
-      `API_KEY: ${process.env.KAI_API_KEY}`,
-      `ENDPOINT: ${process.env.KAI_ENDPOINT}`
+      `API_KEY: ${KAI_API_KEY}`,
+      `ENDPOINT: ${KAI_ENDPOINT}`
     );
 
     const headers = {
-      'API-Key': process.env.KAI_API_KEY,
-      'Content-Type': 'application/json',
+      'API-Key': KAI_API_KEY,
+      'Content-Type': isToolCommunicator
+        ? 'multipart/form-data'
+        : 'application/json',
     };
 
-    const kaiPayload = {
-      user,
-      type,
-      ...(type === BOT_TYPE.CHAT ? { messages } : { tool_data }),
-    };
+    console.log(headers);
 
-    console.log('Stringified JSON', JSON.stringify(kaiPayload));
+    let kaiPayload;
 
-    const resp = await axios.post(process.env.KAI_ENDPOINT, kaiPayload, {
+    if (isToolCommunicator) {
+      const formData = new FormData();
+
+      // Append payload to the form data
+      formData.append('data', JSON.stringify({ user, type, tool_data }));
+
+      // Append files to the form data
+      // formData.append(`files`, files[0]);
+
+      // if (!!files && files?.length > 0) {
+      //   files.forEach((file, index) => {
+      //     formData.append(`files${index}`, file?.buffer, {
+      //       filename: file.originalName,
+      //       contentType: file.mimeType,
+      //     });
+      //   });
+      // }
+      formData.append('files', files);
+
+      kaiPayload = formData;
+    } else {
+      kaiPayload = { user, type, messages };
+    }
+
+    console.log(
+      'Stringified JSON',
+      isToolCommunicator ? kaiPayload : JSON.stringify(kaiPayload)
+    );
+
+    const resp = await axios.post(KAI_ENDPOINT, kaiPayload, {
       headers,
     });
 
@@ -279,18 +317,24 @@ app.post('/', (req, res) => {
   const data = {};
 
   // Handle file uploads
-  bb.on('file', (fieldname, file, filename, encoding, mimetype) => {
+  bb.on('file', (fieldname, file, filename) => {
+    console.log('fieldname', fieldname);
+    console.log('file', file);
+    console.log('filename', filename);
+
     let fileBuffer = Buffer.from('');
+
     file.on('data', (data) => {
       fileBuffer = Buffer.concat([fileBuffer, data]);
     });
+
     file.on('end', () => {
       if (filename) {
         // This check ensures that a file was actually uploaded
         files.push({
           buffer: fileBuffer,
-          originalname: filename,
-          mimetype: mimetype,
+          originalName: filename?.filename,
+          mimeType: filename?.mimeType,
         });
       }
     });
@@ -305,18 +349,14 @@ app.post('/', (req, res) => {
   bb.on('finish', async () => {
     try {
       console.log('toolCommunicatorV2 started, request data:', data);
-      const { user, type, tool_data } = data;
-      const tool_data_parsed = JSON.parse(tool_data);
+      const { user, type, tool_data } = JSON.parse(data?.data);
 
       const payload = {
         data: {
           user,
           type,
-          tool_data: {
-            tool_id: tool_data_parsed.tool_id,
-            inputs: tool_data_parsed.inputs,
-            files: files,
-          },
+          tool_data,
+          files,
         },
       };
 
