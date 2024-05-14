@@ -75,7 +75,7 @@ const ChatInterface = () => {
   const chatMessages = currentSession?.messages;
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
 
-  const startConversation = async () => {
+  const startConversation = async (message) => {
     dispatch(setTyping(true));
 
     // Define the chat payload
@@ -86,13 +86,7 @@ const ChatInterface = () => {
         email: userData?.email,
       },
       type: 'chat',
-      message: {
-        role: MESSAGE_ROLE.SYSTEM,
-        type: MESSAGE_TYPES.TEXT,
-        payload: {
-          text: '/start',
-        },
-      },
+      message,
     };
 
     // Send a chat session
@@ -102,6 +96,8 @@ const ChatInterface = () => {
     dispatch(setTyping(false));
     if (status === 'created') dispatch(setStreaming(true));
 
+    console.log(data);
+
     // Set chat session
     dispatch(setChatSession(data));
     dispatch(setSessionLoaded(true));
@@ -109,6 +105,7 @@ const ChatInterface = () => {
 
   useEffect(() => {
     return () => {
+      localStorage.removeItem('sessionId');
       dispatch(resetChat());
     };
   }, []);
@@ -191,11 +188,6 @@ const ChatInterface = () => {
       return;
     }
 
-    if (!chatMessages) {
-      await startConversation();
-      return;
-    }
-
     const message = {
       role: MESSAGE_ROLE.HUMAN,
       type: MESSAGE_TYPES.TEXT,
@@ -204,11 +196,18 @@ const ChatInterface = () => {
       },
     };
 
+    if (!chatMessages) {
+      await startConversation(message);
+      return;
+    }
+
     dispatch(
       setMessages({
+        id: sessionId,
         role: MESSAGE_ROLE.HUMAN,
       })
     );
+
     dispatch(setTyping(true));
 
     await sendMessage({ message, id: currentSession?.id }, dispatch);
