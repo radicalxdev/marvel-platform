@@ -388,10 +388,15 @@ const toolCommunicatorV1 = onCall(async (props) => {
     DEBUG && logger.log('kaiCommunicator response:', response.data);
 
     // Process response and update Firestore
-    await toolSession.ref.update({ lastUpdated: Timestamp.fromMillis(Date.now()) });
+    await toolSession.ref.update({
+      lastUpdated: Timestamp.fromMillis(Date.now()),
+    });
 
     if (DEBUG) {
-      logger.log('Updated tool session: ', (await toolSession.ref.get()).data());
+      logger.log(
+        'Updated tool session: ',
+        (await toolSession.ref.get()).data()
+      );
     }
 
     return { status: 'success' };
@@ -400,7 +405,6 @@ const toolCommunicatorV1 = onCall(async (props) => {
     throw new HttpsError('internal', error.message);
   }
 });
-
 
 /**
  * This function retrieves all existing chat sessions for a user.
@@ -450,10 +454,6 @@ const getUserChatSessions = onCall(async (props) => {
   }
 });
 
-
-
-
-
 /**
  * This creates a chat session for a user.
  * If the chat session already exists, it will return the existing chat session.
@@ -474,12 +474,12 @@ const createChatSession = onCall(async (props) => {
 
     const { user, message, type } = props.data;
 
-    if (!user || !message || type) {
+    if (!user || !message || !type) {
       logger.log('Missing required fields', props.data);
       throw new HttpsError('invalid-argument', 'Missing required fields');
     }
 
-    const triggerMessage = {
+    const initialMessage = {
       ...message,
       timestamp: Timestamp.fromMillis(Date.now()),
     };
@@ -508,7 +508,7 @@ const createChatSession = onCall(async (props) => {
       .firestore()
       .collection('chatSessions')
       .add({
-        messages: [triggerMessage],
+        messages: [initialMessage],
         user,
         createdAt: Timestamp.fromMillis(Date.now()),
         updatedAt: Timestamp.fromMillis(Date.now()),
@@ -517,7 +517,7 @@ const createChatSession = onCall(async (props) => {
     // Send trigger message to ReX AI
     const response = await kaiCommunicator({
       data: {
-        messages: [triggerMessage],
+        messages: [initialMessage],
         user,
         type,
       },
