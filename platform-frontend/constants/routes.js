@@ -1,7 +1,6 @@
 const ROUTES = {
   HOME: '/',
   SETTINGS: '/settings',
-  CREATE_AVATAR: '/createavatar',
   SIGNIN: '/signin',
   SIGNUP: '/signup',
   PRIVACY: '/privacy',
