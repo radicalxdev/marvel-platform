@@ -313,7 +313,7 @@ const communicatorV3 = onCall(async (props) => {
 
     // Process response and update Firestore
     const updatedResponseMessages = updatedMessages.concat(
-      response.data?.messages.map((msg) => ({
+      response.data?.data?.map((msg) => ({
         ...msg,
         timestamp: Timestamp.fromMillis(Date.now()), // ensure consistent timestamp format
       }))
@@ -510,6 +510,7 @@ const createChatSession = onCall(async (props) => {
       .add({
         messages: [initialMessage],
         user,
+        type,
         createdAt: Timestamp.fromMillis(Date.now()),
         updatedAt: Timestamp.fromMillis(Date.now()),
       });
