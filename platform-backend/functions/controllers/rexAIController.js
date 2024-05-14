@@ -530,8 +530,8 @@ const createChatSession = onCall(async (props) => {
 
     // Add response to chat session
     const updatedResponseMessages = messages.concat(
-      Array.isArray(response.data?.data?.messages)
-        ? response.data?.data?.messages.map((message) => ({
+      Array.isArray(response.data?.data)
+        ? response.data?.data?.map((message) => ({
             ...message,
             timestamp: Timestamp.fromMillis(Date.now()),
           }))
