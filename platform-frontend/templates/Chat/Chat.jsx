@@ -138,6 +138,7 @@ const ChatInterface = () => {
             if (lastMessage?.role === MESSAGE_ROLE.AI) {
               dispatch(
                 setMessages({
+                  id: sessionId,
                   role: MESSAGE_ROLE.AI,
                   response: lastMessage,
                 })
