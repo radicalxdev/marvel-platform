@@ -5,7 +5,6 @@ import useToolProps from '@/hooks/useToolProps';
 import MainAppLayout from '@/layouts/MainAppLayout';
 import ToolPage, { ToolPageSkeleton } from '@/templates/ToolPage';
 
-import CHALLENGES from '@/constants/challenges';
 import ROUTES from '@/constants/routes';
 
 /**
@@ -16,7 +15,7 @@ import ROUTES from '@/constants/routes';
 const IndividualToolPage = () => {
   const router = useRouter();
 
-  const { toolDoc, loading, ...toolProps } = useToolProps(CHALLENGES.MISSION);
+  const { toolDoc, loading, ...toolProps } = useToolProps();
 
   if (loading || !toolDoc) {
     if (!toolDoc && !loading) router.push(ROUTES.HOME);

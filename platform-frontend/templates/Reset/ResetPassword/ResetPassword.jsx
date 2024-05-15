@@ -16,7 +16,7 @@ import useWatchFields from '@/hooks/useWatchFields';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import Loader from '@/components/Loader';
-import ProfileInputField from '@/templates/Settings/ProfileInputField';
+import ProfileInputField from '@/components/ProfileInputField';
 
 import ROUTES from '@/constants/routes';
 
