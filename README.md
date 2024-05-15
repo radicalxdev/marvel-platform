@@ -19,7 +19,26 @@ The "Kai" platform is structured into two main components: Firebase and AI. The 
 ![Architecture Diagram](architecture.png)
 
 ### Folder Structure
- [todo: @yunus]
+## Folder Structure Overview
+
+- **`/frontend`**:
+  Contains all the files related to the front-end application, including the NextJS app and associated resources.
+
+- **`/functions`**:
+  Houses the Firebase Functions, which are serverless functions responsible for backend processes such as AI chatbot and tools communicators
+
+## Key Files
+- **`firebase.json`**:
+  Contains configuration settings for Firebase services such as hosting and rules.
+
+- **`firestore.indexes.json`**:
+  Manages custom indexing for Firestore to optimize query performance.
+
+- **`firestore.rules`**:
+  Security rules for Firestore database, defining read/write permissions.
+
+- **`package.json`** & **`package-lock.json`**:
+  Defines the project’s global dependencies
 
 ## Prerequisites
 - Node.js (v14 or later)
