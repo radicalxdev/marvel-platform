@@ -205,7 +205,6 @@ app.post('/', (req, res) => {
   bb.on('finish', async () => {
     try {
       DEBUG && logger.log('data:', JSON.parse(data?.data));
-      // const noUploads = uploads.length === 0;
 
       const {
         tool_data: { inputs, ...otherToolData },
@@ -218,12 +217,17 @@ app.post('/', (req, res) => {
       res.set('Access-Control-Allow-Methods', 'POST');
       res.set('Access-Control-Allow-Headers', 'Content-Type');
 
+      const modifiedInputs =
+        uploads?.length > 0
+          ? [...inputs, { name: 'files', value: results }]
+          : inputs;
+
       const response = await kaiCommunicator({
         data: {
           ...otherData,
           tool_data: {
             ...otherToolData,
-            inputs: [...inputs, { name: 'files', value: results }],
+            inputs: modifiedInputs,
           },
         },
       });
