@@ -6,8 +6,8 @@ Kai is an open source project by Radical having chatbot and smart tools for teac
 - [Architecture](#Architecture)
 - [Folder Structure](#folder-structure)
 - [Setup](#Setup)
-- - [Local Development](#Local Development)
-- - [Cloud Deployment](#Cloud Deployment)
+- - [`Local Development`](#Local Development)
+- - [`Cloud Deployment`](#Cloud Deployment)
 - [Contributing](#Contributing)
 - [License](#license)
 
