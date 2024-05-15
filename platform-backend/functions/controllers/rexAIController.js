@@ -23,13 +23,12 @@ const DEBUG = process.env.DEBUG;
 const kaiCommunicator = async (payload) => {
   try {
     DEBUG && logger.log('kaiCommunicator started, data:', payload.data);
-    console.log(payload.data);
 
     const { messages, user, tool_data, type } = payload.data;
 
     const isToolCommunicator = type === BOT_TYPE.TOOL;
-    const KAI_API_KEY = 'AIzaSyBT0cxIrvcSUL8Ylfmrt8gra9BYb_K20kE';
-    const KAI_ENDPOINT = 'https://kai-ai-f63c8.wl.r.appspot.com/submit-tool';
+    const KAI_API_KEY = process.env.KAI_API_KEY;
+    const KAI_ENDPOINT = process.env.KAI_ENDPOINT;
 
     DEBUG &&
       logger.log(
@@ -37,12 +36,6 @@ const kaiCommunicator = async (payload) => {
         `API_KEY: ${KAI_API_KEY}`,
         `ENDPOINT: ${KAI_ENDPOINT}`
       );
-
-    console.log(
-      'Communicator variables:',
-      `API_KEY: ${KAI_API_KEY}`,
-      `ENDPOINT: ${KAI_ENDPOINT}`
-    );
 
     const headers = {
       'API-Key': KAI_API_KEY,
@@ -54,7 +47,6 @@ const kaiCommunicator = async (payload) => {
       type,
       ...(isToolCommunicator ? { tool_data } : { messages }),
     };
-    console.log('Stringified JSON', JSON.stringify(kaiPayload));
 
     const resp = await axios.post(KAI_ENDPOINT, kaiPayload, {
       headers,
@@ -159,111 +151,6 @@ const communicatorV3 = onCall(async (props) => {
 });
 
 /**
- * Manages communications for a specific tool session with the AI, sending tool inputs and updating the session.
- *
- * @param {object} props - The properties of the communication.
- * @param {object} props.data - The data object containing the tool details and id.
- * @param {string} props.data.id - The id of the tool session.
- * @param {array} props.data.inputs - The array of inputs for the tool.
- * @return {object} The response object containing the status and data.
- */
-const toolCommunicatorV1 = onCall(async (props) => {
-  try {
-    DEBUG && logger.log('toolCommunicator started, data:', props.data);
-
-    const { inputs } = props.data;
-
-    DEBUG &&
-      logger.log(
-        'toolCommunicator variables:',
-        `API_KEY: ${process.env.KAI_API_KEY}`,
-        `ENDPOINT: ${process.env.KAI_ENDPOINT}`
-      );
-
-    // const toolDoc = await admin
-    //   .firestore()
-    //   .collection('tools')
-    //   .doc(id)
-    //   .get();
-
-    // if (!toolDoc.exists) {
-    //   logger.log('Tool not found: ', id);
-    //   throw new HttpsError('not-found', 'Tool not found');
-    // }
-
-    // const { user, type } = toolDoc.data();
-
-    const toolData = {
-      inputs: inputs,
-    };
-
-    // Construct payload for the kaiCommunicator
-    const KaiPayload = {
-      tool: toolData,
-    };
-
-    const response = await kaiCommunicator({
-      data: KaiPayload,
-    });
-
-    DEBUG && logger.log('kaiCommunicator response:', response.data);
-
-    return { status: 'success' };
-  } catch (error) {
-    DEBUG && logger.log('toolCommunicator error:', error);
-    throw new HttpsError('internal', error.message);
-  }
-});
-
-/**
- * This function retrieves all existing chat sessions for a user.
- *
- * @param {Object} props.data - The data object containing the user, challenge, message, and botType.
- * @param {Object} props.data.userId - The userId.
- *
- * @return {Promise<Object>} - A promise that resolves to an object containing the status and data of the chat sessions.
- * @throws {HttpsError} Throws an error if there is an internal error.
- */
-const getUserChatSessions = onCall(async (props) => {
-  try {
-    DEBUG && logger.log('Communicator started, userId:', props.data?.userId);
-
-    const { userId } = props.data;
-
-    if (!userId) {
-      throw new HttpsError('invalid-argument', 'userId is required');
-    }
-
-    const chatSessions = await admin
-      .firestore()
-      .collection('chatSessions')
-      .where('user.id', '==', userId)
-      .get();
-
-    if (chatSessions.empty) {
-      logger.log('No chat sessions found for user: ', userId);
-      throw new HttpsError('not-found', 'No chat sessions found for user');
-    }
-
-    // Retrieve user's chat sessions
-    const retrievedChatSessions = chatSessions?.docs?.map((doc) => ({
-      ...doc.data(),
-      id: doc?.id,
-    }));
-
-    DEBUG &&
-      logger.log(
-        `Chat sessions found for user ${userId}: ${retrievedChatSessions}`
-      );
-    logger.log('Successfully retrieved chat sessions');
-    return { status: 'success', data: retrievedChatSessions };
-  } catch (error) {
-    logger.error(error);
-    throw new HttpsError('internal', error.message);
-  }
-});
-
-/**
  * Handles tool communications by processing input data and optional file uploads.
  * It supports both JSON and form-data requests to accommodate different client implementations.
  *
@@ -281,6 +168,7 @@ app.post('/', (req, res) => {
 
   const uploads = [];
   const data = [];
+
   bb.on('file', (fieldname, file, info) => {
     const { filename } = info;
     const fileId = uuidv4();
@@ -316,8 +204,6 @@ app.post('/', (req, res) => {
 
   bb.on('finish', async () => {
     try {
-      console.log('Uploads:', uploads);
-      console.log('data:', JSON.parse(data?.data));
       DEBUG && logger.log('data:', JSON.parse(data?.data));
       // const noUploads = uploads.length === 0;
 
@@ -327,6 +213,11 @@ app.post('/', (req, res) => {
       } = JSON.parse(data?.data);
 
       const results = await Promise.all(uploads);
+
+      res.set('Access-Control-Allow-Origin', '*');
+      res.set('Access-Control-Allow-Methods', 'POST');
+      res.set('Access-Control-Allow-Headers', 'Content-Type');
+
       const response = await kaiCommunicator({
         data: {
           ...otherData,
@@ -336,6 +227,7 @@ app.post('/', (req, res) => {
           },
         },
       });
+      DEBUG && logger.log(response);
 
       res.status(200).json({ success: true, data: response.data });
     } catch (error) {
@@ -376,8 +268,6 @@ const createChatSession = onCall(async (props) => {
       ...message,
       timestamp: Timestamp.fromMillis(Date.now()),
     };
-
-    logger.log('Creating chat session');
 
     // Create new chat session if it doesn't exist
     const chatSessionRef = await admin
@@ -447,8 +337,6 @@ const createChatSession = onCall(async (props) => {
 
 module.exports = {
   communicatorV3,
-  toolCommunicatorV1,
   toolCommunicatorV2: functions.https.onRequest(app),
-  getUserChatSessions,
   createChatSession,
 };
