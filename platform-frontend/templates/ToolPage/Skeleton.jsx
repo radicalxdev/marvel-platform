@@ -23,7 +23,20 @@ const ToolPageSkeleton = () => {
   };
 
   const renderForm = () => {
-    return <Grid {...styles.formGridProps}>Form</Grid>;
+    return (
+      <Grid {...styles.formGridProps}>
+        <Skeleton
+          animation="wave"
+          variant="rectangular"
+          sx={{
+            borderRadius: '50px',
+            bgcolor: theme.palette.Common.Black['30p'],
+            height: '500px',
+            width: '100%',
+          }}
+        />
+      </Grid>
+    );
   };
 
   return (

@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-cd platform-frontend
-
-echo "Running linter..."
-npm run lint
-
-
