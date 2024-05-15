@@ -6,13 +6,10 @@ import Head from 'next/head';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppDisabled from '@/components/AppDisabled';
-
 import Loader from '@/components/Loader';
 
 import SideMenu from './SideMenu';
-
 import styles from './styles';
-import SystemAlert from './SystemAlert';
 
 import { setLoading } from '@/redux/slices/authSlice';
 
@@ -22,12 +19,11 @@ import { setLoading } from '@/redux/slices/authSlice';
  * @param {Object} props - The properties passed to the component.
  * @param {ReactNode} props.children - The child components to render.
  * @param {Object} props.extraContentProps - The additional properties for the extra content.
- * @param {boolean} props.removeNav - Indicates if the navigation should be removed.
  * @param {boolean} props.isToolPage - Indicates if the layout is for a tool page.
  * @return {ReactNode} The rendered main application layout.
  */
 const MainAppLayout = (props) => {
-  const { children, extraContentProps, removeNav, isToolPage } = props;
+  const { children, extraContentProps, isToolPage } = props;
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
@@ -37,7 +33,6 @@ const MainAppLayout = (props) => {
     theme.breakpoints.down('laptop')
   );
 
-  const alertActive = false;
   const isLoading = auth.loading || !user.data || !auth.data;
 
   useEffect(() => {
@@ -57,8 +52,7 @@ const MainAppLayout = (props) => {
   const renderApp = () => {
     return (
       <>
-        <SystemAlert active={alertActive} />
-        {!removeNav && <SideMenu />}
+        <SideMenu />
         <Grid {...styles.contentGridProps(extraContentProps, isToolPage)}>
           {children}
         </Grid>

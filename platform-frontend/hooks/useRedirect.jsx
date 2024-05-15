@@ -5,7 +5,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { APP_ENV, AUTH_MODES } from '@/constants/auth';
+import { AUTH_MODES } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 import ROUTES from '@/constants/routes';
 
@@ -30,17 +30,6 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
     await dispatch(fetchUserData({ firestore, id }));
   };
 
-  const fetchTotalUsers = async () => {
-    try {
-      const usersRef = collection(firestore, 'users');
-      const userSnapshot = await getDocs(usersRef);
-
-      dispatch(setTotalUsers(userSnapshot.size));
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -50,7 +39,6 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
       ROUTES.SIGNUP,
       ROUTES.PRIVACY,
       ROUTES.TERMS,
-      ROUTES.CREATE_AVATAR,
       ROUTES.PASSWORD_RESET,
     ].includes(route);
 
@@ -73,23 +61,7 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
         return;
       }
 
-      // If project is sandbox & user has no admin rights, redirect to sign in
-      if (process.env.NEXT_PUBLIC_NODE_ENV === APP_ENV.SANDBOX) {
-        if (!authData?.claims?.admin) {
-          router.push(ROUTES.SIGNIN).then(async () => {
-            await auth.signOut();
-
-            handleOpenSnackBar(
-              ALERT_COLORS.ERROR,
-              'You do not have admin rights'
-            );
-          });
-          return;
-        }
-      }
-
       fetchUserRelatedData(auth.currentUser.uid);
-      fetchTotalUsers();
 
       if (route === ROUTES.CREATE_AVATAR || route === ROUTES.PASSWORD_RESET) {
         return;
