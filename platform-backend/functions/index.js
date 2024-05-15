@@ -10,7 +10,7 @@ admin.initializeApp({
 });
 
 const userController = require('./controllers/userController');
-const rexAIController = require('./controllers/rexAIController');
+const kaiAIController = require('./controllers/kaiAIController');
 
 /* Migration Scripts */
 // const {
@@ -23,9 +23,9 @@ module.exports = {
   signUpUser: userController.signUpUser,
 
   /* Kai AI */
-  communicatorV3: rexAIController.communicatorV3,
-  toolCommunicatorV2: rexAIController.toolCommunicatorV2,
-  createChatSession: rexAIController.createChatSession,
+  communicatorV3: kaiAIController.communicatorV3,
+  toolCommunicatorV2: kaiAIController.toolCommunicatorV2,
+  createChatSession: kaiAIController.createChatSession,
 
   /* Migration Scripts - For running  */
   ...migrationScripts,
