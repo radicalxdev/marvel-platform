@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --ext .jsx --ext .js ./ --fix",
     "format": "prettier --write .",
-    "prepare": "cd .. && husky platform-frontend/.husky"
+    "prepare": "cd .. && husky frontend/.husky",
+    "export": "next export"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

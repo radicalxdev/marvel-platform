@@ -1,16 +1,45 @@
 # Kai AI
-This is an AI teaching assistant project that combines a front-end and back-end application. The front-end is located in the `platform-frontend` directory, and the back-end is located in the `platform-backend` directory.
+
+## Architecture
+
+### Folder Structure
+
+
+## Prerequisites
+- Node.js (v14 or later)
+- Firebase CLI (v9.10.0 or later)
+- Google Firebase Account
 
 ## Setup
-
 To set up the project, follow these steps:
 
+## Local Development
 1. Clone the repository: `git clone https://github.com/radicalx/rex-ai.git`
-2. Navigate to back-end project directory: `cd platform-backend/functions`
-3. Install dependencies for the back-end: `npm install`
-4. Navigate to front-end project directory: `cd platform-frontend`
-5. Install dependencies for the front-end: `npm install`
-6. Start the development servers: `cd platform-frontend && npm run dev` and `cd platform-backend/functions && run the emulator for local testing`
+2. Create your firebase project on google firebase console
+3. Get firebase config from firebase project settings in firebase console and save it to firebaseConfig.js
+4. Get service account key Google Cloud IAM and save it to google-service-account.json
+5. Install Firebase CLI by running following in terminal: `npm install dev`
+6. Login to firebase CLI by running following command: `firebase login`
+
+### Backend
+1. Navigate to back-end project directory: `cd functions`
+2. Install dependencies: `npm install`
+3. Run for local testing: `firebase serve --only functions`
+
+### Frontend
+1. Navigate to back-end project directory: `cd frontend`
+2. Install dependencies: `npm install`
+3. Run for local testing: `npm run dev`
+
+## Cloud Deployment
+1. Clone the repository: `git clone https://github.com/radicalx/rex-ai.git`
+2. Navigate to back-end project directory: `cd functions`
+3. Install Frontend dependencies: `npm install`
+4. Navigate to functions directory: `cd .. && cd frontend`
+5. Install dependencies: `npm install`
+6. Navigate to back-end project directory: `cd ..`
+7. Deploy: `firebase deploy` 
+(this will deploy frontend and backend, if you only want to deploy frontend use firebase deploy --only hosting)
 
 ## Contributing
 
@@ -19,3 +48,6 @@ If you would like to contribute to the project, please follow the guidelines in 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+
+

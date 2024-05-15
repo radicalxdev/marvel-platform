@@ -9,6 +9,7 @@ const nextConfig = {
 module.exports = withTM({
   ...nextConfig,
   images: {
+    unoptimized: true,
     formats: ['image/webp'],
     domains: [
       'am3pap004files.storage.live.com',
