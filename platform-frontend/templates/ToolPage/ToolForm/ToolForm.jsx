@@ -28,12 +28,12 @@ import submitPrompt from '@/services/tools/submitPrompt';
 import submitPromptV2 from '@/services/tools/submitPromptV2';
 
 const ToolForm = (props) => {
-  const { id, inputs, name } = props;
+  const { id, inputs, name: toolName } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
   const { handleOpenSnackBar } = useContext(AuthContext);
 
-  const isQuizify = name === TOOLS.GEMINI_QUIZIFY;
+  const isQuizify = toolName === TOOLS.GEMINI_QUIZIFY;
 
   const { communicatorLoading } = useSelector((state) => state.tools);
   const { data: userData } = useSelector((state) => state.user);
@@ -45,8 +45,8 @@ const ToolForm = (props) => {
     try {
       const { files, ...toolData } = values;
 
-      const updateData = Object.entries(toolData).map(([FieldName, value]) => ({
-        FieldName,
+      const updateData = Object.entries(toolData).map(([name, value]) => ({
+        name,
         value,
       }));
       dispatch(setPrompt(values));
@@ -78,7 +78,6 @@ const ToolForm = (props) => {
 
   const handleSubmitForm = async (values) => {
     try {
-
       dispatch(setPrompt(values));
       dispatch(setCommunicatorLoading(true));
 

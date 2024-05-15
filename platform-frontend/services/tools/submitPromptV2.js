@@ -24,8 +24,11 @@ const submitPromptV2 = async (payload, files) => {
       }
     );
 
+    console.log(response.data);
+
     return response.data;
   } catch (err) {
+    console.log(err);
     throw new Error('Error could not send prompt');
   }
 };
