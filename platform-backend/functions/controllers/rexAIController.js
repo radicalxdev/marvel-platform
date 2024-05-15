@@ -1,202 +1,17 @@
 const admin = require('firebase-admin');
-
+const storage = admin.storage();
+const functions = require('firebase-functions');
 const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
 const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
 const { BOT_TYPE } = require('../constants');
+const express = require('express');
+const { v4: uuidv4 } = require('uuid');
+const busboy = require('busboy');
+const app = express();
 
 const DEBUG = process.env.DEBUG;
-
-/**
- * Executes an axios post call to the ReX AI endpoint.
- * This communicator is currently being deprecated.
- * It is still being used for the Explain My Answer feature since no chat history is required.
- *
- * @param {object} props - The properties of the communication.
- * @param {array} props.messages - The messages to send to the server.
- * @param {string} props.user - The user making the communication.
- * @param {string} props.challengeId - The challenge id in progress.
- * @param {string} props.level - The current challenge level in progress.
- * @param {string} props.botType - The bot type involved in the communication.
- * @return {object} The response from the server.
- */
-const communicator = onCall(async (props) => {
-  try {
-    DEBUG &&
-      logger.log(
-        'Communicator variables:',
-        `API_KEY: ${process.env.REX_API_KEY_V2}`,
-        `ENDPOINT: ${process.env.REX_ENDPOINT_V2}`
-      );
-    DEBUG && logger.log('Communicator started, data:', props.data);
-
-    const { messages, user, challengeId, level, botType } = props.data;
-    const headers = {
-      'API-Key': process.env.REX_API_KEY_V2,
-      'Content-Type': 'application/json',
-    };
-
-    const resp = await axios.post(
-      process.env.REX_ENDPOINT_V2,
-      JSON.stringify({ messages, user, challengeId, level, botType }),
-      { headers }
-    );
-
-    DEBUG && logger.log('Communicator response:', resp.data);
-
-    return { status: 'success', data: resp.data };
-  } catch (error) {
-    logger.log('Communicator error:', error);
-    throw new HttpsError('internal', error.message);
-  }
-});
-
-/**
- * Executes an axios post call to the Vertex AI endpoint.
- *
- * @param {object} props - The properties of the communication.
- * @param {array} props.messages - The messages to send to the server.
- * @param {string} props.user - The user making the communication.
- * @param {string} props.challenge - The challenge in progress.
- * @param {string} props.bot - The bot involved in the communication.
- * @return {object} The response from the server.
- */
-const reXCommunicator = async (props) => {
-  try {
-    DEBUG && logger.log('Communicator started, data:', props.data);
-    const { messages, user, challengeId, level, botType } = props.data;
-
-    DEBUG &&
-      logger.log(
-        'Communicator variables:',
-        `API_KEY: ${process.env.REX_API_KEY_V2}`,
-        `ENDPOINT: ${process.env.REX_ENDPOINT_V2}`
-      );
-
-    const headers = {
-      'API-Key': process.env.REX_API_KEY_V2,
-      'Content-Type': 'application/json',
-    };
-
-    DEBUG &&
-      logger.log(
-        'Stringified JSON',
-        JSON.stringify({ messages, user, challengeId, level, botType })
-      );
-
-    const resp = await axios.post(
-      process.env.REX_ENDPOINT_V2,
-      JSON.stringify({ messages, user, challengeId, level, botType }),
-      { headers }
-    );
-
-    DEBUG && logger.log('Communicator response:', resp.data);
-
-    return { status: 'success', data: resp.data };
-  } catch (error) {
-    DEBUG && logger.log(error);
-    throw new HttpsError('internal', error.message);
-  }
-};
-
-/**
- * Executes the communicatorV2 function.
- * This new communicator is used for the mission & hackathon features.
- * It stores the messages sent & received in a chat session.
- *
- * @param {object} props - The properties passed to the function.
- * @param {object} props.data - The data object containing the message and id.
- * @param {object} props.data.message - The message object.
- * @param {string} props.data.id - The id of the chat session.
- * @return {object} The response object containing the status and data.
- * @throws {HttpsError} Throws an error if there is an internal error.
- */
-const communicatorV2 = onCall(async (props) => {
-  try {
-    DEBUG && logger.log('Communicator started, data:', props.data);
-
-    DEBUG &&
-      logger.log(
-        'Communicator variables:',
-        process.env.REX_API_KEY_V2,
-        process.env.REX_ENDPOINT_V2
-      );
-
-    const { message, id } = props.data;
-
-    DEBUG && logger.log('Message: ', message);
-    DEBUG && logger.log('ID:', id);
-
-    const chatSession = await admin
-      .firestore()
-      .collection('chatSessions')
-      .doc(id)
-      .get();
-
-    if (!chatSession.exists) {
-      logger.log('Chat session not found: ', id);
-      throw new HttpsError('not-found', 'Chat session not found');
-    }
-
-    const { user, challengeId, botType, level, messages } = chatSession.data();
-
-    DEBUG && logger.log('Chat session: ', chatSession.data());
-
-    let truncatedMessages = messages;
-
-    // Check if messages length exceeds 50, if so, truncate
-    if (messages.length > 100) {
-      truncatedMessages = messages.slice(messages.length - 65);
-    }
-
-    // Add message to chat session
-    const updatedMessages = truncatedMessages.concat([
-      { ...message, timestamp: Timestamp.fromMillis(Date.now()) },
-    ]);
-    await chatSession.ref.update({ messages: updatedMessages });
-
-    const ReXPayload = {
-      messages: updatedMessages,
-      user,
-      challengeId,
-      level,
-      botType,
-    };
-
-    DEBUG && logger.log('ReXPayload: ', ReXPayload);
-    // Communicate to ReX AI
-    const response = await reXCommunicator({
-      data: ReXPayload,
-    });
-
-    DEBUG && logger.log('ReX Response: ', response, 'type', typeof response);
-
-    // Add response to chat session
-    const updatedResponseMessages = updatedMessages.concat(
-      Array.isArray(response.data?.messages)
-        ? response.data?.messages.map((message) => ({
-            ...message,
-            timestamp: Timestamp.fromMillis(Date.now()),
-          }))
-        : [{ ...response.data, timestamp: Timestamp.fromMillis(Date.now()) }]
-    );
-    await chatSession.ref.update({ messages: updatedResponseMessages });
-
-    if (DEBUG) {
-      logger.log(
-        'Updated chat session: ',
-        (await chatSession.ref.get())?.data()
-      );
-    }
-    logger.log('Successfully communicated');
-
-    return { status: 'success' };
-  } catch (error) {
-    DEBUG && logger.log(error);
-    throw new HttpsError('internal', error.message);
-  }
-});
 
 /**
  * Simulates communication with a Kai AI endpoint.
@@ -209,33 +24,33 @@ const kaiCommunicator = async (payload) => {
   try {
     DEBUG && logger.log('kaiCommunicator started, data:', payload.data);
 
-    const { messages, user, tool, type } = payload.data;
+    const { messages, user, tool_data, type } = payload.data;
+
+    const isToolCommunicator = type === BOT_TYPE.TOOL;
+    const KAI_API_KEY = process.env.KAI_API_KEY;
+    const KAI_ENDPOINT = process.env.KAI_ENDPOINT;
 
     DEBUG &&
       logger.log(
         'Communicator variables:',
-        `API_KEY: ${process.env.KAI_API_KEY}`,
-        `ENDPOINT: ${process.env.KAI_ENDPOINT}`
+        `API_KEY: ${KAI_API_KEY}`,
+        `ENDPOINT: ${KAI_ENDPOINT}`
       );
 
     const headers = {
-      'API-Key': process.env.KAI_API_KEY,
+      'API-Key': KAI_API_KEY,
       'Content-Type': 'application/json',
     };
 
     const kaiPayload = {
       user,
       type,
-      ...(type === BOT_TYPE.CHAT ? { messages } : { tool_data: tool }),
+      ...(isToolCommunicator ? { tool_data } : { messages }),
     };
 
-    DEBUG && logger.log('Stringified JSON', JSON.stringify(kaiPayload));
-
-    const resp = await axios.post(
-      process.env.KAI_ENDPOINT,
-      JSON.stringify(kaiPayload),
-      { headers }
-    );
+    const resp = await axios.post(KAI_ENDPOINT, kaiPayload, {
+      headers,
+    });
 
     DEBUG && logger.log('kaiCommunicator response:', resp.data);
 
@@ -336,122 +151,92 @@ const communicatorV3 = onCall(async (props) => {
 });
 
 /**
- * Manages communications for a specific tool session with the AI, sending tool inputs and updating the session.
+ * Handles tool communications by processing input data and optional file uploads.
+ * It supports both JSON and form-data requests to accommodate different client implementations.
  *
- * @param {object} props - The properties of the communication.
- * @param {object} props.data - The data object containing the tool details and id.
- * @param {string} props.data.id - The id of the tool session.
- * @param {array} props.data.inputs - The array of inputs for the tool.
- * @return {object} The response object containing the status and data.
+ * @param {Request} req - The Express request object, which includes form data and files.
+ * @param {Response} res - The Express response object used to send back the HTTP response.
+ * @return {void} Sends a response to the client based on the processing results.
+ * @throws {HttpsError} Throws an error if processing fails or data is invalid.
  */
-const toolCommunicatorV1 = onCall(async (props) => {
-  try {
-    DEBUG && logger.log('toolCommunicator started, data:', props.data);
+app.post('/', (req, res) => {
+  const bb = busboy({ headers: req.headers });
 
-    const { inputs, id } = props.data;
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
 
-    DEBUG &&
-      logger.log(
-        'toolCommunicator variables:',
-        `API_KEY: ${process.env.KAI_API_KEY}`,
-        `ENDPOINT: ${process.env.KAI_ENDPOINT}`
-      );
+  const uploads = [];
+  const data = [];
 
-    const toolSession = await admin
-      .firestore()
-      .collection('tools')
-      .doc(id)
-      .get();
+  bb.on('file', (fieldname, file, info) => {
+    const { filename } = info;
+    const fileId = uuidv4();
+    const filePath = `uploads/${fileId}-${filename}`;
+    const fileWriteStream = storage.bucket().file(filePath).createWriteStream();
 
-    if (!toolSession.exists) {
-      logger.log('Tool session not found: ', id);
-      throw new HttpsError('not-found', 'Tool session not found');
-    }
+    file.pipe(fileWriteStream);
 
-    const { user, type } = toolSession.data();
+    const uploadPromise = new Promise((resolve, reject) => {
+      fileWriteStream.on('finish', () => {
+        storage
+          .bucket()
+          .file(filePath)
+          .getSignedUrl({
+            action: 'read',
+            expires: '03-01-2500', // set expiration as needed
+          })
+          .then((urls) => {
+            resolve({ filePath, url: urls[0], filename });
+          })
+          .catch(reject);
+      });
 
-    const toolData = {
-      inputs: inputs,
-    };
-
-    // Construct payload for the kaiCommunicator
-    const KaiPayload = {
-      tool: toolData,
-      type,
-      user,
-    };
-
-    const response = await kaiCommunicator({
-      data: KaiPayload,
+      fileWriteStream.on('error', reject);
     });
 
-    DEBUG && logger.log('kaiCommunicator response:', response.data);
+    uploads.push(uploadPromise);
+  });
 
-    // Process response and update Firestore
-    await toolSession.ref.update({
-      lastUpdated: Timestamp.fromMillis(Date.now()),
-    });
+  bb.on('field', (name, value) => {
+    data[name] = value;
+  });
 
-    if (DEBUG) {
-      logger.log(
-        'Updated tool session: ',
-        (await toolSession.ref.get()).data()
-      );
+  bb.on('finish', async () => {
+    try {
+      DEBUG && logger.log('data:', JSON.parse(data?.data));
+      // const noUploads = uploads.length === 0;
+
+      const {
+        tool_data: { inputs, ...otherToolData },
+        ...otherData
+      } = JSON.parse(data?.data);
+
+      const results = await Promise.all(uploads);
+
+      res.set('Access-Control-Allow-Origin', '*');
+      res.set('Access-Control-Allow-Methods', 'POST');
+      res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+      const response = await kaiCommunicator({
+        data: {
+          ...otherData,
+          tool_data: {
+            ...otherToolData,
+            inputs: [...inputs, { name: 'files', value: results }],
+          },
+        },
+      });
+      DEBUG && logger.log(response);
+
+      res.status(200).json({ success: true, data: response.data });
+    } catch (error) {
+      console.error('Error processing request:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
+  });
 
-    return { status: 'success' };
-  } catch (error) {
-    DEBUG && logger.log('toolCommunicator error:', error);
-    throw new HttpsError('internal', error.message);
-  }
-});
-
-/**
- * This function retrieves all existing chat sessions for a user.
- *
- * @param {Object} props.data - The data object containing the user, challenge, message, and botType.
- * @param {Object} props.data.userId - The userId.
- *
- * @return {Promise<Object>} - A promise that resolves to an object containing the status and data of the chat sessions.
- * @throws {HttpsError} Throws an error if there is an internal error.
- */
-const getUserChatSessions = onCall(async (props) => {
-  try {
-    DEBUG && logger.log('Communicator started, userId:', props.data?.userId);
-
-    const { userId } = props.data;
-
-    if (!userId) {
-      throw new HttpsError('invalid-argument', 'userId is required');
-    }
-
-    const chatSessions = await admin
-      .firestore()
-      .collection('chatSessions')
-      .where('user.id', '==', userId)
-      .get();
-
-    if (chatSessions.empty) {
-      logger.log('No chat sessions found for user: ', userId);
-      throw new HttpsError('not-found', 'No chat sessions found for user');
-    }
-
-    // Retrieve user's chat sessions
-    const retrievedChatSessions = chatSessions?.docs?.map((doc) => ({
-      ...doc.data(),
-      id: doc?.id,
-    }));
-
-    DEBUG &&
-      logger.log(
-        `Chat sessions found for user ${userId}: ${retrievedChatSessions}`
-      );
-    logger.log('Successfully retrieved chat sessions');
-    return { status: 'success', data: retrievedChatSessions };
-  } catch (error) {
-    logger.error(error);
-    throw new HttpsError('internal', error.message);
-  }
+  bb.end(req.rawBody);
 });
 
 /**
@@ -483,8 +268,6 @@ const createChatSession = onCall(async (props) => {
       ...message,
       timestamp: Timestamp.fromMillis(Date.now()),
     };
-
-    logger.log('Creating chat session');
 
     // Create new chat session if it doesn't exist
     const chatSessionRef = await admin
@@ -553,10 +336,7 @@ const createChatSession = onCall(async (props) => {
 });
 
 module.exports = {
-  communicator,
-  communicatorV2,
   communicatorV3,
-  toolCommunicatorV1,
-  getUserChatSessions,
+  toolCommunicatorV2: functions.https.onRequest(app),
   createChatSession,
 };
