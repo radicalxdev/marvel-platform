@@ -27,7 +27,6 @@ const tools = createSlice({
     reset: () => initialState,
     resetCommunicator: (state) => ({ ...state, ...communicator }),
     setCommunicatorLoading: (state, action) => {
-      state.response = null;
       state.communicatorLoading = action.payload;
     },
     setPrompt: (state, action) => {
