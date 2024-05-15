@@ -15,7 +15,7 @@ const submitPromptV2 = async (payload, files) => {
     }
 
     const response = await axios.post(
-      'https://us-central1-kai-ai-f63c8.cloudfunctions.net/toolCommunicatorV2',
+      process.env.NEXT_PUBLIC_TOOL_COMMUNICATOR_LINK,
       formData,
       {
         headers: {
@@ -24,11 +24,8 @@ const submitPromptV2 = async (payload, files) => {
       }
     );
 
-    console.log(response.data);
-
-    return response.data;
+    return response.data?.data;
   } catch (err) {
-    console.log(err);
     throw new Error('Error could not send prompt');
   }
 };

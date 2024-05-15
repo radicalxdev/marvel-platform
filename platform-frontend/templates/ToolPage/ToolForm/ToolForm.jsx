@@ -14,26 +14,22 @@ import PrimaryTextFieldInput from '@/components/PrimaryTextFieldInput';
 import { INPUT_TYPES } from '@/constants/inputs';
 import ALERT_COLORS from '@/constants/notification';
 
-import TOOLS from '@/constants/tools';
-
 import styles from './styles';
 
 import { AuthContext } from '@/providers/GlobalProvider';
 import {
   setCommunicatorLoading,
+  setFormOpen,
   setPrompt,
   setResponse,
 } from '@/redux/slices/toolsSlice';
-import submitPrompt from '@/services/tools/submitPrompt';
 import submitPromptV2 from '@/services/tools/submitPromptV2';
 
 const ToolForm = (props) => {
-  const { id, inputs, name: toolName } = props;
+  const { id, inputs } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
   const { handleOpenSnackBar } = useContext(AuthContext);
-
-  const isQuizify = toolName === TOOLS.GEMINI_QUIZIFY;
 
   const { communicatorLoading } = useSelector((state) => state.tools);
   const { data: userData } = useSelector((state) => state.user);
@@ -44,6 +40,8 @@ const ToolForm = (props) => {
   const handleSubmitMultiForm = async (values) => {
     try {
       const { files, ...toolData } = values;
+
+      dispatch(setResponse(null));
 
       const updateData = Object.entries(toolData).map(([name, value]) => ({
         name,
@@ -65,25 +63,8 @@ const ToolForm = (props) => {
         files
       );
 
-      dispatch(setResponse(response));
-      dispatch(setCommunicatorLoading(false));
-    } catch (error) {
-      dispatch(setCommunicatorLoading(false));
-      handleOpenSnackBar(
-        ALERT_COLORS.ERROR,
-        error.message || 'Couldn\u0027t send prompt'
-      );
-    }
-  };
-
-  const handleSubmitForm = async (values) => {
-    try {
-      dispatch(setPrompt(values));
-      dispatch(setCommunicatorLoading(true));
-
-      const response = await submitPrompt(values);
-
-      dispatch(setResponse(response));
+      dispatch(setResponse(response?.data?.[0]));
+      dispatch(setFormOpen(false));
       dispatch(setCommunicatorLoading(false));
     } catch (error) {
       dispatch(setCommunicatorLoading(false));
@@ -226,9 +207,7 @@ const ToolForm = (props) => {
       FormProps={{
         id: 'tool-form',
       }}
-      onSuccess={handleSubmit(
-        isQuizify ? handleSubmitMultiForm : handleSubmitForm
-      )}
+      onSuccess={handleSubmit(handleSubmitMultiForm)}
     >
       <Grid {...styles.formProps}>
         <Grid {...styles.mainContentGridProps}>

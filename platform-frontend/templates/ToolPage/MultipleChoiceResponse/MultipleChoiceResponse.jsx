@@ -5,33 +5,32 @@ import { useSelector } from 'react-redux';
 import styles from './styles';
 
 const MultipleChoiceResponse = () => {
-  const {
-    response: { title, questions },
-  } = useSelector((state) => state.tools);
+  const { response } = useSelector((state) => state.tools);
+
+  const hasTitle = false;
 
   const renderTitle = () => {
     return (
       <Grid {...styles.titleGridProps}>
-        <Typography {...styles.titleProps}>{title}</Typography>
+        <Typography {...styles.titleProps}>No Title</Typography>
       </Grid>
     );
   };
 
   const renderQuestion = (question, questionNo) => {
-    const optionLetters = ['a', 'b', 'c', 'd'];
-
+    const transformedChoices = Object.values(question?.choices || {});
     return (
       <Grid {...styles.questionGridProps}>
         <Typography {...styles.questionTitleProps}>
           {questionNo}. {question?.question}
         </Typography>
         <Grid>
-          {question?.choices?.map((choice, index) => (
+          {transformedChoices?.map((choice, index) => (
             <Typography
               key={`${questionNo}-choice-${index}`}
               {...styles.choiceProps}
             >
-              {optionLetters?.[index]}. {choice}
+              {choice?.key}. {choice?.value}
             </Typography>
           ))}
         </Grid>
@@ -42,7 +41,7 @@ const MultipleChoiceResponse = () => {
   const renderQuestions = () => {
     return (
       <Grid {...styles.questionsGridProps}>
-        {questions?.map((question, i) => renderQuestion(question, i + 1))}
+        {response?.map((question, i) => renderQuestion(question, i + 1))}
       </Grid>
     );
   };
@@ -50,7 +49,7 @@ const MultipleChoiceResponse = () => {
   return (
     <Fade in>
       <Grid {...styles.mainGridProps}>
-        {renderTitle()}
+        {hasTitle && renderTitle()}
         {renderQuestions()}
       </Grid>
     </Fade>
