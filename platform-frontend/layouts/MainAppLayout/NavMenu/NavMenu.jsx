@@ -18,7 +18,7 @@ const PAGES = [
     id: 'page_1',
   },
   {
-    name: 'Kai Chatbot',
+    name: 'Kai Chat',
     link: ROUTES.CHAT,
     icon: <AddBlockSvg />,
     id: 'page_2',
