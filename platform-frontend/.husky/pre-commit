@@ -5,5 +5,3 @@ cd platform-frontend
 
 echo "Running linter..."
 npm run lint
-
-
