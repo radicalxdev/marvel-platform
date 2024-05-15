@@ -5,15 +5,12 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getFunctions } from 'firebase/functions';
 
-import LogRocket from 'logrocket';
-
 import authReducer from './slices/authSlice';
 import chatReducer from './slices/chatSlice';
 import toolsReducer from './slices/toolsSlice';
 import userReducer from './slices/userSlice';
 
 import firebaseConfig from '@/firebase/config';
-import { logRocketStateSanitizer } from '@/utils/IntegrationUtils';
 
 const app = initializeApp(firebaseConfig);
 
@@ -28,10 +25,6 @@ const store = configureStore({
     tools: toolsReducer,
     chat: chatReducer,
   },
-  middleware: (gDM) =>
-    gDM({ serializableCheck: false }).concat(
-      LogRocket.reduxMiddleware({ stateSanitizer: logRocketStateSanitizer })
-    ),
 });
 
 export { auth, firestore, functions };
