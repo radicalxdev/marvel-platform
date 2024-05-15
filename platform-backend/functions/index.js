@@ -21,19 +21,11 @@ const migrationScripts = {};
 module.exports = {
   /* Authenticaition */
   signUpUser: userController.signUpUser,
-  updateEmail: userController.updateEmail,
 
-  /* Users */
-  updateProfile: userController.updateProfile,
-
-  /* ReX AI */
-  communicator: rexAIController.communicator,
-  communicatorV2: rexAIController.communicatorV2,
+  /* Kai AI */
   communicatorV3: rexAIController.communicatorV3,
-  toolCommunicatorV1: rexAIController.toolCommunicatorV1,
   toolCommunicatorV2: rexAIController.toolCommunicatorV2,
   createChatSession: rexAIController.createChatSession,
-  getUserChatSessions: rexAIController.getUserChatSessions,
 
   /* Migration Scripts - For running  */
   ...migrationScripts,
