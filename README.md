@@ -1,7 +1,7 @@
 # Kai AI
 
 ## Architecture
-[View on Eraser![](https://app.eraser.io/workspace/rbr1Yn2Gq2kcOOQS99R7/preview?elements=7020-yIkWpIu79nmHnYP4A&type=embed)](https://app.eraser.io/workspace/rbr1Yn2Gq2kcOOQS99R7?elements=7020-yIkWpIu79nmHnYP4A)
+![Architecture Diagram](architecture.png)
 
  [todo: @yunus]
 
