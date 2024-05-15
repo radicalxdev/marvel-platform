@@ -1,6 +1,8 @@
 # Kai AI
 
 ## Architecture
+[View on Eraser![](https://app.eraser.io/workspace/rbr1Yn2Gq2kcOOQS99R7/preview?elements=7020-yIkWpIu79nmHnYP4A&type=embed)](https://app.eraser.io/workspace/rbr1Yn2Gq2kcOOQS99R7?elements=7020-yIkWpIu79nmHnYP4A)
+
  [todo: @yunus]
 
 ### Folder Structure
@@ -17,11 +19,11 @@ To set up the project, follow these steps:
 ## Local Development
 1. Clone the repository: `git clone https://github.com/radicalx/rex-ai.git`
 2. Create your firebase project on google firebase console
-3. Get firebase config from firebase project settings in firebase console and save it to firebaseConfig.js
-4. Get service account key Google Cloud IAM and save it to google-service-account.json
+3. Get firebase config from firebase project settings in firebase console and save it to .env.local (create in root of this project)
+4. Get service account key Google Cloud IAM and save it to google-service-account.json (create in root of this project)
 5. Install Firebase CLI by running following in terminal: `npm install dev`
 6. Login to firebase CLI by running following command: `firebase login`
-7. Add required docs to firestore DB [todo: @shehreyar]
+7. Add required docs to Firestore DB [todo: @shehreyar]
 
 ### Backend
 1. Navigate to back-end project directory: `cd functions`
@@ -33,10 +35,10 @@ To set up the project, follow these steps:
 2. Install dependencies: `npm install`
 3. Run for local testing: `npm run dev`
 
-### Local Emulator (Optional)
+### Local Emulator (Optional) [todo: @shehreyar]
 #### Setup
 1. Start emulator `firebase emulators:start`
-2. Run database seed `node db-seed.js`  [todo: @shehreyar]
+2. Run database seed `node db-seed.js`  
 
 ## Cloud Deployment
 1. Clone the repository: `git clone https://github.com/radicalx/rex-ai.git`
