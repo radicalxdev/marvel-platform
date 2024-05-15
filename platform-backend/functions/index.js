@@ -1,14 +1,12 @@
 const admin = require('firebase-admin');
-const path = require('path');
+const { SERVICE_FILE } = require('./config');
 
-// const { secrets } = require("firebase-extensions");
-const serviceAccount = require(
-  path.resolve('../../', 'kai-ai-f63c8-319de35f99bd.json')
-);
+const GOOGLE_APPLICATION_CREDENTIALS = JSON.parse(SERVICE_FILE);
+const FIREBASE_CONFIG = JSON.parse(process.env.FIREBASE_CONFIG);
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: 'kai-ai-f63c8.appspot.com',
+  credential: admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS),
+  storageBucket: FIREBASE_CONFIG.storageBucket,
 });
 
 const userController = require('./controllers/userController');
