@@ -13,18 +13,16 @@ import NavMenu from '../NavMenu';
 import styles from './styles';
 
 import { auth } from '@/redux/store';
-import { setIntercom } from '@/utils/IntegrationUtils';
 
 /**
- * Renders the Header component with the given props.
+ * Renders the Side Menu.
  *
- * @return {ReactNode} The rendered Header component.
+ * @return {ReactNode} The rendered Side Menu.
  */
 const SideMenu = () => {
   const router = useRouter();
 
   const handleSignOutUser = () => {
-    setIntercom('hide');
     signOut(auth);
   };
 
