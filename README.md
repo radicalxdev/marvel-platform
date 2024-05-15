@@ -1,9 +1,10 @@
 # Kai AI
 
 ## Architecture
+ [todo: @yunus]
 
 ### Folder Structure
-
+ [todo: @yunus]
 
 ## Prerequisites
 - Node.js (v14 or later)
@@ -20,6 +21,7 @@ To set up the project, follow these steps:
 4. Get service account key Google Cloud IAM and save it to google-service-account.json
 5. Install Firebase CLI by running following in terminal: `npm install dev`
 6. Login to firebase CLI by running following command: `firebase login`
+7. Add required docs to firestore DB [todo: @shehreyar]
 
 ### Backend
 1. Navigate to back-end project directory: `cd functions`
@@ -30,6 +32,11 @@ To set up the project, follow these steps:
 1. Navigate to back-end project directory: `cd frontend`
 2. Install dependencies: `npm install`
 3. Run for local testing: `npm run dev`
+
+### Local Emulator (Optional)
+#### Setup
+1. Start emulator `firebase emulators:start`
+2. Run database seed `node db-seed.js`  [todo: @shehreyar]
 
 ## Cloud Deployment
 1. Clone the repository: `git clone https://github.com/radicalx/rex-ai.git`
@@ -48,6 +55,3 @@ If you would like to contribute to the project, please follow the guidelines in 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
-
-
