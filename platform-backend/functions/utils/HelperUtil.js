@@ -1,6 +1,9 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 const moment = require('moment');
+const { SecretManagerServiceClient } = require('@google-cloud/secret-manager');
+
+const client = new SecretManagerServiceClient();
 
 const db = admin.firestore();
 
@@ -74,7 +77,15 @@ const calculateAllScores = functions.https.onCall(async () => {
   return;
 });
 
+const fetchSecret = async (secretName) => {
+  const [version] = await client.accessSecretVersion({
+    name: secretName,
+  });
+  return version.payload.data.toString('utf8');
+};
+
 module.exports = {
   calculateScore,
   calculateAllScores,
+  fetchSecret,
 };
