@@ -36,7 +36,7 @@ const styles = {
   },
   titleProps: {
     fontFamily: 'Satoshi Bold',
-    fontSize: '14px',
+    fontSize: '16px',
     color: (theme) => theme.palette.Common.White['100p'],
   },
   contentGridProps: {
@@ -49,7 +49,7 @@ const styles = {
   },
   descriptionProps: {
     fontFamily: 'Satoshi Regular',
-    fontSize: '12px',
+    fontSize: '14px',
     color: (theme) => theme.palette.Common.White['100p'],
     textOverflow: 'ellipsis',
     overflow: 'hidden',
