@@ -54,7 +54,7 @@ const styles = {
       },
     },
     inputProps: {
-      notched: false,
+      // notched: false,
       sx: {
         alignItems: 'flex-start',
         fontFamily: 'Satoshi Bold',
