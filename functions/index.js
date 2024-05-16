@@ -1,7 +1,4 @@
 const admin = require('firebase-admin');
-const SERVICE_FILE = require('./../google-service-account.json');
-
-const GOOGLE_APPLICATION_CREDENTIALS = SERVICE_FILE;
 const FIREBASE_CONFIG = JSON.parse(process.env.FIREBASE_CONFIG);
 
 admin.initializeApp({
