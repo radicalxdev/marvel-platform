@@ -47,13 +47,13 @@ The "Kai" platform is structured into two main components: Firebase and AI. The 
 To set up the project, follow these steps:
 
 ## Local Development
-1. Clone the repository: `git clone https://github.com/radicalx/rex-ai.git`
+1. Clone the repository: `git clone https://github.com/radicalxdev/kai-platform`
 2. Create your firebase project on google firebase console
-3. Get firebase config from firebase project settings in firebase console and save it to .env.local (create in root of this project)
-4. Get service account key Google Cloud IAM and save it to google-service-account.json (create in root of this project)
-5. Install Firebase CLI by running following in terminal: `npm install dev`
-6. Login to firebase CLI by running following command: `firebase login`
-7. Add required docs to Firestore DB [todo: @shehreyar]
+3. Create a firestore database instance
+4. Get firebase config from firebase project settings in firebase console and save it to .env (create in root of this project, see sample.env for refrence)
+5. Generate a new private key from the projects settings and save that to the .env file as well
+6. Install Firebase CLI by running following in terminal: `npm install dev`
+7. Login to firebase CLI by running following command: `firebase login`.
 
 ### Backend
 1. Navigate to back-end project directory: `cd functions`
@@ -65,19 +65,19 @@ To set up the project, follow these steps:
 2. Install dependencies: `npm install`
 3. Run for local testing: `npm run dev`
 
-### Local Emulator (Optional) [todo: @shehreyar]
+### Local Emulator (Optional)
 #### Setup
 1. Start emulator `firebase emulators:start`
-2. Run database seed `node db-seed.js`  
+2. Run database seed `node functions/local_db_seed.js`  
 
 ## Cloud Deployment
-1. Clone the repository: `git clone https://github.com/radicalx/rex-ai.git`
+1. Clone the repository: `git clone https://github.com/radicalxdev/kai-platform`
 2. Navigate to back-end project directory: `cd functions`
 3. Install Frontend dependencies: `npm install`
 4. Navigate to functions directory: `cd .. && cd frontend`
 5. Install dependencies: `npm install`
-6. Deploy: `firebase deploy` 
-(this will deploy frontend and backend, if you only want to deploy frontend use firebase deploy --only hosting)
+6. Deploy: `firebase deploy` (this will deploy frontend and backend, if you only want to deploy frontend use firebase deploy --only hosting)
+7. Run: `node functions/cloud_db_seed.js`
 
 ## Contributing
 
