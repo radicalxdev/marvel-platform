@@ -6,7 +6,6 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    px: { laptop: 2, desktop: 3, desktopMedium: 4 },
     py: { laptop: 4, desktop: 5, desktopMedium: 6 },
     bgcolor: (theme) => theme.palette.Dark_Colors.Dark[6],
   },
@@ -18,11 +17,13 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     mb: 8,
+    px: { laptop: 2, desktop: 3, desktopMedium: 4 },
   },
   logoutGridProps: {
     container: true,
     item: true,
     width: '100%',
+    px: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
   },
   logoutButtonProps: {
     variant: 'outlined',
@@ -31,14 +32,24 @@ const styles = {
       justifyContent: 'flex-start',
       borderRadius: '24px',
       py: 3,
-      px: 4,
+      px: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
       borderColor: 'transparent',
       transition: (theme) => theme.transitions.create('all'),
       span: {
-        mr: 2,
+        mr: 4,
       },
-      '&:hover': {
-        borderColor: (theme) => theme.palette.primary.main,
+      color: (theme) => theme.palette.Common.White['100p'],
+      path: {
+        fill: (theme) => theme.palette.Common.White['100p'],
+        stroke: (theme) => theme.palette.Common.White['100p'],
+      },
+      ':hover': {
+        color: (theme) => theme.palette.Common.White['100p'],
+        background: (theme) => `${theme.palette.Background.purple}30`,
+        path: {
+          fill: (theme) => theme.palette.Common.White['100p'],
+          stroke: (theme) => theme.palette.Common.White['100p'],
+        },
       },
     },
   },
