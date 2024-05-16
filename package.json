@@ -10,7 +10,7 @@
     "build:next": "cd frontend && npm run build && npm run export",
     "serve:frontend": "firebase serve --only hosting",
     "deploy": "npm run build:next && firebase deploy",
-    "serve": "npm run build:next && npm run serve:firebase"
+    "serve": "npm run build:next && firebase serve"
   },
   "devDependencies": {
     "firebase-tools": "^9.10.0"
