@@ -1,3 +1,5 @@
+import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
+
 const styles = {
   mainGridProps: {
     container: true,
@@ -5,7 +7,7 @@ const styles = {
     desktopLarge: 3,
     laptop: 4,
   },
-  cardProps: (backgroundColor) => ({
+  cardProps: (backgroundImgURL) => ({
     elevation: 5,
     sx: {
       display: 'flex',
@@ -17,7 +19,13 @@ const styles = {
       borderRadius: '10px',
       overflow: 'hidden',
       p: 2,
-      background: backgroundColor,
+      ...(backgroundImgURL && {
+        backgroundImage: `url(${backgroundImgURL})`,
+        backgroundSize: 'cover',
+      }),
+      ...(!backgroundImgURL && {
+        background: getRandomBackgroundColor(),
+      }),
       transition: (theme) => theme.transitions.create('all'),
       '&:hover': {
         cursor: 'pointer',
