@@ -181,6 +181,7 @@ const globalTheme = createTheme({
       secondary: 'linear-gradient(286.17deg, #99FDFF 0%, #D1B3FF 100%)',
       pink: '#FF98B7',
       purple: '#B791FF',
+      purple3: '#5614F3',
       orange: '#FFA800',
       saffron: '#FFBB37',
       red: '#FF5252',

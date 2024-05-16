@@ -18,7 +18,7 @@ const Home = () => {
       await dispatch(fetchTools({ firestore }));
     };
 
-    fetchKaiTools();
+    if (!data) fetchKaiTools();
   }, []);
 
   return <HomePage data={data} loading={loading} error={error} />;

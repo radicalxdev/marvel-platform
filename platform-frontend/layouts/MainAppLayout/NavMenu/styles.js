@@ -4,24 +4,39 @@ const styles = {
     item: true,
     mobileSmall: true,
     rowGap: { laptop: 2, desktop: 4 },
+    px: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   menuItemProps: (isActive) => ({
     sx: {
-      px: 0,
       py: 0,
+      px: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
       width: '100%',
       borderRadius: '24px',
       color: (theme) =>
         isActive
-          ? theme.palette.primary.main
+          ? `${theme.palette.Background.purple}95`
           : theme.palette.Common.White['100p'],
-      transition: (theme) => theme.transitions.create(['all']),
+      path: {
+        fill: (theme) =>
+          isActive
+            ? `${theme.palette.Background.purple}95`
+            : theme.palette.Common.White['100p'],
+        stroke: (theme) =>
+          isActive
+            ? `${theme.palette.Background.purple}95`
+            : theme.palette.Common.White['100p'],
+      },
+      transition: (theme) => theme.transitions.create('all'),
       ':hover': {
-        background: 'none',
-        color: (theme) => theme.palette.primary.main,
+        color: (theme) => theme.palette.Common.White['100p'],
+        background: (theme) => `${theme.palette.Background.purple}30`,
+        path: {
+          fill: (theme) => theme.palette.Common.White['100p'],
+          stroke: (theme) => theme.palette.Common.White['100p'],
+        },
       },
     },
   }),
@@ -29,7 +44,6 @@ const styles = {
     container: true,
     mobileSmall: 12,
     columnGap: 4,
-
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
