@@ -6,6 +6,7 @@ admin.initializeApp({
 
 const userController = require('./controllers/userController');
 const kaiAIController = require('./controllers/kaiAIController');
+const dbSeedController = require("./controllers/dbSeedController")
 
 /* Migration Scripts */
 // const {
@@ -21,6 +22,8 @@ module.exports = {
   communicatorV3: kaiAIController.communicatorV3,
   toolCommunicatorV2: kaiAIController.toolCommunicatorV2,
   createChatSession: kaiAIController.createChatSession,
+
+  seedDatabase: dbSeedController.seedDatabase,
 
   /* Migration Scripts - For running  */
   ...migrationScripts,
