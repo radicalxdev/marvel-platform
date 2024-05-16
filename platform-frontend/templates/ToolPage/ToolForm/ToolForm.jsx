@@ -23,7 +23,7 @@ import {
   setPrompt,
   setResponse,
 } from '@/redux/slices/toolsSlice';
-import submitPromptV2 from '@/services/tools/submitPromptV2';
+import submitPrompt from '@/services/tools/submitPrompt';
 
 const ToolForm = (props) => {
   const { id, inputs } = props;
@@ -50,7 +50,7 @@ const ToolForm = (props) => {
       dispatch(setPrompt(values));
       dispatch(setCommunicatorLoading(true));
 
-      const response = await submitPromptV2(
+      const response = await submitPrompt(
         {
           tool_data: { tool_id: id, inputs: updateData },
           type: 'tool',

@@ -1,13 +1,30 @@
-import { httpsCallable } from 'firebase/functions';
+import axios from 'axios';
 
-import { functions } from '@/redux/store';
-
-const submitPrompt = async (payload) => {
+const submitPrompt = async (payload, files) => {
   try {
-    const toolCommunicator = httpsCallable(functions, 'toolCommunicatorV1');
-    const response = await toolCommunicator(payload);
+    const formData = new FormData();
 
-    return response.data;
+    // Append payload to the form data
+    formData.append('data', JSON.stringify(payload));
+
+    // Append files to the form data
+    if (!!files && files?.length > 0) {
+      files.forEach((file, index) => {
+        formData.append(`file${index}`, file);
+      });
+    }
+
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_TOOL_COMMUNICATOR_LINK,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    return response.data?.data;
   } catch (err) {
     throw new Error('Error could not send prompt');
   }
