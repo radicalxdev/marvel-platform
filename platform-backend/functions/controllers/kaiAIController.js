@@ -17,7 +17,17 @@ const DEBUG = process.env.DEBUG;
  * Simulates communication with a Kai AI endpoint.
  *
  * @param {object} payload - The properties of the communication.
- * @param {object} props.data - The payload containing messages, user, tool.
+ * @param {object} props.data - The payload data object used in the communication.
+ *  @param {Array} props.data.messages - An array of messages for the current user chat session.
+ *  @param {object} props.data.user - The user object.
+ *    @param {string} props.data.user.id - The id of the current user.
+ *    @param {string} props.data.user.fullName - The user's full name.
+ *    @param {string} props.data.user.email - The users email.
+ *  @param {object} props.data.tool_data - The payload data object used in the communication.
+ *    @param {string} props.data.tool_data.tool_id - The payload data object used in the communication.
+ *    @param {Array} props.data.tool_data.inputs - The different form input values sent for a tool.
+ *  @param {string} props.data.type - The payload data object used in the communication.
+ *
  * @return {object} The response from the AI service.
  */
 const kaiCommunicator = async (payload) => {
@@ -68,9 +78,10 @@ const kaiCommunicator = async (payload) => {
  * @param {object} props.data - The data object containing the message and id.
  * @param {string} props.data.id - The id of the chat session.
  * @param {string} props.data.message - The message object.
+ *
  * @return {object} The response object containing the status and data.
  */
-const communicatorV3 = onCall(async (props) => {
+const communicator = onCall(async (props) => {
   try {
     DEBUG && logger.log('Communicator started, data:', props.data);
 
@@ -145,7 +156,7 @@ const communicatorV3 = onCall(async (props) => {
 
     return { status: 'success' };
   } catch (error) {
-    DEBUG && logger.log('CommunicatorV3 error:', error);
+    DEBUG && logger.log('Communicator error:', error);
     throw new HttpsError('internal', error.message);
   }
 });
@@ -340,7 +351,7 @@ const createChatSession = onCall(async (props) => {
 });
 
 module.exports = {
-  communicatorV3,
-  toolCommunicatorV2: functions.https.onRequest(app),
+  communicator,
+  toolCommunicator: functions.https.onRequest(app),
   createChatSession,
 };
