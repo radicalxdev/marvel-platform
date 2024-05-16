@@ -6,6 +6,7 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     zIndex: 0,
+    mt: 10,
     px: { laptop: 2, desktop: 2.5, desktopMedium: 3 },
     sx: {
       overflowY: 'auto',
