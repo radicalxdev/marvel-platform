@@ -38,7 +38,7 @@
     ],
     "rewrites": [
       {
-        "source": "/api/toolCommunicator",
+        "source": "/api/toolCommunicator/**",
         "function": "toolCommunicatorV2"
       }
     ]
