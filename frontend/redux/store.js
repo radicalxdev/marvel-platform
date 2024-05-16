@@ -10,7 +10,7 @@ import chatReducer from './slices/chatSlice';
 import toolsReducer from './slices/toolsSlice';
 import userReducer from './slices/userSlice';
 
-import firebaseConfig from '@/firebaseConfig';
+import firebaseConfig from '@/firebase/config';
 
 const app = initializeApp(firebaseConfig);
 

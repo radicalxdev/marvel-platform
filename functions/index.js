@@ -1,8 +1,7 @@
 const admin = require('firebase-admin');
-const FIREBASE_CONFIG = JSON.parse(process.env.FIREBASE_CONFIG);
 
 admin.initializeApp({
-  storageBucket: FIREBASE_CONFIG.storageBucket,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_STORAGE_BUCKET,
 });
 
 const userController = require('./controllers/userController');
