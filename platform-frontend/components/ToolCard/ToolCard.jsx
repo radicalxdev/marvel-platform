@@ -8,8 +8,6 @@ import ToolImage from '@/assets/images/BookImage.png';
 
 import styles from './styles';
 
-import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
-
 /**
  * Returns a Tool Card component with an image and a chip displaying the amount of coins.
  *
