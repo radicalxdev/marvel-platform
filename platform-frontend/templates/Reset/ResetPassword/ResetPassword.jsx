@@ -126,6 +126,7 @@ const ResetPassword = (props) => {
           bgcolor={theme.palette.Dark_Colors.Dark[1]}
           text="Reset Password"
           disabled={!password.valid || loading}
+          textColor={theme.palette.Common.White['100p']}
           loading={loading}
           clickHandler={handleSubmit}
           {...styles.submitButtonProps}
