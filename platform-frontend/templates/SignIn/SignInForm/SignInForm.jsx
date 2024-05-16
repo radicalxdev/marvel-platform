@@ -146,6 +146,7 @@ const SignInForm = (props) => {
       <GradientOutlinedButton
         bgcolor={theme.palette.Dark_Colors.Dark[1]}
         text="Sign In"
+        textColor={theme.palette.Common.White['100p']}
         loading={signInLoading}
         {...styles.submitButtonProps}
       />

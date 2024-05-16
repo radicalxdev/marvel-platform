@@ -43,6 +43,7 @@ const PasswordUpdated = () => {
       <Grid {...styles.buttonGridProps}>
         <GradientOutlinedButton
           bgcolor={theme.palette.Dark_Colors.Dark[1]}
+          textColor={theme.palette.Common.White['100p']}
           text="Login"
           clickHandler={handleGoToSignIn}
           {...styles.submitButtonProps}

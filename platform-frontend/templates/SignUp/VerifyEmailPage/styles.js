@@ -71,7 +71,7 @@ const styles = {
   emailProps: {
     component: 'span',
     sx: {
-      color: (theme) => theme.palette.Background.green,
+      color: (theme) => theme.palette.primary.main,
       fontFamily: 'inherit',
       fontSize: 'inherit',
     },
