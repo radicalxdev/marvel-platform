@@ -292,6 +292,7 @@ const globalTheme = createTheme({
       500: '#9E9E9E',
       499: '#A8A8A8',
       498: '#898989',
+      450: '#B8B8B8',
       400: '#BDBDBD',
       300: '#E0E0E0',
       200: '#EEEEEE',

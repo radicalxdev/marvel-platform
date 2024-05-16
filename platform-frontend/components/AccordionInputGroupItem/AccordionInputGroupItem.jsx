@@ -5,6 +5,7 @@ import {
   AccordionSummary,
   Fade,
   Grid,
+  Stack,
   useTheme,
 } from '@mui/material';
 
@@ -17,6 +18,10 @@ import styles from './styles';
  *
  * @param {Object} props - An object containing the component's props.
  * @param {string} props.title - The title of the accordion.
+ * @param {string} props.description - The description of the accordion.
+ * @param {string} props.response - The title of the accordion.
+ * @param {boolean} props.open - Whether the accordion is opened.
+ * @param {Function} props.toggleOpen - The function to toggle the accordion.
  * @param {JSX.Elemmnt} props.children - The content rendered within the accordion.
  * @param {Object} props.extraAccordionDetailsProps - Additional props to be passed to the AccordionDetails component.
  *
@@ -25,6 +30,7 @@ import styles from './styles';
 const AccordionInputGroupItem = (props) => {
   const {
     title,
+    description,
     children,
     response,
     open,
@@ -57,8 +63,15 @@ const AccordionInputGroupItem = (props) => {
         {...styles.accordionSummaryProps}
       >
         <Grid {...styles.titleGridProps}>
-          {title}
-          {response && renderEditButton()}
+          <Stack {...styles.stackProps}>
+            <Grid {...styles.titleGridProps}>
+              {title}
+              {response && renderEditButton()}
+            </Grid>
+            {open && (
+              <Grid {...styles.descriptionGridProps}>{description}</Grid>
+            )}
+          </Stack>
         </Grid>
       </AccordionSummary>
     );
