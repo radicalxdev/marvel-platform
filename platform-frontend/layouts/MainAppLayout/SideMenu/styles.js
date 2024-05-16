@@ -12,11 +12,14 @@ const styles = {
   logoGridProps: {
     container: true,
     item: true,
-    columnGap: 3,
-    mobileSmall: 'auto',
+    columnGap: 0.5,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     mb: 8,
+    sx: {
+      cursor: 'pointer',
+    },
     px: { laptop: 2, desktop: 3, desktopMedium: 4 },
   },
   logoutGridProps: {
@@ -58,10 +61,6 @@ const styles = {
     item: true,
     mobileSmall: 'auto',
     height: 'auto',
-    cursor: 'pointer',
-    '&:hover': {
-      opacity: 0.8,
-    },
   },
   titleGridProps: {
     container: true,

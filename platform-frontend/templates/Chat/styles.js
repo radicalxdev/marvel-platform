@@ -218,7 +218,6 @@ const styles = {
       type: 'text',
       placeholder: !error && 'Send a message',
       autoComplete: 'off',
-      notched: false,
       sx: { width: '100%', height: '100%' },
       InputProps: {
         notched: false,
