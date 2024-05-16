@@ -15,7 +15,7 @@ const submitPromptV2 = async (payload, files) => {
     }
 
     const response = await axios.post(
-      '/api/toolCommunicatorV2',
+      '/api/toolCommunicator',
       formData,
       {
         headers: {
