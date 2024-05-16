@@ -82,7 +82,7 @@ const styles = {
   },
   submitButtonProps: {
     type: 'submit',
-    color: 'green',
+    color: 'purple4',
     inverted: true,
     extraProps: {
       padding: '2px',

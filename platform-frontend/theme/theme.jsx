@@ -251,6 +251,7 @@ const globalTheme = createTheme({
         purple2Reverse: 'linear-gradient(286.17deg, #E71DE7 0%, #6335F8 100%)',
         purple3Reverse:
           'linear-gradient(286.17deg, transparent 15%, #E71DE7 25%, #6335F8 60%)',
+        purple4: '#5614F3',
         brown:
           'linear-gradient(286.17deg, rgb(218, 201, 200, 0.35) 0%, #000000 100%)',
         sunset: 'linear-gradient(286deg, #F9DB43 0%, #FD495E 100%)',
@@ -291,6 +292,7 @@ const globalTheme = createTheme({
       500: '#9E9E9E',
       499: '#A8A8A8',
       498: '#898989',
+      450: '#B8B8B8',
       400: '#BDBDBD',
       300: '#E0E0E0',
       200: '#EEEEEE',

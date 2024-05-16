@@ -62,6 +62,7 @@ const ToolPage = (props) => {
       <Grid {...styles.formGridProps}>
         <AccordionInputGroupItem
           title={toolDoc?.name}
+          description={toolDoc?.description}
           extraAccordionDetailsProps={{ px: 10 }}
           response={response}
           open={formOpen}

@@ -8,15 +8,13 @@ import ToolImage from '@/assets/images/BookImage.png';
 
 import styles from './styles';
 
-import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
-
 /**
  * Returns a Tool Card component with an image and a chip displaying the amount of coins.
  *
  * @return {JSX.Element} The Tool Card component.
  */
 const ToolCard = (props) => {
-  const { maskedToolUrl, coverBg, name, logo, description } = props;
+  const { maskedToolUrl, backgroundImgURL, name, logo, description } = props;
 
   const router = useRouter();
 
@@ -43,7 +41,7 @@ const ToolCard = (props) => {
 
   return (
     <Grid onClick={handleRoute} {...styles.mainGridProps}>
-      <Card {...styles.cardProps(coverBg || getRandomBackgroundColor())}>
+      <Card {...styles.cardProps(backgroundImgURL)}>
         <Grid {...styles.toolDetailsGridProps}>
           {renderImage()}
           {renderTitle()}

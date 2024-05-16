@@ -24,6 +24,7 @@ const styles = {
     },
   },
   titleGridProps: {
+    position: 'relative',
     container: true,
     item: true,
     justifyContent: 'center',
@@ -43,6 +44,19 @@ const styles = {
       fontSize: { laptop: '14px', desktop: '15px', desktopMedium: '16px' },
       px: { laptop: 1, desktop: 2, desktopMedium: 3 },
     },
+  },
+  descriptionGridProps: {
+    sx: {
+      fontFamily: 'Satoshi Bold',
+      fontSize: { laptop: '14px', desktop: '15px', desktopMedium: '16px' },
+      color: (theme) => theme.palette.Greyscale[450],
+      textAlign: 'center',
+    },
+  },
+  stackProps: {
+    justifyContent: 'center',
+    spacing: 2,
+    sx: { width: '100%' },
   },
 };
 

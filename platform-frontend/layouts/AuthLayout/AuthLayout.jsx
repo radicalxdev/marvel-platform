@@ -43,17 +43,31 @@ const AuthLayout = (props) => {
   if (isLoading) return <Loader />;
 
   const renderBgImage = () => {
-    return <Image src={ImageURLs.AuthBgImage} {...styles.imageProps} />;
+    return (
+      <Image
+        src={ImageURLs.AuthBgImage}
+        alt="auth_background_logo"
+        {...styles.imageProps}
+      />
+    );
   };
 
   const renderArtifacts = () => {
     return (
       <>
         <Box {...styles.reXProps}>
-          <Image {...styles.reXImageProps} src={ImageURLs.ReXAuthImg} />
+          <Image
+            {...styles.reXImageProps}
+            src={ImageURLs.KaiAuthImg}
+            alt="rexImage"
+          />
         </Box>
         <Box {...styles.greenBlobProps}>
-          <Image {...styles.blobImageProps} src={ImageURLs.GreenBlobSvg} />
+          <Image
+            {...styles.blobImageProps}
+            src={ImageURLs.PurpleBlobSvg}
+            alt="green_blob"
+          />
         </Box>
       </>
     );
@@ -62,7 +76,7 @@ const AuthLayout = (props) => {
   const renderHead = () => {
     return (
       <Head>
-        <title>Radical AI</title>
+        <title>Kai AI</title>
       </Head>
     );
   };
