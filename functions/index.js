@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '../.env' }); // Ensure this is at the top
 const admin = require('firebase-admin');
 
 admin.initializeApp({

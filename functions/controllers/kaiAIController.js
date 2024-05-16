@@ -49,6 +49,9 @@ const kaiCommunicator = async (payload) => {
       ...(isToolCommunicator ? { tool_data } : { messages }),
     };
 
+    console.log('KAI_ENDPOINT', KAI_ENDPOINT);
+    console.log('kaiPayload', kaiPayload);
+
     const resp = await axios.post(KAI_ENDPOINT, kaiPayload, {
       headers,
     });
@@ -175,23 +178,22 @@ app.post('/api/toolCommunicator', (req, res) => {
     const { filename } = info;
     const fileId = uuidv4();
     const filePath = `uploads/${fileId}-${filename}`;
-    const fileWriteStream = storage.bucket().file(filePath).createWriteStream();
+    const bucketName = process.env.NEXT_PUBLIC_FIREBASE_CLIENT_STORAGE_BUCKET;
+    const fileWriteStream = storage.bucket(bucketName).file(filePath).createWriteStream();
 
     file.pipe(fileWriteStream);
 
     const uploadPromise = new Promise((resolve, reject) => {
-      fileWriteStream.on('finish', () => {
-        storage
-          .bucket()
-          .file(filePath)
-          .getSignedUrl({
-            action: 'read',
-            expires: '03-01-2500', // set expiration as needed
-          })
-          .then((urls) => {
-            resolve({ filePath, url: urls[0], filename });
-          })
-          .catch(reject);
+      fileWriteStream.on('finish', async () => {
+        // Make the file publicly readable
+        await storage.bucket(bucketName).file(filePath).makePublic();
+
+        // Construct the direct public URL
+        const publicUrl = `https://storage.googleapis.com/${bucketName}/${filePath}`;
+
+        console.log(`File ${filename} uploaded and available at ${publicUrl}`);
+  
+        resolve({ filePath, url: publicUrl, filename });
       });
 
       fileWriteStream.on('error', reject);
