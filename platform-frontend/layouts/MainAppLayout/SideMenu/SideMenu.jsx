@@ -1,4 +1,4 @@
-import { BookOutlined } from '@mui/icons-material';
+import { LogoutOutlined } from '@mui/icons-material';
 import { Button, Grid, Typography } from '@mui/material';
 
 import { signOut } from 'firebase/auth';
@@ -33,7 +33,7 @@ const SideMenu = () => {
           <LargeLogo />
         </Grid>
         <Grid {...styles.titleGridProps}>
-          <Typography {...styles.titleProps}>KAI.AC</Typography>
+          <Typography {...styles.titleProps}>KAI.AI</Typography>
           <Typography {...styles.subtitleProps}>
             AI Teaching Assistant
           </Typography>
@@ -47,7 +47,7 @@ const SideMenu = () => {
       <Grid {...styles.logoutGridProps}>
         <Button
           onClick={handleSignOutUser}
-          startIcon={<BookOutlined />}
+          startIcon={<LogoutOutlined />}
           {...styles.logoutButtonProps}
         >
           Logout
