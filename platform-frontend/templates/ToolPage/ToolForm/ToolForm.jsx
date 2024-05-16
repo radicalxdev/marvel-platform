@@ -75,7 +75,7 @@ const ToolForm = (props) => {
     }
   };
 
-  const renderTitleInput = (inputProps) => {
+  const renderTextInput = (inputProps) => {
     const { name: inputName, placeholder, label } = inputProps;
     return (
       <Grid key={inputName} {...styles.inputGridProps}>
@@ -189,10 +189,10 @@ const ToolForm = (props) => {
     );
   };
 
-  const SwitchInput = ({ inputProps }) => {
+  const renderInput = (inputProps) => {
     switch (inputProps?.type) {
       case INPUT_TYPES.TEXT:
-        return renderTitleInput(inputProps);
+        return renderTextInput(inputProps);
       case INPUT_TYPES.NUMBER:
         return renderSelectorInput(inputProps);
       case INPUT_TYPES.FILE:
@@ -211,9 +211,7 @@ const ToolForm = (props) => {
     >
       <Grid {...styles.formProps}>
         <Grid {...styles.mainContentGridProps}>
-          {inputs?.map((input) => (
-            <SwitchInput key={input?.name} inputProps={input} />
-          ))}
+          {inputs?.map((input) => renderInput(input))}
         </Grid>
         {renderActionButtons()}
       </Grid>

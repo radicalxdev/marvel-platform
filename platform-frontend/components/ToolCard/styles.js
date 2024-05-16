@@ -62,16 +62,13 @@ const styles = {
   imageProps: {
     layout: 'fill',
     objectFit: 'fill',
-    loading: 'lazy',
-    width: '100%',
-    height: '100%',
   },
   imageGridProps: {
     position: 'relative',
     container: true,
     item: true,
-    width: 52,
-    height: 52,
+    width: 48,
+    height: 48,
     borderRadius: '50%',
   },
 };

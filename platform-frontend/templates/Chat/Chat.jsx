@@ -13,7 +13,6 @@ import {
   InputAdornment,
   TextField,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 
@@ -50,7 +49,6 @@ const ChatInterface = () => {
   const messagesContainerRef = useRef();
 
   const dispatch = useDispatch();
-  const theme = useTheme();
   const {
     more,
     input,
@@ -97,8 +95,6 @@ const ChatInterface = () => {
     // Remove typing bubble
     dispatch(setTyping(false));
     if (status === 'created') dispatch(setStreaming(true));
-
-    console.log(data);
 
     // Set chat session
     dispatch(setChatSession(data));
