@@ -13,6 +13,7 @@ const app = express();
 
 const DEBUG = process.env.DEBUG;
 
+
 /**
  * Simulates communication with a Kai AI endpoint.
  *
@@ -150,6 +151,7 @@ const communicatorV3 = onCall(async (props) => {
   }
 });
 
+
 /**
  * Handles tool communications by processing input data and optional file uploads.
  * It supports both JSON and form-data requests to accommodate different client implementations.
@@ -214,7 +216,7 @@ app.post('/', (req, res) => {
 
       const results = await Promise.all(uploads);
 
-      res.set('Access-Control-Allow-Origin', '*');
+      res.set('Access-Control-Allow-Origin', '*'); // @todo: set the correct origin for security!
       res.set('Access-Control-Allow-Methods', 'POST');
       res.set('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -339,5 +341,5 @@ const createChatSession = onCall(async (props) => {
 module.exports = {
   communicatorV3,
   toolCommunicatorV2: functions.https.onRequest(app),
-  createChatSession,
+  createChatSession
 };

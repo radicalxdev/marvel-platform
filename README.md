@@ -76,8 +76,7 @@ To set up the project, follow these steps:
 3. Install Frontend dependencies: `npm install`
 4. Navigate to functions directory: `cd .. && cd frontend`
 5. Install dependencies: `npm install`
-6. Navigate to back-end project directory: `cd ..`
-7. Deploy: `firebase deploy` 
+6. Deploy: `firebase deploy` 
 (this will deploy frontend and backend, if you only want to deploy frontend use firebase deploy --only hosting)
 
 ## Contributing
