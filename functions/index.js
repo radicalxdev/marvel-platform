@@ -5,7 +5,6 @@ const GOOGLE_APPLICATION_CREDENTIALS = SERVICE_FILE;
 const FIREBASE_CONFIG = JSON.parse(process.env.FIREBASE_CONFIG);
 
 admin.initializeApp({
-  credential: admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS),
   storageBucket: FIREBASE_CONFIG.storageBucket,
 });
 
