@@ -11,8 +11,5 @@
   "license": "ISC",
   "devDependencies": {
     "husky": "^9.0.11"
-  },
-  "dependencies": {
-    "multer": "^1.4.5-lts.1"
   }
 }
