@@ -5,7 +5,7 @@ import { functions } from '@/redux/store';
 
 const sendMessage = async (payload, dispatch) => {
   try {
-    const sendCommunication = httpsCallable(functions, 'communicator');
+    const sendCommunication = httpsCallable(functions, 'chat');
     const response = await sendCommunication(payload);
 
     return response.data;
