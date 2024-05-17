@@ -108,6 +108,7 @@ const VerifyEmailPage = (props) => {
           text={`Resend Verification Email ${
             authData && seconds > 0 ? `${seconds}s` : ''
           }`}
+          textColor={theme.palette.Common.White['100p']}
           disabled={seconds > 0 || !authData}
           loading={loading}
           clickHandler={handleResend}
