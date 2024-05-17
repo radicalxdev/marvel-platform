@@ -12,6 +12,9 @@
     }
   ],
   "emulators": {
+    "predeploy": {
+      "functions": "node functions/cloud_db_seed.js"
+    },
     "functions": {
       "port": 5001
     },
@@ -31,11 +34,7 @@
   },
   "hosting": {
     "public": "frontend/out",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "/api/tool",
