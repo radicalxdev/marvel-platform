@@ -76,8 +76,9 @@ To set up the project, follow these steps:
 3. Install Frontend dependencies: `npm install`
 4. Navigate to functions directory: `cd .. && cd frontend`
 5. Install dependencies: `npm install`
-6. Deploy: `firebase deploy` (this will deploy frontend and backend, if you only want to deploy frontend use firebase deploy --only hosting)
-7. Run: `node functions/cloud_db_seed.js`
+5. Build frontend: `npm run build && npm run export`
+7. Deploy: `firebase deploy` (this will deploy frontend and backend, if you only want to deploy frontend use firebase deploy --only hosting)
+8. Run: `node functions/cloud_db_seed.js`
 
 ## Contributing
 
