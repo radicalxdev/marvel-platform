@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "This is an AI teaching assistant project that combines a front-end and back-end application. The front-end is located in the `platform-frontend` directory, and the back-end is located in the `platform-backend` directory.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
-  "author": "",
+  "author": "Radical",
   "license": "ISC",
+  "scripts": {
+    "build:next": "cd frontend && npm run build && npm run export",
+    "serve:frontend": "firebase serve --only hosting",
+    "deploy": "npm run build:next && firebase deploy",
+    "serve": "npm run build:next && firebase serve"
+  },
   "devDependencies": {
-    "husky": "^9.0.11"
+    "firebase-tools": "^9.10.0"
   }
 }
