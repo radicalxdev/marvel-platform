@@ -80,6 +80,9 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
   useEffect(() => {
     const isRedirectRoute = redirectRegex.test(asPath);
 
+    console.log("isRedirectRoute", isRedirectRoute);
+    console.log("asPath", asPath);
+
     if (isRedirectRoute) {
       const handleVerifyEmail = async () => {
         try {
