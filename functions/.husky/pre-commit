@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# cd functions
+cd functions
 
-# echo "Running linter..."
-# npm run lint
+echo "Running linter..."
+npm run lint
 
 
