@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
-    "lint:fix": "eslint --ext .jsx --ext .js ./ --fix",
+    "lint": "next lint .",
+    "lint:fix": "next lint --ext .jsx --ext .js ./ --fix",
     "format": "prettier --write .",
     "prepare": "cd .. && husky frontend/.husky",
     "export": "next export"

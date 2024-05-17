@@ -1,6 +1,6 @@
 {
   "eslint.workingDirectories": [
-    "./platform-backend/functions",
-    "./platform-frontend"
+    { "pattern": "functions/*/" },
+    { "pattern": "frontend/*/" }
   ]
 }
