@@ -24,9 +24,6 @@ exports.signUpUser = https.onCall(async (data, context) => {
     id: uid,
     email,
     fullName,
-    githubUsername: null,
-    coins: 100,
-    diamonds: 300,
   };
   await userRef.set(userDoc);
   return { status: 'success', message: 'User document created successfully' };

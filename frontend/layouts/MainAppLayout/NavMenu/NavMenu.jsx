@@ -1,8 +1,8 @@
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import AddBlockSvg from '@/assets/svg/add-block.svg';
-import HomeIcon from '@/assets/svg/Home.svg';
+import Briefcase from '@/assets/svg/Briefcase.svg';
+import ChatBubble from '@/assets/svg/ChatBubble.svg';
 
 import ROUTES from '@/constants/routes';
 
@@ -14,13 +14,13 @@ const PAGES = [
   {
     name: 'Kai Tools',
     link: ROUTES.HOME,
-    icon: <HomeIcon />,
+    icon: <Briefcase />,
     id: 'page_1',
   },
   {
     name: 'Kai Chat',
     link: ROUTES.CHAT,
-    icon: <AddBlockSvg />,
+    icon: <ChatBubble />,
     id: 'page_2',
   },
 ];

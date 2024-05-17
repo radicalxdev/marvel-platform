@@ -9,7 +9,6 @@ const styles = {
     error,
     autoComplete: 'off',
     sx: (theme) => ({
-      notched: false,
       fontFamily: 'Satoshi Bold',
       fontSize: { laptop: '16px', desktopMedium: '18px' },
       background: theme.palette.Common.White['100p'],

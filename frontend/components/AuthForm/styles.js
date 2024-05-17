@@ -31,8 +31,8 @@ const styles = {
     fontSize: { laptop: '16px', desktop: '20px', desktopMedium: '24px' },
     sx: (theme) => ({
       a: {
-        textDecorationColor: theme.palette.Background.green,
-        color: theme.palette.Background.green,
+        textDecorationColor: theme.palette.primary.main,
+        color: theme.palette.primary.main,
       },
     }),
   },

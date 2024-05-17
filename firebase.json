@@ -39,7 +39,7 @@
     "rewrites": [
       {
         "source": "/api/toolCommunicator",
-        "function": "toolCommunicatorV2"
+        "function": "toolCommunicator"
       }
     ]
   }

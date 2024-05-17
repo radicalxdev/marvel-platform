@@ -255,6 +255,7 @@ const SignUpForm = (props) => {
       <GradientOutlinedButton
         bgcolor={theme.palette.Dark_Colors.Dark[1]}
         loading={step === AUTH_STEPS.PASSWORD && loading}
+        textColor={theme.palette.Common.White['100p']}
         clickHandler={handleSubmit}
         text={submitButtonText()}
         {...styles.submitButtonProps}
