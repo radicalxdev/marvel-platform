@@ -12,8 +12,6 @@ const busboy = require('busboy');
 const app = express();
 
 const DEBUG = process.env.DEBUG;
-
-
 /**
  * Simulates communication with a Kai AI endpoint.
  *
@@ -165,7 +163,6 @@ const chat = onCall(async (props) => {
   }
 });
 
-
 /**
  * Handles tool communications by processing input data and optional file uploads.
  * It supports both JSON and form-data requests to accommodate different client implementations.
@@ -189,8 +186,12 @@ app.post('/api/tool', (req, res) => {
     const { filename } = info;
     const fileId = uuidv4();
     const filePath = `uploads/${fileId}-${filename}`;
-    const bucketName = process.env.NEXT_PUBLIC_FIREBASE_CLIENT_STORAGE_BUCKET;
-    const fileWriteStream = storage.bucket(bucketName).file(filePath).createWriteStream();
+    const { name: bucketName } = storage.bucket();
+
+    const fileWriteStream = storage
+      .bucket(bucketName)
+      .file(filePath)
+      .createWriteStream();
 
     file.pipe(fileWriteStream);
 
@@ -203,7 +204,7 @@ app.post('/api/tool', (req, res) => {
         const publicUrl = `https://storage.googleapis.com/${bucketName}/${filePath}`;
 
         console.log(`File ${filename} uploaded and available at ${publicUrl}`);
-  
+
         resolve({ filePath, url: publicUrl, filename });
       });
 

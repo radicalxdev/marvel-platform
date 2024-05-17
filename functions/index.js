@@ -1,13 +1,11 @@
 require('dotenv').config({ path: '../.env' }); // Ensure this is at the top
 const admin = require('firebase-admin');
 
-admin.initializeApp({
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_STORAGE_BUCKET,
-});
+admin.initializeApp();
 
 const userController = require('./controllers/userController');
 const kaiAIController = require('./controllers/kaiAIController');
-const dbSeedController = require("./controllers/dbSeedController")
+const dbSeedController = require('./controllers/dbSeedController');
 
 /* Migration Scripts */
 // const {
