@@ -85,7 +85,7 @@ const kaiCommunicator = async (payload) => {
  *
  * @return {object} The response object containing the status and data.
  */
-const communicator = onCall(async (props) => {
+const chat = onCall(async (props) => {
   try {
     DEBUG && logger.log('Communicator started, data:', props.data);
 
@@ -356,7 +356,7 @@ const createChatSession = onCall(async (props) => {
 });
 
 module.exports = {
-  communicator,
-  toolCommunicator: functions.https.onRequest(app),
+  chat,
+  tool: functions.https.onRequest(app),
   createChatSession,
 };

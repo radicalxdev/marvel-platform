@@ -13,7 +13,7 @@ import ArrowBack from '@/assets/svg/purple-arrow-back.svg';
 
 import ROUTES from '@/constants/routes';
 
-import TOOLS from '@/constants/tools';
+import TOOLS_ID from '@/constants/tools';
 
 import FlashCardList from './FlashCardList';
 import MultipleChoiceResponse from './MultipleChoiceResponse';
@@ -30,7 +30,7 @@ const ToolPage = (props) => {
 
   const { response, formOpen } = useSelector((state) => state.tools);
 
-  const { name } = toolDoc;
+  const { id } = toolDoc;
 
   useEffect(() => {
     return () => {
@@ -68,17 +68,17 @@ const ToolPage = (props) => {
           open={formOpen}
           toggleOpen={() => dispatch(setFormOpen(!formOpen))}
         >
-          <ToolForm inputs={toolDoc?.inputs} id={toolDoc?.id} name={name} />
+          <ToolForm inputs={toolDoc?.inputs} id={toolDoc?.id} />
         </AccordionInputGroupItem>
       </Grid>
     );
   };
 
   const renderResponse = () => {
-    switch (name) {
-      case TOOLS.GEMINI_DYNAMO:
+    switch (id) {
+      case TOOLS_ID.GEMINI_DYNAMO:
         return <FlashCardList />;
-      case TOOLS.GEMINI_QUIZIFY:
+      case TOOLS_ID.GEMINI_QUIZIFY:
         return <MultipleChoiceResponse />;
       default:
         return null;
