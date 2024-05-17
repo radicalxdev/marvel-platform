@@ -175,7 +175,7 @@ const chat = onCall(async (props) => {
  * @return {void} Sends a response to the client based on the processing results.
  * @throws {HttpsError} Throws an error if processing fails or data is invalid.
  */
-app.post('/api/toolCommunicator', (req, res) => {
+app.post('/api/tool', (req, res) => {
   const bb = busboy({ headers: req.headers });
 
   if (req.method !== 'POST') {

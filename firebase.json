@@ -38,8 +38,8 @@
     ],
     "rewrites": [
       {
-        "source": "/api/toolCommunicator",
-        "function": "toolCommunicator"
+        "source": "/api/tool",
+        "function": "tool"
       }
     ]
   }
