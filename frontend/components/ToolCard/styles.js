@@ -1,3 +1,5 @@
+import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
+
 const styles = {
   mainGridProps: {
     container: true,
@@ -5,7 +7,7 @@ const styles = {
     desktopLarge: 3,
     laptop: 4,
   },
-  cardProps: (backgroundColor) => ({
+  cardProps: (backgroundImgURL) => ({
     elevation: 5,
     sx: {
       display: 'flex',
@@ -17,7 +19,13 @@ const styles = {
       borderRadius: '10px',
       overflow: 'hidden',
       p: 2,
-      background: backgroundColor,
+      ...(backgroundImgURL && {
+        backgroundImage: `url(${backgroundImgURL})`,
+        backgroundSize: 'cover',
+      }),
+      ...(!backgroundImgURL && {
+        background: getRandomBackgroundColor(),
+      }),
       transition: (theme) => theme.transitions.create('all'),
       '&:hover': {
         cursor: 'pointer',
@@ -36,7 +44,7 @@ const styles = {
   },
   titleProps: {
     fontFamily: 'Satoshi Bold',
-    fontSize: '14px',
+    fontSize: '16px',
     color: (theme) => theme.palette.Common.White['100p'],
   },
   contentGridProps: {
@@ -49,7 +57,7 @@ const styles = {
   },
   descriptionProps: {
     fontFamily: 'Satoshi Regular',
-    fontSize: '12px',
+    fontSize: '14px',
     color: (theme) => theme.palette.Common.White['100p'],
     textOverflow: 'ellipsis',
     overflow: 'hidden',
@@ -62,16 +70,13 @@ const styles = {
   imageProps: {
     layout: 'fill',
     objectFit: 'fill',
-    loading: 'lazy',
-    width: '100%',
-    height: '100%',
   },
   imageGridProps: {
     position: 'relative',
     container: true,
     item: true,
-    width: 52,
-    height: 52,
+    width: 48,
+    height: 48,
     borderRadius: '50%',
   },
 };

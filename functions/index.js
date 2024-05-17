@@ -20,8 +20,8 @@ module.exports = {
   signUpUser: userController.signUpUser,
 
   /* Kai AI */
-  communicatorV3: kaiAIController.communicatorV3,
-  toolCommunicatorV2: kaiAIController.toolCommunicatorV2,
+  communicator: kaiAIController.communicator,
+  toolCommunicator: kaiAIController.toolCommunicator,
   createChatSession: kaiAIController.createChatSession,
 
   seedDatabase: dbSeedController.seedDatabase,

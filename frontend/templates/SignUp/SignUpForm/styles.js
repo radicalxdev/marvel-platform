@@ -1,6 +1,6 @@
 const styles = {
   submitButtonProps: {
-    color: 'green',
+    color: 'purple4',
     inverted: true,
     extraProps: {
       padding: '2px',

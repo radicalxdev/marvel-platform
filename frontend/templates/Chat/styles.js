@@ -218,7 +218,6 @@ const styles = {
       type: 'text',
       placeholder: !error && 'Send a message',
       autoComplete: 'off',
-      notched: false,
       sx: { width: '100%', height: '100%' },
       InputProps: {
         notched: false,
@@ -337,14 +336,14 @@ const styles = {
     sx: (theme) => ({
       position: 'absolute',
       bottom: {
-        laptop: theme.spacing(10),
-        desktop: theme.spacing(12),
-        desktopMedium: theme.spacing(13),
+        laptop: theme.spacing(15),
+        desktop: theme.spacing(17),
+        desktopMedium: theme.spacing(18),
       },
       right: {
-        laptop: theme.spacing(3),
-        desktop: theme.spacing(5),
-        desktopMedium: theme.spacing(7),
+        laptop: theme.spacing(4),
+        desktop: theme.spacing(6),
+        desktopMedium: theme.spacing(8),
       },
       textTransform: 'capitalize',
       borderRadius: '50px',
@@ -352,7 +351,7 @@ const styles = {
       color: 'white',
       border: '1px solid white',
       boxShadow: theme.customShadows.Elevation[4].boxShadow,
-      background: theme.palette.Dark_Colors.Dark[1],
+      background: theme.palette.primary.main,
       span: {
         marginRight: '0px',
         marginLeft: '0px',

@@ -15,14 +15,12 @@ const styles = {
     layout: 'fill',
     objectFit: 'cover',
     priority: true,
-    alt: 'auth_background_logo',
     style: { zIndex: 0 },
   },
   reXImageProps: {
     layout: 'fill',
     objectFit: 'cover',
     priority: true,
-    alt: 'rexImage',
   },
   blobImageProps: {
     layout: 'fill',
