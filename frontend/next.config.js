@@ -1,4 +1,8 @@
+const dotenv = require('dotenv');
 const withTM = require('next-transpile-modules')(['react-syntax-highlighter']);
+
+// Load environment variables from a specific file in the parent directory
+dotenv.config({ path: '../.env' });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
