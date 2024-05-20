@@ -1,15 +1,14 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd platform-backend/functions
+cd functions
 
-echo "Running linter on platform backend..."
+echo "Running linter on functions..."
 npm run lint
 
-cd ../..
-cd platform-frontend
+cd ../frontend
 
-echo "Running linter on platform front-end..."
+echo "Running linter on platform frontend..."
 npm run lint
 
 
