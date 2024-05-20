@@ -57,8 +57,8 @@ const kaiCommunicator = async (payload) => {
       ...(isToolCommunicator ? { tool_data } : { messages }),
     };
 
-    console.log('KAI_ENDPOINT', KAI_ENDPOINT);
-    console.log('kaiPayload', kaiPayload);
+    DEBUG && logger.log('KAI_ENDPOINT', KAI_ENDPOINT);
+    DEBUG && logger.log('kaiPayload', kaiPayload);
 
     const resp = await axios.post(KAI_ENDPOINT, kaiPayload, {
       headers,
@@ -203,7 +203,10 @@ app.post('/api/tool', (req, res) => {
         // Construct the direct public URL
         const publicUrl = `https://storage.googleapis.com/${bucketName}/${filePath}`;
 
-        console.log(`File ${filename} uploaded and available at ${publicUrl}`);
+        DEBUG &&
+          console.log(
+            `File ${filename} uploaded and available at ${publicUrl}`
+          );
 
         resolve({ filePath, url: publicUrl, filename });
       });
