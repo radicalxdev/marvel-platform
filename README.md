@@ -51,9 +51,8 @@ To set up the project, follow these steps:
 2. Create your firebase project on google firebase console
 3. Create a firestore database instance
 4. Get firebase config from firebase project settings in firebase console and save it to .env (create in root of this project, see sample.env for refrence)
-5. Generate a new private key from the projects settings and save that to the .env file as well
-6. Install Firebase CLI by running following in terminal: `npm install -g firebase-tools`
-7. Login to firebase CLI by running following command: `firebase login`.
+5. Install Firebase CLI by running the following in terminal: `npm install -g firebase-tools`
+6. Login to firebase CLI by running the following command: `firebase login`.
 
 ### Backend
 1. Navigate to back-end project directory: `cd functions`
@@ -67,7 +66,7 @@ To set up the project, follow these steps:
 
 ### Local Emulator (Optional)
 #### Setup
-1. Open a terminal and to start the emulators, run the following command: `npm run emulators`
+1. Open the terminal and to start the emulators, run the following command: `npm run emulators`
 2. Open another terminal simultaneously and start the frontend project, run the following command: `npm run frontend:dev`
 
 ## Cloud Deployment
