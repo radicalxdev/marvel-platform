@@ -18,14 +18,19 @@ const MultipleChoiceResponse = () => {
   };
 
   const renderQuestion = (question, questionNo) => {
-    const transformedChoices = Object.values(question?.choices || {});
+    const { choices, question: questionTitle } = question;
+
+    const questionChoices = Array.isArray(choices)
+      ? choices
+      : Object.values(choices || {});
+
     return (
-      <Grid {...styles.questionGridProps}>
+      <Grid key={`question-${questionNo}`} {...styles.questionGridProps}>
         <Typography {...styles.questionTitleProps}>
-          {questionNo}. {question?.question}
+          {questionNo}. {questionTitle}
         </Typography>
         <Grid>
-          {transformedChoices?.map((choice, index) => (
+          {questionChoices?.map((choice, index) => (
             <Typography
               key={`${questionNo}-choice-${index}`}
               {...styles.choiceProps}

@@ -63,7 +63,7 @@ const ToolForm = (props) => {
         files
       );
 
-      dispatch(setResponse(response?.data?.[0]));
+      dispatch(setResponse(response?.data));
       dispatch(setFormOpen(false));
       dispatch(setCommunicatorLoading(false));
     } catch (error) {
