@@ -52,7 +52,7 @@ To set up the project, follow these steps:
 3. Create a firestore database instance
 4. Get firebase config from firebase project settings in firebase console and save it to .env (create in root of this project, see sample.env for refrence)
 5. Generate a new private key from the projects settings and save that to the .env file as well
-6. Install Firebase CLI by running following in terminal: `npm install dev`
+6. Install Firebase CLI by running following in terminal: `npm install -g firebase-tools`
 7. Login to firebase CLI by running following command: `firebase login`.
 
 ### Backend
@@ -61,24 +61,22 @@ To set up the project, follow these steps:
 3. Run for local testing: `firebase serve --only functions`
 
 ### Frontend
-1. Navigate to back-end project directory: `cd frontend`
+1. Navigate to front-end project directory: `cd frontend`
 2. Install dependencies: `npm install`
 3. Run for local testing: `npm run dev`
 
 ### Local Emulator (Optional)
 #### Setup
-1. Start emulator `firebase emulators:start`
-2. Run database seed `node functions/local_db_seed.js`  
+1. Open a terminal and to start the emulators, run the following command: `npm run emulators`
+2. Open another terminal simultaneously and start the frontend project, run the following command: `npm run frontend:dev`
 
 ## Cloud Deployment
 1. Clone the repository: `git clone https://github.com/radicalxdev/kai-platform`
 2. Navigate to back-end project directory: `cd functions`
-3. Install Frontend dependencies: `npm install`
-4. Navigate to functions directory: `cd .. && cd frontend`
+3. Install dependencies: `npm install`
+4. Navigate to front-end directory: `cd ../frontend`
 5. Install dependencies: `npm install`
-5. Build frontend: `npm run build && npm run export`
-7. Deploy: `firebase deploy` (this will deploy frontend and backend, if you only want to deploy frontend use firebase deploy --only hosting)
-8. Run: `node functions/cloud_db_seed.js`
+5. Navigate to the root directory and run deploy: `cd .. && npm run deploy`
 
 ## Contributing
 
