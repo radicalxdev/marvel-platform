@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import firebaseConfig from '@/firebase/config';
+
 const submitPrompt = async (payload, files) => {
   try {
     const formData = new FormData();
@@ -16,7 +18,7 @@ const submitPrompt = async (payload, files) => {
 
     const endpoint =
       process.env.NODE_ENV === 'development'
-        ? `${process.env.DEV_TOOL_API}/api/tool`
+        ? `http://127.0.0.1:5001/${firebaseConfig?.projectId}/us-central1/api/tool`
         : '/api/tool';
 
     const response = await axios.post(endpoint, formData, {
