@@ -1,0 +1,69 @@
+{
+  "name": "kai-ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint .",
+    "lint:fix": "next lint --ext .jsx --ext .js ./ --fix",
+    "format": "prettier --write .",
+    "prepare": "cd .. && husky frontend/.husky",
+    "export": "next export"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run lint",
+      "npm run format",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.0",
+    "@reduxjs/toolkit": "^1.9.5",
+    "axios": "^1.4.0",
+    "dotenv": "^16.4.5",
+    "firebase": "^9.22.0",
+    "firebase-admin": "^11.8.0",
+    "moment": "^2.29.4",
+    "next": "12.3.0",
+    "next-transpile-modules": "^10.0.1",
+    "nextjs-google-analytics": "^2.3.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.9",
+    "react-hook-form-mui": "^6.1.0",
+    "react-markdown": "^9.0.0",
+    "react-redux": "^8.0.7",
+    "react-syntax-highlighter": "^15.5.0",
+    "remark": "^15.0.1",
+    "remark-emoji": "^4.0.1",
+    "remark-gfm": "^4.0.0",
+    "remark-html": "^16.0.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.2"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^8.0.1",
+    "eslint": "8.40.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-next": "12.3.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8"
+  }
+}

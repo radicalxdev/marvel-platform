@@ -1,0 +1,151 @@
+/*
+Roboto-Mono font imported here
+*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+/*
+Ethnocentric fonts imported here
+*/
+@font-face {
+  font-family: 'Ethnocentric Regular';
+  src: local('Ethnocentric Regular'),
+    url(/fonts/Ethnocentric/Ethnocentric-Regular.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Ethnocentric Regular Italics';
+  src: local('Ethnocentric Regular Italics'),
+    url(/fonts/Ethnocentric/Ethnocentric-Regular-Italics.otf) format('opentype');
+}
+
+/*
+Satoshi fonts imported here
+*/
+@font-face {
+  font-family: 'Satoshi Black';
+  src: local('Satoshi Black'),
+    url(/fonts/Satoshi/Satoshi-Black.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Satoshi Bold';
+  src: local('Satoshi Bold'),
+    url(/fonts/Satoshi/Satoshi-Bold.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Satoshi Medium';
+  src: local('Satoshi Medium'),
+    url(/fonts/Satoshi/Satoshi-Medium.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Satoshi Regular';
+  src: local('Satoshi Regular'),
+    url(/fonts/Satoshi/Satoshi-Regular.otf) format('opentype');
+}
+
+/*
+MoldeSemiExpanded fonts imported here
+*/
+@font-face {
+  font-family: 'Molde Semi Expanded Black';
+  src: local('Molde Semi Expanded Black'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Black.woff) format('woff'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Black.woff2) format('woff2'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Black.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'Molde Semi Expanded Bold';
+  src: local('Molde Semi Expanded Bold'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Bold.woff) format('woff'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Bold.woff2) format('woff2'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Bold.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'Molde Semi Expanded Medium';
+  src: local('Molde Semi Expanded Medium'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Medium.woff) format('woff'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Medium.woff2)
+      format('woff2'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Medium.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'Molde Semi Expanded Regular';
+  src: local('Molde Semi Expanded Regular'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Regular.woff) format('woff'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Regular.woff2)
+      format('woff2'),
+    url(/fonts/MoldeSemiExpanded/Molde-SemiExpanded-Regular.ttf) format('ttf');
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  overscroll-behavior-y: none;
+}
+
+/* Hide vertical scrollbar (Chrome, Safari, and newer versions of Edge) */
+::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+/* Hide horizontal scrollbar (Chrome, Safari, and newer versions of Edge) */
+::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+/* Hide scrollbar (Firefox) */
+* {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar (Firefox) */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.hidden {
+  visibility: hidden;
+  height: 0;
+}
+
+.MuiMenu-paper {
+  border-radius: 12px;
+}
+
+.MuiSelect-icon {
+  display: none;
+}
+
+@keyframes d3 {
+  20% {
+    background-position: 0% 0%, 50% 50%, 100% 50%;
+  }
+
+  40% {
+    background-position: 0% 100%, 50% 0%, 100% 50%;
+  }
+
+  60% {
+    background-position: 0% 50%, 50% 100%, 100% 0%;
+  }
+
+  80% {
+    background-position: 0% 50%, 50% 50%, 100% 100%;
+  }
+}

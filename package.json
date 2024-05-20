@@ -1,0 +1,20 @@
+{
+  "name": "kai-ai",
+  "version": "1.0.0",
+  "description": "This is an AI teaching assistant project that combines a front-end and back-end application. The front-end is located in the `platform-frontend` directory, and the back-end is located in the `platform-backend` directory.",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Radical",
+  "license": "ISC",
+  "scripts": {
+    "build:next": "cd frontend && npm run build && npm run export",
+    "serve:frontend": "firebase serve --only hosting",
+    "deploy": "npm run build:next && firebase deploy",
+    "serve": "npm run build:next && firebase serve",
+    "lint": "cd frontend && npm run lint && cd ../functions && npm run lint",
+    "lint:fix": "cd frontend && npm run lint:fix && cd ../functions && npm run lint:fix"
+  },
+  "devDependencies": {
+    "firebase-tools": "^9.10.0"
+  }
+}
