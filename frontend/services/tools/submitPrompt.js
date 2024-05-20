@@ -14,15 +14,16 @@ const submitPrompt = async (payload, files) => {
       });
     }
 
-    const response = await axios.post(
-      '/api/tool',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
+    const endpoint =
+      process.env.NODE_ENV === 'development'
+        ? `${process.env.DEV_TOOL_API}/api/tool`
+        : '/api/tool';
+
+    const response = await axios.post(endpoint, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
     return response.data?.data;
   } catch (err) {
