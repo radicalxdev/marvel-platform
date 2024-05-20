@@ -24,6 +24,10 @@
     "database": {
       "port": 9000
     },
+    "storage": {
+      "port": 9199,
+      "rules": "storage.rules"
+    },
     "ui": {
       "enabled": true
     },
@@ -34,12 +38,19 @@
   },
   "hosting": {
     "public": "frontend/out",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "/api/tool",
         "function": "tool"
       }
     ]
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }
