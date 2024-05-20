@@ -10,6 +10,8 @@
     "build:next": "cd frontend && npm run build && npm run export",
     "serve:frontend": "firebase serve --only hosting",
     "deploy": "npm run build:next && firebase deploy",
+    "emulators": "firebase emulators:start",
+    "frontend:dev": "cd frontend && npm run dev",
     "serve": "npm run build:next && firebase serve",
     "lint": "cd frontend && npm run lint && cd ../functions && npm run lint",
     "lint:fix": "cd frontend && npm run lint:fix && cd ../functions && npm run lint:fix"
