@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
 import { applyActionCode } from 'firebase/auth';
-import { collection, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,11 +8,7 @@ import { AUTH_MODES } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 import ROUTES from '@/constants/routes';
 
-import {
-  setEmailVerified,
-  setLoading,
-  setTotalUsers,
-} from '@/redux/slices/authSlice';
+import { setEmailVerified, setLoading } from '@/redux/slices/authSlice';
 import { auth } from '@/redux/store';
 import fetchUserData from '@/redux/thunks/user';
 
