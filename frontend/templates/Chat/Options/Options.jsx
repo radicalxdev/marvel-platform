@@ -13,9 +13,8 @@ const Options = (props) => {
         {options?.map(
           (option, index) =>
             !(index > 1) && (
-              <Grid {...styles.buttonGridProps}>
+              <Grid key={index} {...styles.buttonGridProps}>
                 <Button
-                  key={index}
                   onClick={() => onQuickReply(option)}
                   {...styles.buttonProps}
                 >
