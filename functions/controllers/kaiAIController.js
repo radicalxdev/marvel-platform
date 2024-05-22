@@ -68,8 +68,12 @@ const kaiCommunicator = async (payload) => {
 
     return { status: 'success', data: resp.data };
   } catch (error) {
-    DEBUG && logger.log('kaiCommunicator error:', error);
-    throw new HttpsError('internal', error.message);
+    const {
+      response: { data },
+    } = error;
+    const { message } = data;
+    DEBUG && logger.error('kaiCommunicator error:', data);
+    throw new HttpsError('internal', message);
   }
 };
 
@@ -176,7 +180,7 @@ app.post('/api/tool', (req, res) => {
   const bb = busboy({ headers: req.headers });
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
   const uploads = [];
@@ -254,8 +258,8 @@ app.post('/api/tool', (req, res) => {
 
       res.status(200).json({ success: true, data: response.data });
     } catch (error) {
-      console.error('Error processing request:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      logger.error('Error processing request:', error);
+      res.status(500).json({ success: false, message: error?.message });
     }
   });
 
