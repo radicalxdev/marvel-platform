@@ -45,6 +45,13 @@ const styles = {
     alignItems: 'flex-start',
     rowGap: 1,
   },
+  textFieldLabelGridProps: {
+    container: true,
+    mobileSmall: 12,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    rowGap: 4,
+  },
   labelProps: (error) => ({
     color: (theme) => (error ? theme.palette.error.main : 'inherit'),
     fontSize: { laptop: '24px', desktop: '26px' },
