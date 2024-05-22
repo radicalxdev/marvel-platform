@@ -34,7 +34,8 @@
         "label": "Youtube Video URL",
         "name": "youtube_url",
         "placeholder": "Paste URL",
-        "type": "text"
+        "type": "text",
+        "tooltip": "Please note that the video should not exceed 10 minutes."
       }
     ],
     "logo": "https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188",

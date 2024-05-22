@@ -45,7 +45,7 @@ const styles = {
     error,
     shrink: true,
     sx: {
-      top: '-10px',
+      top: '-14px',
       color: 'black',
       fontSize: { laptop: '24px', desktop: '26px' },
       fontFamily: 'Satoshi Bold',
