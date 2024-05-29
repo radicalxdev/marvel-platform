@@ -2,7 +2,7 @@
   "0": {
     "backgroundImgURL": "https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Quizify.png?alt=media&token=d1255f27-b1a1-444e-b96a-4a3ac559237d",
     "description": "Create a multiple choice quiz based on any topic, standard(s), and pdf files!",
-    "id": "0",
+    "id": 0,
     "inputs": [
       {
         "label": "Topic",
@@ -28,14 +28,13 @@
   "1": {
     "backgroundImgURL": "https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080",
     "description": "Creates flash cards from a youtube video.",
-    "id": "1",
+    "id": 1,
     "inputs": [
       {
         "label": "Youtube Video URL",
         "name": "youtube_url",
         "placeholder": "Paste URL",
-        "type": "text",
-        "tooltip": "Please note that the video should not exceed 10 minutes."
+        "type": "text"
       }
     ],
     "logo": "https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188",

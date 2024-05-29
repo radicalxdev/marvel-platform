@@ -18,5 +18,9 @@
   },
   "devDependencies": {
     "firebase-tools": "^9.10.0"
+  },
+  "dependencies": {
+    "eslint": "^9.3.0",
+    "husky": "^9.0.11"
   }
 }

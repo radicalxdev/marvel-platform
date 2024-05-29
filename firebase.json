@@ -43,10 +43,6 @@
       {
         "source": "/api/tool",
         "function": "tool"
-      },
-      {
-        "regex": "^/([^/]+?)(?:/)?$",
-        "destination": "/[toolId]/index.html"
       }
     ]
   },

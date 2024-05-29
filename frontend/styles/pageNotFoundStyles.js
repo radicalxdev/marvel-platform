@@ -3,10 +3,9 @@ const pageNotFoundStyles = {
     position: 'relative',
     container: true,
     item: true,
-    mobileSmall: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%',
+    height: 'auto',
     overflow: 'hidden',
     maxWidth: { laptop: '1450px' },
     sx: {

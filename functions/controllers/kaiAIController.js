@@ -1,10 +1,7 @@
 const admin = require('firebase-admin');
 const storage = admin.storage();
-const {
-  onCall,
-  onRequest,
-  HttpsError,
-} = require('firebase-functions/v2/https');
+const functions = require('firebase-functions');
+const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
 const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
@@ -71,12 +68,8 @@ const kaiCommunicator = async (payload) => {
 
     return { status: 'success', data: resp.data };
   } catch (error) {
-    const {
-      response: { data },
-    } = error;
-    const { message } = data;
-    DEBUG && logger.error('kaiCommunicator error:', data);
-    throw new HttpsError('internal', message);
+    DEBUG && logger.log('kaiCommunicator error:', error);
+    throw new HttpsError('internal', error.message);
   }
 };
 
@@ -183,7 +176,7 @@ app.post('/api/tool', (req, res) => {
   const bb = busboy({ headers: req.headers });
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   const uploads = [];
@@ -261,8 +254,8 @@ app.post('/api/tool', (req, res) => {
 
       res.status(200).json({ success: true, data: response.data });
     } catch (error) {
-      logger.error('Error processing request:', error);
-      res.status(500).json({ success: false, message: error?.message });
+      console.error('Error processing request:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   });
 
@@ -368,6 +361,6 @@ const createChatSession = onCall(async (props) => {
 
 module.exports = {
   chat,
-  tool: onRequest({ minInstances: 1 }, app),
+  tool: functions.https.onRequest(app),
   createChatSession,
 };
