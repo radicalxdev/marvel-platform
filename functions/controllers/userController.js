@@ -47,7 +47,7 @@ exports.getHist = https.onCall(async (data) => {
   const hists = await admin
     .firestore()
     .collection('users')
-    .doc('603')
+    .doc(uid)
     .collection('Hists')
     .get();
   return { status: 'success', data: hists.docs.map((doc) => doc.data()) };
