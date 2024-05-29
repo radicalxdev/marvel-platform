@@ -8,6 +8,7 @@ dotenv.config({ path: '../.env' });
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
+  trailingSlash: true,
 };
 
 module.exports = withTM({
