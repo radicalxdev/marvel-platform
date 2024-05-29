@@ -17,6 +17,7 @@
     "lint:fix": "cd frontend && npm run lint:fix && cd ../functions && npm run lint:fix"
   },
   "devDependencies": {
-    "firebase-tools": "^9.10.0"
+    "firebase-tools": "^9.10.0",
+    "husky": "^9.0.11"
   }
 }
