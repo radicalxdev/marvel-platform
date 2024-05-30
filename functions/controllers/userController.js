@@ -102,7 +102,7 @@ exports.getHist = gethistGET; // or histPOST if want use post to access
  */
 // if you are here, hey, this is a easter egg. Me BB will stay with CC
 exports.setHist = https.onCall(async (data) => {
-  const { uid, messages } = data;
+  const { uid, sid, messages } = data;
   if (!uid || !messages) {
     throw new https.HttpsError(
       'failed-precondition',
