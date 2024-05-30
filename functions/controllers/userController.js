@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
 const { https } = require('firebase-functions');
+const { HttpsError } = require('firebase-functions/v1/auth');
 
 /**
  * Creates a new user document in the Firestore collection "users" with the provided data.
@@ -29,16 +30,17 @@ exports.signUpUser = https.onCall(async (data, context) => {
   return { status: 'success', message: 'User document created successfully' };
 });
 
+// #region get History GET and POST
 /**
- * Creates a new user document in the Firestore collection "users" with the provided data.
+ * get user's chat history from DB use POST request
  *
- * @param {Object} data - The data object containing the user's unique identifier (uid).
+ * @param {Object} data - The data object containing the user's unique identifier (uid), session identidier (sid).
  * @throws {HttpsError} If any of the required fields (email, fullName, uid) are missing in the data object.
  * @return {Object} status and the user's history in a list form
  */
-const histPOST = https.onCall(async (data) => {
-  const { uid } = data;
-  if (!uid) {
+const gethistPOST = https.onCall(async (data) => {
+  const { uid, sid } = data;
+  if (!uid || !sid) {
     throw new https.HttpsError(
       'failed-precondition',
       'Please provide all required fields'
@@ -48,21 +50,24 @@ const histPOST = https.onCall(async (data) => {
     .firestore()
     .collection('users')
     .doc(uid)
+    .collection('Sessions')
+    .doc(sid)
     .collection('Hists')
     .get();
   return { status: 'success', data: hists.docs.map((doc) => doc.data()) };
 });
 
 /**
- * Creates a new user document in the Firestore collection "users" with the provided data.
+ * get user's chat history from DB use GET request
  *
- * @param {Object} data - The data object containing the user's unique identifier (uid).
+ * @param {Object} req - The data object containing the user's unique identifier (uid), session identidier (sid).
+ * @param {Object} res - Return status and the user's history in a list form.
  * @throws {HttpsError} If any of the required fields (email, fullName, uid) are missing in the data object.
  */
-const histGET = https.onRequest(async (req, res) => {
+const gethistGET = https.onRequest(async (req, res) => {
   if (req.method === 'GET') {
-    const { uid } = req.body.data;
-    if (!uid) {
+    const { uid, sid } = req.body.data;
+    if (!uid || !sid) {
       throw new https.HttpsError(
         'failed-precondition',
         'Please provide all required fields'
@@ -72,6 +77,8 @@ const histGET = https.onRequest(async (req, res) => {
       .firestore()
       .collection('users')
       .doc(uid)
+      .collection('Sessions')
+      .doc(sid)
       .collection('Hists')
       .get();
     res
@@ -83,4 +90,39 @@ const histGET = https.onRequest(async (req, res) => {
   }
 });
 
-exports.getHist = histGET; // or histPOST if want use post to access
+exports.getHist = gethistGET; // or histPOST if want use post to access
+// #endregion
+
+/**
+ * Creates a new user chat History document.
+ *
+ * @param {Object} data - The data object containing the user's unique identifier (uid), session identidier (sid), and list of messages (messages).
+ * @throws {HttpsError} If any of the required fields (email, fullName, uid) are missing in the data object.
+ * @return {Object} - Return status 200/other.
+ */
+// if you are here, hey, this is a easter egg. Me BB will stay with CC
+exports.setHist = https.onCall(async (data) => {
+  const { uid, messages } = data;
+  if (!uid || !messages) {
+    throw new https.HttpsError(
+      'failed-precondition',
+      'Please provide all required fields'
+    );
+  }
+  const histsRef = await admin
+    .firestore()
+    .collection('users')
+    .doc(uid)
+    .collection('Sessions')
+    .doc(sid)
+    .collection('Hists');
+  if (!histsRef.get().exists) {
+    // complete set new history when message structure known
+  } else {
+    throw new HttpsError(
+      'already-exists',
+      'such Session already have a History'
+    );
+  }
+  return { status: 'success' };
+});
