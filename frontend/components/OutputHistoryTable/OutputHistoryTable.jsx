@@ -1,5 +1,5 @@
 // frontend/components/OutputHistoryTable/OutputHistoryTable.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Grid,
@@ -14,11 +14,31 @@ import {
   TextField,
 } from '@mui/material';
 
+import { auth } from 'firebase-admin';
+
+import { functions } from './firebase';
 import useStyles from './styles';
 
-const OutputHistoryTable = ({ data }) => {
+const OutputHistoryTable = () => {
   const classes = useStyles();
+  const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = auth.currentUser;
+      const userID = user.uid;
+      const getHist = functions.httpsCallable('getHist');
+      try {
+        const result = await getHist({ uid: userID });
+        setData(result.data.data); // Assuming result.data has the structure { status: 'success', data: [...] }
+      } catch (error) {
+        throw new Error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Handle search input change
   const handleSearchChange = (event) => {
@@ -57,11 +77,11 @@ const OutputHistoryTable = ({ data }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell>{item.type}</TableCell>
-                  <TableCell>{item.creationDate}</TableCell>
+              {filteredData.map((output) => (
+                <TableRow key={output.id}>
+                  <TableCell>{output.title}</TableCell>
+                  <TableCell>{output.type}</TableCell>
+                  <TableCell>{output.creationDate}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
