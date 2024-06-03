@@ -20,6 +20,7 @@ module.exports = {
 
   // get historys
   history: userController.getHist,
+  setOutput: userController.setHist,
 
   /* Kai AI */
   chat: kaiAIController.chat,

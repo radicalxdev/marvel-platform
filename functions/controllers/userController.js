@@ -1,6 +1,7 @@
 const admin = require('firebase-admin');
 const { https } = require('firebase-functions');
 const { HttpsError } = require('firebase-functions/v1/auth');
+const { stringToHash } = require('../utils/hashUtil');
 
 /**
  * Creates a new user document in the Firestore collection "users" with the provided data.
@@ -39,8 +40,8 @@ exports.signUpUser = https.onCall(async (data, context) => {
  * @return {Object} status and the user's history in a list form
  */
 const gethistPOST = https.onCall(async (data) => {
-  const { uid, sid } = data;
-  if (!uid || !sid) {
+  const { uid } = data;
+  if (!uid) {
     throw new https.HttpsError(
       'failed-precondition',
       'Please provide all required fields'
@@ -50,9 +51,7 @@ const gethistPOST = https.onCall(async (data) => {
     .firestore()
     .collection('users')
     .doc(uid)
-    .collection('Sessions')
-    .doc(sid)
-    .collection('Hists')
+    .collection('outputs')
     .get();
   return { status: 'success', data: hists.docs.map((doc) => doc.data()) };
 });
@@ -66,8 +65,8 @@ const gethistPOST = https.onCall(async (data) => {
  */
 const gethistGET = https.onRequest(async (req, res) => {
   if (req.method === 'GET') {
-    const { uid, sid } = req.body.data;
-    if (!uid || !sid) {
+    const { uid } = req.body.data;
+    if (!uid) {
       throw new https.HttpsError(
         'failed-precondition',
         'Please provide all required fields'
@@ -77,9 +76,7 @@ const gethistGET = https.onRequest(async (req, res) => {
       .firestore()
       .collection('users')
       .doc(uid)
-      .collection('Sessions')
-      .doc(sid)
-      .collection('Hists')
+      .collection('outputs')
       .get();
     res
       .status(200)
@@ -102,22 +99,30 @@ exports.getHist = gethistGET; // or histPOST if want use post to access
  */
 // if you are here, hey, this is a easter egg. Me BB will stay with CC
 exports.setHist = https.onCall(async (data) => {
-  const { uid, sid, messages } = data;
-  if (!uid || !messages) {
+  const { uid, title, type, content } = data;
+  const creationDate = Date.now();
+  if (!uid || !title || !type || !content) {
     throw new https.HttpsError(
       'failed-precondition',
       'Please provide all required fields'
     );
   }
+  const id = stringToHash(title + creationDate.toString() + type).toString();
   const histsRef = await admin
     .firestore()
     .collection('users')
     .doc(uid)
-    .collection('Sessions')
-    .doc(sid)
-    .collection('Hists');
+    .collection('outputs')
+    .doc(id);
   if (!histsRef.get().exists) {
-    // complete set new history when message structure known
+    const outputDoc = {
+      id,
+      title,
+      type,
+      creationDate,
+      content,
+    };
+    histsRef.set(outputDoc);
   } else {
     throw new HttpsError(
       'already-exists',
