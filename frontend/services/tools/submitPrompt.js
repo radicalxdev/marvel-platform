@@ -14,7 +14,7 @@ const submitPrompt = async (payload, files) => {
       });
     }
 
-    const response = await axios.post('/api/tool', formData, {
+    const response = await axios.post('/api/tool/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
