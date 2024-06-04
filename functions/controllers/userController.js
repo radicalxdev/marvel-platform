@@ -2,7 +2,9 @@ const admin = require('firebase-admin');
 const { https } = require('firebase-functions');
 const { HttpsError } = require('firebase-functions/v1/auth');
 const { stringToHash } = require('../utils/hashUtil');
+const { BOT_TYPE } = require('../constants');
 
+// #region signUp a user
 /**
  * Creates a new user document in the Firestore collection "users" with the provided data.
  *
@@ -30,6 +32,7 @@ exports.signUpUser = https.onCall(async (data, context) => {
   await userRef.set(userDoc);
   return { status: 'success', message: 'User document created successfully' };
 });
+// #endregion
 
 // #region get History GET and POST
 /**
@@ -90,6 +93,7 @@ const gethistGET = https.onRequest(async (req, res) => {
 exports.getHist = gethistGET; // or histPOST if want use post to access
 // #endregion
 
+// #region setHist
 /**
  * Creates a new user chat History document.
  *
@@ -107,6 +111,9 @@ exports.setHist = https.onCall(async (data) => {
       'Please provide all required fields'
     );
   }
+  if (type != BOT_TYPE.TOOL) {
+    throw new https.HttpsError('invalid-argument', 'type should be tool');
+  }
   const id = stringToHash(title + creationDate.toString() + type).toString();
   const histsRef = await admin
     .firestore()
@@ -114,7 +121,7 @@ exports.setHist = https.onCall(async (data) => {
     .doc(uid)
     .collection('outputs')
     .doc(id);
-  if (!histsRef.get().exists) {
+  if (!(await histsRef.get()).exists) {
     const outputDoc = {
       id,
       title,
@@ -128,6 +135,29 @@ exports.setHist = https.onCall(async (data) => {
       'already-exists',
       'such Session already have a History'
     );
+  }
+  return { status: 'success' };
+});
+// #endregion
+
+exports.delHist = https.onCall(async (data) => {
+  const { uid, oid } = data;
+  if (!uid || !oid) {
+    throw new https.HttpsError(
+      'failed-precondition',
+      'Please provide all required fields'
+    );
+  }
+  const histsRef = await admin
+    .firestore()
+    .collection('users')
+    .doc(uid)
+    .collection('outputs')
+    .doc(oid);
+  if ((await histsRef.get()).exists) {
+    histsRef.delete();
+  } else {
+    throw new HttpsError('not-found', 'trying to delete history not exist');
   }
   return { status: 'success' };
 });
