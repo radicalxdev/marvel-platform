@@ -12,6 +12,7 @@ import {
   TableRow,
   TableSortLabel,
   TextField,
+  useMediaQuery,
 } from '@mui/material';
 
 import { auth } from 'firebase-admin';
@@ -50,9 +51,17 @@ const OutputHistoryTable = () => {
     item.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
   return (
     <Grid container spacing={2} className={classes.container}>
-      <Grid item xs={12}>
+      <Grid
+        item
+        xs={12}
+        sm={isMobile ? 6 : 12}
+        md={4}
+        style={{ display: 'flex', flexWrap: 'wrap' }}
+      >
         <TextField
           variant="outlined"
           placeholder="Search outputs"
@@ -60,7 +69,7 @@ const OutputHistoryTable = () => {
           className={classes.searchInput}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={isMobile ? 6 : 12} md={4}>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
