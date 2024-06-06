@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 
-import ToolsListingContainer from '@/components/ToolsListingContainer';
+import HistoryListingContainer from '@/components/HistoryListingContainer';
 
 import styles from './styles';
 
@@ -18,15 +18,10 @@ const HistoryPage = (props) => {
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
-      <ToolsListingContainer
+      <HistoryListingContainer
         data={data}
         loading={loading}
-        category="This Week"
-      />
-      <ToolsListingContainer
-        data={data}
-        loading={loading}
-        category="This Month"
+        category="This Week (3)"
       />
     </Grid>
   );
