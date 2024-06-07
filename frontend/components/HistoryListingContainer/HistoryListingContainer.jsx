@@ -6,8 +6,8 @@ import styles from './styles';
 
 const cardData = [
   {
-    title: 'Youtube Questions',
-    description: 'Questions taken from "Intro to Javascript"...',
+    title: 'Video Comprehension Questions',
+    description: 'Generate guiding questions aligned to a Youtube video on UX',
     createdDate: '04/14/2024',
     backgroundImgURL:
       'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080',
@@ -15,15 +15,16 @@ const cardData = [
   },
   {
     title: 'Youtube Questions',
-    description: 'Questions taken from "Intro to Javascript"...',
+    description: 'Questions taken from "Intro to Javascript" video tutorials',
     createdDate: '04/14/2024',
     backgroundImgURL:
       'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080',
     logo: 'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188',
   },
   {
-    title: 'Multiple Choice Assessment',
-    description: 'CSS Styling Guide for "Intro to Javascript"...',
+    title: 'Multiple Choice Assessment - CSS Styling',
+    description:
+      'Test your CSS skills with multiple choice questions based on "Intro to Javascript" curriculum',
     createdDate: '04/14/2024',
     backgroundImgURL:
       'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Quizify.png?alt=media&token=d1255f27-b1a1-444e-b96a-4a3ac559237d',
@@ -32,11 +33,12 @@ const cardData = [
 ];
 
 /**
- * Renders the Tools Listings component.
+ * Render HistoryListingContainer with HistoryCards
  *
- * @param {object} props - The props object containing data and the category.
- * @param {object} props.data - The data to be rendered.
- * @param {object} props.category - The category of the tools.
+ * @param {object} props - The properties of the component.
+ * @param {object} props.data - The data of the component.
+ * @param {string} props.category - The category of the component.
+ * @return {JSX.Element} The rendered HistoryListingContainer.
  */
 const HistoryListingContainer = (props) => {
   const { data, category } = props;

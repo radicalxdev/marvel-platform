@@ -7,6 +7,17 @@ const questions = ['Question 1', 'Question 2', 'Question 3']; // Example list of
 const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4']; // Example list of options
 const answers = ['Answer 1', 'Answer 2', 'Answer 3']; // Example list of answers
 
+/**
+ * Renders the HistoryDrawer component.
+ *
+ * @param {object} props - The properties of the component.
+ * @param {boolean} props.open - Whether the drawer is open.
+ * @param {function} props.toggleDrawer - The function to toggle the drawer.
+ * @param {string} props.createdDate - The date the tool was created.
+ * @param {string} props.title - The title of the tool.
+ * @param {string} props.description - The description of the tool.
+ * @returns {JSX.Element} The HistoryDrawer component.
+ */
 const HistoryDrawer = (props) => {
   const { open, toggleDrawer, createdDate, title, description } = props;
 

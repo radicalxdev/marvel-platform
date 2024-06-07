@@ -70,10 +70,12 @@ const styles = {
     fontSize: '10px',
     fontWeight: 400,
     borderRadius: 58,
-    border: '1px solid rgba(0, 0, 0, 0.12)',
+    border: 'none',
     width: 90,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FFDCD1',
+    color: '#FF0505',
   },
   titleProps: {
     fontFamily: 'Satoshi Bold',
@@ -107,11 +109,14 @@ const styles = {
       borderRadius: 53,
       fontSize: '10px',
       color: (theme) => theme.palette.Common.White['100p'],
-      background: (theme) =>
-        theme.components.MuiButton.variants[0].style.background,
+      background: '#4900E4',
       textTransform: 'capitalize',
       height: 26,
       mt: 1.5,
+      '&:hover': {
+        background: '#4900E4',
+        color: (theme) => theme.palette.Common.White['50p'],
+      },
     },
   },
 };

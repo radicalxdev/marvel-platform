@@ -42,10 +42,12 @@ const styles = {
     fontSize: '12px',
     fontWeight: 700,
     borderRadius: 58,
-    border: '1px solid rgba(0, 0, 0, 0.12)',
+    border: 'none',
     width: 100,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#F2F2F2',
+    color: '#4900E4',
   },
   descriptionProps: {
     fontFamily: 'Satoshi Regular',
