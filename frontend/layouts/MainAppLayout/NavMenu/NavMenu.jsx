@@ -1,16 +1,13 @@
+import HistoryIcon from '@mui/icons-material/History';
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import Briefcase from '@/assets/svg/Briefcase.svg';
 import ChatBubble from '@/assets/svg/ChatBubble.svg';
-import HistoryIcon from '@mui/icons-material/History'; // Import an icon for Output History
-
-
 import ROUTES from '@/constants/routes';
+import { chatRegex, homeRegex } from '@/regex/routes';
 
 import styles from './styles';
-
-import { chatRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
   {
@@ -26,10 +23,10 @@ const PAGES = [
     id: 'page_2',
   },
   {
-    name: 'Output History', // new page entry
+    name: 'Output History',
     link: ROUTES.HISTORY,
     icon: <HistoryIcon />,
-    id: 'page_3'
+    id: 'page_3',
   },
 ];
 
@@ -45,11 +42,13 @@ const NavMenu = () => {
   const setActive = (id) => {
     const isNotHomePage = [chatRegex.test(pathname)].includes(true);
 
-    if (id === 'page_1')
+    if (id === 'page_1') {
       return isNotHomePage ? false : homeRegex.test(pathname);
+    }
 
-    if (id === 'page_3') 
-      return pathname === '/output-history'; // Add logic to set active for Output History
+    if (id === 'page_3') {
+      return pathname === '/output-history';
+    }
 
     return chatRegex.test(pathname);
   };
