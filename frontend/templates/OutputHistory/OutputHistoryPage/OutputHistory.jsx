@@ -1,16 +1,20 @@
 // templates/OutputHistory/OutputHistory.jsx
 
 import React from 'react';
+
 // Import additional components and hooks as needed
 // import { YourComponent } from '@/components/YourComponent';
-import { Box, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
-const OutputHistoryPage = () => {
+import styles from './styles';
+import OutputHistoryListContainer from '@/components/OutputHistoryListContainer';
+
+const OutputHistoryPage = (props) => {
+  const { data, loading } = props;
   return (
-    <Box>
-      <Typography variant="h4">Output History</Typography>
-      {/* Add your Output History content here */}
-    </Box>
+    <Grid {...styles.mainGridProps}>
+      <OutputHistoryListContainer data={data} loading={loading} />
+    </Grid>
   );
 };
 
