@@ -1,13 +1,15 @@
 // templates/OutputHistory/styles.js
-
-import { makeStyles } from '@mui/styles';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    backgroundColor: theme.palette.background.default,
+const styles = {
+  mainGridProps: {
+    container: true,
+    item: true,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    rowGap: 5,
+    px: { laptop: 4, desktop: 5, desktopMedium: 6 },
+    py: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
   },
-  // Add more styles as needed
-}));
+};
 
-export default useStyles;
+export default styles;
