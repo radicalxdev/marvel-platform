@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 
 import Briefcase from '@/assets/svg/Briefcase.svg';
 import ChatBubble from '@/assets/svg/ChatBubble.svg';
+import HistoryIcon from '@mui/icons-material/History'; // Import an icon for Output History
+
 
 import ROUTES from '@/constants/routes';
 
@@ -23,6 +25,12 @@ const PAGES = [
     icon: <ChatBubble />,
     id: 'page_2',
   },
+  {
+    name: 'Output History', // new page entry
+    link: ROUTES.HISTORY,
+    icon: <HistoryIcon />,
+    id: 'page_3'
+  },
 ];
 
 /**
@@ -39,6 +47,9 @@ const NavMenu = () => {
 
     if (id === 'page_1')
       return isNotHomePage ? false : homeRegex.test(pathname);
+
+    if (id === 'page_3') 
+      return pathname === '/output-history'; // Add logic to set active for Output History
 
     return chatRegex.test(pathname);
   };
