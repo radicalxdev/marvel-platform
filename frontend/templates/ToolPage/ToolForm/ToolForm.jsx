@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
-import { Grid, Typography, useTheme } from '@mui/material';
+import { Help } from '@mui/icons-material';
+import { Grid, Tooltip, Typography, useTheme } from '@mui/material';
 import { FormContainer } from 'react-hook-form-mui';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -70,19 +71,34 @@ const ToolForm = (props) => {
       dispatch(setCommunicatorLoading(false));
       handleOpenSnackBar(
         ALERT_COLORS.ERROR,
-        error.message || 'Couldn\u0027t send prompt'
+        error?.message || 'Couldn\u0027t send prompt'
       );
     }
   };
 
   const renderTextInput = (inputProps) => {
-    const { name: inputName, placeholder, label } = inputProps;
+    const { name: inputName, placeholder, tooltip, label } = inputProps;
+    const renderLabel = () => {
+      return (
+        <Grid {...styles.textFieldLabelGridProps}>
+          <Typography {...styles.labelProps(errors?.[inputName])}>
+            {label}
+          </Typography>
+          {tooltip && (
+            <Tooltip placement="top" title={tooltip} sx={{ ml: 1 }}>
+              <Help />
+            </Tooltip>
+          )}
+        </Grid>
+      );
+    };
+
     return (
       <Grid key={inputName} {...styles.inputGridProps}>
         <PrimaryTextFieldInput
           id={inputName}
           name={inputName}
-          title={label}
+          title={renderLabel()}
           error={errors?.[inputName]}
           control={control}
           placeholder={placeholder}

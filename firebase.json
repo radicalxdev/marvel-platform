@@ -41,8 +41,12 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
-        "source": "/api/tool",
+        "source": "/api/tool/",
         "function": "tool"
+      },
+      {
+        "regex": "^/([^/]+?)(?:/)?$",
+        "destination": "/[toolId]/index.html"
       }
     ]
   },

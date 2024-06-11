@@ -14,7 +14,7 @@ const submitPrompt = async (payload, files) => {
       });
     }
 
-    const response = await axios.post('/api/tool', formData, {
+    const response = await axios.post('/api/tool/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -22,7 +22,8 @@ const submitPrompt = async (payload, files) => {
 
     return response.data?.data;
   } catch (err) {
-    throw new Error('Error could not send prompt');
+    const { response } = err;
+    throw new Error(response?.data?.message || 'Error could not send prompt');
   }
 };
 
