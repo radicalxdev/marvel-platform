@@ -43,18 +43,21 @@ const NavMenu = () => {
 
   const setActive = (id) => {
     const isNotHomePage = [
-      chatRegex.test(pathname) && historyRegex.test(pathname),
+      chatRegex.test(pathname) || historyRegex.test(pathname),
     ].includes(true);
 
     if (id === 'page_1')
       return isNotHomePage ? false : homeRegex.test(pathname);
 
-    return chatRegex.test(pathname) && historyRegex.test(pathname);
+    if (id === 'page_2') return chatRegex.test(pathname);
+
+    if (id === 'page_3') return historyRegex.test(pathname);
+
+    return false;
   };
 
-  const handleRoute = (link, id) => {
+  const handleRoute = (link) => {
     router.push(link);
-    setActive(id);
   };
 
   return (
@@ -62,7 +65,7 @@ const NavMenu = () => {
       {PAGES.map((page) => (
         <MenuItem
           key={page.id}
-          onClick={() => handleRoute(page.link, page.id)}
+          onClick={() => handleRoute(page.link)}
           {...styles.menuItemProps(setActive(page.id))}
         >
           <Grid {...styles.innerMenuGridProps}>
