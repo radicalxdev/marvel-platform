@@ -4,7 +4,7 @@ import React from 'react';
 // import { YourComponent } from '@/components/YourComponent';
 import { Grid, Typography } from '@mui/material';
 
-import ToolCard from '../ToolCard';
+import OutputHistoryCard from '../OutputHistoryCard';
 
 import styles from './styles';
 
@@ -21,16 +21,56 @@ const OutputHistoryListContainer = (props) => {
 
   // Dummy Data
   const testDates = [
-    { title: 'Project Start', date: new Date(2024, 5, 10) }, // June 10, 2024 - within this week
-    { title: 'Team Meeting', date: new Date(2024, 5, 9) }, // June 9, 2024 - within this week
-    { title: 'Client Call', date: new Date(2024, 5, 1) }, // June 1, 2024 - this month
-    { title: 'Report Submission', date: new Date(2024, 5, 5) }, // June 5, 2024 - this month
-    { title: 'Quarterly Review', date: new Date(2024, 2, 15) }, // March 15, 2024 - this year
-    { title: 'New Year Planning', date: new Date(2024, 0, 20) }, // January 20, 2024 - this year
-    { title: 'Christmas Party', date: new Date(2023, 11, 25) }, // December 25, 2023 - older
-    { title: 'Independence Day', date: new Date(2022, 6, 4) }, // July 4, 2022 - older
-    { title: 'End of Quarter', date: new Date(2021, 8, 30) }, // September 30, 2021 - older
-    { title: 'Annual Meeting', date: new Date(2020, 10, 5) }, // November 5, 2020 - older
+    {
+      title: 'Project Start',
+      date: new Date(2024, 5, 10),
+      description: 'Meeting to discuss project progress.',
+    }, // June 10, 2024 - within this week
+    {
+      title: 'Team Meeting',
+      date: new Date(2024, 5, 9),
+      description: 'Submission of the monthly report.',
+    }, // June 9, 2024 - within this week
+    {
+      title: 'Client Call',
+      date: new Date(2024, 5, 1),
+      description: 'Annual Christmas celebration.',
+    }, // June 1, 2024 - this month
+    {
+      title: 'Report Submission',
+      date: new Date(2024, 5, 5),
+      description: 'Review of quarterly performance.',
+    }, // June 5, 2024 - this month
+    {
+      title: 'Quarterly Review',
+      date: new Date(2024, 2, 15),
+      description: 'Call with the client to review requirements.',
+    }, // March 15, 2024 - this year
+    {
+      title: 'New Year Planning',
+      date: new Date(2024, 0, 20),
+      description: 'Planning session for the new year.',
+    }, // January 20, 2024 - this year
+    {
+      title: 'Christmas Party',
+      date: new Date(2023, 11, 25),
+      description: 'Important milestone for the project.',
+    }, // December 25, 2023 - older
+    {
+      title: 'Independence Day',
+      date: new Date(2022, 6, 4),
+      description: 'Celebration of national independence.',
+    }, // July 4, 2022 - older
+    {
+      title: 'End of Quarter',
+      date: new Date(2021, 8, 30),
+      description: 'End of the financial quarter.',
+    }, // September 30, 2021 - older
+    {
+      title: 'Annual Meeting',
+      date: new Date(2020, 10, 5),
+      description: 'Annual company-wide meeting.',
+    }, // November 5, 2020 - older
   ];
 
   React.useEffect(() => {
@@ -65,7 +105,7 @@ const OutputHistoryListContainer = (props) => {
       <Grid {...styles.containerGridProps}>
         <Grid {...styles.innerListGridProps}>
           {historyOutput?.[category].map((tool) => (
-            <ToolCard key={tool.title} name={tool.title} />
+            <OutputHistoryCard key={tool.title} {...tool} />
           ))}
         </Grid>
       </Grid>
