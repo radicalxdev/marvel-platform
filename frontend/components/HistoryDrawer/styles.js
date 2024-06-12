@@ -136,7 +136,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     gap: 1.5,
-    p: 1.5,
+    py: 1.5,
   },
   buttonProps: {
     sx: {
