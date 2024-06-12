@@ -1,3 +1,4 @@
+import { MenuBook } from '@mui/icons-material';
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -8,8 +9,7 @@ import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-import { chatRegex, homeRegex, historyRegex } from '@/regex/routes';
-import { MenuBook } from '@mui/icons-material';
+import { chatRegex, historyRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
   {
@@ -29,7 +29,7 @@ const PAGES = [
     link: ROUTES.HISTORY,
     icon: <MenuBook />,
     id: 'page_3',
-  }
+  },
 ];
 
 /**
@@ -42,7 +42,9 @@ const NavMenu = () => {
   const { pathname } = router;
 
   const setActive = (id) => {
-    const isNotHomePage = [chatRegex.test(pathname) && historyRegex.test(pathname)].includes(true);
+    const isNotHomePage = [
+      chatRegex.test(pathname) && historyRegex.test(pathname),
+    ].includes(true);
 
     if (id === 'page_1')
       return isNotHomePage ? false : homeRegex.test(pathname);
