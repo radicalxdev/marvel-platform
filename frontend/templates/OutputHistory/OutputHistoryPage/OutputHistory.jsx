@@ -4,10 +4,11 @@ import React from 'react';
 
 // Import additional components and hooks as needed
 // import { YourComponent } from '@/components/YourComponent';
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
+
+import OutputHistoryListContainer from '@/components/OutputHistoryListContainer';
 
 import styles from './styles';
-import OutputHistoryListContainer from '@/components/OutputHistoryListContainer';
 
 const OutputHistoryPage = (props) => {
   const { data, loading } = props;
