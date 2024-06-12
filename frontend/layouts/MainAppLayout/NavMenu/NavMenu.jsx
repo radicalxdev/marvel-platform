@@ -8,7 +8,8 @@ import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-import { chatRegex, homeRegex } from '@/regex/routes';
+import { chatRegex, homeRegex, historyRegex } from '@/regex/routes';
+import { MenuBook } from '@mui/icons-material';
 
 const PAGES = [
   {
@@ -23,6 +24,12 @@ const PAGES = [
     icon: <ChatBubble />,
     id: 'page_2',
   },
+  {
+    name: 'History',
+    link: ROUTES.HISTORY,
+    icon: <MenuBook />,
+    id: 'page_3',
+  }
 ];
 
 /**
@@ -35,12 +42,12 @@ const NavMenu = () => {
   const { pathname } = router;
 
   const setActive = (id) => {
-    const isNotHomePage = [chatRegex.test(pathname)].includes(true);
+    const isNotHomePage = [chatRegex.test(pathname) && historyRegex.test(pathname)].includes(true);
 
     if (id === 'page_1')
       return isNotHomePage ? false : homeRegex.test(pathname);
 
-    return chatRegex.test(pathname);
+    return chatRegex.test(pathname) && historyRegex.test(pathname);
   };
 
   const handleRoute = (link, id) => {
