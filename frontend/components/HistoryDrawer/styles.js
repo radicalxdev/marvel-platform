@@ -15,7 +15,7 @@ const styles = {
       '& .MuiDrawer-paper': {
         background: '#fff',
         width: '698px',
-        p: '10px 40px',
+        p: '20px 40px',
       },
     },
   },
@@ -33,7 +33,7 @@ const styles = {
   },
   titleProps: {
     fontFamily: 'Satoshi Bold',
-    fontSize: '24px',
+    fontSize: '20px',
     fontWeight: 700,
   },
   dateProps: {
@@ -51,7 +51,7 @@ const styles = {
   },
   descriptionProps: {
     fontFamily: 'Satoshi Regular',
-    fontSize: '18px',
+    fontSize: '16px',
     fontWeight: 700,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
@@ -69,6 +69,7 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    py: 2,
   },
   listProps: {
     fontFamily: 'Satoshi Regular',
@@ -79,7 +80,7 @@ const styles = {
   },
   listTitleProps: {
     fontFamily: 'Satoshi Bold',
-    fontSize: '18px',
+    fontSize: '16px',
     fontWeight: 700,
     color: 'black',
   },
@@ -95,7 +96,7 @@ const styles = {
     sx: {
       color: 'black',
       fontFamily: 'Satoshi Regular',
-      fontSize: '18px',
+      fontSize: '16px',
       fontWeight: 400,
       lineHeight: '14px',
       textTransform: 'lowercase',
@@ -111,7 +112,7 @@ const styles = {
   },
   answerKeyTitleProps: {
     fontFamily: 'Satoshi Bold',
-    fontSize: '18px',
+    fontSize: '16px',
     fontWeight: 700,
     color: 'black',
   },
@@ -119,10 +120,46 @@ const styles = {
     sx: {
       color: 'black',
       fontFamily: 'Satoshi Regular',
-      fontSize: '18px',
+      fontSize: '16px',
       fontWeight: 400,
       lineHeight: '14px',
       textTransform: 'lowercase',
+    },
+  },
+
+  // For HistoryDrawerButtons
+
+  mainGridButtonProps: {
+    container: true,
+    item: true,
+    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    gap: 1.5,
+    p: 1.5,
+  },
+  buttonProps: {
+    sx: {
+      display: 'flex',
+      gap: 1,
+      backgroundColor: '#F3F0FF',
+      borderRadius: '100px',
+      color: '#4900E4',
+      fontFamily: 'Satoshi Bold',
+      fontSize: '14px',
+      fontWeight: 700,
+      textTransform: 'none',
+      width: '116px',
+      '&:hover': {
+        backgroundColor: '#F3F0FF',
+        color: '#4900E4',
+      },
+    },
+  },
+  buttonIconProps: {
+    sx: {
+      color: '#4900E4',
+      fontSize: '20px',
     },
   },
 };

@@ -5,7 +5,7 @@ import HistoryListingContainer from '@/components/HistoryListingContainer';
 import styles from './styles';
 
 const HistoryPage = (props) => {
-  const { data, loading } = props;
+  const { data, loading, category } = props;
 
   const renderTitle = () => {
     return (
@@ -21,7 +21,7 @@ const HistoryPage = (props) => {
       <HistoryListingContainer
         data={data}
         loading={loading}
-        category="This Week (3)"
+        category={category}
       />
     </Grid>
   );

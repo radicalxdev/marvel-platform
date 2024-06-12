@@ -1,10 +1,12 @@
 // components/HistoryDrawer/HistoryDrawer.js
 import { Drawer, Grid, List, ListItem, Typography } from '@mui/material';
 
+import HistoryDrawerButtons from './HistoryDrawerButtons';
+
 import styles from './styles';
 
 const questions = ['Question 1', 'Question 2', 'Question 3']; // Example list of questions
-const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4']; // Example list of options
+const options = ['Option 1', 'Option 2', 'Option 3']; // Example list of options
 const answers = ['Answer 1', 'Answer 2', 'Answer 3']; // Example list of answers
 
 /**
@@ -87,6 +89,14 @@ const HistoryDrawer = (props) => {
         {renderDrawerHeader()}
         {renderDrawerList()}
         {renderAnswerKey()}
+        <HistoryDrawerButtons
+          createdDate={createdDate}
+          title={title}
+          description={description}
+          questions={questions}
+          options={options}
+          answers={answers}
+        />
       </Drawer>
     </Grid>
   );

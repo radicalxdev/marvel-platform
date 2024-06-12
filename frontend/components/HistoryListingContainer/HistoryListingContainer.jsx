@@ -2,7 +2,13 @@ import { Grid, Typography } from '@mui/material';
 
 import HistoryCard from '../HistoryCard';
 
+import HistoryCardSkeleton from '../HistoryCard/Skeleton';
+
 import styles from './styles';
+
+const DEFAULT_HISTORY = new Array(4)
+  .fill()
+  .map((_, index) => ({ id: index + 1 }));
 
 const cardData = [
   {
@@ -41,7 +47,7 @@ const cardData = [
  * @return {JSX.Element} The rendered HistoryListingContainer.
  */
 const HistoryListingContainer = (props) => {
-  const { data, category } = props;
+  const { data, category, loading } = props;
 
   const renderTitle = () => {
     return (
@@ -72,10 +78,22 @@ const HistoryListingContainer = (props) => {
     );
   };
 
+  const renderLoader = () => {
+    return (
+      <Grid {...styles.containerGridProps}>
+        <Grid {...styles.innerListGridProps}>
+          {DEFAULT_HISTORY?.map((tool) => (
+            <HistoryCardSkeleton key={tool.id} />
+          ))}
+        </Grid>
+      </Grid>
+    );
+  };
+
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
-      {renderCards()}
+      {loading ? renderLoader() : renderCards()}
     </Grid>
   );
 };
