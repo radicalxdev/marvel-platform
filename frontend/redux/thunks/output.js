@@ -1,5 +1,5 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import 'firebase/firestore'
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import 'firebase/firestore';
 
 const fetchOutput = createAsyncThunk(
   'tools/fetch',
@@ -10,12 +10,12 @@ const fetchOutput = createAsyncThunk(
         .collection('users')
         .doc(uid)
         .collection('outputs')
-        .get()
-      return hists.docs.map((doc) => doc.data())
+        .get();
+      return hists.docs.map((doc) => doc.data());
     } catch (error) {
-      throw new Error(error)
+      throw new Error(error);
     }
   }
-)
+);
 
-export default fetchOutput
+export default fetchOutput;
