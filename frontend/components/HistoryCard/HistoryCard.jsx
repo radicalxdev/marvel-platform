@@ -17,7 +17,7 @@ const HistoryCard = (props) => {
   const renderImage = () => {
     return (
       <Grid {...styles.imageGridProps}>
-        <Image src={logo} alt='output history logo' {...styles.imageProps} />
+        <Image src={logo} alt="output history logo" {...styles.imageProps} />
       </Grid>
     );
   };

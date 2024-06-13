@@ -1,5 +1,5 @@
 import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
-//Styling needs fixing here
+// Styling needs fixing here
 const styles = {
   mainGridProps: {
     container: true,
