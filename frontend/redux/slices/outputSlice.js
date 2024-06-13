@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchOutputHistory } from '../thunks/output';
 
 const initialState = {
-  data: [],
-  loading: false,
+  data: null,
+  loading: true,
   error: null,
 };
 

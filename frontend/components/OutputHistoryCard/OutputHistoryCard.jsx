@@ -12,15 +12,11 @@ import styles from './styles';
  * @return {JSX.Element} The Output History Card component.
  */
 const OutputHistoryCard = (props) => {
-  const { title, content, creationDate } = props; // Use the correct field names
+  const { title, content, creationDate, logo, backgroundImgURL } = props; // Include logo and backgroundImgURL
 
   const router = useRouter();
 
   const renderImage = () => {
-    const logo =
-      'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/QuizifyLogo.png?alt=media&token=9bf1d066-fba4-4063-9640-ef732e237d31';
-    const backgroundImgURL =
-      'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080';
     return (
       <Grid {...styles.imageGridProps(backgroundImgURL)}>
         <Image src={logo || ToolImage} alt="kai logo" {...styles.imageProps} />
