@@ -1,6 +1,5 @@
 import { Button, Card, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
 import ToolImage from '@/assets/images/BookImage.png'; // Replace this with a default image if needed
 
@@ -12,9 +11,11 @@ import styles from './styles';
  * @return {JSX.Element} The Output History Card component.
  */
 const OutputHistoryCard = (props) => {
-  const { title, content, creationDate, logo, backgroundImgURL } = props; // Include logo and backgroundImgURL
+  const { title, content, creationDate, logo, backgroundImgURL, onOpen } = props;
 
-  const router = useRouter();
+  const handleButtonClick = () => {
+    onOpen(props); // Pass the card's props to the onOpen handler
+  };
 
   const renderImage = () => {
     return (
@@ -28,12 +29,13 @@ const OutputHistoryCard = (props) => {
     return (
       <Grid {...styles.contentGridProps}>
         <Typography {...styles.dateProps}>
-          {new Date(creationDate.seconds * 1000).toLocaleDateString()}{' '}
-          {/* Convert Firestore timestamp to Date */}
+          {new Date(creationDate.seconds * 1000).toLocaleDateString()}
         </Typography>
         <Typography {...styles.titleProps}>{title}</Typography>
         <Typography {...styles.descriptionProps}>{content}</Typography>
-        <Button {...styles.previewButtonProps}>Preview</Button>
+        <Button {...styles.previewButtonProps} onClick={handleButtonClick}>
+          Preview
+        </Button>
       </Grid>
     );
   };
