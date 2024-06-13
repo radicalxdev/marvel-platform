@@ -1,94 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-// Import additional components and hooks as needed
-// import { YourComponent } from '@/components/YourComponent';
 import { Grid, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 
 import OutputHistoryCard from '../OutputHistoryCard';
 
 import styles from './styles';
 
+import { fetchOutputHistory } from '@/redux/thunks/output';
+
 import { categorizeDate } from '@/utils/DateUtils';
 
-const OutputHistoryListContainer = (props) => {
-  const { data, loading } = props;
-  const [historyOutput, setHistoryOutput] = React.useState({
+const OutputHistoryListContainer = () => {
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector((state) => state.outputHistory);
+  const [historyOutput, setHistoryOutput] = useState({
     Week: [],
     Month: [],
     Year: [],
     Older: [],
   });
 
-  // Dummy Data
-  const testDates = [
-    {
-      title: 'Project Start',
-      date: new Date(2024, 5, 10),
-      description: 'Meeting to discuss project progress.',
-    }, // June 10, 2024 - within this week
-    {
-      title: 'Team Meeting',
-      date: new Date(2024, 5, 9),
-      description: 'Submission of the monthly report.',
-    }, // June 9, 2024 - within this week
-    {
-      title: 'Client Call',
-      date: new Date(2024, 5, 1),
-      description: 'Annual Christmas celebration.',
-    }, // June 1, 2024 - this month
-    {
-      title: 'Report Submission',
-      date: new Date(2024, 5, 5),
-      description: 'Review of quarterly performance.',
-    }, // June 5, 2024 - this month
-    {
-      title: 'Quarterly Review',
-      date: new Date(2024, 2, 15),
-      description: 'Call with the client to review requirements.',
-    }, // March 15, 2024 - this year
-    {
-      title: 'New Year Planning',
-      date: new Date(2024, 0, 20),
-      description: 'Planning session for the new year.',
-    }, // January 20, 2024 - this year
-    {
-      title: 'Christmas Party',
-      date: new Date(2023, 11, 25),
-      description: 'Important milestone for the project.',
-    }, // December 25, 2023 - older
-    {
-      title: 'Independence Day',
-      date: new Date(2022, 6, 4),
-      description: 'Celebration of national independence.',
-    }, // July 4, 2022 - older
-    {
-      title: 'End of Quarter',
-      date: new Date(2021, 8, 30),
-      description: 'End of the financial quarter.',
-    }, // September 30, 2021 - older
-    {
-      title: 'Annual Meeting',
-      date: new Date(2020, 10, 5),
-      description: 'Annual company-wide meeting.',
-    }, // November 5, 2020 - older
-  ];
+  useEffect(() => {
+    dispatch(fetchOutputHistory());
+  }, [dispatch]);
 
-  React.useEffect(() => {
-    // Categorize the dates whenever currentDate changes
-    const newHistoryOutput = {
-      Week: [],
-      Month: [],
-      Year: [],
-      Older: [],
-    };
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const newHistoryOutput = {
+        Week: [],
+        Month: [],
+        Year: [],
+        Older: [],
+      };
 
-    testDates.forEach((item) => {
-      const category = categorizeDate(item.date, new Date());
-      newHistoryOutput[category].push(item);
-    });
+      data.forEach((item) => {
+        const category = categorizeDate(item.creationDate.toDate(), new Date());
+        newHistoryOutput[category].push(item);
+      });
 
-    setHistoryOutput(newHistoryOutput);
-  }, []);
+      setHistoryOutput(newHistoryOutput);
+    } else {
+      // Clear the categorized output when there's no data
+      setHistoryOutput({
+        Week: [],
+        Month: [],
+        Year: [],
+        Older: [],
+      });
+    }
+  }, [data]);
+
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography>Error: {error}</Typography>;
 
   const renderSection = ({ text, size }) => {
     return (
@@ -104,8 +68,8 @@ const OutputHistoryListContainer = (props) => {
     return (
       <Grid {...styles.containerGridProps}>
         <Grid {...styles.innerListGridProps}>
-          {historyOutput?.[category].map((tool) => (
-            <OutputHistoryCard key={tool.title} {...tool} />
+          {historyOutput?.[category].map((item) => (
+            <OutputHistoryCard key={item.id} {...item} />
           ))}
         </Grid>
       </Grid>
@@ -114,18 +78,42 @@ const OutputHistoryListContainer = (props) => {
 
   return (
     <Grid {...styles.mainGridProps}>
-      <Typography {...styles.titleProps}>Output History</Typography>
+      <Typography {...styles.titleProps}>History</Typography>
       {renderSection({ text: 'This Week', size: historyOutput?.Week?.length })}
-      {renderCards({ category: 'Week' })}
+      {historyOutput.Week.length > 0 ? (
+        renderCards({ category: 'Week' })
+      ) : (
+        <Grid {...styles.containerGridProps}>
+          <Typography>No data for this week.</Typography>
+        </Grid>
+      )}
       {renderSection({
         text: 'This Month',
         size: historyOutput?.Month?.length,
       })}
-      {renderCards({ category: 'Month' })}
+      {historyOutput.Month.length > 0 ? (
+        renderCards({ category: 'Month' })
+      ) : (
+        <Grid {...styles.containerGridProps}>
+          <Typography>No data for this month.</Typography>
+        </Grid>
+      )}
       {renderSection({ text: 'This Year', size: historyOutput?.Year?.length })}
-      {renderCards({ category: 'Year' })}
+      {historyOutput.Year.length > 0 ? (
+        renderCards({ category: 'Year' })
+      ) : (
+        <Grid {...styles.containerGridProps}>
+          <Typography>No data for this year.</Typography>
+        </Grid>
+      )}
       {renderSection({ text: 'Older', size: historyOutput?.Older?.length })}
-      {renderCards({ category: 'Older' })}
+      {historyOutput.Older.length > 0 ? (
+        renderCards({ category: 'Older' })
+      ) : (
+        <Grid {...styles.containerGridProps}>
+          <Typography>No older data available.</Typography>
+        </Grid>
+      )}
     </Grid>
   );
 };

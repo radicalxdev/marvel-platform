@@ -1,58 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import fetchOutput from '../thunks/output';
+import { fetchOutputHistory } from '../thunks/output';
 
 const initialState = {
-  loading: true,
-  outputs: [],
+  data: [],
+  loading: false,
   error: null,
 };
 
-const output = createSlice({
-  name: 'output',
+const outputHistorySlice = createSlice({
+  name: 'outputHistory',
   initialState,
   reducers: {
-    reset: () => initialState,
-    add: (state, action) => {
-      state.outputs = state.outputs.concat(action.payload);
-    },
-    update: (state, action) => {
-      let newOut = [];
-      state.outputs.forEach((i) => {
-        if (i.id === action.payload.id) {
-          newOut = newOut.concat(action.payload);
-        } else {
-          newOut = newOut.concat(i);
-        }
+    // Define any synchronous reducers if needed
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOutputHistory.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchOutputHistory.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchOutputHistory.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
       });
-      state.outputs = newOut;
-    },
-    del: (state, action) => {
-      let newOut = [];
-      state.outputs.forEach((i) => {
-        if (i.id !== action.payload.id) {
-          newOut = newOut.concat(i);
-        }
-      });
-      state.outputs = newOut;
-    },
-    extraReducers: (builder) => {
-      builder
-        .addCase(fetchOutput.pending, (state) => {
-          state.loading = true;
-        })
-        .addCase(fetchOutput.fulfilled, (state, action) => {
-          state.output = action.payload;
-          state.loading = false;
-        })
-        .addCase(fetchOutput.rejected, (state) => {
-          state.error = 'Could not get tools';
-          state.loading = false;
-        });
-    },
   },
 });
 
-export const { reset, add, update, del } = output.actions;
-
-export default output.reducer;
+export default outputHistorySlice.reducer;

@@ -1,21 +1,21 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import 'firebase/firestore';
+// import { createAsyncThunk } from '@reduxjs/toolkit';
+// import { collection, getDocs } from 'firebase/firestore';
 
-const fetchOutput = createAsyncThunk(
-  'tools/fetch',
-  async ({ firestore, uid }) => {
-    try {
-      const hists = await firestore
-        .firestore()
-        .collection('users')
-        .doc(uid)
-        .collection('outputs')
-        .get();
-      return hists.docs.map((doc) => doc.data());
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-);
+// import { firestore } from '../store'; // Import Firestore from the store
 
-export default fetchOutput;
+// // Thunk to fetch data from Firestore
+// export const fetchOutputHistory = createAsyncThunk(
+//   'outputHistory/fetchOutputHistory',
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const querySnapshot = await getDocs(collection(firestore, 'outputs'));
+//       const outputData = querySnapshot.docs.map((doc) => ({
+//         id: doc.id,
+//         ...doc.data(),
+//       }));
+//       return outputData;
+//     } catch (error) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );

@@ -27,7 +27,7 @@ const PAGES = [
     id: 'page_2',
   },
   {
-    name: 'Output History',
+    name: 'History',
     link: ROUTES.HISTORY,
     icon: <HistoryIcon />,
     id: 'page_3',

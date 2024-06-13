@@ -6,8 +6,9 @@ import React from 'react';
 // import { YourComponent } from '@/components/YourComponent';
 import { Grid } from '@mui/material';
 
-import styles from './styles';
 import OutputHistoryListContainer from '@/components/OutputHistoryListContainer';
+
+import styles from './styles';
 
 const OutputHistoryPage = (props) => {
   const { data, loading } = props;

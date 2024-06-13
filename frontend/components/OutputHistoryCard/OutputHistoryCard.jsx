@@ -1,20 +1,18 @@
 import { Button, Card, Grid, Typography } from '@mui/material';
-
 import Image from 'next/image';
-
 import { useRouter } from 'next/router';
 
-import ToolImage from '@/assets/images/BookImage.png';
+import ToolImage from '@/assets/images/BookImage.png'; // Replace this with a default image if needed
 
 import styles from './styles';
 
 /**
- * Returns a Output History Card component with an image and a chip displaying the amount of coins.
+ * Returns an Output History Card component with an image and a chip displaying the amount of coins.
  *
- * @return {JSX.Element} The Tool Card component.
+ * @return {JSX.Element} The Output History Card component.
  */
 const OutputHistoryCard = (props) => {
-  const { title, description, date } = props;
+  const { title, content, creationDate } = props; // Use the correct field names
 
   const router = useRouter();
 
@@ -34,10 +32,11 @@ const OutputHistoryCard = (props) => {
     return (
       <Grid {...styles.contentGridProps}>
         <Typography {...styles.dateProps}>
-          {date.toLocaleDateString()}
+          {new Date(creationDate.seconds * 1000).toLocaleDateString()}{' '}
+          {/* Convert Firestore timestamp to Date */}
         </Typography>
         <Typography {...styles.titleProps}>{title}</Typography>
-        <Typography {...styles.descriptionProps}>{description}</Typography>
+        <Typography {...styles.descriptionProps}>{content}</Typography>
         <Button {...styles.previewButtonProps}>Preview</Button>
       </Grid>
     );
