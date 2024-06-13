@@ -6,6 +6,8 @@ import { Grid, Typography } from '@mui/material';
 
 import OutputHistoryCard from '../OutputHistoryCard';
 
+import SlidePanel from '../SlidePanel/SlidePanel';
+
 import styles from './styles';
 
 import { categorizeDate } from '@/utils/DateUtils';
@@ -18,6 +20,8 @@ const OutputHistoryListContainer = (props) => {
     Year: [],
     Older: [],
   });
+
+  const [isSidePanelOpen, setIsSidePanelOpen] = React.useState(false);
 
   // Dummy Data
   const testDates = [
@@ -100,12 +104,24 @@ const OutputHistoryListContainer = (props) => {
     );
   };
 
+  const handleOpenSidebar = () => {
+    setIsSidePanelOpen(true);
+  };
+
+  const handleCloseSidebar = () => {
+    setIsSidePanelOpen(false);
+  };
+
   const renderCards = ({ category }) => {
     return (
       <Grid {...styles.containerGridProps}>
         <Grid {...styles.innerListGridProps}>
           {historyOutput?.[category].map((tool) => (
-            <OutputHistoryCard key={tool.title} {...tool} />
+            <OutputHistoryCard
+              key={tool.title}
+              {...tool}
+              onOpen={handleOpenSidebar}
+            />
           ))}
         </Grid>
       </Grid>
@@ -113,20 +129,29 @@ const OutputHistoryListContainer = (props) => {
   };
 
   return (
-    <Grid {...styles.mainGridProps}>
-      <Typography {...styles.titleProps}>Output History</Typography>
-      {renderSection({ text: 'This Week', size: historyOutput?.Week?.length })}
-      {renderCards({ category: 'Week' })}
-      {renderSection({
-        text: 'This Month',
-        size: historyOutput?.Month?.length,
-      })}
-      {renderCards({ category: 'Month' })}
-      {renderSection({ text: 'This Year', size: historyOutput?.Year?.length })}
-      {renderCards({ category: 'Year' })}
-      {renderSection({ text: 'Older', size: historyOutput?.Older?.length })}
-      {renderCards({ category: 'Older' })}
-    </Grid>
+    <>
+      <Grid {...styles.mainGridProps}>
+        <Typography {...styles.titleProps}>Output History</Typography>
+        {renderSection({
+          text: 'This Week',
+          size: historyOutput?.Week?.length,
+        })}
+        {renderCards({ category: 'Week' })}
+        {renderSection({
+          text: 'This Month',
+          size: historyOutput?.Month?.length,
+        })}
+        {renderCards({ category: 'Month' })}
+        {renderSection({
+          text: 'This Year',
+          size: historyOutput?.Year?.length,
+        })}
+        {renderCards({ category: 'Year' })}
+        {renderSection({ text: 'Older', size: historyOutput?.Older?.length })}
+        {renderCards({ category: 'Older' })}
+      </Grid>
+      <SlidePanel isOpen={isSidePanelOpen} onClose={handleCloseSidebar} />
+    </>
   );
 };
 

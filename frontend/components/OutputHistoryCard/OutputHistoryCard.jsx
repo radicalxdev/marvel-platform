@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Button, Card, Grid, Typography } from '@mui/material';
 
 import Image from 'next/image';
@@ -14,7 +16,7 @@ import styles from './styles';
  * @return {JSX.Element} The Tool Card component.
  */
 const OutputHistoryCard = (props) => {
-  const { title, description, date } = props;
+  const { title, description, date, onOpen } = props;
 
   const router = useRouter();
 
@@ -38,7 +40,9 @@ const OutputHistoryCard = (props) => {
         </Typography>
         <Typography {...styles.titleProps}>{title}</Typography>
         <Typography {...styles.descriptionProps}>{description}</Typography>
-        <Button {...styles.previewButtonProps}>Preview</Button>
+        <Button {...styles.previewButtonProps} onClick={onOpen}>
+          Preview
+        </Button>
       </Grid>
     );
   };
