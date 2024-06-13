@@ -43,13 +43,15 @@ const NavMenu = () => {
 
   const setActive = (id) => {
     const isNotHomePage = [
-      chatRegex.test(pathname) && historyRegex.test(pathname),
+      chatRegex.test(pathname),
+      historyRegex.test(pathname),
     ].includes(true);
 
     if (id === 'page_1')
       return isNotHomePage ? false : homeRegex.test(pathname);
-
-    return chatRegex.test(pathname) && historyRegex.test(pathname);
+    if (id === 'page_2') return chatRegex.test(pathname);
+    if (id === 'page_3') return historyRegex.test(pathname);
+    return false;
   };
 
   const handleRoute = (link, id) => {
