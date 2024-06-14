@@ -1,6 +1,13 @@
 import { useState } from 'react';
 
-import { Button, Card, Grid, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Grid,
+  Typography,
+} from '@mui/material';
 
 import Image from 'next/image';
 
@@ -17,14 +24,14 @@ const HistoryCard = (props) => {
   const renderImage = () => {
     return (
       <Grid {...styles.imageGridProps}>
-        <Image src={logo} alt="output history logo" {...styles.imageProps} />
+        <Image src={logo} alt='output history logo' {...styles.imageProps} />
       </Grid>
     );
   };
 
   const renderCardDetails = () => {
     return (
-      <Grid {...styles.contentGridProps}>
+      <Grid>
         <Typography {...styles.dateProps}>{createdDate}</Typography>
         <Typography {...styles.titleProps}>{title}</Typography>
         <Typography {...styles.descriptionProps}>{description}</Typography>
@@ -37,10 +44,14 @@ const HistoryCard = (props) => {
 
   return (
     <Grid {...styles.mainGridProps}>
-      <Grid {...styles.historycardProps}>
-        <Card {...styles.cardProps(backgroundImgURL)}>{renderImage()}</Card>
-        <Grid {...styles.toolDetailsGridProps}>{renderCardDetails()}</Grid>
-      </Grid>
+      <Card {...styles.historyCardProps}>
+        <CardMedia {...styles.cardProps(backgroundImgURL)}>
+          {renderImage()}
+        </CardMedia>
+        <CardContent {...styles.cardContentProps}>
+          {renderCardDetails()}
+        </CardContent>
+      </Card>
     </Grid>
   );
 };

@@ -5,22 +5,30 @@ const styles = {
     container: true,
     item: true,
   },
-  historycardProps: {
+  historyCardProps: {
     container: true,
     item: true,
-    display: 'flex',
-    flexDirection: 'row',
+    sx: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: '100%',
+      backgroundColor: '#FFFFFF',
+      transition: (theme) => theme.transitions.create('all'),
+      '&:hover': {
+        transform: 'scale(1.05)',
+      },
+    },
   },
   cardProps: (backgroundImgURL) => ({
     elevation: 5,
     sx: {
       display: 'flex',
+      flexDirection: 'row',
       justifyContent: 'center',
-      alignItems: 'flex-end',
+      alignItems: 'center',
       position: 'relative',
       height: '200px',
-      width: '100%',
-      borderRadius: '10px',
+      width: '25%',
       overflow: 'hidden',
       p: 2,
       ...(backgroundImgURL && {
@@ -30,11 +38,6 @@ const styles = {
       ...(!backgroundImgURL && {
         background: getRandomBackgroundColor(),
       }),
-      transition: (theme) => theme.transitions.create('all'),
-      '&:hover': {
-        cursor: 'pointer',
-        transform: 'scale(1.05)',
-      },
     },
   }),
   imageGridProps: {
@@ -49,26 +52,24 @@ const styles = {
     layout: 'fill',
     objectFit: 'cover',
   },
-  contentGridProps: {
-    container: true,
-    item: true,
-    direction: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
   dateProps: {
     fontFamily: 'Satoshi Regular',
-    fontSize: '12px',
-    color: (theme) => theme.palette.Common.Black['100p'],
+    fontSize: '14px',
+    color: '#FF0000',
+    backgroundColor: '#FFC0CB',
+    borderRadius: '100px',
+    padding: '5px',
+    boxShadow: '2px 2px #888888',
+    display: 'inline-block',
   },
   titleProps: {
     fontFamily: 'Satoshi Bold',
-    fontSize: '16px',
+    fontSize: '24px',
     color: (theme) => theme.palette.Common.Black['100p'],
   },
   descriptionProps: {
     fontFamily: 'Satoshi Regular',
-    fontSize: '14px',
+    fontSize: '16px',
     color: (theme) => theme.palette.Common.Black['100p'],
     textOverflow: 'ellipsis',
     overflow: 'hidden',
@@ -82,13 +83,22 @@ const styles = {
     variant: 'contained',
     color: 'primary',
     size: 'small',
+    sx: {
+      borderRadius: '100px',
+      transition: (theme) => theme.transitions.create('all'),
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
   },
-  toolDetailsGridProps: {
-    container: true,
-    item: true,
-    direction: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+  cardContentProps: {
+    sx: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      width: '75%',
+    },
   },
 };
 
