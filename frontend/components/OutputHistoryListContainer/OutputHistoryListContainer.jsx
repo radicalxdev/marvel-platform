@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -95,11 +96,20 @@ const OutputHistoryListContainer = () => {
     <>
       <Grid {...styles.mainGridProps}>
         <Typography {...styles.titleProps}>History</Typography>
-        {renderSection({ text: 'This Week', size: historyOutput?.Week?.length })}
+        {renderSection({
+          text: 'This Week',
+          size: historyOutput?.Week?.length,
+        })}
         {renderCards({ category: 'Week' })}
-        {renderSection({ text: 'This Month', size: historyOutput?.Month?.length })}
+        {renderSection({
+          text: 'This Month',
+          size: historyOutput?.Month?.length,
+        })}
         {renderCards({ category: 'Month' })}
-        {renderSection({ text: 'This Year', size: historyOutput?.Year?.length })}
+        {renderSection({
+          text: 'This Year',
+          size: historyOutput?.Year?.length,
+        })}
         {renderCards({ category: 'Year' })}
         {renderSection({ text: 'Older', size: historyOutput?.Older?.length })}
         {renderCards({ category: 'Older' })}

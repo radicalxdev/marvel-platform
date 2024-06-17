@@ -60,22 +60,21 @@ const styles = {
     width: 60,
     height: 60,
   },
-  imageGridProps: (backgroundImgURL) => ({
+  // Updated imageGridProps to use a static blue background
+  imageGridProps: () => ({
     position: 'relative',
     container: true,
     item: true,
     marginLeft: '-20px',
     sx: {
-      backgroundImage: `url(${backgroundImgURL})`,
+      backgroundColor: '#007BFF', // Static blue background color
       width: '160px',
       height: '100%',
-      backgroundSize: 'cover',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
     },
   }),
-
   previewButtonProps: {
     sx: {
       fontFamily: 'Satoshi Regular',

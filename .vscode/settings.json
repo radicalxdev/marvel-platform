@@ -1,6 +1,6 @@
 {
   "eslint.workingDirectories": [
-    { "pattern": "./functions/*" },
-    { "pattern": "./frontend/*" }
+    { "pattern": "functions/*" },
+    { "pattern": "frontend/*" }
   ]
 }

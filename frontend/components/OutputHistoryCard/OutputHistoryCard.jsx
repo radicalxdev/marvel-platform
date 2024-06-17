@@ -11,15 +11,16 @@ import styles from './styles';
  * @return {JSX.Element} The Output History Card component.
  */
 const OutputHistoryCard = (props) => {
-  const { title, content, creationDate, logo, backgroundImgURL, onOpen } = props;
+  const { title, content, creationDate, logo, onOpen } = props;
 
   const handleButtonClick = () => {
     onOpen(props); // Pass the card's props to the onOpen handler
   };
 
   const renderImage = () => {
+    // Use the modified styles with a static blue background
     return (
-      <Grid {...styles.imageGridProps(backgroundImgURL)}>
+      <Grid {...styles.imageGridProps()}>
         <Image src={logo || ToolImage} alt="kai logo" {...styles.imageProps} />
       </Grid>
     );
