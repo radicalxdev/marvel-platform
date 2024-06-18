@@ -31,6 +31,15 @@ const styles = {
     fontSize: 'inherit',
     color: (theme) => theme.palette.primary.main,
   },
+  sectionHeaderProps: {
+    sx: {
+      fontFamily: 'Satoshi Regular',
+      fontSize: '20px',
+      color: '#B8B8B8',
+      borderBottom: '2px solid #d3d3d3',
+      width: '100%',
+    },
+  },
 };
 
 export default styles;

@@ -20,8 +20,8 @@ const HistoryPreview = (props) => {
     createdDate,
     title,
     description,
-    questionDetails,
-    answerKeyDetails,
+    category,
+    questions,
   } = props;
 
   const renderHeader = () => {
@@ -37,8 +37,8 @@ const HistoryPreview = (props) => {
   const renderQuestionDetails = () => {
     return (
       <List>
-        <ListSubheader {...styles.listSubHeaderProps}>{title}</ListSubheader>
-        {questionDetails.map((item, index) => (
+        <ListSubheader {...styles.listSubHeaderProps}>{category}</ListSubheader>
+        {questions.map((item, index) => (
           <ListItem key={index} {...styles.listContentProps}>
             <ListItemText
               primary={`${index + 1}. ${item.question}`}
@@ -67,10 +67,10 @@ const HistoryPreview = (props) => {
           <ListSubheader {...styles.listSubHeaderProps}>
             Answer Key
           </ListSubheader>
-          {answerKeyDetails.map((item, index) => (
+          {questions.map((item, index) => (
             <ListItem key={index}>
               <ListItemText
-                primary={`${index + 1}. ${item.answer}`}
+                primary={`${index + 1}. ${item.correctAnswer}`}
                 {...styles.subListTextProps}
               />
             </ListItem>

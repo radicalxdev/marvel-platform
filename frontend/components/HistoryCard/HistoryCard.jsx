@@ -22,8 +22,8 @@ const HistoryCard = (props) => {
     logo,
     description,
     createdDate,
-    questionDetails,
-    answerKeyDetails,
+    category,
+    questions,
   } = props;
   const [openPreview, setOpenPreview] = useState(false);
 
@@ -68,8 +68,8 @@ const HistoryCard = (props) => {
         createdDate={createdDate}
         title={title}
         description={description}
-        questionDetails={questionDetails}
-        answerKeyDetails={answerKeyDetails}
+        category={category}
+        questions={questions}
       />
     </Grid>
   );

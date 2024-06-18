@@ -4,6 +4,9 @@ const styles = {
   mainGridProps: {
     container: true,
     item: true,
+    sx: {
+      width: '600px', // Add this line
+    },
   },
   historyCardProps: {
     container: true,
