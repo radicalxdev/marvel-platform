@@ -1,5 +1,5 @@
 import { getRandomBackgroundColor } from '@/utils/MiscellaneousUtils';
-// Styling needs fixing here
+
 const styles = {
   mainGridProps: {
     container: true,
@@ -66,6 +66,13 @@ const styles = {
     fontFamily: 'Satoshi Bold',
     fontSize: '24px',
     color: (theme) => theme.palette.Common.Black['100p'],
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    sx: {
+      display: '-webkit-box',
+      WebkitLineClamp: 1,
+      WebkitBoxOrient: 'vertical',
+    },
   },
   descriptionProps: {
     fontFamily: 'Satoshi Regular',

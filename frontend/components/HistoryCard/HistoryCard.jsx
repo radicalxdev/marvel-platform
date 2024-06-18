@@ -11,14 +11,24 @@ import {
 
 import Image from 'next/image';
 
+import HistoryPreview from '../HistoryPreview';
+
 import styles from './styles';
 
 const HistoryCard = (props) => {
-  const { backgroundImgURL, title, logo, description, createdDate } = props;
-  const [openSubScreen, setOpenSubScreen] = useState(false);
+  const {
+    backgroundImgURL,
+    title,
+    logo,
+    description,
+    createdDate,
+    questionDetails,
+    answerKeyDetails,
+  } = props;
+  const [openPreview, setOpenPreview] = useState(false);
 
-  const toggleSubScreen = () => {
-    setOpenSubScreen(!openSubScreen);
+  const togglePreview = () => {
+    setOpenPreview(!openPreview);
   };
 
   const renderImage = () => {
@@ -35,7 +45,7 @@ const HistoryCard = (props) => {
         <Typography {...styles.dateProps}>{createdDate}</Typography>
         <Typography {...styles.titleProps}>{title}</Typography>
         <Typography {...styles.descriptionProps}>{description}</Typography>
-        <Button {...styles.previewButtonProps} onClick={toggleSubScreen}>
+        <Button {...styles.previewButtonProps} onClick={togglePreview}>
           Preview
         </Button>
       </Grid>
@@ -52,6 +62,15 @@ const HistoryCard = (props) => {
           {renderCardDetails()}
         </CardContent>
       </Card>
+      <HistoryPreview
+        open={openPreview}
+        togglePreview={togglePreview}
+        createdDate={createdDate}
+        title={title}
+        description={description}
+        questionDetails={questionDetails}
+        answerKeyDetails={answerKeyDetails}
+      />
     </Grid>
   );
 };
