@@ -8,13 +8,15 @@ const submitPrompt = async (payload, files) => {
     formData.append('data', JSON.stringify(payload));
 
     // Append files to the form data
-    if (!!files && files?.length > 0) {
+    if (files && files.length > 0) {
       files.forEach((file, index) => {
         formData.append(`file${index}`, file);
       });
     }
 
-    const response = await axios.post('/api/tool/', formData, {
+    const url = process.env.NEXT_PUBLIC_KAI_ENDPOINT;
+
+    const response = await axios.post(url, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -23,7 +25,10 @@ const submitPrompt = async (payload, files) => {
     return response.data?.data;
   } catch (err) {
     const { response } = err;
-    throw new Error(response?.data?.message || 'Error could not send prompt');
+
+    throw new Error(
+      response?.data?.message || `Error: could not send prompt,${err}`
+    );
   }
 };
 

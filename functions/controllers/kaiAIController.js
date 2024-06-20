@@ -11,6 +11,7 @@ const busboy = require('busboy');
 const app = express();
 
 const DEBUG = process.env.DEBUG;
+
 /**
  * Simulates communication with a Kai AI endpoint.
  *
@@ -33,10 +34,9 @@ const kaiCommunicator = async (payload) => {
     DEBUG && logger.log('kaiCommunicator started, data:', payload.data);
 
     const { messages, user, tool_data, type } = payload.data;
-
     const isToolCommunicator = type === BOT_TYPE.TOOL;
-    const KAI_API_KEY = process.env.KAI_API_KEY;
-    const KAI_ENDPOINT = process.env.KAI_ENDPOINT;
+    const KAI_API_KEY = process.env.NEXT_PUBLIC_KAI_API_KEY;
+    const KAI_ENDPOINT = process.env.NEXT_PUBLIC_KAI_ENDPOINT;
 
     DEBUG &&
       logger.log(
