@@ -15,6 +15,20 @@ import HistoryPreview from '../HistoryPreview';
 
 import styles from './styles';
 
+/**
+ * Component for rendering a history card with an image, details, and a preview button.
+ *
+ * @param {Object} props - Object containing the following properties:
+ *  @param {string} props.backgroundImgURL - URL of the background image for the card
+ *  @param {string} props.title - Title of the history card
+ *  @param {string} props.logo - URL of the logo image for the history card
+ *  @param {string} props.description - Description of the history card
+ *  @param {string} props.createdDate - Creation date of the history card
+ *  @param {string} props.category - Category of the history card
+ *  @param {Array} props.questions - Array of questions related to the history card
+ *
+ * @return {JSX.Element} Rendered history card component
+ */
 const HistoryCard = (props) => {
   const {
     backgroundImgURL,
@@ -22,15 +36,23 @@ const HistoryCard = (props) => {
     logo,
     description,
     createdDate,
-    category,
+    toolId,
     questions,
   } = props;
   const [openPreview, setOpenPreview] = useState(false);
 
+  /**
+   * Function to toggle the preview state of the history card.
+   */
   const togglePreview = () => {
     setOpenPreview(!openPreview);
   };
 
+  /**
+   * Function to render the logo image in the history card.
+   *
+   * @return {JSX.Element} Rendered logo image component
+   */
   const renderImage = () => {
     return (
       <Grid {...styles.imageGridProps}>
@@ -39,6 +61,11 @@ const HistoryCard = (props) => {
     );
   };
 
+  /**
+   * Function to render the details of the history card, including title, description, and a preview button.
+   *
+   * @return {JSX.Element} Rendered card details component
+   */
   const renderCardDetails = () => {
     return (
       <Grid>
@@ -68,7 +95,7 @@ const HistoryCard = (props) => {
         createdDate={createdDate}
         title={title}
         description={description}
-        category={category}
+        toolId={toolId}
         questions={questions}
       />
     </Grid>

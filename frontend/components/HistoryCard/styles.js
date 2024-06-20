@@ -5,7 +5,7 @@ const styles = {
     container: true,
     item: true,
     sx: {
-      width: '600px', // Add this line
+      width: '600px',
     },
   },
   historyCardProps: {
@@ -18,7 +18,8 @@ const styles = {
       backgroundColor: '#FFFFFF',
       transition: (theme) => theme.transitions.create('all'),
       '&:hover': {
-        transform: 'scale(1.05)',
+        transform: 'scale(1.02)',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       },
     },
   },

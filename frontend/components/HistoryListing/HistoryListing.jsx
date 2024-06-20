@@ -2,6 +2,14 @@ import { Grid } from '@mui/material';
 
 import HistoryCard from '../HistoryCard';
 
+/**
+ * Component for rendering a listing of history cards in a grid layout.
+ *
+ * @param {Object} props - Object containing the following properties:
+ *  @param {Array} props.data - Array of data objects for each history card
+ *
+ * @return {JSX.Element} Rendered history listing component
+ */
 const HistoryListing = (props) => {
   const { data } = props;
 
@@ -15,7 +23,7 @@ const HistoryListing = (props) => {
             createdDate={item.createdDate}
             backgroundImgURL={item.backgroundImgURL}
             logo={item.logo}
-            category={item.category}
+            toolId={item.toolId}
             questions={item.questions}
           />
         </Grid>

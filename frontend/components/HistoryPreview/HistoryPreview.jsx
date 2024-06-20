@@ -13,6 +13,20 @@ import {
 
 import styles from './styles';
 
+/**
+ * Component for rendering a preview of history details in a drawer.
+ *
+ * @param {Object} props - Object containing the following properties:
+ *  @param {boolean} props.open - Boolean indicating whether the preview drawer is open
+ *  @param {Function} props.togglePreview - Function to toggle the preview drawer
+ *  @param {string} props.createdDate - Creation date of the history item
+ *  @param {string} props.title - Title of the history item
+ *  @param {string} props.description - Description of the history item
+ *  @param {string} props.category - Category of the history item
+ *  @param {Array} props.questions - Array of question objects related to the history item
+ *
+ * @return {JSX.Element} Rendered history preview component
+ */
 const HistoryPreview = (props) => {
   const {
     open,
@@ -20,10 +34,15 @@ const HistoryPreview = (props) => {
     createdDate,
     title,
     description,
-    category,
+    toolId,
     questions,
   } = props;
 
+  /**
+   * Function to render the header section of the history preview, including the creation date, title, and description.
+   *
+   * @return {JSX.Element} Rendered header component
+   */
   const renderHeader = () => {
     return (
       <Grid {...styles.headerProps}>
@@ -34,12 +53,17 @@ const HistoryPreview = (props) => {
     );
   };
 
+  /**
+   * Function to render the question details section of the history preview, including the category and list of questions with possible answers.
+   *
+   * @return {JSX.Element} Rendered question details component
+   */
   const renderQuestionDetails = () => {
     return (
       <List>
-        <ListSubheader {...styles.listSubHeaderProps}>{category}</ListSubheader>
+        <ListSubheader {...styles.listSubHeaderProps}>{title}</ListSubheader>
         {questions.map((item, index) => (
-          <ListItem key={index} {...styles.listContentProps}>
+          <ListItem key={toolId} {...styles.listContentProps}>
             <ListItemText
               primary={`${index + 1}. ${item.question}`}
               {...styles.listTextProps}
@@ -60,6 +84,11 @@ const HistoryPreview = (props) => {
     );
   };
 
+  /**
+   * Function to render the answer details section of the history preview, including the answer key.
+   *
+   * @return {JSX.Element} Rendered answer details component
+   */
   const renderAnswerDetails = () => {
     return (
       <Grid>
@@ -68,7 +97,7 @@ const HistoryPreview = (props) => {
             Answer Key
           </ListSubheader>
           {questions.map((item, index) => (
-            <ListItem key={index}>
+            <ListItem key={toolId}>
               <ListItemText
                 primary={`${index + 1}. ${item.correctAnswer}`}
                 {...styles.subListTextProps}
