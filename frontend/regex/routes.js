@@ -1,5 +1,5 @@
 const homeRegex = /\/(\w+)?(\/workspace)?/;
 const chatRegex = /\/chat/;
-const historyRegex = /\/history/;
+const toolHistoryRegex = /\/toolhistory/;
 
-export { homeRegex, chatRegex, historyRegex };
+export { homeRegex, chatRegex, toolHistoryRegex };

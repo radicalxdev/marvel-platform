@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import MainAppLayout from '@/layouts/MainAppLayout';
-import HistoryPage from '@/templates/HistoryPage';
+import ToolHistoryPage from '@/templates/ToolHistoryPage';
 
 import { firestore } from '@/redux/store';
 import fetchTools from '@/redux/thunks/tools';
 
-const KaiHistory = () => {
+const KaiToolHistory = () => {
   const { data, loading, error, category } = useSelector(
     (state) => state.tools
   );
@@ -23,7 +23,7 @@ const KaiHistory = () => {
     if (!data) fetchKaiTools();
   }, []);
   return (
-    <HistoryPage
+    <ToolHistoryPage
       data={data}
       loading={loading}
       error={error}
@@ -32,8 +32,8 @@ const KaiHistory = () => {
   );
 };
 
-KaiHistory.getLayout = function getLayout(page) {
+KaiToolHistory.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };
 
-export default KaiHistory;
+export default KaiToolHistory;

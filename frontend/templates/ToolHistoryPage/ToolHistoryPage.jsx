@@ -1,10 +1,10 @@
 import { Grid, Typography } from '@mui/material';
 
-import HistoryListingContainer from '@/components/HistoryListingContainer';
+import ToolsHistoryListingContainer from '@/components/ToolsHistoryListingContainer';
 
 import styles from './styles';
 
-const HistoryPage = (props) => {
+const ToolHistoryPage = (props) => {
   const { data, loading, category } = props;
 
   const renderTitle = () => {
@@ -18,7 +18,7 @@ const HistoryPage = (props) => {
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
-      <HistoryListingContainer
+      <ToolsHistoryListingContainer
         data={data}
         loading={loading}
         category={category}
@@ -26,4 +26,4 @@ const HistoryPage = (props) => {
     </Grid>
   );
 };
-export default HistoryPage;
+export default ToolHistoryPage;

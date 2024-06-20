@@ -4,23 +4,23 @@ import { Button, Card, Grid, Typography } from '@mui/material';
 
 import Image from 'next/image';
 
-import HistoryDrawer from '../HistoryDrawer/HistoryDrawer';
+import HistoryDrawer from '../ToolHistoryDrawer/ToolHistoryDrawer';
 
 import styles from './styles';
 
 import { truncateString } from '@/utils/MiscellaneousUtils';
 
 /**
- * Returns a History Card component with the image and the details of the previous tools created.
+ * Returns a Tool History Card component with the image and the details of the previous tools created.
  * @param {object} props - The properties of the component.
  * @param {string} props.backgroundImgURL - The URL of the background image.
  * @param {string} props.title - The title of the tool.
  * @param {string} props.description - The description of the tool.
  * @param {string} props.createdDate - The date the tool was created.
  * @param {string} props.logo - The URL of the logo.
- * @return {JSX.Element} The History Card component.
+ * @return {JSX.Element} The Tool History Card component.
  */
-const HistoryCard = (props) => {
+const ToolHistoryCard = (props) => {
   const { backgroundImgURL, title, logo, description, createdDate } = props;
   const [open, setOpen] = useState(false);
 
@@ -70,4 +70,4 @@ const HistoryCard = (props) => {
   );
 };
 
-export default HistoryCard;
+export default ToolHistoryCard;

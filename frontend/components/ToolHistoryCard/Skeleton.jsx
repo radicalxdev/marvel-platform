@@ -7,7 +7,7 @@ import styles from './styles';
  *
  * @return {JSX.Element} The HistoryCard Skeleton component.
  */
-const HistoryCardSkeleton = () => {
+const ToolsHistoryCardSkeleton = () => {
   return (
     <Grid {...styles.mainGridProps}>
       <Skeleton
@@ -24,4 +24,4 @@ const HistoryCardSkeleton = () => {
   );
 };
 
-export default HistoryCardSkeleton;
+export default ToolsHistoryCardSkeleton;

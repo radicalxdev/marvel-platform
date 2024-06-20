@@ -1,8 +1,8 @@
 import { Grid, Typography } from '@mui/material';
 
-import HistoryCard from '../HistoryCard';
+import ToolHistoryCard from '../ToolHistoryCard';
 
-import HistoryCardSkeleton from '../HistoryCard/Skeleton';
+import ToolHistoryCardSkeleton from '../ToolHistoryCard/Skeleton';
 
 import styles from './styles';
 
@@ -39,14 +39,14 @@ const cardData = [
 ];
 
 /**
- * Render HistoryListingContainer with HistoryCards
+ * Render ToolHistoryListingContainer with HistoryCards
  *
  * @param {object} props - The properties of the component.
  * @param {object} props.data - The data of the component.
  * @param {string} props.category - The category of the component.
- * @return {JSX.Element} The rendered HistoryListingContainer.
+ * @return {JSX.Element} The rendered ToolHistoryListingContainer.
  */
-const HistoryListingContainer = (props) => {
+const ToolHistoryListingContainer = (props) => {
   const { data, category, loading } = props;
 
   const renderTitle = () => {
@@ -64,7 +64,7 @@ const HistoryListingContainer = (props) => {
       <Grid {...styles.containerGridProps}>
         <Grid {...styles.innerListGridProps}>
           {cardData.map((card, index) => (
-            <HistoryCard
+            <ToolHistoryCard
               key={index}
               title={card.title}
               description={card.description}
@@ -83,7 +83,7 @@ const HistoryListingContainer = (props) => {
       <Grid {...styles.containerGridProps}>
         <Grid {...styles.innerListGridProps}>
           {DEFAULT_HISTORY?.map((tool) => (
-            <HistoryCardSkeleton key={tool.id} />
+            <ToolHistoryCardSkeleton key={tool.id} />
           ))}
         </Grid>
       </Grid>
@@ -98,4 +98,4 @@ const HistoryListingContainer = (props) => {
   );
 };
 
-export default HistoryListingContainer;
+export default ToolHistoryListingContainer;

@@ -8,7 +8,7 @@ const ROUTES = {
   PASSWORD_RESET: '/password-reset',
   REDIRECT: '/redirect',
   CHAT: '/chat',
-  HISTORY: '/history',
+  TOOLHISTORY: '/toolhistory',
 };
 
 export default ROUTES;

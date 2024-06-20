@@ -6,7 +6,7 @@ import { Alert, Button, Grid, Snackbar } from '@mui/material';
 
 import styles from './styles';
 
-const HistoryDrawerButtons = (props) => {
+const ToolHistoryDrawerButtons = (props) => {
   const { createdDate, title, description, questions, options, answers } =
     props;
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -122,4 +122,4 @@ const HistoryDrawerButtons = (props) => {
   );
 };
 
-export default HistoryDrawerButtons;
+export default ToolHistoryDrawerButtons;

@@ -1,9 +1,8 @@
 // components/HistoryDrawer/HistoryDrawer.js
 import { Drawer, Grid, List, ListItem, Typography } from '@mui/material';
 
-import HistoryDrawerButtons from './HistoryDrawerButtons';
-
 import styles from './styles';
+import ToolHistoryDrawerButtons from './ToolHistoryDrawerButtons';
 
 const questions = ['Question 1', 'Question 2', 'Question 3']; // Example list of questions
 const options = ['Option 1', 'Option 2', 'Option 3']; // Example list of options
@@ -18,9 +17,9 @@ const answers = ['Answer 1', 'Answer 2', 'Answer 3']; // Example list of answers
  * @param {string} props.createdDate - The date the tool was created.
  * @param {string} props.title - The title of the tool.
  * @param {string} props.description - The description of the tool.
- * @returns {JSX.Element} The HistoryDrawer component.
+ * @returns {JSX.Element} The ToolHistoryDrawer component.
  */
-const HistoryDrawer = (props) => {
+const ToolHistoryDrawer = (props) => {
   const { open, toggleDrawer, createdDate, title, description } = props;
 
   const renderDrawerHeader = () => {
@@ -89,7 +88,7 @@ const HistoryDrawer = (props) => {
         {renderDrawerHeader()}
         {renderDrawerList()}
         {renderAnswerKey()}
-        <HistoryDrawerButtons
+        <ToolHistoryDrawerButtons
           createdDate={createdDate}
           title={title}
           description={description}
@@ -102,4 +101,4 @@ const HistoryDrawer = (props) => {
   );
 };
 
-export default HistoryDrawer;
+export default ToolHistoryDrawer;
