@@ -1,3 +1,5 @@
+// toolsSlice.js
+
 import { createSlice } from '@reduxjs/toolkit';
 
 import fetchTools from '../thunks/tools';
@@ -5,7 +7,7 @@ import fetchTools from '../thunks/tools';
 const toolsState = {
   data: null,
   loading: true,
-  error: null,
+  error: null, // General error state for tools
 };
 
 const communicator = {
@@ -13,6 +15,7 @@ const communicator = {
   response: null,
   communicatorLoading: false,
   formOpen: true,
+  communicatorError: null, // Specific error for communicator actions
 };
 
 const initialState = {
@@ -38,6 +41,9 @@ const tools = createSlice({
     setResponse: (state, action) => {
       state.response = action.payload;
     },
+    setError: (state, action) => {
+      state.communicatorError = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,6 +68,7 @@ export const {
   setResponse,
   setFormOpen,
   resetCommunicator,
+  setError, // New action for setting communicator errors
 } = tools.actions;
 
 export default tools.reducer;
