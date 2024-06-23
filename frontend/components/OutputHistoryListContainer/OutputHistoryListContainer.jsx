@@ -1,6 +1,6 @@
 // OutputHistoryListContainer.js
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
@@ -14,6 +14,10 @@ import { transformToolData } from '@/utils/HistoryUtils';
 const OutputHistoryListContainer = ({ data, loading }) => {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
   const [selectedCardData, setSelectedCardData] = useState(null);
+
+  useEffect(() => {
+    // Removed console logs
+  }, [data, loading]);
 
   if (loading) return <Typography>Loading...</Typography>;
   if (!data) return <Typography>No data available</Typography>;

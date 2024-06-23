@@ -17,7 +17,6 @@ export const transformToolData = (tool_data, response, createdAt) => {
 
   const num_tool_id = parseInt(tool_data?.tool_id, 10);
 
-  // Use switch statement with proper scoping for case blocks
   switch (num_tool_id) {
     case 0: {
       // MCQ

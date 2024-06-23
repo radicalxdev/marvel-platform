@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-
 import {
   Button,
   Drawer,
@@ -13,16 +11,19 @@ import {
   Typography,
 } from '@mui/material';
 
-import styles from './styles'; // Make sure to adjust the import path as needed
+import styles from './styles';
 
 const SlidePanel = (props) => {
-  const { isOpen, onClose, data } = props; // Receive the data prop
+  const { isOpen, onClose, data } = props;
 
-  // Example data structure to show if there's no data passed
+  useEffect(() => {
+    // Effect to log mounting and data (removed)
+  }, [isOpen, data]);
+
   const defaultData = {
     title: 'Default Title',
-    description: 'Default Description',
-    creationDate: { seconds: new Date().getTime() / 1000 }, // Default to current time
+    content: 'Default Content',
+    creationDate: new Date().toLocaleDateString(),
     questions: [
       {
         question: 'Default Question 1',
@@ -32,22 +33,23 @@ const SlidePanel = (props) => {
   };
 
   // Use the data prop or fall back to the default data
-  const panelData = data?.response?.data || defaultData;
+  const panelData = data?.response?.data || defaultData.questions;
 
   // Function to copy content to clipboard with custom formatting
   const handleCopyToClipboard = () => {
     const textToCopy = `
-Title: ${panelData.title}
+Title: ${data?.title || 'Default Title'}
 
-Description: ${panelData.description}
+Content: ${data?.content || 'Default Content'}
 
 Questions and Options:
-${panelData.questions
-  ?.map(
-    (q, i) =>
-      `${i + 1}. ${q.question}\n${q.options
-        ?.map((o, idx) => `   ${String.fromCharCode(97 + idx)}. ${o}`)
-        .join('\n')}`
+${panelData
+  .map((item, i) =>
+    data?.toolId === '0'
+      ? `${i + 1}. ${item.question}\n${item.choices
+          ?.map((choice) => `   ${choice.key}. ${choice.value}`)
+          .join('\n')}`
+      : `${i + 1}. ${item.concept} - ${item.definition}`
   )
   .join('\n\n')}
 `;
@@ -57,45 +59,51 @@ ${panelData.questions
 
   // Function to export content to CSV without file-saver
   const handleExportToCSV = () => {
-    // Determine the maximum number of options available in the data
-    const maxOptions = Math.max(
-      ...panelData.questions.map((q) => q.options.length)
-    );
+    if (data?.toolId === '0') {
+      const headers = ['Question', 'Correct Answer', 'Explanation', 'Options'];
 
-    // Create dynamic CSV headers based on the maximum number of options
-    const headers = [
-      'Question',
-      ...Array.from({ length: maxOptions }, (_, i) => `Option ${i + 1}`),
-    ];
+      const rows = panelData.map((item) => [
+        item.question,
+        item.answer,
+        item.explanation || '',
+        item.choices
+          .map((choice) => `${choice.key}. ${choice.value}`)
+          .join('; '),
+      ]);
 
-    // Map the questions and their options into the CSV format
-    const rows = panelData.questions.map((q) => [
-      q.question,
-      ...q.options.slice(0, maxOptions), // Include only available options
-    ]);
+      const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
 
-    // Combine headers and rows into the final CSV content
-    const csvContent = [
-      headers, // Headers row
-      ...rows, // Data rows
-    ]
-      .map((e) => e.join(',')) // Join columns with commas
-      .join('\n'); // Join rows with newlines
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
 
-    // Create a Blob from the CSV content
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${data?.title.replace(/\s+/g, '_').toLowerCase()}.csv`;
+      document.body.appendChild(a);
+      a.click();
 
-    // Create a link element and simulate a click to download the file
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${panelData.title.replace(/\s+/g, '_').toLowerCase()}.csv`;
-    document.body.appendChild(a);
-    a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } else {
+      // FlashCard case or others if needed
+      const headers = ['Concept', 'Definition'];
 
-    // Clean up
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+      const rows = panelData.map((item) => [item.concept, item.definition]);
+
+      const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${data?.title.replace(/\s+/g, '_').toLowerCase()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }
   };
 
   const renderHeader = () => {
@@ -103,41 +111,51 @@ ${panelData.questions
       <Grid container direction="column" {...styles.headerGridProps}>
         <Grid item>
           <Typography {...styles.dateProps}>
-            {new Date(
-              panelData.creationDate.seconds * 1000
-            ).toLocaleDateString()}
+            {data?.creationDate || new Date().toLocaleDateString()}
           </Typography>
         </Grid>
         <Grid item>
           <Typography {...styles.categoryTitleProps}>
-            {panelData?.title}
+            {data?.title || 'Default Title'}
           </Typography>
         </Grid>
         <Grid item>
-          <Typography {...styles.categoryDescriptionProps}>
-            {panelData?.description}
+          <Typography {...styles.categoryContentProps}>
+            {data?.content || 'Default Content'}
           </Typography>
         </Grid>
       </Grid>
     );
   };
 
+  // Modified renderQuestions function to handle the provided MCQ data structure
   const renderQuestions = () => {
     return (
-      panelData?.map((item, index) => (
-        <div key={index}>
+      panelData.map((item, index) => (
+        <div key={index} style={{ marginBottom: '16px' }}>
           <Typography {...styles.questionProps}>
             {index + 1}. {item?.question}
           </Typography>
           <List>
-            {item?.choices?.map((choice) => (
-              <ListItem key={choice.key} sx={{ py: 0 }}>
+            {item?.choices?.map((choice, choiceIndex) => (
+              <ListItem key={choiceIndex} sx={{ py: 0 }}>
                 <Typography {...styles.optionProps}>
                   {choice.key}. {choice.value}
                 </Typography>
               </ListItem>
             ))}
           </List>
+          <Typography {...styles.answerProps} style={{ marginTop: '8px' }}>
+            <strong>Correct Answer:</strong> {item.answer}
+          </Typography>
+          {item.explanation && (
+            <Typography
+              {...styles.explanationProps}
+              style={{ marginTop: '4px' }}
+            >
+              <strong>Explanation:</strong> {item.explanation}
+            </Typography>
+          )}
         </div>
       )) || null
     );
