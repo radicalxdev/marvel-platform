@@ -32,7 +32,7 @@ const SlidePanel = (props) => {
   };
 
   // Use the data prop or fall back to the default data
-  const panelData = data || defaultData;
+  const panelData = data?.response?.data || defaultData;
 
   // Function to copy content to clipboard with custom formatting
   const handleCopyToClipboard = () => {
@@ -124,16 +124,16 @@ ${panelData.questions
 
   const renderQuestions = () => {
     return (
-      panelData?.questions?.map((question, index) => (
+      panelData?.map((item, index) => (
         <div key={index}>
           <Typography {...styles.questionProps}>
-            {index + 1}. {question?.question}
+            {index + 1}. {item?.question}
           </Typography>
           <List>
-            {question?.options?.map((option, optionIndex) => (
-              <ListItem key={optionIndex} sx={{ py: 0 }}>
+            {item?.choices?.map((choice) => (
+              <ListItem key={choice.key} sx={{ py: 0 }}>
                 <Typography {...styles.optionProps}>
-                  {String.fromCharCode(97 + optionIndex)}. {option}
+                  {choice.key}. {choice.value}
                 </Typography>
               </ListItem>
             ))}
@@ -143,8 +143,29 @@ ${panelData.questions
     );
   };
 
+  const renderFlashCards = () => {
+    return (
+      <Grid {...styles.flashCardsGridProps}>
+        {panelData?.map((item, index) => (
+          <Grid key={index} {...styles.flashCardGridProps}>
+            <Typography {...styles.conceptTitleProps}>
+              {item?.concept}
+            </Typography>
+            <Typography {...styles.definitionProps}>
+              {item?.definition}
+            </Typography>
+          </Grid>
+        ))}
+      </Grid>
+    );
+  };
+
   const renderContent = () => {
-    return <Grid {...styles.containerGridProps}>{renderQuestions()}</Grid>;
+    return (
+      <Grid {...styles.containerGridProps}>
+        {data?.toolId === '1' ? renderFlashCards() : renderQuestions()}
+      </Grid>
+    );
   };
 
   const renderFooterButtons = () => (

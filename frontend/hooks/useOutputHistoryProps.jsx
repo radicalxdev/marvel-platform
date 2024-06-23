@@ -16,14 +16,7 @@ const useOutputHistoryProps = () => {
   }, [dispatch]);
 
   // Categorize the data after it is fetched
-  const categorizedData = data
-    ? categorizeDataByDate(data)
-    : {
-        Week: [],
-        Month: [],
-        Year: [],
-        Older: [],
-      };
+  const categorizedData = data ? categorizeDataByDate(data) : null;
 
   return {
     categorizedData,

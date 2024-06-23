@@ -65,32 +65,68 @@ const OutputHistoryListContainer = ({ data, loading }) => {
     </Grid>
   );
 
+  const renderContent = () => {
+    return (
+      <>
+        {data?.Week?.length > 0 && (
+          <>
+            {renderSection({
+              text: 'This Week',
+              size: data?.Week?.length,
+            })}
+            {renderCards({ category: 'Week' })}
+          </>
+        )}
+        {data?.Month?.length > 0 && (
+          <>
+            {renderSection({
+              text: 'This Month',
+              size: data?.Month?.length,
+            })}
+            {renderCards({ category: 'Month' })}
+          </>
+        )}
+        {data?.Year?.length > 0 && (
+          <>
+            {renderSection({
+              text: 'This Year',
+              size: data?.Year?.length,
+            })}
+            {renderCards({ category: 'Year' })}
+          </>
+        )}
+        {data?.Older?.length > 0 && (
+          <>
+            {renderSection({
+              text: 'Older',
+              size: data?.Older?.length,
+            })}
+            {renderCards({ category: 'Older' })}
+          </>
+        )}
+      </>
+    );
+  };
+
   return (
     <>
       <Grid {...styles.mainGridProps}>
         <Typography {...styles.titleProps}>History</Typography>
-        {renderSection({
-          text: 'This Week',
-          size: data?.Week?.length,
-        })}
-        {renderCards({ category: 'Week' })}
-        {renderSection({
-          text: 'This Month',
-          size: data?.Month?.length,
-        })}
-        {renderCards({ category: 'Month' })}
-        {renderSection({
-          text: 'This Year',
-          size: data?.Year?.length,
-        })}
-        {renderCards({ category: 'Year' })}
-        {renderSection({ text: 'Older', size: data?.Older?.length })}
-        {renderCards({ category: 'Older' })}
+        {data ? (
+          renderContent()
+        ) : (
+          <Grid {...styles.headerGridProps}>
+            <Typography {...styles.categoryTitleProps}>
+              History is currently empty. Start using our services to track your
+              activities and view your history here.
+            </Typography>
+          </Grid>
+        )}
       </Grid>
       <SlidePanel
         isOpen={isSidePanelOpen}
         onClose={handleCloseSidebar}
-        data={selectedCardData} // Pass transformed data to SlidePanel
+        data={selectedCardData}
       />
     </>
   );
