@@ -21,6 +21,40 @@ const styles = {
     fontFamily: 'Satoshi Bold',
     fontSize: '36px',
   },
+  emptyMessageGridProps: {
+    container: true,
+    item: true,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '20px',
+    gap: 1,
+  },
+  emptyMessageProps: {
+    fontFamily: 'Satoshi Regular',
+    fontSize: '24px',
+    textAlign: 'center',
+    color: (theme) => theme.palette.Greyscale[600],
+  },
+  emptyMessageButtonProps: {
+    fontFamily: 'Satoshi Regular',
+    fontSize: '28px',
+    textAlign: 'center',
+  },
+  emptyMessageLinkProps: {
+    fontFamily: 'Satoshi Regular',
+    fontSize: '24px',
+    textAlign: 'center',
+    textTransform: 'none',
+    color: (theme) => theme.palette.Greyscale[600],
+    sx: {
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+  },
 };
 
 export default styles;
