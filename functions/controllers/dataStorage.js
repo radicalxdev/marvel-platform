@@ -24,3 +24,4 @@ exports.createOutput = functions.https.onCall((data, context) => {
     });
 });
     
+;
