@@ -362,6 +362,24 @@ const styles = {
       },
     }),
   },
+  chatHistory: {
+    chatHistoryFabProps: {
+      sx: {
+        backgroundColor: 'transparent',
+        border: '2px solid #5614F3',
+        boxShadow: 'none',
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+      },
+    },
+    chatHistoryIconProps: {
+      sx: {
+        fill: '#5614F3',
+        stroke: '#5614F3',
+      },
+    },
+  },
 };
 
 export default styles;

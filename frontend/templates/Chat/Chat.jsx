@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
 
 import {
+  Add as AddIcon,
   ArrowDownwardOutlined,
   InfoOutlined,
   Settings,
 } from '@mui/icons-material';
 import {
   Button,
+  Fab,
   Fade,
   Grid,
   IconButton,
@@ -356,8 +358,20 @@ const ChatInterface = () => {
     return null;
   };
 
+  const renderChatHistory = () => {
+    return (
+      <Fab
+        aria-label="open chat history"
+        {...styles.chatHistory.chatHistoryFabProps}
+      >
+        <AddIcon {...styles.chatHistory.chatHistoryIconProps} />
+      </Fab>
+    );
+  };
+
   return (
     <Grid {...styles.mainGridProps}>
+      {renderChatHistory()}
       {renderMoreChat()}
       {renderCenterChatContent()}
       {renderCenterChatContentNoMessages()}
