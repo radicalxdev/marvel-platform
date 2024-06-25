@@ -2,6 +2,7 @@ const admin = require('firebase-admin');
 const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { logger, https } = require('firebase-functions/v1');
 const DEBUG = process.env.DEBUG;
+const functions = require("firebase-functions");
 
 
 exports.createOutput = functions.https.onCall((data, context) => {
@@ -10,7 +11,7 @@ exports.createOutput = functions.https.onCall((data, context) => {
         throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
     }
     if (!userId || !toolId || !createdDate || !title || !type || !content || questions) {
-        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+        throw new functions.https.HttpsError('missing value', 'missing value');
     }
     return admin.firestore().collection('toolsHistory').add({
         userId,
