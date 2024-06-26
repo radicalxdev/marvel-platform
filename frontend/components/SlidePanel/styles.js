@@ -3,7 +3,7 @@ const styles = {
     sx: {
       '& .MuiDrawer-paper': {
         width: '45%', // Adjust this value to control the width of the drawer
-        background: (theme) => theme.palette.Common.White['100p'],
+        background: (theme) => theme.palette.common.white,
       },
       justifyContent: 'flex-start',
       alignItems: 'flex-start',
@@ -25,28 +25,39 @@ const styles = {
   titleProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: '36px',
+    color: 'black', // Set color to black for visibility
   },
   categoryTitleProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: '24px',
-    color: (theme) => theme.palette.Common.Black['100p'],
+    color: 'black', // Set color to black for visibility
     mt: '10px', // Add margin-top to space it from the date
   },
-  categoryDescriptionProps: {
-    fontFamily: 'Satoshi Bold',
+  categoryContentProps: {
+    fontFamily: 'Satoshi',
     fontSize: '18px',
-    color: (theme) => theme.palette.Greyscale[400],
+    color: 'black', // Set color to black for visibility
     mt: '5px', // Add margin-top to space it from the title
   },
   questionProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: '20px',
-    color: (theme) => theme.palette.Common.Black['100p'],
+    color: 'black', // Set color to black for visibility
   },
   optionProps: {
     fontFamily: 'Satoshi',
     fontSize: '20px',
-    color: (theme) => theme.palette.Common.Black['100p'],
+    color: 'black', // Set color to black for visibility
+  },
+  answerProps: {
+    fontFamily: 'Satoshi',
+    fontSize: '18px',
+    color: 'black', // Set color to black for visibility
+  },
+  explanationProps: {
+    fontFamily: 'Satoshi',
+    fontSize: '18px',
+    color: 'black', // Set color to black for visibility
   },
   flashCardsGridProps: {
     container: true,
@@ -67,21 +78,21 @@ const styles = {
     px: 6,
     py: 10,
     sx: {
-      background: (theme) => theme.palette.Common.White['100p'],
+      background: (theme) => theme.palette.common.white,
       borderRadius: '10px',
-      border: (theme) => `2px solid ${theme.palette.Greyscale[400]}`,
+      border: (theme) => `2px solid ${theme.palette.grey[400]}`,
     },
   },
   conceptTitleProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: { laptop: '18px', desktop: '20px' },
-    color: (theme) => theme.palette.Common.Black['100p'],
+    color: 'black', // Set color to black for visibility
   },
   definitionProps: {
     fontFamily: 'Satoshi Regular',
     fontSize: { laptop: '18px', desktop: '20px' },
     textAlign: 'center',
-    color: (theme) => theme.palette.Common.Black['100p'],
+    color: 'black', // Set color to black for visibility
   },
   containerGridProps: {
     item: true,
@@ -97,7 +108,7 @@ const styles = {
     flexDirection: 'column',
     pb: 1.5,
     sx: {
-      borderBottom: (theme) => `2px solid ${theme.palette.Greyscale[400]}`,
+      borderBottom: (theme) => `2px solid ${theme.palette.grey[400]}`,
     },
   },
   dateProps: {

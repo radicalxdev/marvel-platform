@@ -59,132 +59,125 @@ ${panelData
 
   // Function to export content to CSV without file-saver
   const handleExportToCSV = () => {
+    const escapeCSVField = (field) => {
+      if (typeof field === 'string') {
+        return `"${field.replace(/"/g, '""')}"`;
+      }
+      return field;
+    };
+
+    let headers;
+    let rows;
+
     if (data?.toolId === '0') {
-      const headers = ['Question', 'Correct Answer', 'Explanation', 'Options'];
-
-      const rows = panelData.map((item) => [
-        item.question,
-        item.answer,
-        item.explanation || '',
-        item.choices
-          .map((choice) => `${choice.key}. ${choice.value}`)
-          .join('; '),
+      // MCQ
+      headers = [
+        'Question',
+        'Option A',
+        'Option B',
+        'Option C',
+        'Option D',
+        'Correct Answer',
+        'Explanation',
+      ];
+      rows = panelData.map((item) => [
+        escapeCSVField(item.question),
+        escapeCSVField(item.choices[0]?.value || ''),
+        escapeCSVField(item.choices[1]?.value || ''),
+        escapeCSVField(item.choices[2]?.value || ''),
+        escapeCSVField(item.choices[3]?.value || ''),
+        escapeCSVField(item.answer),
+        escapeCSVField(item.explanation || ''),
       ]);
-
-      const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${data?.title.replace(/\s+/g, '_').toLowerCase()}.csv`;
-      document.body.appendChild(a);
-      a.click();
-
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
     } else {
-      // FlashCard case or others if needed
-      const headers = ['Concept', 'Definition'];
-
-      const rows = panelData.map((item) => [item.concept, item.definition]);
-
-      const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${data?.title.replace(/\s+/g, '_').toLowerCase()}.csv`;
-      document.body.appendChild(a);
-      a.click();
-
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      // Flash Cards
+      headers = ['Concept', 'Definition'];
+      rows = panelData.map((item) => [
+        escapeCSVField(item.concept),
+        escapeCSVField(item.definition),
+      ]);
     }
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map((e) => e.join(',')),
+    ].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${data?.title.replace(/\s+/g, '_').toLowerCase()}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
   };
 
-  const renderHeader = () => {
-    return (
-      <Grid container direction="column" {...styles.headerGridProps}>
-        <Grid item>
-          <Typography {...styles.dateProps}>
-            {data?.creationDate || new Date().toLocaleDateString()}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography {...styles.categoryTitleProps}>
-            {data?.title || 'Default Title'}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography {...styles.categoryContentProps}>
-            {data?.content || 'Default Content'}
-          </Typography>
-        </Grid>
+  const renderHeader = () => (
+    <Grid container direction="column" {...styles.headerGridProps}>
+      <Grid item>
+        <Typography {...styles.dateProps}>
+          {data?.creationDate || new Date().toLocaleDateString()}
+        </Typography>
       </Grid>
-    );
-  };
+      <Grid item>
+        <Typography {...styles.categoryTitleProps}>
+          {data?.title || 'Default Title'}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography {...styles.categoryContentProps}>
+          {data?.content || 'Default Content'}
+        </Typography>
+      </Grid>
+    </Grid>
+  );
 
   // Modified renderQuestions function to handle the provided MCQ data structure
-  const renderQuestions = () => {
-    return (
-      panelData.map((item, index) => (
-        <div key={index} style={{ marginBottom: '16px' }}>
-          <Typography {...styles.questionProps}>
-            {index + 1}. {item?.question}
+  const renderQuestions = () =>
+    panelData.map((item, index) => (
+      <div key={index} style={{ marginBottom: '16px' }}>
+        <Typography {...styles.questionProps}>
+          {index + 1}. {item?.question}
+        </Typography>
+        <List>
+          {item?.choices?.map((choice, choiceIndex) => (
+            <ListItem key={choiceIndex} sx={{ py: 0 }}>
+              <Typography {...styles.optionProps}>
+                {choice.key}. {choice.value}
+              </Typography>
+            </ListItem>
+          ))}
+        </List>
+        <Typography {...styles.answerProps} style={{ marginTop: '8px' }}>
+          <strong>Correct Answer:</strong> {item.answer}
+        </Typography>
+        {item.explanation && (
+          <Typography {...styles.explanationProps} style={{ marginTop: '4px' }}>
+            <strong>Explanation:</strong> {item.explanation}
           </Typography>
-          <List>
-            {item?.choices?.map((choice, choiceIndex) => (
-              <ListItem key={choiceIndex} sx={{ py: 0 }}>
-                <Typography {...styles.optionProps}>
-                  {choice.key}. {choice.value}
-                </Typography>
-              </ListItem>
-            ))}
-          </List>
-          <Typography {...styles.answerProps} style={{ marginTop: '8px' }}>
-            <strong>Correct Answer:</strong> {item.answer}
+        )}
+      </div>
+    )) || null;
+
+  const renderFlashCards = () => (
+    <Grid {...styles.flashCardsGridProps}>
+      {panelData?.map((item, index) => (
+        <Grid key={index} {...styles.flashCardGridProps}>
+          <Typography {...styles.conceptTitleProps}>{item?.concept}</Typography>
+          <Typography {...styles.definitionProps}>
+            {item?.definition}
           </Typography>
-          {item.explanation && (
-            <Typography
-              {...styles.explanationProps}
-              style={{ marginTop: '4px' }}
-            >
-              <strong>Explanation:</strong> {item.explanation}
-            </Typography>
-          )}
-        </div>
-      )) || null
-    );
-  };
+        </Grid>
+      ))}
+    </Grid>
+  );
 
-  const renderFlashCards = () => {
-    return (
-      <Grid {...styles.flashCardsGridProps}>
-        {panelData?.map((item, index) => (
-          <Grid key={index} {...styles.flashCardGridProps}>
-            <Typography {...styles.conceptTitleProps}>
-              {item?.concept}
-            </Typography>
-            <Typography {...styles.definitionProps}>
-              {item?.definition}
-            </Typography>
-          </Grid>
-        ))}
-      </Grid>
-    );
-  };
-
-  const renderContent = () => {
-    return (
-      <Grid {...styles.containerGridProps}>
-        {data?.toolId === '1' ? renderFlashCards() : renderQuestions()}
-      </Grid>
-    );
-  };
+  const renderContent = () => (
+    <Grid {...styles.containerGridProps}>
+      {data?.toolId === '1' ? renderFlashCards() : renderQuestions()}
+    </Grid>
+  );
 
   const renderFooterButtons = () => (
     <Grid container justifyContent="flex-start" sx={{ mt: 3, width: '100%' }}>

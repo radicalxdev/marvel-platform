@@ -1,5 +1,3 @@
-// OutputHistoryListContainer.js
-
 import React, { useEffect, useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
@@ -70,9 +68,14 @@ const OutputHistoryListContainer = ({ data, loading }) => {
   );
 
   const renderContent = () => {
+    const hasWeek = data?.Week?.length > 0;
+    const hasMonth = data?.Month?.length > 0;
+    const hasYear = data?.Year?.length > 0;
+    const hasOlder = data?.Older?.length > 0;
+
     return (
       <>
-        {data?.Week?.length > 0 && (
+        {hasWeek && (
           <>
             {renderSection({
               text: 'This Week',
@@ -81,7 +84,7 @@ const OutputHistoryListContainer = ({ data, loading }) => {
             {renderCards({ category: 'Week' })}
           </>
         )}
-        {data?.Month?.length > 0 && (
+        {hasMonth && (
           <>
             {renderSection({
               text: 'This Month',
@@ -90,7 +93,7 @@ const OutputHistoryListContainer = ({ data, loading }) => {
             {renderCards({ category: 'Month' })}
           </>
         )}
-        {data?.Year?.length > 0 && (
+        {hasYear && (
           <>
             {renderSection({
               text: 'This Year',
@@ -99,7 +102,7 @@ const OutputHistoryListContainer = ({ data, loading }) => {
             {renderCards({ category: 'Year' })}
           </>
         )}
-        {data?.Older?.length > 0 && (
+        {hasOlder && (
           <>
             {renderSection({
               text: 'Older',
@@ -107,6 +110,14 @@ const OutputHistoryListContainer = ({ data, loading }) => {
             })}
             {renderCards({ category: 'Older' })}
           </>
+        )}
+        {!hasWeek && !hasMonth && !hasYear && !hasOlder && (
+          <Grid {...styles.headerGridProps}>
+            <Typography {...styles.categoryTitleProps}>
+              History is currently empty. Start using our services to track your
+              activities and view your history here.
+            </Typography>
+          </Grid>
         )}
       </>
     );
@@ -116,16 +127,7 @@ const OutputHistoryListContainer = ({ data, loading }) => {
     <>
       <Grid {...styles.mainGridProps}>
         <Typography {...styles.titleProps}>History</Typography>
-        {data ? (
-          renderContent()
-        ) : (
-          <Grid {...styles.headerGridProps}>
-            <Typography {...styles.categoryTitleProps}>
-              History is currently empty. Start using our services to track your
-              activities and view your history here.
-            </Typography>
-          </Grid>
-        )}
+        {renderContent()}
       </Grid>
       <SlidePanel
         isOpen={isSidePanelOpen}
