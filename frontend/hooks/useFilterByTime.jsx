@@ -2,12 +2,6 @@ import { useEffect, useState } from 'react';
 
 import moment from 'moment';
 
-/**
- * Custom hook that filters data by time and categorizes it into different time periods.
- *
- * @param {Array} data - The data to be filtered and categorized.
- * @return {Object} An object containing the categorized data, organized by time period.
- */
 const useFilterByTime = (data) => {
   const [categorizedData, setCategorizedData] = useState({
     today: [],
@@ -17,7 +11,8 @@ const useFilterByTime = (data) => {
     monthsBefore: {},
   });
 
-  // UseEffect hook to filter and categorize the data when the dependency (data) changes
+  console.log('useFilterByTime data:', data); // Log input data
+
   useEffect(() => {
     if (data) {
       const today = [];
@@ -83,7 +78,6 @@ const useFilterByTime = (data) => {
     }
   }, [data]);
 
-  // Return the categorized data
   return categorizedData;
 };
 

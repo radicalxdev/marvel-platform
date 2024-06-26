@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Grid, Typography } from '@mui/material';
 import Link from 'next/link';
 
@@ -11,9 +9,11 @@ import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-const HistoryPage = ({ mockData }) => {
+const HistoryPage = ({ data, loading }) => {
   const { today, yesterday, previous7Days, previous30Days, monthsBefore } =
-    useFilterByTime(mockData);
+    useFilterByTime(data);
+
+  console.log('HistoryPage render - data:', data, 'loading:', loading);
 
   const renderTitle = () => (
     <Grid {...styles.titleGridProps}>
@@ -21,14 +21,14 @@ const HistoryPage = ({ mockData }) => {
     </Grid>
   );
 
-  const renderToolHistoryContainer = (category, data) => {
-    if (data.length === 0) return null;
+  const renderToolHistoryContainer = (category, timeData) => {
+    if (timeData.length === 0) return null;
 
     return (
       <HistoryListingContainer
         key={category}
-        data={data}
-        loading={false} // Since we're using mock data, set loading to false
+        data={timeData} // Corrected data prop to pass timeData instead of data
+        loading={loading}
         category={category}
       />
     );
@@ -40,8 +40,8 @@ const HistoryPage = ({ mockData }) => {
       {renderToolHistoryContainer('Yesterday', yesterday)}
       {renderToolHistoryContainer('Previous 7 days', previous7Days)}
       {renderToolHistoryContainer('Previous 30 days', previous30Days)}
-      {Object.entries(monthsBefore).map(([month, data]) =>
-        renderToolHistoryContainer(month, data)
+      {Object.entries(monthsBefore).map(([month, timeData]) =>
+        renderToolHistoryContainer(month, timeData)
       )}
     </>
   );
@@ -63,12 +63,13 @@ const HistoryPage = ({ mockData }) => {
     today.length === 0 &&
     yesterday.length === 0 &&
     previous30Days.length === 0 &&
-    Object.values(monthsBefore).every((data) => data.length === 0);
+    Object.values(monthsBefore).every((timeData) => timeData.length === 0);
 
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
-      {isHistoryEmpty ? renderEmptyMessage : renderHistorySections()}
+      {isHistoryEmpty ? renderEmptyMessage() : renderHistorySections()}{' '}
+      {/* Corrected function call */}
     </Grid>
   );
 };
