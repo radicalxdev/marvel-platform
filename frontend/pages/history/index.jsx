@@ -2,14 +2,14 @@ import React from 'react';
 
 import { useRouter } from 'next/router';
 
-import useOutputHistoryProps from '@/hooks/useOutputHistoryProps';
+import useHistoryProps from '@/hooks/useHistoryProps';
 
 import MainAppLayout from '@/layouts/MainAppLayout';
-import OutputHistory from '@/templates/OutputHistory/';
+import History from '@/templates/HistoryPage';
 
-const OutputHistoryPage = () => {
+const HistoryPage = () => {
   const router = useRouter();
-  const { categorizedData, loading, error } = useOutputHistoryProps();
+  const { categorizedData, loading, error } = useHistoryProps();
 
   // Redirect or handle the error state as needed
   if (error) {
@@ -18,11 +18,11 @@ const OutputHistoryPage = () => {
     return null;
   }
 
-  return <OutputHistory data={categorizedData} loading={loading} />;
+  return <History data={categorizedData} loading={loading} />;
 };
 
-OutputHistoryPage.getLayout = function getLayout(page) {
+HistoryPage.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };
 
-export default OutputHistoryPage;
+export default HistoryPage;

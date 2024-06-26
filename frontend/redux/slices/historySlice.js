@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchOutputHistory } from '../thunks/output';
+import { fetchHistory } from '../thunks/history';
 
 const initialState = {
   data: null,
@@ -8,7 +8,7 @@ const initialState = {
   error: null,
 };
 
-const outputHistorySlice = createSlice({
+const HistorySlice = createSlice({
   name: 'outputHistory',
   initialState,
   reducers: {
@@ -16,19 +16,19 @@ const outputHistorySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchOutputHistory.pending, (state) => {
+      .addCase(fetchHistory.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchOutputHistory.fulfilled, (state, action) => {
+      .addCase(fetchHistory.fulfilled, (state, action) => {
         state.data = action.payload;
         state.loading = false;
       })
-      .addCase(fetchOutputHistory.rejected, (state, action) => {
+      .addCase(fetchHistory.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
       });
   },
 });
 
-export default outputHistorySlice.reducer;
+export default HistorySlice.reducer;

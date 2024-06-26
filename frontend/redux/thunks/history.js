@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { collection, getDocs } from 'firebase/firestore';
 
 // Refactor to accept firestore as an argument
-export const fetchOutputHistory = createAsyncThunk(
+export const fetchHistory = createAsyncThunk(
   'outputHistory/fetchOutputHistory',
   async ({ firestore }, { rejectWithValue }) => {
     try {

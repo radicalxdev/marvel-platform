@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import OutputHistoryCard from '../OutputHistoryCard';
+import OutputHistoryCard from '../HistoryCard';
 import SlidePanel from '../SlidePanel/SlidePanel';
 
 import styles from './styles';
 
-import { transformToolData } from '@/utils/HistoryUtils';
+import { transformToolData } from '@/services/history/transformToolData';
 
-const OutputHistoryListContainer = ({ data, loading }) => {
+const HistoryListingContainer = ({ data, loading }) => {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
   const [selectedCardData, setSelectedCardData] = useState(null);
 
@@ -138,4 +138,4 @@ const OutputHistoryListContainer = ({ data, loading }) => {
   );
 };
 
-export default OutputHistoryListContainer;
+export default HistoryListingContainer;

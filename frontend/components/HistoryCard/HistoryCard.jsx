@@ -1,5 +1,3 @@
-// OutputHistoryCard.js
-
 import { Button, Card, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 
@@ -7,7 +5,7 @@ import ToolImage from '@/assets/images/BookImage.png'; // Default image
 
 import styles from './styles';
 
-const OutputHistoryCard = (props) => {
+const HistoryCard = (props) => {
   const { title, content, creationDate, backgroundImageUrl, logo, onOpen } =
     props;
 
@@ -48,4 +46,4 @@ const OutputHistoryCard = (props) => {
   );
 };
 
-export default OutputHistoryCard;
+export default HistoryCard;
