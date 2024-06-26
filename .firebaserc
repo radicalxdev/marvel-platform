@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "kai-ai-f63c8"
+    "default": "kai-ai-f63c8",
+    "kai-app": "kai-platform-b53aa"
   },
   "targets": {
     "kai-ai-f63c8": {
@@ -11,5 +12,6 @@
       }
     }
   },
-  "etags": {}
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }
