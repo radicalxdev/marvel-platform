@@ -1,5 +1,3 @@
-// services/createToolSession.js
-
 import { httpsCallable } from 'firebase/functions';
 
 import {

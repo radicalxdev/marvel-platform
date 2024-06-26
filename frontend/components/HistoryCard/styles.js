@@ -1,5 +1,3 @@
-// frontend/components/OutputHistoryCard/styles.js
-
 const styles = {
   mainGridProps: {
     container: true,

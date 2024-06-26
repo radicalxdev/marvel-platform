@@ -1,4 +1,3 @@
-// templates/OutputHistory/styles.js
 const styles = {
   mainGridProps: {
     container: true,

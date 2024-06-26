@@ -1,5 +1,3 @@
-// toolsSlice.js
-
 import { createSlice } from '@reduxjs/toolkit';
 
 import fetchTools from '../thunks/tools';
