@@ -14,18 +14,8 @@ import styles from './styles';
 import { chatRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
-  {
-    name: 'Kai Tools',
-    link: ROUTES.HOME,
-    icon: <Briefcase />,
-    id: 'page_1',
-  },
-  {
-    name: 'Kai Chat',
-    link: ROUTES.CHAT,
-    icon: <ChatBubble />,
-    id: 'page_2',
-  },
+  { name: 'Kai Tools', link: ROUTES.HOME, icon: <Briefcase />, id: 'page_1' },
+  { name: 'Kai Chat', link: ROUTES.CHAT, icon: <ChatBubble />, id: 'page_2' },
   {
     name: 'History',
     link: ROUTES.HISTORY,
@@ -34,35 +24,37 @@ const PAGES = [
   },
 ];
 
-/**
- * Returns a navigation menu component that displays a list of links.
- *
- * @return {JSX.Element} A React component that renders a navigation menu.
- */
 const NavMenu = () => {
   const router = useRouter();
   const { pathname } = router;
   const [activePage, setActivePage] = useState('');
 
+  const determineActivePage = () => {
+    if (
+      homeRegex.test(pathname) &&
+      !chatRegex.test(pathname) &&
+      pathname !== '/output-history'
+    )
+      return 'page_1';
+    if (pathname === '/output-history') return 'page_3';
+    if (chatRegex.test(pathname)) return 'page_2';
+    return '';
+  };
+
   useEffect(() => {
-    const determineActivePage = () => {
-      if (homeRegex.test(pathname) && !chatRegex.test(pathname)) {
-        return 'page_1';
-      }
-      if (pathname === '/output-history') {
-        return 'page_3';
-      }
-      if (chatRegex.test(pathname)) {
-        return 'page_2';
-      }
-      return '';
-    };
-
     setActivePage(determineActivePage());
-  }, [pathname]);
+    router.events.on('routeChangeComplete', () =>
+      setActivePage(determineActivePage())
+    );
+    return () => {
+      router.events.off('routeChangeComplete', () =>
+        setActivePage(determineActivePage())
+      );
+    };
+  }, [pathname, router.events]);
 
-  const handleRoute = (link, id) => {
-    router.push(link);
+  const handleRoute = async (link, id) => {
+    await router.push(link);
     setActivePage(id);
   };
 
