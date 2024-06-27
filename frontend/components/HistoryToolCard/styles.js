@@ -79,7 +79,7 @@ const styles = {
   },
   titleProps: {
     fontFamily: 'Satoshi Bold',
-    fontSize: '20px',
+    fontSize: '18px',
     fontWeight: 700,
     color: (theme) => theme.palette.Common.Black['100p'],
   },

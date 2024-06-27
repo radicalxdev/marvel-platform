@@ -20,9 +20,7 @@ const createToolSession = async (payload, dispatch) => {
   } catch (err) {
     dispatch(setError('Error! Couldn\u0027t create tool session'));
     dispatch(setCommunicatorLoading(false));
-    // setTimeout(() => {
-    //   dispatch(setError(null));
-    // }, 3000);
+
     throw new Error('Error could not create tool session');
   }
 };

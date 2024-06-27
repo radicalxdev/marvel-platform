@@ -3,15 +3,22 @@ import React, { useState } from 'react';
 import { Button, Card, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 
-import HistoryDrawer from '../HistoryDrawer/HistoryDrawer';
+import HistoryToolDrawer from '../HistoryToolDrawer/HistoryToolDrawer';
 
 import styles from './styles';
 
 import { truncateString } from '@/utils/MiscellaneousUtils';
 
-const HistoryCard = (props) => {
-  const { backgroundImgURL, title, logo, description, createdDate } = props;
-
+const HistoryToolCard = (props) => {
+  const {
+    backgroundImgURL,
+    title,
+    logo,
+    description,
+    createdDate,
+    multipleChoiceList,
+    flashCards,
+  } = props;
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -28,7 +35,7 @@ const HistoryCard = (props) => {
     <Grid {...styles.contentGridProps}>
       <Typography {...styles.dateProps}>{createdDate}</Typography>
       <Typography {...styles.titleProps}>
-        {title ? truncateString(title, 30) : ''}
+        {title ? truncateString(title, 30) : 'No Name Found'}
       </Typography>
       <Typography {...styles.descriptionProps}>
         {description ? truncateString(description, 50) : ''}
@@ -46,15 +53,17 @@ const HistoryCard = (props) => {
         <Card {...styles.cardProps(backgroundImgURL)}>{renderImage()}</Card>
         <Grid {...styles.toolDetailsGridProps}>{renderDetails()}</Grid>
       </Grid>
-      <HistoryDrawer
+      <HistoryToolDrawer
         open={open}
         toggleDrawer={toggleDrawer}
         createdDate={createdDate}
         title={title}
         description={description}
+        multipleChoiceList={multipleChoiceList}
+        flashCards={flashCards}
       />
     </Grid>
   );
 };
 
-export default HistoryCard;
+export default HistoryToolCard;

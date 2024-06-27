@@ -3,44 +3,45 @@ import { createSlice } from '@reduxjs/toolkit';
 import fetchToolsHistory from '../thunks/toolsHistory';
 
 const initialState = {
-  loading: false,
-  data: [], // This will hold the overall tool history data
-  sessions: [], // This will hold the individual tool sessions data
+  loading: true,
+  data: [],
   error: null,
 };
 
-const toolsHistory = createSlice({
+const toolsHistorySlice = createSlice({
   name: 'toolsHistory',
   initialState,
   reducers: {
     resetToolsHistory: (state) => {
-      state.loading = false;
+      state.loading = true;
       state.data = [];
-      state.sessions = [];
       state.error = null;
+      localStorage.removeItem('toolsHistory');
     },
-    setToolSessionData: (state, action) => {
-      state.sessions.push(action.payload); // Add new session to sessions array
+    setToolsHistoryLoading: (state, action) => {
+      state.loading = action.payload;
+      state.error = null; // Clear any existing error when loading state changes
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchToolsHistory.pending, (state) => {
         state.loading = true;
-        state.error = null; // Reset error state on pending
+        state.error = null;
       })
       .addCase(fetchToolsHistory.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload.data; // Update data on successful fetch
-        state.error = null; // Reset error state on success
+        state.data = action.payload.data;
+        state.error = null;
       })
       .addCase(fetchToolsHistory.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload; // Set error state on rejection
+        state.error = action.payload;
       });
   },
 });
 
-export const { resetToolsHistory, setToolSessionData } = toolsHistory.actions;
+export const { resetToolsHistory, setToolsHistoryLoading } =
+  toolsHistorySlice.actions;
 
-export default toolsHistory.reducer;
+export default toolsHistorySlice.reducer;

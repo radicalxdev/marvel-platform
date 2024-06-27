@@ -3,31 +3,29 @@ import Link from 'next/link';
 
 import useFilterByTime from '@/hooks/useFilterByTime';
 
-import HistoryListingContainer from '@/components/HistoryListingContainer';
+import HistoryListingContainer from '@/components/HistoryToolListingContainer';
 
 import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-const HistoryPage = ({ data, loading }) => {
+const HistoryToolPage = ({ data, loading }) => {
   const { today, yesterday, previous7Days, previous30Days, monthsBefore } =
     useFilterByTime(data);
 
-  console.log('HistoryPage render - data:', data, 'loading:', loading);
-
   const renderTitle = () => (
     <Grid {...styles.titleGridProps}>
-      <Typography {...styles.titleProps}>History</Typography>
+      <Typography {...styles.titleProps}>Tool History</Typography>
     </Grid>
   );
 
-  const renderToolHistoryContainer = (category, timeData) => {
+  const renderHistoryToolContainer = (category, timeData) => {
     if (timeData.length === 0) return null;
 
     return (
       <HistoryListingContainer
         key={category}
-        data={timeData} // Corrected data prop to pass timeData instead of data
+        data={timeData}
         loading={loading}
         category={category}
       />
@@ -36,12 +34,12 @@ const HistoryPage = ({ data, loading }) => {
 
   const renderHistorySections = () => (
     <>
-      {renderToolHistoryContainer('Today', today)}
-      {renderToolHistoryContainer('Yesterday', yesterday)}
-      {renderToolHistoryContainer('Previous 7 days', previous7Days)}
-      {renderToolHistoryContainer('Previous 30 days', previous30Days)}
+      {renderHistoryToolContainer('Today', today)}
+      {renderHistoryToolContainer('Yesterday', yesterday)}
+      {renderHistoryToolContainer('Previous 7 days', previous7Days)}
+      {renderHistoryToolContainer('Previous 30 days', previous30Days)}
       {Object.entries(monthsBefore).map(([month, timeData]) =>
-        renderToolHistoryContainer(month, timeData)
+        renderHistoryToolContainer(month, timeData)
       )}
     </>
   );
@@ -69,9 +67,8 @@ const HistoryPage = ({ data, loading }) => {
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
       {isHistoryEmpty ? renderEmptyMessage() : renderHistorySections()}{' '}
-      {/* Corrected function call */}
     </Grid>
   );
 };
 
-export default HistoryPage;
+export default HistoryToolPage;

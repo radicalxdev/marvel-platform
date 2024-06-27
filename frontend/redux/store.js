@@ -19,6 +19,18 @@ const auth = getAuth(app);
 const firestore = getFirestore(app);
 const functions = getFunctions(app);
 
+const loadState = () => {
+  try {
+    const serializedState = localStorage.getItem('toolsHistory');
+    if (serializedState === null) {
+      return undefined;
+    }
+    return JSON.parse(serializedState);
+  } catch (err) {
+    return undefined;
+  }
+};
+
 // // Connect to Firebase Emulators if running locally
 // if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
 //   connectAuthEmulator(auth, 'http://localhost:9099');
@@ -33,6 +45,9 @@ const store = configureStore({
     tools: toolsReducer,
     toolsHistory: toolsHistoryReducer,
     chat: chatReducer,
+  },
+  preloadedState: {
+    toolsHistory: loadState(),
   },
 });
 

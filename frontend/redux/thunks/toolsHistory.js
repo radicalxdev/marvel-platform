@@ -1,19 +1,23 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { httpsCallable } from 'firebase/functions';
 
-import { functions } from '@/redux/store'; // Ensure correct path to your Firebase functions
+import { setToolsHistoryLoading } from '@/redux/slices/toolsHistorySlice';
+import { functions } from '@/redux/store';
 
 const fetchToolsHistory = createAsyncThunk(
   'toolsHistory/fetch',
-  async ({ userId }) => {
+  async ({ userId }, { dispatch }) => {
     try {
+      dispatch(setToolsHistoryLoading(true)); // Set loading to true before fetching
+
       const fetchHistory = httpsCallable(functions, 'fetchUserHistoryData');
       const response = await fetchHistory({ userId });
-      console.log('Fetched history data:', response.data); // Log fetched data
+
+      dispatch(setToolsHistoryLoading(false)); // Set loading to false after fetching
+
       return response.data;
-    } catch (err) {
-      console.error('Error fetching user history data:', err);
-      throw err; // Throwing the error to be caught by extraReducers
+    } catch (error) {
+      throw new Error(error);
     }
   }
 );

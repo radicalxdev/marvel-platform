@@ -11,8 +11,6 @@ const useFilterByTime = (data) => {
     monthsBefore: {},
   });
 
-  console.log('useFilterByTime data:', data); // Log input data
-
   useEffect(() => {
     if (data) {
       const today = [];
@@ -34,32 +32,35 @@ const useFilterByTime = (data) => {
         .startOf('day');
       const startOfThisMonth = now.clone().startOf('month');
 
-      // Iterate over each item in the data array
       data.forEach((item) => {
-        // Get the created date and format it as "MM/DD/YYYY"
-        const createdDate = moment(item.createdDate);
-        const formattedDate = createdDate.format('MM/DD/YYYY');
-        // Create a new item with the formatted date and push it to the appropriate array or object
+        // Convert Firestore timestamp to Moment.js object
+        const createdAt =
+          item.createdAt && moment.unix(item.createdAt._seconds); // eslint-disable-line no-underscore-dangle
+
+        if (!createdAt) return;
+
+        const formattedDate = createdAt.format('MM/DD/YYYY');
         const newItem = { ...item, createdDate: formattedDate };
 
-        if (createdDate.isSame(startOfToday, 'day')) {
+        if (createdAt.isSame(startOfToday, 'day')) {
           today.push(newItem);
-        } else if (createdDate.isSame(startOfYesterday, 'day')) {
+        } else if (createdAt.isSame(startOfYesterday, 'day')) {
           yesterday.push(newItem);
         } else if (
-          createdDate.isBetween(startOfPrevious7Days, startOfToday, 'day')
+          createdAt.isBetween(startOfPrevious7Days, startOfToday, 'day', '[]')
         ) {
           previous7Days.push(newItem);
         } else if (
-          createdDate.isBetween(
+          createdAt.isBetween(
             startOfPrevious30Days,
             startOfPrevious7Days,
-            'day'
+            'day',
+            '[]'
           )
         ) {
           previous30Days.push(newItem);
-        } else if (createdDate.isSameOrBefore(startOfThisMonth, 'day')) {
-          const monthKey = createdDate.format('MMMM YYYY'); // Format as "May 2024"
+        } else if (createdAt.isBefore(startOfThisMonth, 'day')) {
+          const monthKey = createdAt.format('MMMM YYYY');
           if (!monthsBefore[monthKey]) {
             monthsBefore[monthKey] = [];
           }
@@ -67,7 +68,6 @@ const useFilterByTime = (data) => {
         }
       });
 
-      // Update the state with the categorized data
       setCategorizedData({
         today,
         yesterday,

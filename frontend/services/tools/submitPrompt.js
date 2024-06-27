@@ -2,13 +2,12 @@ import axios from 'axios';
 
 import createToolSession from './createToolSession';
 
-import { setToolSessionData } from '@/redux/slices/toolsHistorySlice';
+import store from '@/redux/store';
 import fetchToolsHistory from '@/redux/thunks/toolsHistory';
 
 const submitPrompt = async (payload, files, dispatch) => {
   try {
     const formData = new FormData();
-
     formData.append('data', JSON.stringify(payload));
 
     if (files && files.length > 0) {
@@ -25,8 +24,6 @@ const submitPrompt = async (payload, files, dispatch) => {
       },
     });
 
-    console.log('Response:', response.data);
-
     const toolSessionPayload = {
       user: payload.user,
       tool_data: { ...payload.tool_data },
@@ -35,22 +32,26 @@ const submitPrompt = async (payload, files, dispatch) => {
       sessionId: payload.sessionId,
     };
 
-    // Corrected to await createToolSession and handle the result properly
+    // Await createToolSession and handle the result properly
     const createdToolSession = await createToolSession(
       toolSessionPayload,
       dispatch
     );
 
-    dispatch(setToolSessionData(createdToolSession));
-
-    // Corrected usage of fetchToolsHistory to pass userId correctly
+    // Fetch the updated tools history after creating the new session
     const historyData = await dispatch(
       fetchToolsHistory({ userId: payload.user.id })
     );
 
-    console.log('Updated history data:', historyData);
+    // Manually update the state and local storage with the new data
+    const state = store.getState().toolsHistory;
+    const updatedData = [...state.data, createdToolSession];
+    const updatedState = { ...state, data: updatedData };
 
-    return response.data?.data; // Assuming response.data contains relevant data to return
+    // Save the updated state to local storage
+    localStorage.setItem('toolsHistory', JSON.stringify(updatedState));
+
+    return response.data?.data;
   } catch (err) {
     const { response } = err;
 
