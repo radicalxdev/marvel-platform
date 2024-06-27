@@ -255,13 +255,20 @@ app.post('/api/tool/', (req, res) => {
       });
       DEBUG && logger.log(response);
 
+      // let topic = null;
+      // if (otherToolData.tool_id === 0) {
+      //   const topicInput = modifiedInputs.find(
+      //     (input) => input.name === 'topic'
+      //   );
+      //   topic = topicInput ? topicInput.value : null;
+      // }
+      const topicInput = modifiedInputs.find((input) => input.name === 'topic');
+      const topic = topicInput ? topicInput.value : null;
+
       await saveResponseToFirestore({
-        ...otherData,
-        tool_data: {
-          ...otherToolData,
-          inputs: modifiedInputs,
-        },
-        response: response.data,
+        response: response.data.data,
+        tool_id: otherToolData.tool_id,
+        topic: topic,
       });
 
       res.status(200).json({ success: true, data: response.data });
@@ -285,7 +292,6 @@ const saveResponseToFirestore = async (sessionData) => {
       .add({
         ...sessionData,
         createdAt: Timestamp.fromMillis(Date.now()),
-        updatedAt: Timestamp.fromMillis(Date.now()),
       });
 
     logger.log(`Tool session saved with ID: ${toolSessionRef.id}`);

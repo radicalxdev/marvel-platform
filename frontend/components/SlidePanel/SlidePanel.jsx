@@ -33,7 +33,7 @@ const SlidePanel = (props) => {
   };
 
   // Use the data prop or fall back to the default data
-  const panelData = data?.response?.data || defaultData.questions;
+  const panelData = data?.response || defaultData.questions;
 
   // Function to copy content to clipboard with custom formatting
   const handleCopyToClipboard = () => {

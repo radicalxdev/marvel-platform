@@ -42,9 +42,10 @@ const HistoryListingContainer = ({ data, loading }) => {
       <Grid {...styles.innerListGridProps}>
         {data?.[category].map((item) => {
           const transformedData = transformToolData(
-            item.tool_data,
+            item.topic,
             item.response,
-            item.createdAt
+            item.createdAt,
+            item.tool_id
           );
 
           // Pass only relevant props to OutputHistoryCard
