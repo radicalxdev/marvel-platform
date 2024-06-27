@@ -39,7 +39,7 @@ export const transformToolData = (topic, response, createdAt, tool_id) => {
       let notableConcepts = '';
       if (concepts.length > 1) {
         notableConcepts =
-          concepts.slice(0, 2).join(', ') +
+          concepts.slice(0, 1).join(', ') +
           (concepts.length > 2 ? ', and ' : ' and ') +
           concepts[concepts.length - 1];
       } else {

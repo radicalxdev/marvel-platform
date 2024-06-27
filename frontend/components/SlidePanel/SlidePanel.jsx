@@ -37,12 +37,16 @@ const SlidePanel = (props) => {
 
   // Function to copy content to clipboard with custom formatting
   const handleCopyToClipboard = () => {
+    const label =
+      data?.toolId === '0'
+        ? 'Questions and Options'
+        : 'Concepts and Definitions';
     const textToCopy = `
 Title: ${data?.title || 'Default Title'}
 
 Content: ${data?.content || 'Default Content'}
 
-Questions and Options:
+${label}:
 ${panelData
   .map((item, i) =>
     data?.toolId === '0'
