@@ -255,13 +255,6 @@ app.post('/api/tool/', (req, res) => {
       });
       DEBUG && logger.log(response);
 
-      // let topic = null;
-      // if (otherToolData.tool_id === 0) {
-      //   const topicInput = modifiedInputs.find(
-      //     (input) => input.name === 'topic'
-      //   );
-      //   topic = topicInput ? topicInput.value : null;
-      // }
       const topicInput = modifiedInputs.find((input) => input.name === 'topic');
       const topic = topicInput ? topicInput.value : null;
 
