@@ -139,3 +139,11 @@ dist
 # Ignore back-end build output
 **/node_modules/
 **/build/
+
+.firebaserc
+package-lock.json
+.env
+sample.env
+storage.rules
+firebase-hosting-merge.yml
+firebase-hosting-pull-request.yml
