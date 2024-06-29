@@ -1,16 +1,20 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
+  Add as AddIcon,
   ArrowDownwardOutlined,
   InfoOutlined,
+  Remove as RemoveIcon,
   Settings,
 } from '@mui/icons-material';
 import {
   Button,
+  Fab,
   Fade,
   Grid,
   IconButton,
   InputAdornment,
+  Paper,
   TextField,
   Typography,
 } from '@mui/material';
@@ -23,6 +27,7 @@ import NavigationIcon from '@/assets/svg/Navigation.svg';
 import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
 
 import CenterChatContentNoMessages from './CenterChatContentNoMessages';
+import ChatHistory from './ChatHistory';
 import ChatSpinner from './ChatSpinner';
 import Message from './Message';
 import styles from './styles';
@@ -69,6 +74,7 @@ const ChatInterface = () => {
   const currentSession = chat;
   const chatMessages = currentSession?.messages;
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
+  const [showChatHistory, setShowChatHistory] = useState(false);
 
   const startConversation = async (message) => {
     dispatch(
@@ -253,6 +259,10 @@ const ChatInterface = () => {
     );
   };
 
+  const handleShowChatHistory = () => {
+    setShowChatHistory(!showChatHistory);
+  };
+
   const renderMoreChat = () => {
     if (!more) return null;
     return (
@@ -356,13 +366,65 @@ const ChatInterface = () => {
     return null;
   };
 
+  const renderChatHistoryButton = () => {
+    return (
+      <div>
+        <Fab
+          aria-label="open chat history"
+          size="medium"
+          {...(!showChatHistory
+            ? styles.chatHistory.chatHistoryButtonFabProps
+            : styles.chatHistory.chatHistoryButtonFabPropsHide)}
+          onClick={handleShowChatHistory}
+        >
+          <AddIcon {...styles.chatHistory.chatHistoryButtonIconProps} />
+        </Fab>
+      </div>
+    );
+  };
+
+  const renderChatHistory = () => {
+    return (
+      <Paper
+        {...(showChatHistory
+          ? styles.chatHistory.chatHistoryContainerProps
+          : styles.chatHistory.chatHistoryContainerClose)}
+      >
+        {showChatHistory ? (
+          <>
+            <div {...styles.chatHistory.chatHistoryTitleContainerProps}>
+              <Typography {...styles.chatHistory.chatHistoryTitleProps}>
+                Chat History
+              </Typography>
+              <IconButton
+                {...styles.chatHistory.closeButtonProps}
+                onClick={handleShowChatHistory}
+              >
+                <RemoveIcon />
+              </IconButton>
+            </div>
+            <ChatHistory
+              user={{
+                email: userData.email,
+                fullName: userData.fullName,
+                id: userData.id,
+              }}
+            />
+          </>
+        ) : null}
+      </Paper>
+    );
+  };
+
   return (
-    <Grid {...styles.mainGridProps}>
+    <Grid {...styles.mainGridProps(showChatHistory)}>
       {renderMoreChat()}
       {renderCenterChatContent()}
       {renderCenterChatContentNoMessages()}
       {renderNewMessageIndicator()}
       {renderBottomChatContent()}
+      {renderChatHistoryButton()}
+      {renderChatHistory()}
     </Grid>
   );
 };
