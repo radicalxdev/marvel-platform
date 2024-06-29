@@ -1,7 +1,5 @@
-const historyButtonAlign = 10;
-
 const styles = {
-  mainGridProps: (showChatHistory) => ({
+  mainGridProps: {
     container: true,
     item: true,
     flexDirection: 'column',
@@ -10,15 +8,13 @@ const styles = {
     mobileSmall: 12,
     height: '100%',
     overflow: 'hidden',
-    marginRight: showChatHistory ? 41 : 7,
     sx: {
       form: {
         width: '100%',
         height: '100%',
       },
-      transition: 'all 0.5s',
     },
-  }),
+  },
   moreChat: {
     moreChatProps: {
       container: true,
@@ -365,117 +361,6 @@ const styles = {
         color: 'white',
       },
     }),
-  },
-  chatHistory: {
-    chatHistoryButtonFabProps: {
-      sx: {
-        position: 'absolute',
-        top: historyButtonAlign + 1,
-        right: historyButtonAlign + 12,
-        backgroundColor: 'transparent',
-        border: '2px solid #7350FF',
-        boxShadow: 'none',
-        '&:hover': {
-          backgroundColor: 'transparent',
-        },
-        transition: '1s',
-        opacity: 1,
-      },
-    },
-    chatHistoryButtonFabPropsHide: {
-      sx: {
-        position: 'absolute',
-        top: historyButtonAlign + 1,
-        right: historyButtonAlign + 12,
-        backgroundColor: 'black',
-        '&:hover': {
-          backgroundColor: 'black',
-        },
-        border: '2px solid black',
-        boxShadow: 'none',
-        transition: '0.5s',
-        opacity: 0,
-        rotate: '360deg',
-        pointerEvents: 'none',
-      },
-    },
-    chatHistoryButtonIconProps: {
-      sx: {
-        fill: '#7350FF',
-        stroke: '#7350FF',
-      },
-    },
-    chatHistoryContainerProps: {
-      style: {
-        position: 'absolute',
-        top: historyButtonAlign,
-        right: historyButtonAlign,
-        width: '320px',
-        height: '95%',
-        backgroundColor: '#181A20',
-        border: '1px solid',
-        borderColor: 'purple',
-        borderRadius: '15px',
-        zIndex: 1000,
-        overflowY: 'auto',
-        transition: '0.7s',
-        opacity: 1,
-      },
-    },
-    chatHistoryContainerClose: {
-      style: {
-        position: 'absolute',
-        top: historyButtonAlign,
-        right: historyButtonAlign,
-        transition: '0.4s',
-        width: 0,
-        height: 0,
-        opacity: 0,
-      },
-    },
-    chatHistoryTitleContainerProps: {
-      style: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '5px 15px',
-        borderBottom: '1px solid #2F2F2F',
-        backgroundColor: '#121317',
-        borderTopLeftRadius: '13px',
-        borderTopRightRadius: '13px',
-      },
-    },
-    chatHistoryTitleProps: {
-      style: {
-        color: '#FFFFFF',
-        fontWeight: 'bold',
-        letterSpacing: '0.5px',
-      },
-    },
-    closeButtonProps: {
-      style: {
-        color: '#7350FF',
-      },
-    },
-    chatHistoryContentContainerProps: {
-      style: {
-        padding: '10px 15px',
-      },
-    },
-    chatHistoryContentProps: {
-      style: {
-        color: '#9E94A5',
-        marginTop: '10px',
-      },
-    },
-    chatHistoryItemProps: {
-      style: {
-        paddingTop: '8px',
-        paddingBottom: '8px',
-        borderRadius: '8px',
-        color: '#FFFFFF',
-      },
-    },
   },
 };
 
