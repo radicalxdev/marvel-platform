@@ -25,6 +25,7 @@ import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
 import CenterChatContentNoMessages from './CenterChatContentNoMessages';
 import ChatSpinner from './ChatSpinner';
 import Message from './Message';
+import QuickActionButton from './QuickActionButton';
 import styles from './styles';
 
 import {
@@ -330,6 +331,15 @@ const ChatInterface = () => {
     );
   };
 
+  const renderQuickAction = () => {
+    return (
+      <InputAdornment position="start">
+        <Grid {...styles.bottomChatContent.bottomChatContentGridProps}>
+          <QuickActionButton text="Actions" />
+        </Grid>
+      </InputAdornment>
+    );
+  };
   const renderBottomChatContent = () => {
     if (!openSettingsChat && !infoChatOpened)
       return (
@@ -344,6 +354,7 @@ const ChatInterface = () => {
               disabled={!!error}
               focused={false}
               {...styles.bottomChatContent.chatInputProps(
+                renderQuickAction,
                 renderSendIcon,
                 !!error,
                 input
