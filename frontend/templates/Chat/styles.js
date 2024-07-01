@@ -388,7 +388,7 @@ const styles = {
         top: 20,
         right: 20,
         width: '320px',
-        height: '95%',
+        height: '93%',
         backgroundColor: '#181A20',
         border: '1px solid',
         borderColor: 'purple',

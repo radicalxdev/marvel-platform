@@ -8,6 +8,7 @@ import {
   Settings,
 } from '@mui/icons-material';
 import {
+  Box,
   Button,
   Fab,
   Fade,
@@ -414,15 +415,26 @@ const ChatInterface = () => {
   };
 
   return (
-    <Grid {...styles.mainGridProps}>
+    <Box display="flex" height="970px" width="970px">
+      <Box flex={showChatHistory ? '1' : '1'} overflow="hidden">
+        <Grid
+          container
+          style={{ height: '100%' }}
+          sx={{
+            transition: 'all 0.3s ease',
+            marginRight: showChatHistory ? '320px' : '0',
+          }}
+        >
+          {renderMoreChat()}
+          {renderCenterChatContent()}
+          {renderCenterChatContentNoMessages()}
+          {renderNewMessageIndicator()}
+          {renderBottomChatContent()}
+        </Grid>
+      </Box>
       {renderChatHistoryButton()}
-      {renderChatHistory()}
-      {renderMoreChat()}
-      {renderCenterChatContent()}
-      {renderCenterChatContentNoMessages()}
-      {renderNewMessageIndicator()}
-      {renderBottomChatContent()}
-    </Grid>
+      {showChatHistory && <Box flex="0 0 320px">{renderChatHistory()}</Box>}
+    </Box>
   );
 };
 
