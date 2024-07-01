@@ -15,6 +15,9 @@
     "predeploy": {
       "functions": "node functions/cloud_db_seed.js"
     },
+    "hosting": {
+      "port": 5002
+    },
     "functions": {
       "port": 5001
     },
