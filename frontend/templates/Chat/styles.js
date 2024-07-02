@@ -435,6 +435,9 @@ const styles = {
     },
     chatHistoryTitleContainerProps: {
       style: {
+        position: 'sticky',
+        top: 0,
+        zIndex: 2,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',

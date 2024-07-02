@@ -138,7 +138,11 @@ const ChatInterface = () => {
             const updatedMessages = updatedData.messages;
 
             const lastMessage = updatedMessages[updatedMessages.length - 1];
-
+            const { timestamp } = lastMessage;
+            lastMessage.timestamp = {
+              seconds: timestamp.seconds,
+              nanoseconds: timestamp.nanoseconds,
+            };
             if (lastMessage?.role === MESSAGE_ROLE.AI) {
               dispatch(
                 setMessages({
@@ -156,7 +160,7 @@ const ChatInterface = () => {
     return () => {
       if (sessionLoaded || currentSession) unsubscribe();
     };
-  }, [sessionLoaded]);
+  }, [currentSession, sessionLoaded]);
 
   const handleOnScroll = () => {
     const scrolled =

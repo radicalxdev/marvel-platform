@@ -63,6 +63,28 @@ const ChatHistory = ({ user }) => {
     return date.getFullYear();
   };
 
+  /**
+   * converts all the timestamps in a chatSession to maps, as dispatch logs an error due to the fact that
+   * firestore stores the timestamps as iterators
+   * @param {Object} chatSession
+   */
+  const fixTimestamps = (chatSession) => {
+    const fixTimestamp = (timestamp) => {
+      return { seconds: timestamp.seconds, nanoseconds: timestamp.nanoseconds };
+    };
+
+    chatSession.createdAt = fixTimestamp(chatSession.createdAt);
+    chatSession.updatedAt = fixTimestamp(chatSession.updatedAt);
+
+    chatSession.messages.forEach((entry) => {
+      entry.timestamp = fixTimestamp(entry.timestamp);
+    });
+  };
+  /**
+   * gets the chat history for a given user
+   * @param {Object} userData
+   * @returns {Object} history of a user, sorted into when the sessions were (today, yesterday, this week, etc.)
+   */
   const fetchChatHistory = async (userData) => {
     // get chat history data
     const q = query(
@@ -95,19 +117,6 @@ const ChatHistory = ({ user }) => {
     });
 
     return sortedHistory;
-  };
-
-  const fixTimestamp = (timestamp) => {
-    return { seconds: timestamp.seconds, nanoseconds: timestamp.nanoseconds };
-  };
-
-  const fixTimestamps = (chatSession) => {
-    chatSession.createdAt = fixTimestamp(chatSession.createdAt);
-    chatSession.updatedAt = fixTimestamp(chatSession.updatedAt);
-
-    chatSession.messages.forEach((entry) => {
-      entry.timestamp = fixTimestamp(entry.timestamp);
-    });
   };
 
   const handleReopenChatHistory = async (docRef) => {
@@ -160,4 +169,5 @@ const ChatHistory = ({ user }) => {
     </List>
   );
 };
+
 export default ChatHistory;
