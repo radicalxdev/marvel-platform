@@ -1,7 +1,7 @@
 import { Button, Card, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 
-import ToolImage from '@/assets/images/BookImage.png'; // Default image
+import ToolImage from '@/assets/images/BookImage.png';
 
 import styles from './styles';
 

@@ -29,27 +29,25 @@ const NavMenu = () => {
   const { pathname } = router;
   const [activePage, setActivePage] = useState('');
 
-  const determineActivePage = () => {
+  const determineActivePage = (path) => {
     if (
-      homeRegex.test(pathname) &&
-      !chatRegex.test(pathname) &&
-      pathname !== '/output-history'
-    )
+      homeRegex.test(path) &&
+      !chatRegex.test(path) &&
+      path !== ROUTES.HISTORY
+    ) {
       return 'page_1';
-    if (pathname === '/output-history') return 'page_3';
-    if (chatRegex.test(pathname)) return 'page_2';
+    }
+    if (path === ROUTES.HISTORY) return 'page_3';
+    if (chatRegex.test(path)) return 'page_2';
     return '';
   };
 
   useEffect(() => {
-    setActivePage(determineActivePage());
-    router.events.on('routeChangeComplete', () =>
-      setActivePage(determineActivePage())
-    );
+    setActivePage(determineActivePage(pathname));
+    const handleRouteChange = (url) => setActivePage(determineActivePage(url));
+    router.events.on('routeChangeComplete', handleRouteChange);
     return () => {
-      router.events.off('routeChangeComplete', () =>
-        setActivePage(determineActivePage())
-      );
+      router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [pathname, router.events]);
 
