@@ -3,9 +3,10 @@ import { Grid, Skeleton } from '@mui/material';
 import styles from './styles';
 
 /**
- * Returns a skeleton for the HistoryCard component.
+ * Returns a skeleton for the HistoryToolCard component.
  *
- * @return {JSX.Element} The HistoryCard Skeleton component.
+ * @component
+ * @returns {JSX.Element} The HistoryToolCardSkeleton component
  */
 const HistoryToolCardSkeleton = () => {
   return (

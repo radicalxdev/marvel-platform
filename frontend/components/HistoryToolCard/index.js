@@ -1,4 +1,4 @@
 import HistoryToolCard from './HistoryToolCard';
-import HistoryToolCardSkeleton from './Skeleton';
+import HistoryToolCardSkeleton from './HistoryToolSkeleton';
 
 export { HistoryToolCard as default, HistoryToolCardSkeleton };

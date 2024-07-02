@@ -2,6 +2,17 @@ import { useEffect, useState } from 'react';
 
 import moment from 'moment';
 
+/**
+ * Custom React hook to categorize data based on creation dates into different time periods.
+ *
+ * @param {Array} data The array of data items to categorize, where each item should have a `createdAt` field.
+ * @returns {Object} An object containing categorized data:
+ * - `today`: Array of items created today.
+ * - `yesterday`: Array of items created yesterday.
+ * - `previous7Days`: Array of items created in the last 7 days.
+ * - `previous30Days`: Array of items created in the last 30 days.
+ * - `monthsBefore`: An object where each key is a month (e.g., "January 2023") containing an array of items created before the current month.
+ */
 const useFilterByTime = (data) => {
   const [categorizedData, setCategorizedData] = useState({
     today: [],

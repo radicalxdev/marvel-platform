@@ -9,6 +9,22 @@ import styles from './styles';
 
 import { truncateString } from '@/utils/MiscellaneousUtils';
 
+/**
+ * HistoryToolCard component renders a card with tool information and a preview button
+ * that opens a drawer with detailed information.
+ *
+ * @component
+ * @param {Object} props - React props
+ * @param {string} props.backgroundImgURL - The URL of the background image
+ * @param {string} props.title - The title of the tool
+ * @param {string} props.logo - The URL of the logo image
+ * @param {string} props.description - The description of the tool
+ * @param {string} props.createdDate - The creation date of the tool
+ * @param {Array} props.multipleChoiceList - List of multiple choice questions
+ * @param {Array} props.flashCards - List of flash cards
+ * @returns {JSX.Element} The rendered component
+ */
+
 const HistoryToolCard = (props) => {
   const {
     backgroundImgURL,

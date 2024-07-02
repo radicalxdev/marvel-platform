@@ -6,7 +6,7 @@ import HistoryToolButtons from './HistoryToolDrawerButtons';
 import styles from './styles';
 
 /**
- * Renders the HistoryDrawer component.
+ * Renders the HistoryToolDrawer component.
  *
  * @param {object} props - The properties of the component.
  * @param {boolean} props.open - Whether the drawer is open.

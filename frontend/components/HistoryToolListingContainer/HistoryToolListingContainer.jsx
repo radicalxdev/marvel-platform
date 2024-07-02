@@ -10,6 +10,17 @@ const DEFAULT_HISTORY = new Array(4)
   .fill()
   .map((_, index) => ({ id: index + 1 }));
 
+/**
+ * HistoryToolListingContainer component renders a list of history tool cards
+ * and displays a loading skeleton when data is being fetched.
+ *
+ * @component
+ * @param {Object} props - React props
+ * @param {Array} props.data - Array of history tool data
+ * @param {boolean} props.loading - Indicates if the data is being loaded
+ * @param {string} props.category - The category title for the list
+ * @returns {JSX.Element} The rendered component
+ */
 const HistoryToolListingContainer = (props) => {
   const { data, loading, category } = props;
   const renderTitle = () => (
