@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import OutputHistoryCard from '../HistoryCard';
+import OutputHistoryCard, { OutputHistoryCardSkeleton } from '../HistoryCard';
 import SlidePanel from '../SlidePanel/SlidePanel';
 
 import styles from './styles';
 
 import { transformToolData } from '@/services/history/transformToolData';
+
+const LOADER_HISTS = new Array(4).fill().map((_, index) => ({ id: index + 1 }));
 
 const HistoryListingContainer = ({ data, loading }) => {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
@@ -17,7 +19,19 @@ const HistoryListingContainer = ({ data, loading }) => {
     // Removed console logs
   }, [data, loading]);
 
-  if (loading) return <Typography>Loading...</Typography>;
+  const loader = () => {
+    return (
+      <Grid {...styles.containerGridProps}>
+        <Grid {...styles.innerListGridProps}>
+          {LOADER_HISTS?.map((tool) => (
+            <OutputHistoryCardSkeleton key={tool.id} />
+          ))}
+          330603
+        </Grid>
+      </Grid>
+    );
+  };
+  if (loading) return loader();
   if (!data) return <Typography>No data available</Typography>;
 
   const handleOpenSidebar = (cardData) => {

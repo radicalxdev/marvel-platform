@@ -177,10 +177,18 @@ ${panelData
     </Grid>
   );
 
+  const contentSwitch = () => {
+    switch (data?.toolId) {
+      case '1':
+        renderFlashCards();
+        break;
+      default:
+        renderQuestions();
+    }
+  };
+
   const renderContent = () => (
-    <Grid {...styles.containerGridProps}>
-      {data?.toolId === '1' ? renderFlashCards() : renderQuestions()}
-    </Grid>
+    <Grid {...styles.containerGridProps}>{contentSwitch()}</Grid>
   );
 
   const renderFooterButtons = () => (
