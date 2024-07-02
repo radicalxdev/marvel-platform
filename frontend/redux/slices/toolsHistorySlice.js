@@ -12,16 +12,7 @@ const toolsHistorySlice = createSlice({
   name: 'toolsHistory',
   initialState,
   reducers: {
-    resetToolsHistory: (state) => {
-      state.loading = true;
-      state.data = [];
-      state.error = null;
-      localStorage.removeItem('toolsHistory');
-    },
-    setToolsHistoryLoading: (state, action) => {
-      state.loading = action.payload;
-      state.error = null; // Clear any existing error when loading state changes
-    },
+    // add reducer functions here if needed
   },
   extraReducers: (builder) => {
     builder
@@ -41,7 +32,6 @@ const toolsHistorySlice = createSlice({
   },
 });
 
-export const { resetToolsHistory, setToolsHistoryLoading } =
-  toolsHistorySlice.actions;
+export const { resetToolsHistory } = toolsHistorySlice.actions;
 
 export default toolsHistorySlice.reducer;

@@ -32,23 +32,19 @@ const submitPrompt = async (payload, files, dispatch) => {
       sessionId: payload.sessionId,
     };
 
-    // Await createToolSession and handle the result properly
     const createdToolSession = await createToolSession(
       toolSessionPayload,
       dispatch
     );
 
-    // Fetch the updated tools history after creating the new session
     const historyData = await dispatch(
       fetchToolsHistory({ userId: payload.user.id })
     );
 
-    // Manually update the state and local storage with the new data
     const state = store.getState().toolsHistory;
     const updatedData = [...state.data, createdToolSession];
     const updatedState = { ...state, data: updatedData };
 
-    // Save the updated state to local storage
     localStorage.setItem('toolsHistory', JSON.stringify(updatedState));
 
     return response.data?.data;
