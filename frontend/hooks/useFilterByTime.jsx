@@ -33,7 +33,7 @@ const useFilterByTime = (data) => {
       const startOfThisMonth = now.clone().startOf('month');
 
       data.forEach((item) => {
-        // Convert Firestore timestamp to Moment.js object
+        // Convert Firestore timestamp to Moment.js object (if available)
         const createdAt =
           item.createdAt && moment.unix(item.createdAt._seconds); // eslint-disable-line no-underscore-dangle
 
