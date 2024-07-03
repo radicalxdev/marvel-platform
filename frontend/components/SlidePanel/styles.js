@@ -2,7 +2,7 @@ const styles = {
   drawerProps: {
     sx: {
       '& .MuiDrawer-paper': {
-        width: '45%', // Adjust this value to control the width of the drawer
+        width: '45%',
         background: (theme) => theme.palette.common.white,
       },
       justifyContent: 'flex-start',
@@ -25,39 +25,39 @@ const styles = {
   titleProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: '36px',
-    color: 'black', // Set color to black for visibility
+    color: 'black',
   },
   categoryTitleProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: '24px',
-    color: 'black', // Set color to black for visibility
-    mt: '10px', // Add margin-top to space it from the date
+    color: 'black',
+    mt: '10px',
   },
   categoryContentProps: {
     fontFamily: 'Satoshi',
     fontSize: '18px',
-    color: 'black', // Set color to black for visibility
-    mt: '5px', // Add margin-top to space it from the title
+    color: 'black',
+    mt: '5px',
   },
   questionProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: '20px',
-    color: 'black', // Set color to black for visibility
+    color: 'black',
   },
   optionProps: {
     fontFamily: 'Satoshi',
     fontSize: '20px',
-    color: 'black', // Set color to black for visibility
+    color: 'black',
   },
   answerProps: {
     fontFamily: 'Satoshi',
     fontSize: '18px',
-    color: 'black', // Set color to black for visibility
+    color: 'black',
   },
   explanationProps: {
     fontFamily: 'Satoshi',
     fontSize: '18px',
-    color: 'black', // Set color to black for visibility
+    color: 'black',
   },
   flashCardsGridProps: {
     container: true,
@@ -86,13 +86,13 @@ const styles = {
   conceptTitleProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: { laptop: '18px', desktop: '20px' },
-    color: 'black', // Set color to black for visibility
+    color: 'black',
   },
   definitionProps: {
     fontFamily: 'Satoshi Regular',
     fontSize: { laptop: '18px', desktop: '20px' },
     textAlign: 'center',
-    color: 'black', // Set color to black for visibility
+    color: 'black',
   },
   containerGridProps: {
     item: true,
@@ -104,7 +104,7 @@ const styles = {
     item: true,
     width: '100%',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start', // Align items to the start (left)
+    alignItems: 'flex-start',
     flexDirection: 'column',
     pb: 1.5,
     sx: {
@@ -113,17 +113,17 @@ const styles = {
   },
   dateProps: {
     fontFamily: 'Satoshi Regular',
-    fontSize: '14px', // Increase the font size
-    backgroundColor: '#E0DFFB', // Light purple background
-    borderRadius: '12px', // Make it more rounded
-    color: '#4900E4', // Purple text color
-    padding: '5px 10px', // Add padding to increase the size
+    fontSize: '14px',
+    backgroundColor: '#E0DFFB',
+    borderRadius: '12px',
+    color: '#4900E4',
+    padding: '5px 10px',
     textTransform: 'none',
-    marginBottom: '10px', // Add margin to position the date properly
-    display: 'inline-block', // To ensure the background fits snugly
+    marginBottom: '10px',
+    display: 'inline-block',
     marginTop: '5px',
-    alignSelf: 'flex-start', // Align to the left
-    fontWeight: 'bold', // Make the text bold
+    alignSelf: 'flex-start',
+    fontWeight: 'bold',
   },
   copyButton: {
     sx: {

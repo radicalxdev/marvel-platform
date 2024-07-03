@@ -12,11 +12,11 @@ const useHistoryProps = () => {
 
   useEffect(() => {
     // Dispatch the thunk to fetch output history data
-    dispatch(fetchHistory({ firestore }));
-  }, [dispatch]);
+    if (!data) dispatch(fetchHistory({ firestore }));
+  }, [dispatch, data]);
 
   // Categorize the data after it is fetched
-  const categorizedData = data ? categorizeDataByDate(data) : null;
+  const categorizedData = categorizeDataByDate(data);
 
   return {
     categorizedData,

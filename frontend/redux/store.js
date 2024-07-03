@@ -6,7 +6,7 @@ import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 
 import authReducer from './slices/authSlice';
 import chatReducer from './slices/chatSlice';
-import HistoryReducer from './slices/historySlice'; // Import the new slice
+import HistoryReducer from './slices/historySlice';
 import toolsReducer from './slices/toolsSlice';
 import userReducer from './slices/userSlice';
 
@@ -32,7 +32,6 @@ const store = configureStore({
     tools: toolsReducer,
     chat: chatReducer,
     outputHistory: HistoryReducer,
-    // Add the new slice to the store
   },
 });
 

@@ -60,14 +60,13 @@ const styles = {
     width: 60,
     height: 60,
   },
-  // Function to apply dynamic background image
   imageGridProps: (backgroundImageUrl) => ({
     position: 'relative',
     container: true,
     item: true,
     marginLeft: '-20px',
     sx: {
-      backgroundColor: '#007BFF', // Default static blue background color
+      backgroundColor: '#007BFF',
       backgroundImage: backgroundImageUrl
         ? `url(${backgroundImageUrl})`
         : 'none',
@@ -79,7 +78,6 @@ const styles = {
       justifyContent: 'center',
     },
   }),
-
   previewButtonProps: {
     sx: {
       fontFamily: 'Satoshi Regular',

@@ -1,38 +1,23 @@
-export const transformToolData = (topic, response, createdAt, tool_id) => {
-  const transformedDate = new Date(
-    createdAt.seconds * 1000
-  ).toLocaleDateString();
+import moment from 'moment';
 
-  // Common fields for the transformed data
+import { TOOL_OUTPUT } from '@/constants/toolOutput';
+
+export const transformToolData = ({ topic, response, createdAt, tool_id }) => {
+  const transformedDate = moment(createdAt.seconds * 1000).toDate();
+
   const baseTransformedData = {
     toolId: tool_id,
     response,
     creationDate: transformedDate,
   };
 
-  const num_tool_id = parseInt(tool_id, 10);
+  const toolDetails = TOOL_OUTPUT[tool_id];
 
-  switch (num_tool_id) {
-    case 0: {
-      // MCQ
-      // Extract the topic for MCQ
+  if (toolDetails) {
+    let title = '';
+    let content = '';
 
-      const title = `Multiple Choice Assessment - ${topic}`;
-      const content = `Multiple Choice Questions taken from ${topic}`;
-
-      return {
-        ...baseTransformedData,
-        title,
-        content,
-        backgroundImageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Quizify.png?alt=media&token=d1255f27-b1a1-444e-b96a-4a3ac559237d', // Replace with the actual URL for MCQ image
-        logo: 'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/QuizifyLogo.png?alt=media&token=9bf1d066-fba4-4063-9640-ef732e237d31',
-      };
-    }
-
-    case 1: {
-      // FlashCard
-      // Example transformation for FlashCard
+    if (tool_id === '1') {
       const concepts = response?.map((item) => item.concept) || [];
       const primaryConcept = concepts[0] || 'Various Concepts';
 
@@ -46,28 +31,28 @@ export const transformToolData = (topic, response, createdAt, tool_id) => {
         notableConcepts = primaryConcept;
       }
 
-      const title = `Flashcards on ${primaryConcept} and More`;
-      const content = `Includes concepts like ${notableConcepts}`;
-
-      return {
-        ...baseTransformedData,
-        title, // No truncation here
-        content, // No truncation here
-        backgroundImageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080', // Replace with the actual URL for FlashCard image
-        logo: 'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188',
-      };
+      title = `${toolDetails.titlePrefix} ${primaryConcept} and More`;
+      content = `${toolDetails.descriptionPrefix} ${notableConcepts}`;
+    } else {
+      title = `${toolDetails.titlePrefix} ${topic}`;
+      content = `${toolDetails.descriptionPrefix} ${topic}`;
     }
 
-    default: {
-      return {
-        ...baseTransformedData,
-        title: 'Unknown Tool Usage',
-        content: 'This tool usage is not defined.',
-        backgroundImageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080', // Replace with a default image URL
-        logo: 'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188',
-      };
-    }
+    return {
+      ...baseTransformedData,
+      title,
+      content,
+      backgroundImageUrl: toolDetails.backgroundImageUrl,
+      logo: toolDetails.logo,
+    };
   }
+
+  return {
+    ...baseTransformedData,
+    title: 'Unknown Tool Usage',
+    content: 'This tool usage is not defined.',
+    backgroundImageUrl:
+      'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080',
+    logo: 'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188',
+  };
 };

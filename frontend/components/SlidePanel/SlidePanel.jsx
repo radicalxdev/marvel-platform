@@ -1,7 +1,4 @@
-import React, { useEffect } from 'react';
-
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { ContentCopy, FileDownload } from '@mui/icons-material';
 import {
   Button,
   Drawer,
@@ -10,32 +7,27 @@ import {
   ListItem,
   Typography,
 } from '@mui/material';
+import moment from 'moment';
 
 import styles from './styles';
+
+const DEFAULT_DATA = {
+  title: 'Default Title',
+  content: 'Default Content',
+  creationDate: moment().toDate().toLocaleDateString(),
+  questions: [
+    {
+      question: 'Default Question 1',
+      options: ['Option A', 'Option B', 'Option C', 'Option D'],
+    },
+  ],
+};
 
 const SlidePanel = (props) => {
   const { isOpen, onClose, data } = props;
 
-  useEffect(() => {
-    // Effect to log mounting and data (removed)
-  }, [isOpen, data]);
+  const panelData = data?.response || DEFAULT_DATA.questions;
 
-  const defaultData = {
-    title: 'Default Title',
-    content: 'Default Content',
-    creationDate: new Date().toLocaleDateString(),
-    questions: [
-      {
-        question: 'Default Question 1',
-        options: ['Option A', 'Option B', 'Option C', 'Option D'],
-      },
-    ],
-  };
-
-  // Use the data prop or fall back to the default data
-  const panelData = data?.response || defaultData.questions;
-
-  // Function to copy content to clipboard with custom formatting
   const handleCopyToClipboard = () => {
     const label =
       data?.toolId === '0'
@@ -61,20 +53,14 @@ ${panelData
     navigator.clipboard.writeText(textToCopy);
   };
 
-  // Function to export content to CSV without file-saver
   const handleExportToCSV = () => {
-    const escapeCSVField = (field) => {
-      if (typeof field === 'string') {
-        return `"${field.replace(/"/g, '""')}"`;
-      }
-      return field;
-    };
+    const escapeCSVField = (field) =>
+      typeof field === 'string' ? `"${field.replace(/"/g, '""')}"` : field;
 
     let headers;
     let rows;
 
     if (data?.toolId === '0') {
-      // MCQ
       headers = [
         'Question',
         'Option A',
@@ -94,7 +80,6 @@ ${panelData
         escapeCSVField(item.explanation || ''),
       ]);
     } else {
-      // Flash Cards
       headers = ['Concept', 'Definition'];
       rows = panelData.map((item) => [
         escapeCSVField(item.concept),
@@ -121,7 +106,7 @@ ${panelData
     <Grid container direction="column" {...styles.headerGridProps}>
       <Grid item>
         <Typography {...styles.dateProps}>
-          {data?.creationDate || new Date().toLocaleDateString()}
+          {data?.creationDate || moment().toDate().toLocaleDateString()}
         </Typography>
       </Grid>
       <Grid item>
@@ -137,10 +122,9 @@ ${panelData
     </Grid>
   );
 
-  // Modified renderQuestions function to handle the provided MCQ data structure
   const renderQuestions = () =>
     panelData.map((item, index) => (
-      <div key={index} style={{ marginBottom: '16px' }}>
+      <Grid key={index} sx={{ marginBottom: '16px' }}>
         <Typography {...styles.questionProps}>
           {index + 1}. {item?.question}
         </Typography>
@@ -153,15 +137,15 @@ ${panelData
             </ListItem>
           ))}
         </List>
-        <Typography {...styles.answerProps} style={{ marginTop: '8px' }}>
+        <Typography {...styles.answerProps} sx={{ marginTop: '8px' }}>
           <strong>Correct Answer:</strong> {item.answer}
         </Typography>
         {item.explanation && (
-          <Typography {...styles.explanationProps} style={{ marginTop: '4px' }}>
+          <Typography {...styles.explanationProps} sx={{ marginTop: '4px' }}>
             <strong>Explanation:</strong> {item.explanation}
           </Typography>
         )}
-      </div>
+      </Grid>
     )) || null;
 
   const renderFlashCards = () => (
@@ -180,10 +164,9 @@ ${panelData
   const contentSwitch = () => {
     switch (data?.toolId) {
       case '1':
-        renderFlashCards();
-        break;
+        return renderFlashCards();
       default:
-        renderQuestions();
+        return renderQuestions();
     }
   };
 
@@ -194,11 +177,11 @@ ${panelData
   const renderFooterButtons = () => (
     <Grid container justifyContent="flex-start" sx={{ mt: 3, width: '100%' }}>
       <Button onClick={handleCopyToClipboard} {...styles.copyButton}>
-        <ContentCopyIcon {...styles.CopyIcon} />
+        <ContentCopy {...styles.CopyIcon} />
         Copy
       </Button>
       <Button onClick={handleExportToCSV} {...styles.exportButton}>
-        <FileDownloadIcon {...styles.downloadIcon} />
+        <FileDownload {...styles.downloadIcon} />
         Export
       </Button>
     </Grid>

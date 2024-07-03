@@ -50,6 +50,7 @@ function categorizeDate(creationDate, currentDate) {
 }
 
 export function categorizeDataByDate(data) {
+  if (!data) return null;
   const newHistoryOutput = {
     Week: [],
     Month: [],

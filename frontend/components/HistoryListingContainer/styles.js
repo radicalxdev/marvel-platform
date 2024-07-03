@@ -36,7 +36,6 @@ const styles = {
     fontSize: '18px',
     color: (theme) => theme.palette.Greyscale[400],
   },
-
   innerListGridProps: {
     container: true,
     item: true,
@@ -46,7 +45,6 @@ const styles = {
     columnSpacing: 3,
     rowSpacing: 5,
   },
-
   containerGridProps: {
     container: true,
     item: true,

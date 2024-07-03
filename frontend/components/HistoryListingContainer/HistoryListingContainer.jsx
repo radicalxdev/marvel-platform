@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
@@ -15,24 +15,17 @@ const HistoryListingContainer = ({ data, loading }) => {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
   const [selectedCardData, setSelectedCardData] = useState(null);
 
-  useEffect(() => {
-    // Removed console logs
-  }, [data, loading]);
-
-  const loader = () => {
-    return (
-      <Grid {...styles.containerGridProps}>
-        <Grid {...styles.innerListGridProps}>
-          {LOADER_HISTS?.map((tool) => (
-            <OutputHistoryCardSkeleton key={tool.id} />
-          ))}
-          330603
-        </Grid>
+  const renderLoader = () => (
+    <Grid {...styles.containerGridProps}>
+      <Grid {...styles.innerListGridProps}>
+        {LOADER_HISTS.map((tool) => (
+          <OutputHistoryCardSkeleton key={tool.id} />
+        ))}
       </Grid>
-    );
-  };
-  if (loading) return loader();
-  if (!data) return <Typography>No data available</Typography>;
+    </Grid>
+  );
+
+  if (loading) return renderLoader();
 
   const handleOpenSidebar = (cardData) => {
     setSelectedCardData(cardData);
@@ -55,14 +48,8 @@ const HistoryListingContainer = ({ data, loading }) => {
     <Grid {...styles.containerGridProps}>
       <Grid {...styles.innerListGridProps}>
         {data?.[category].map((item) => {
-          const transformedData = transformToolData(
-            item.topic,
-            item.response,
-            item.createdAt,
-            item.tool_id
-          );
+          const transformedData = transformToolData(item);
 
-          // Pass only relevant props to OutputHistoryCard
           const { title, content, backgroundImageUrl, logo, creationDate } =
             transformedData;
 
@@ -74,7 +61,7 @@ const HistoryListingContainer = ({ data, loading }) => {
               backgroundImageUrl={backgroundImageUrl}
               logo={logo}
               creationDate={creationDate}
-              onOpen={() => handleOpenSidebar(transformedData)} // Pass full transformed data to SlidePanel
+              onOpen={() => handleOpenSidebar(transformedData)}
             />
           );
         })}

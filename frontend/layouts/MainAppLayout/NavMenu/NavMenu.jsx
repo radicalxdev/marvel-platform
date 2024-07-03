@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import HistoryIcon from '@mui/icons-material/History';
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -14,8 +12,18 @@ import styles from './styles';
 import { chatRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
-  { name: 'Kai Tools', link: ROUTES.HOME, icon: <Briefcase />, id: 'page_1' },
-  { name: 'Kai Chat', link: ROUTES.CHAT, icon: <ChatBubble />, id: 'page_2' },
+  {
+    name: 'Kai Tools',
+    link: ROUTES.HOME,
+    icon: <Briefcase />,
+    id: 'page_1',
+  },
+  {
+    name: 'Kai Chat',
+    link: ROUTES.CHAT,
+    icon: <ChatBubble />,
+    id: 'page_2',
+  },
   {
     name: 'History',
     link: ROUTES.HISTORY,
@@ -24,36 +32,35 @@ const PAGES = [
   },
 ];
 
+/**
+ * Returns a navigation menu component that displays a list of links.
+ *
+ * @return {JSX.Element} A React component that renders a navigation menu.
+ */
 const NavMenu = () => {
   const router = useRouter();
   const { pathname } = router;
-  const [activePage, setActivePage] = useState('');
 
-  const determineActivePage = (path) => {
-    if (
-      homeRegex.test(path) &&
-      !chatRegex.test(path) &&
-      path !== ROUTES.HISTORY
-    ) {
-      return 'page_1';
+  const setActive = (id) => {
+    if (id === 'page_1') {
+      return (
+        homeRegex.test(pathname) &&
+        !chatRegex.test(pathname) &&
+        pathname !== ROUTES.HISTORY
+      );
     }
-    if (path === ROUTES.HISTORY) return 'page_3';
-    if (chatRegex.test(path)) return 'page_2';
-    return '';
+    if (id === 'page_2') {
+      return chatRegex.test(pathname);
+    }
+    if (id === 'page_3') {
+      return pathname === ROUTES.HISTORY;
+    }
+    return false;
   };
 
-  useEffect(() => {
-    setActivePage(determineActivePage(pathname));
-    const handleRouteChange = (url) => setActivePage(determineActivePage(url));
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [pathname, router.events]);
-
-  const handleRoute = async (link, id) => {
-    await router.push(link);
-    setActivePage(id);
+  const handleRoute = (link, id) => {
+    router.push(link);
+    setActive(id);
   };
 
   return (
@@ -62,7 +69,7 @@ const NavMenu = () => {
         <MenuItem
           key={page.id}
           onClick={() => handleRoute(page.link, page.id)}
-          {...styles.menuItemProps(page.id === activePage)}
+          {...styles.menuItemProps(setActive(page.id))}
         >
           <Grid {...styles.innerMenuGridProps}>
             <Grid {...styles.menuIconGridProps}>{page.icon}</Grid>
