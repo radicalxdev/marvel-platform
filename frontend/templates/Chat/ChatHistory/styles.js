@@ -7,7 +7,7 @@ const styles = {
   chatHistoryTimeframeContainerProps: {
     sx: {
       paddingBottom: '0px',
-      paddingTop: '0px',
+      paddingTop: '0.5rem',
     },
   },
   chatHistoryListItemProps: {
@@ -40,7 +40,8 @@ const styles = {
         color: '#ffffff',
       },
       flexGrow: 1,
-      justifyContent: 'left',
+      justifyContent: 'space-between',
+      display: 'flex',
     },
   },
   timestampProps: {

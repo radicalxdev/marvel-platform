@@ -157,11 +157,11 @@ const ChatHistory = ({ user }) => {
               <Button {...styles.chatHistoryTextProps}>
                 {' '}
                 {entry.message}{' '}
+                <Typography {...styles.timestampProps}>
+                  {' '}
+                  {format(entry.timestamp.toDate(), 'h:mm aa')}{' '}
+                </Typography>
               </Button>
-              <Typography {...styles.timestampProps}>
-                {' '}
-                {format(entry.timestamp.toDate(), 'h:mm aa')}{' '}
-              </Typography>
             </ListItem>
           ))}
         </List>
