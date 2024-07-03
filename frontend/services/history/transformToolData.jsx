@@ -3,7 +3,9 @@ import moment from 'moment';
 import { TOOL_OUTPUT } from '@/constants/toolOutput';
 
 export const transformToolData = ({ topic, response, createdAt, tool_id }) => {
-  const transformedDate = moment(createdAt.seconds * 1000).toDate();
+  const transformedDate = moment(createdAt.seconds * 1000)
+    .toDate()
+    .toLocaleDateString();
 
   const baseTransformedData = {
     toolId: tool_id,
