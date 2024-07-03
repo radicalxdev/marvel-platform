@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import ToolHistoryCard, { OutputHistoryCardSkeleton } from '../ToolHistoryCard';
+import ToolHistoryCard, { ToolCardSkeleton } from '../ToolHistoryCard';
 import ToolOutputHistoryDrawer from '../ToolOutputHistoryDrawer/ToolOutputHistoryDrawer';
 
 import styles from './styles';
@@ -11,6 +11,14 @@ import { transformToolData } from '@/services/history/transformToolData';
 
 const LOADER_HISTS = new Array(4).fill().map((_, index) => ({ id: index + 1 }));
 
+/**
+ * Renders the Tool History Listing Container component.
+ *
+ * @param {object} props - The props object.
+ * @param {Array} props.data - The data to be displayed in the container.
+ * @param {boolean} props.loading - The loading state.
+ * @returns {JSX.Element} The rendered Tool History Listing Container component.
+ */
 const ToolHistoryListingContainer = ({ data, loading }) => {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
   const [selectedCardData, setSelectedCardData] = useState(null);
@@ -19,7 +27,7 @@ const ToolHistoryListingContainer = ({ data, loading }) => {
     <Grid {...styles.containerGridProps}>
       <Grid {...styles.innerListGridProps}>
         {LOADER_HISTS.map((tool) => (
-          <OutputHistoryCardSkeleton key={tool.id} />
+          <ToolCardSkeleton key={tool.id} />
         ))}
       </Grid>
     </Grid>

@@ -1,4 +1,4 @@
-import OutputHistoryCardSkeleton from './Skeleton';
+import ToolCardSkeleton from './Skeleton';
 import ToolHistoryCard from './ToolHistoryCard';
 
-export { ToolHistoryCard as default, OutputHistoryCardSkeleton };
+export { ToolHistoryCard as default, ToolCardSkeleton };

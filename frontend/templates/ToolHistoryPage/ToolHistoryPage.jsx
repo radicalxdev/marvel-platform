@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Grid, Typography } from '@mui/material';
 
 import ToolHistoryListingContainer from '@/components/ToolHistoryListingContainer';

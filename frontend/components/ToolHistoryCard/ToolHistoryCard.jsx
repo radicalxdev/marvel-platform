@@ -5,6 +5,19 @@ import ToolImage from '@/assets/images/BookImage.png';
 
 import styles from './styles';
 
+/**
+ * Renders a card component displaying information about a tool's use.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.title - A description of the tool used and how it was used.
+ * @param {string} props.content - A description or content related to the tool output.
+ * @param {string} props.creationDate - The creation date of the tool entry.
+ * @param {string} props.backgroundImageUrl - URL of the background image for the card.
+ * @param {string} props.logo - URL of the logo image for the tool.
+ * @param {function} props.onOpen - Callback function to handle opening the detailed view.
+ *
+ * @returns {JSX.Element} A React component that renders the tool history card.
+ */
 const ToolHistoryCard = (props) => {
   const { title, content, creationDate, backgroundImageUrl, logo, onOpen } =
     props;
