@@ -5,7 +5,7 @@ import ToolImage from '@/assets/images/BookImage.png';
 
 import styles from './styles';
 
-const HistoryCard = (props) => {
+const ToolHistoryCard = (props) => {
   const { title, content, creationDate, backgroundImageUrl, logo, onOpen } =
     props;
 
@@ -46,4 +46,4 @@ const HistoryCard = (props) => {
   );
 };
 
-export default HistoryCard;
+export default ToolHistoryCard;

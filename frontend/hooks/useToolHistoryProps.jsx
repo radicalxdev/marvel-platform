@@ -3,16 +3,16 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { firestore } from '@/redux/store';
-import { fetchHistory } from '@/redux/thunks/history';
+import { fetchToolHistory } from '@/redux/thunks/toolHistory';
 import { categorizeDataByDate } from '@/utils/DateUtils';
 
-const useHistoryProps = () => {
+const useToolHistoryProps = () => {
   const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.outputHistory);
+  const { data, loading, error } = useSelector((state) => state.toolHistory);
 
   useEffect(() => {
     // Dispatch the thunk to fetch output history data
-    if (!data) dispatch(fetchHistory({ firestore }));
+    if (!data) dispatch(fetchToolHistory({ firestore }));
   }, [dispatch, data]);
 
   // Categorize the data after it is fetched
@@ -25,4 +25,4 @@ const useHistoryProps = () => {
   };
 };
 
-export default useHistoryProps;
+export default useToolHistoryProps;

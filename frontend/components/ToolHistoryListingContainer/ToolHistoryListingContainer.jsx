@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import HistoryCard, { OutputHistoryCardSkeleton } from '../HistoryCard';
-import SlidePanel from '../SlidePanel/SlidePanel';
+import ToolHistoryCard, { OutputHistoryCardSkeleton } from '../ToolHistoryCard';
+import ToolOutputHistoryDrawer from '../ToolOutputHistoryDrawer/ToolOutputHistoryDrawer';
 
 import styles from './styles';
 
@@ -11,7 +11,7 @@ import { transformToolData } from '@/services/history/transformToolData';
 
 const LOADER_HISTS = new Array(4).fill().map((_, index) => ({ id: index + 1 }));
 
-const HistoryListingContainer = ({ data, loading }) => {
+const ToolHistoryListingContainer = ({ data, loading }) => {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
   const [selectedCardData, setSelectedCardData] = useState(null);
 
@@ -54,7 +54,7 @@ const HistoryListingContainer = ({ data, loading }) => {
             transformedData;
 
           return (
-            <HistoryCard
+            <ToolHistoryCard
               key={item.id}
               title={title}
               content={content}
@@ -131,7 +131,7 @@ const HistoryListingContainer = ({ data, loading }) => {
         <Typography {...styles.titleProps}>History</Typography>
         {renderContent()}
       </Grid>
-      <SlidePanel
+      <ToolOutputHistoryDrawer
         isOpen={isSidePanelOpen}
         onClose={handleCloseSidebar}
         data={selectedCardData}
@@ -140,4 +140,4 @@ const HistoryListingContainer = ({ data, loading }) => {
   );
 };
 
-export default HistoryListingContainer;
+export default ToolHistoryListingContainer;

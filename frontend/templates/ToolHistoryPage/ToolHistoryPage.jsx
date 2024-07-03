@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import HistoryListingContainer from '@/components/HistoryListingContainer';
+import ToolHistoryListingContainer from '@/components/ToolHistoryListingContainer';
 
 import styles from './styles';
 
-const HistoryPage = (props) => {
+const ToolHistoryPage = (props) => {
   const { data, loading, error } = props;
 
   if (error) {
@@ -24,9 +24,9 @@ const HistoryPage = (props) => {
 
   return (
     <Grid {...styles.mainGridProps}>
-      <HistoryListingContainer data={data} loading={loading} />
+      <ToolHistoryListingContainer data={data} loading={loading} />
     </Grid>
   );
 };
 
-export default HistoryPage;
+export default ToolHistoryPage;

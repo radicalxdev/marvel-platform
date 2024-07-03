@@ -26,7 +26,7 @@ const DEFAULT_DATA = {
   ],
 };
 
-const SlidePanel = (props) => {
+const ToolOutputHistoryDrawer = (props) => {
   const { isOpen, onClose, data } = props;
 
   const panelData = data?.response || DEFAULT_DATA.questions;
@@ -133,4 +133,4 @@ const SlidePanel = (props) => {
   );
 };
 
-export default SlidePanel;
+export default ToolOutputHistoryDrawer;
