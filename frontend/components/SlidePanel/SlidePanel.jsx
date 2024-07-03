@@ -11,6 +11,9 @@ import moment from 'moment';
 
 import styles from './styles';
 
+import { copyToClipboard } from '@/services/history/copy';
+import { exportToCSV } from '@/services/history/export';
+
 const DEFAULT_DATA = {
   title: 'Default Title',
   content: 'Default Content',
@@ -29,77 +32,11 @@ const SlidePanel = (props) => {
   const panelData = data?.response || DEFAULT_DATA.questions;
 
   const handleCopyToClipboard = () => {
-    const label =
-      data?.toolId === '0'
-        ? 'Questions and Options'
-        : 'Concepts and Definitions';
-    const textToCopy = `
-Title: ${data?.title || 'Default Title'}
-
-Content: ${data?.content || 'Default Content'}
-
-${label}:
-${panelData
-  .map((item, i) =>
-    data?.toolId === '0'
-      ? `${i + 1}. ${item.question}\n${item.choices
-          ?.map((choice) => `   ${choice.key}. ${choice.value}`)
-          .join('\n')}`
-      : `${i + 1}. ${item.concept} - ${item.definition}`
-  )
-  .join('\n\n')}
-`;
-
-    navigator.clipboard.writeText(textToCopy);
+    copyToClipboard(data, panelData);
   };
 
   const handleExportToCSV = () => {
-    const escapeCSVField = (field) =>
-      typeof field === 'string' ? `"${field.replace(/"/g, '""')}"` : field;
-
-    let headers;
-    let rows;
-
-    if (data?.toolId === '0') {
-      headers = [
-        'Question',
-        'Option A',
-        'Option B',
-        'Option C',
-        'Option D',
-        'Correct Answer',
-        'Explanation',
-      ];
-      rows = panelData.map((item) => [
-        escapeCSVField(item.question),
-        escapeCSVField(item.choices[0]?.value || ''),
-        escapeCSVField(item.choices[1]?.value || ''),
-        escapeCSVField(item.choices[2]?.value || ''),
-        escapeCSVField(item.choices[3]?.value || ''),
-        escapeCSVField(item.answer),
-        escapeCSVField(item.explanation || ''),
-      ]);
-    } else {
-      headers = ['Concept', 'Definition'];
-      rows = panelData.map((item) => [
-        escapeCSVField(item.concept),
-        escapeCSVField(item.definition),
-      ]);
-    }
-
-    const csvContent = [
-      headers.join(','),
-      ...rows.map((e) => e.join(',')),
-    ].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${data?.title.replace(/\s+/g, '_').toLowerCase()}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+    exportToCSV(data, panelData);
   };
 
   const renderHeader = () => (
@@ -161,18 +98,16 @@ ${panelData
     </Grid>
   );
 
-  const contentSwitch = () => {
-    switch (data?.toolId) {
-      case '1':
-        return renderFlashCards();
-      default:
-        return renderQuestions();
-    }
+  const TOOL_COMPONENTS = {
+    '1': renderFlashCards,
+    '0': renderQuestions,
   };
 
-  const renderContent = () => (
-    <Grid {...styles.containerGridProps}>{contentSwitch()}</Grid>
-  );
+  const renderContent = () => {
+    const renderToolComponent =
+      TOOL_COMPONENTS[data?.toolId] || renderQuestions;
+    return <Grid {...styles.containerGridProps}>{renderToolComponent()}</Grid>;
+  };
 
   const renderFooterButtons = () => (
     <Grid container justifyContent="flex-start" sx={{ mt: 3, width: '100%' }}>

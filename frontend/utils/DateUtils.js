@@ -1,49 +1,30 @@
-function categorizeDate(creationDate, currentDate) {
-  // Remove time part from dates for comparison
-  const todayDateOnly = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    currentDate.getDate()
-  );
-  const creationDateOnly = new Date(
-    creationDate.getFullYear(),
-    creationDate.getMonth(),
-    creationDate.getDate()
-  );
+import moment from 'moment';
 
-  // Get start of the week (assuming week starts on Monday)
-  const dayOfWeek = todayDateOnly.getDay();
-  const startOfWeek = new Date(todayDateOnly);
-  startOfWeek.setDate(
-    todayDateOnly.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)
-  );
-  const endOfWeek = new Date(startOfWeek);
-  endOfWeek.setDate(startOfWeek.getDate() + 6);
+function categorizeDate(creationDate, currentDate) {
+  // Remove time part from dates for comparison using moment
+  const todayDateOnly = moment(currentDate).startOf('day');
+  const creationDateOnly = moment(creationDate).startOf('day');
+
+  // Get start and end of the week (assuming week starts on Monday)
+  const startOfWeek = todayDateOnly.clone().startOf('isoWeek');
+  const endOfWeek = todayDateOnly.clone().endOf('isoWeek');
 
   // Get start and end of the month
-  const startOfMonth = new Date(
-    todayDateOnly.getFullYear(),
-    todayDateOnly.getMonth(),
-    1
-  );
-  const endOfMonth = new Date(
-    todayDateOnly.getFullYear(),
-    todayDateOnly.getMonth() + 1,
-    0
-  );
+  const startOfMonth = todayDateOnly.clone().startOf('month');
+  const endOfMonth = todayDateOnly.clone().endOf('month');
 
   // Get start and end of the year
-  const startOfYear = new Date(todayDateOnly.getFullYear(), 0, 1);
-  const endOfYear = new Date(todayDateOnly.getFullYear(), 11, 31);
+  const startOfYear = todayDateOnly.clone().startOf('year');
+  const endOfYear = todayDateOnly.clone().endOf('year');
 
   // Categorize the creation date
-  if (creationDateOnly >= startOfWeek && creationDateOnly <= endOfWeek) {
+  if (creationDateOnly.isBetween(startOfWeek, endOfWeek, null, '[]')) {
     return 'Week';
   }
-  if (creationDateOnly >= startOfMonth && creationDateOnly <= endOfMonth) {
+  if (creationDateOnly.isBetween(startOfMonth, endOfMonth, null, '[]')) {
     return 'Month';
   }
-  if (creationDateOnly >= startOfYear && creationDateOnly <= endOfYear) {
+  if (creationDateOnly.isBetween(startOfYear, endOfYear, null, '[]')) {
     return 'Year';
   }
   return 'Older';
@@ -58,8 +39,13 @@ export function categorizeDataByDate(data) {
     Older: [],
   };
 
+  const currentDate = moment();
+
   data.forEach((item) => {
-    const category = categorizeDate(item.createdAt.toDate(), new Date());
+    const category = categorizeDate(
+      moment(item.createdAt.toDate()),
+      currentDate
+    );
     newHistoryOutput[category].push(item);
   });
 

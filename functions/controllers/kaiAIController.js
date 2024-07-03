@@ -261,7 +261,7 @@ app.post('/api/tool/', (req, res) => {
       await saveResponseToFirestore({
         response: response.data.data,
         tool_id: otherToolData.tool_id,
-        topic: topic,
+        topic,
       });
 
       res.status(200).json({ success: true, data: response.data });

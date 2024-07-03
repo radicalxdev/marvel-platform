@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import OutputHistoryCard, { OutputHistoryCardSkeleton } from '../HistoryCard';
+import HistoryCard, { OutputHistoryCardSkeleton } from '../HistoryCard';
 import SlidePanel from '../SlidePanel/SlidePanel';
 
 import styles from './styles';
@@ -54,7 +54,7 @@ const HistoryListingContainer = ({ data, loading }) => {
             transformedData;
 
           return (
-            <OutputHistoryCard
+            <HistoryCard
               key={item.id}
               title={title}
               content={content}

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import useHistoryProps from '@/hooks/useHistoryProps';
 
 import MainAppLayout from '@/layouts/MainAppLayout';
