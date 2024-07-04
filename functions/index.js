@@ -27,8 +27,9 @@ module.exports = {
   /* output tools history */
   createToolsHistory: ToolsController.createToolsHistory,
   updateToolsHistory: ToolsController.updateToolsHistory,
+  deleteToolsHistory: ToolsController.deleteToolsHistory,
+  retrieveToolsHistory: ToolsController.retrieveToolsHistory,
 
-
-  /* Migration Scripts - For running  */
+  /* Migration Scripts - For running */
   ...migrationScripts,
 };
