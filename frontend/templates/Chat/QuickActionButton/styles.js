@@ -61,20 +61,20 @@ const styles = {
     }),
   },
 
-  closeIconProps:{
-    sx: (theme) =>({
+  closeIconProps: {
+    sx: (theme) => ({
       position: 'absolute',
       top: '5px',
       right: '-15px',
       padding: '5px',
-      color: '#FFFFFF',
+      color: theme.palette.Common.White['100p'],
       backgroundColor: theme.palette.Background.purple3,
       borderRadius: '50%',
       ':hover': {
         backgroundColor: '#B791FF',
       },
     }),
-  }
+  },
 };
 
 export default styles;
