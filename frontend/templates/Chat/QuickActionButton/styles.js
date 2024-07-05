@@ -41,6 +41,7 @@ const styles = {
   paperProps: {
     sx: {
       backgroundColor: 'transparent !important',
+      boxShadow: 'none',
     },
   },
   menuItemProps: {
@@ -59,6 +60,21 @@ const styles = {
       padding: '10px 20px',
     }),
   },
+
+  closeIconProps:{
+    sx: (theme) =>({
+      position: 'absolute',
+      top: '5px',
+      right: '-15px',
+      padding: '5px',
+      color: '#FFFFFF',
+      backgroundColor: theme.palette.Background.purple3,
+      borderRadius: '50%',
+      ':hover': {
+        backgroundColor: '#B791FF',
+      },
+    }),
+  }
 };
 
 export default styles;

@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from "react";
 
 import {
   Button,
@@ -10,17 +10,14 @@ import {
   MenuList,
   Paper,
   Popper,
-} from '@mui/material';
+} from "@mui/material";
 
-import { useDispatch } from 'react-redux';
+import CloseIcon from "@mui/icons-material/Close";
+import ActionIcon from "@/assets/svg/add-circle.svg";
+import { useDispatch } from "react-redux";
+import { setInput } from "@/redux/slices/chatSlice";
 
-import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
-
-import ActionIcon from '@/assets/svg/add-circle.svg';
-
-import styles from './styles';
-
-import { setInput } from '@/redux/slices/chatSlice';
+import styles from "./styles";
 
 const QuickActionButton = (props) => {
   const { onAction, text } = props;
@@ -59,7 +56,7 @@ const QuickActionButton = (props) => {
           ref={anchorRef}
         >
           {loading ? <CircularProgress size={24} /> : <ActionIcon />}
-          {loading ? 'Loading...' : text}
+          {loading ? "Loading..." : text}
         </Button>
       </IconButton>
 
@@ -71,28 +68,33 @@ const QuickActionButton = (props) => {
         {...styles.popperProps}
       >
         <Paper elevation={3} {...styles.paperProps}>
-          <ClickAwayListener onClickAway={handleClose}>
+          {/* <ClickAwayListener onClickAway={handleClose}> */}
+            
+            <IconButton onClick={handleClose} {...styles.closeIconProps}>
+              <CloseIcon />
+            </IconButton>
+
             <MenuList {...styles.menuListProps}>
               <MenuItem
-                onClick={() => handleActionClick('suggest_techniques')}
+                onClick={() => handleActionClick("suggest_techniques")}
                 {...styles.menuItemProps}
               >
                 Suggest Techniques
               </MenuItem>
               <MenuItem
-                onClick={() => handleActionClick('recommend_books')}
+                onClick={() => handleActionClick("recommend_books")}
                 {...styles.menuItemProps}
               >
                 Recommend Books
               </MenuItem>
               <MenuItem
-                onClick={() => handleActionClick('Action 3')}
+                onClick={() => handleActionClick("Action 3")}
                 {...styles.menuItemProps}
               >
                 Action 3
               </MenuItem>
             </MenuList>
-          </ClickAwayListener>
+          {/* </ClickAwayListener> */}
         </Paper>
       </Popper>
     </Grid>
