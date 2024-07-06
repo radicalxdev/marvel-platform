@@ -19,7 +19,7 @@ import styles from './styles';
  * @param {Object} props - Object containing the following properties:
  *  @param {boolean} props.open - Boolean indicating whether the preview drawer is open
  *  @param {Function} props.togglePreview - Function to toggle the preview drawer
- *  @param {string} props.createdDate - Creation date of the history item
+ *  @param {string} props.createdAt - Creation date of the history item
  *  @param {string} props.title - Title of the history item
  *  @param {string} props.description - Description of the history item
  *  @param {string} props.category - Category of the history item
@@ -31,7 +31,7 @@ const HistoryPreview = (props) => {
   const {
     open,
     togglePreview,
-    createdDate,
+    createdAt,
     title,
     description,
     toolId,
@@ -46,7 +46,7 @@ const HistoryPreview = (props) => {
   const renderHeader = () => {
     return (
       <Grid {...styles.headerProps}>
-        <Typography {...styles.dateProps}>{createdDate}</Typography>
+        <Typography {...styles.dateProps}>{createdAt}</Typography>
         <Typography {...styles.titleProps}>{title}</Typography>
         <Typography {...styles.descriptionProps}>{description}</Typography>
       </Grid>

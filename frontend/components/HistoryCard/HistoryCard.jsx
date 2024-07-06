@@ -23,7 +23,7 @@ import styles from './styles';
  *  @param {string} props.title - Title of the history card
  *  @param {string} props.logo - URL of the logo image for the history card
  *  @param {string} props.description - Description of the history card
- *  @param {string} props.createdDate - Creation date of the history card
+ *  @param {string} props.createdAt - Creation date of the history card
  *  @param {string} props.category - Category of the history card
  *  @param {Array} props.questions - Array of questions related to the history card
  *
@@ -35,7 +35,7 @@ const HistoryCard = (props) => {
     title,
     logo,
     description,
-    createdDate,
+    createdAt,
     toolId,
     questions,
   } = props;
@@ -69,7 +69,7 @@ const HistoryCard = (props) => {
   const renderCardDetails = () => {
     return (
       <Grid>
-        <Typography {...styles.dateProps}>{createdDate}</Typography>
+        <Typography {...styles.dateProps}>{createdAt}</Typography>
         <Typography {...styles.titleProps}>{title}</Typography>
         <Typography {...styles.descriptionProps}>{description}</Typography>
         <Button {...styles.previewButtonProps} onClick={togglePreview}>
@@ -92,7 +92,7 @@ const HistoryCard = (props) => {
       <HistoryPreview
         open={openPreview}
         togglePreview={togglePreview}
-        createdDate={createdDate}
+        createdAt={createdAt}
         title={title}
         description={description}
         toolId={toolId}
