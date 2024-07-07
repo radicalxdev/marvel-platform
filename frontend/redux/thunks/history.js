@@ -1,8 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
-import { formatToStandardDate } from '../../utils/FirebaseUtils';
-
 const fetchHistory = createAsyncThunk(
   'history/fetch',
   async ({ firestore, id }) => {
@@ -23,8 +21,6 @@ const fetchHistory = createAsyncThunk(
         return {
           id: doc?.id,
           ...historyData,
-          createdAt: formatToStandardDate(historyData.createdAt.toDate()),
-          updatedAt: formatToStandardDate(historyData.updatedAt.toDate()),
         };
       });
 

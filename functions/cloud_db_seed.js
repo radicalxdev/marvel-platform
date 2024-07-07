@@ -5,6 +5,7 @@ const db = admin.firestore();
 
 const seedDatabase = async () => {
   const data = require('./seed_data.json');
+  const history_data = require('./seed_history_data.json');
 
   try {
     const global = await db.collection('global').doc('config').get();
@@ -21,6 +22,10 @@ const seedDatabase = async () => {
     Object.values(data).forEach(async (doc) => {
       await db.collection('tools').doc(doc.id.toString()).set(doc);
       console.log(`Document with ID ${doc.id} added to the Tools collection`);
+    });
+    Object.values(history_data).forEach(async (doc) => {
+      await db.collection('toolsHistory').doc(doc.id.toString()).set(doc);
+      console.log(`Document with ID ${doc.id} added to the History collection`);
     });
     console.log(
       'Kai AI installed successfully to firebase and is ready to go!'

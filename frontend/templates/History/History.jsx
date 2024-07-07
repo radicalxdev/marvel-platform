@@ -36,7 +36,7 @@ const HistoryInterface = (props) => {
   const renderForm = () => {
     return (
       <Typography {...styles.sectionHeaderProps}>
-        This Week ({data.length})
+        This Week ({data != null ? data.length : 0})
       </Typography>
     );
   };

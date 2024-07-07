@@ -13,9 +13,9 @@ const history = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
-  },
-  setHistoryData: (state, action) => {
-    state.data = action.payload;
+    setHistoryData: (state, action) => {
+      state.data = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
