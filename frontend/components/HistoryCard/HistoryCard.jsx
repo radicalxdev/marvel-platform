@@ -38,6 +38,10 @@ const HistoryCard = (props) => {
     createdAt,
     toolId,
     questions,
+    onSortByTitle,
+    onSortByDate,
+    onSortByDescription,
+    onSortByToolId,
   } = props;
   const [openPreview, setOpenPreview] = useState(false);
 
@@ -56,7 +60,12 @@ const HistoryCard = (props) => {
   const renderImage = () => {
     return (
       <Grid {...styles.imageGridProps}>
-        <Image src={logo} alt="output history logo" {...styles.imageProps} />
+        <Image
+          src={logo}
+          alt="output history logo"
+          onClick={onSortByToolId}
+          {...styles.imageProps}
+        />
       </Grid>
     );
   };
@@ -69,9 +78,27 @@ const HistoryCard = (props) => {
   const renderCardDetails = () => {
     return (
       <Grid>
-        <Typography {...styles.dateProps}>{createdAt}</Typography>
-        <Typography {...styles.titleProps}>{title}</Typography>
-        <Typography {...styles.descriptionProps}>{description}</Typography>
+        <Typography
+          component="span"
+          onClick={onSortByDate}
+          {...styles.dateProps}
+        >
+          {createdAt}
+        </Typography>
+        <Typography
+          component="span"
+          onClick={onSortByTitle}
+          {...styles.titleProps}
+        >
+          {title}
+        </Typography>
+        <Typography
+          component="span"
+          onClick={onSortByDescription}
+          {...styles.descriptionProps}
+        >
+          {description}
+        </Typography>
         <Button {...styles.previewButtonProps} onClick={togglePreview}>
           Preview
         </Button>
