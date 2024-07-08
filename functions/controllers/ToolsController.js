@@ -6,10 +6,10 @@ const { Timestamp } = require('firebase-admin/firestore');
 const createToolsHistory = functions.https.onCall(async (data, context) => {
   try {
     // Destructure the necessary fields from the incoming data
-    const { toolId, userId, title, description, response, input } = data;
+    const { toolId, userId, response } = data;
 
     // Check if any of the required fields are missing
-    if (!toolId || !userId || !title || !description || !response || !input) {
+    if (!toolId || !userId || !response) {
       throw new functions.https.HttpsError('invalid-argument', 'Missing value');
     }
 
@@ -19,10 +19,7 @@ const createToolsHistory = functions.https.onCall(async (data, context) => {
       userId: userId,
       createdAt: Timestamp.fromMillis(Date.now()), // Set the creation timestamp
       updatedAt: Timestamp.fromMillis(Date.now()), // Set the update timestamp
-      title: title,
-      description: description,
       response: response,
-      input: input,
     };
 
     // Add the new document to the 'toolsHistory' collection in Firestore
@@ -51,8 +48,7 @@ const createToolsHistory = functions.https.onCall(async (data, context) => {
 const updateToolsHistory = functions.https.onCall(async (data, context) => {
   try {
     // Destructure the necessary fields from the incoming data
-    const { toolId, userId, newTitle, newDescription, newResponse, newInput } =
-      data;
+    const { toolId, userId, newResponse } = data;
 
     // Check if the toolId or userId fields are missing
     if (!toolId || !userId) {
@@ -87,10 +83,7 @@ const updateToolsHistory = functions.https.onCall(async (data, context) => {
 
     // Prepare the updated data, only including fields that have new values
     const toolsHistoryData = {
-      ...(newTitle != null && { title: newTitle }),
-      ...(newDescription != null && { description: newDescription }),
       ...(newResponse != null && { response: newResponse }),
-      ...(newInput != null && { input: newInput }),
       updatedAt: Timestamp.fromMillis(Date.now()), // Update the timestamp
     };
 
@@ -102,7 +95,11 @@ const updateToolsHistory = functions.https.onCall(async (data, context) => {
       .update(toolsHistoryData);
 
     // Return a success response
-    return { success: true, message: 'Document successfully updated!' };
+    return {
+      success: true,
+      message: 'Document successfully updated!',
+      data: toolsHistoryData,
+    };
   } catch (error) {
     // Log the error and throw an HTTP error if document update fails
     console.error('Error updating document:', error);
