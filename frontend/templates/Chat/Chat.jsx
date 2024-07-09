@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 import {
   ArrowDownwardOutlined,
   InfoOutlined,
   Settings,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 import {
   Button,
   Fade,
@@ -13,19 +13,19 @@ import {
   InputAdornment,
   TextField,
   Typography,
-} from '@mui/material';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+} from "@mui/material";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
-import NavigationIcon from '@/assets/svg/Navigation.svg';
+import NavigationIcon from "@/assets/svg/Navigation.svg";
 
-import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
+import { MESSAGE_ROLE, MESSAGE_TYPES } from "@/constants/bots";
 
-import CenterChatContentNoMessages from './CenterChatContentNoMessages';
-import ChatSpinner from './ChatSpinner';
-import Message from './Message';
-import styles from './styles';
+import CenterChatContentNoMessages from "./CenterChatContentNoMessages";
+import ChatSpinner from "./ChatSpinner";
+import Message from "./Message";
+import styles from "./styles";
 
 import {
   openInfoChat,
@@ -40,10 +40,10 @@ import {
   setStreaming,
   setStreamingDone,
   setTyping,
-} from '@/redux/slices/chatSlice';
-import { firestore } from '@/redux/store';
-import createChatSession from '@/services/chatbot/createChatSession';
-import sendMessage from '@/services/chatbot/sendMessage';
+} from "@/redux/slices/chatSlice";
+import { firestore } from "@/redux/store";
+import createChatSession from "@/services/chatbot/createChatSession";
+import sendMessage from "@/services/chatbot/sendMessage";
 
 const ChatInterface = () => {
   const messagesContainerRef = useRef();
@@ -64,18 +64,14 @@ const ChatInterface = () => {
   } = useSelector((state) => state.chat);
   const { data: userData } = useSelector((state) => state.user);
 
-  const sessionId = localStorage.getItem('sessionId');
+  const sessionId = localStorage.getItem("sessionId");
 
   const currentSession = chat;
   const chatMessages = currentSession?.messages;
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
 
   const startConversation = async (message) => {
-    dispatch(
-      setMessages({
-        role: MESSAGE_ROLE.AI,
-      })
-    );
+    dispatch(setMessages(message)); // Add user's message immediately
     dispatch(setTyping(true));
 
     // Define the chat payload
@@ -85,7 +81,7 @@ const ChatInterface = () => {
         fullName: userData?.fullName,
         email: userData?.email,
       },
-      type: 'chat',
+      type: "chat",
       message,
     };
 
@@ -94,7 +90,7 @@ const ChatInterface = () => {
 
     // Remove typing bubble
     dispatch(setTyping(false));
-    if (status === 'created') dispatch(setStreaming(true));
+    if (status === "created") dispatch(setStreaming(true));
 
     // Set chat session
     dispatch(setChatSession(data));
@@ -103,7 +99,7 @@ const ChatInterface = () => {
 
   useEffect(() => {
     return () => {
-      localStorage.removeItem('sessionId');
+      localStorage.removeItem("sessionId");
       dispatch(resetChat());
     };
   }, []);
@@ -116,18 +112,18 @@ const ChatInterface = () => {
         0,
         messagesContainerRef.current?.scrollHeight,
         {
-          behavior: 'smooth',
-        }
+          behavior: "smooth",
+        },
       );
 
       const sessionRef = query(
-        collection(firestore, 'chatSessions'),
-        where('id', '==', sessionId)
+        collection(firestore, "chatSessions"),
+        where("id", "==", sessionId),
       );
 
       unsubscribe = onSnapshot(sessionRef, async (snapshot) => {
         snapshot.docChanges().forEach((change) => {
-          if (change.type === 'modified') {
+          if (change.type === "modified") {
             const updatedData = change.doc.data();
             const updatedMessages = updatedData.messages;
 
@@ -138,7 +134,7 @@ const ChatInterface = () => {
                 setMessages({
                   role: MESSAGE_ROLE.AI,
                   response: lastMessage,
-                })
+                }),
               );
               dispatch(setTyping(false));
             }
@@ -157,7 +153,7 @@ const ChatInterface = () => {
       Math.abs(
         messagesContainerRef.current.scrollHeight -
           messagesContainerRef.current.clientHeight -
-          messagesContainerRef.current.scrollTop
+          messagesContainerRef.current.scrollTop,
       ) <= 1;
 
     if (fullyScrolled !== scrolled) dispatch(setFullyScrolled(scrolled));
@@ -168,8 +164,8 @@ const ChatInterface = () => {
       0,
       messagesContainerRef.current?.scrollHeight,
       {
-        behavior: 'smooth',
-      }
+        behavior: "smooth",
+      },
     );
 
     dispatch(setStreamingDone(false));
@@ -179,7 +175,7 @@ const ChatInterface = () => {
     dispatch(setStreaming(true));
 
     if (!input) {
-      dispatch(setError('Please enter a message'));
+      dispatch(setError("Please enter a message"));
       setTimeout(() => {
         dispatch(setError(null));
       }, 3000);
@@ -194,16 +190,16 @@ const ChatInterface = () => {
       },
     };
 
+    dispatch(
+      setMessages({
+        role: MESSAGE_ROLE.HUMAN,
+      }),
+    );
+
     if (!chatMessages) {
       await startConversation(message);
       return;
     }
-
-    dispatch(
-      setMessages({
-        role: MESSAGE_ROLE.HUMAN,
-      })
-    );
 
     dispatch(setTyping(true));
 
@@ -225,7 +221,7 @@ const ChatInterface = () => {
     dispatch(
       setMessages({
         role: MESSAGE_ROLE.HUMAN,
-      })
+      }),
     );
     dispatch(setTyping(true));
 
@@ -244,7 +240,7 @@ const ChatInterface = () => {
         <IconButton
           onClick={handleSendMessage}
           {...styles.bottomChatContent.iconButtonProps(
-            typing || error || !input || streaming
+            typing || error || !input || streaming,
           )}
         >
           <NavigationIcon />
@@ -281,7 +277,7 @@ const ChatInterface = () => {
     )
       return (
         <Grid
-          onClick={() => dispatch(setMore({ role: 'shutdown' }))}
+          onClick={() => dispatch(setMore({ role: "shutdown" }))}
           {...styles.centerChat.centerChatGridProps}
         >
           <Grid
@@ -302,7 +298,7 @@ const ChatInterface = () => {
                     fullyScrolled={fullyScrolled}
                     key={index}
                   />
-                )
+                ),
             )}
             {typing && <ChatSpinner />}
           </Grid>
@@ -346,7 +342,7 @@ const ChatInterface = () => {
               {...styles.bottomChatContent.chatInputProps(
                 renderSendIcon,
                 !!error,
-                input
+                input,
               )}
             />
           </Grid>
