@@ -6,23 +6,26 @@ import HistoryToolCard, { HistoryToolCardSkeleton } from '../HistoryToolCard';
 
 import styles from './styles';
 
+import { getToolCardData } from '@/utils/MiscellaneousUtils';
+
 const DEFAULT_HISTORY = new Array(4)
   .fill()
   .map((_, index) => ({ id: index + 1 }));
 
 /**
- * HistoryToolListingContainer component renders a list of history tool cards
- * and displays a loading skeleton when data is being fetched.
+ * Renders a container displaying a list of historical tool cards,
+ * including title, cards, and loader based on data loading state.
  *
  * @component
  * @param {Object} props - React props
- * @param {Array} props.data - Array of history tool data
- * @param {boolean} props.loading - Indicates if the data is being loaded
- * @param {string} props.category - The category title for the list
- * @returns {JSX.Element} The rendered component
+ * @param {Array} props.data - Array of historical tool data
+ * @param {string} props.category - Category title for the tool list
+ * @param {boolean} props.loading - Loading state indicator
+ * @returns {JSX.Element} Rendered history tool listing container
  */
 const HistoryToolListingContainer = (props) => {
   const { data, loading, category } = props;
+
   const renderTitle = () => (
     <Grid {...styles.headerGridProps}>
       <Typography {...styles.categoryTitleProps}>
@@ -35,40 +38,13 @@ const HistoryToolListingContainer = (props) => {
     <Grid {...styles.containerGridProps}>
       <Grid {...styles.innerListGridProps}>
         {data.map((item, index) => {
-          // Default values for backgroundImgURL and logo
-          let backgroundImgURL =
-            'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Quizify.png?alt=media&token=d1255f27-b1a1-444e-b96a-4a3ac559237d';
-          let logo =
-            'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/QuizifyLogo.png?alt=media&token=9bf1d066-fba4-4063-9640-ef732e237d31';
-
-          let { title } = item;
-          let multipleChoiceList;
-          let flashCards;
-
-          // Adjust values based on tool_id
-          if (item.tool_data && item.tool_data.length > 0) {
-            const toolId = item.tool_data[0].tool_id;
-
-            if (toolId === '0') {
-              const topicInput = item.tool_data[0].inputs.find(
-                (input) => input.name === 'topic'
-              );
-              title = topicInput ? topicInput.value : 'Default Title';
-              multipleChoiceList = item.messages?.data?.data;
-            } else if (toolId === '1') {
-              // If tool_id is "1", set title to inputs.value under tool_data
-              const youtubeUrlInput = item.tool_data[0].inputs.find(
-                (input) => input.name === 'youtube_url'
-              );
-              title = youtubeUrlInput ? youtubeUrlInput.value : 'Default Title';
-              flashCards = item.messages?.data?.data;
-
-              backgroundImgURL =
-                'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080';
-              logo =
-                'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188';
-            }
-          }
+          const {
+            title,
+            backgroundImgURL,
+            logo,
+            multipleChoiceList,
+            flashCards,
+          } = getToolCardData(item);
 
           return (
             <HistoryToolCard
@@ -90,8 +66,8 @@ const HistoryToolListingContainer = (props) => {
   const renderLoader = () => (
     <Grid {...styles.containerGridProps}>
       <Grid {...styles.innerListGridProps}>
-        {DEFAULT_HISTORY?.map((historyTool) => (
-          <HistoryToolCardSkeleton key={historyTool.id} />
+        {DEFAULT_HISTORY?.map((tool) => (
+          <HistoryToolCardSkeleton key={tool.id} />
         ))}
       </Grid>
     </Grid>

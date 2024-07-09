@@ -1,4 +1,5 @@
 import AVATAR_COLOURS from '@/constants/colours';
+import { ToolCardHandlers } from '@/constants/tools';
 
 /**
  * Generates an SVG string representing a shimmer effect.
@@ -327,6 +328,19 @@ const exportContentAsCSV = ({
   URL.revokeObjectURL(url);
 };
 
+/**
+ * Retrieves and processes tool card data based on the provided item using predefined ToolCard Handlers.
+ *
+ * @param {Object} item - The item containing tool data.
+ * @returns {Object} Processed tool card data.
+ */
+const getToolCardData = (item) => {
+  const toolId = item.tool_data?.[0]?.tool_id;
+  const handler = ToolCardHandlers[toolId] || ToolCardHandlers.default;
+
+  return handler(item);
+};
+
 export {
   toBase64,
   shimmerEffect,
@@ -339,4 +353,5 @@ export {
   truncateString,
   copyContentToClipboard,
   exportContentAsCSV,
+  getToolCardData,
 };

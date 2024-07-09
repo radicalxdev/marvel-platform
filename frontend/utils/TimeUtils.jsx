@@ -29,6 +29,14 @@ const convertToUnixTimestamp = (date) => {
   return unixTimestamp;
 };
 
+/**
+ * Renders a history tool container component based on the provided category and time data.
+ *
+ * @param {string} category - The category label for the history container.
+ * @param {Array} timeData - The data array to be displayed within the container.
+ * @param {boolean} loading - Indicates if data is currently being loaded.
+ * @returns {JSX.Element|null} Returns the rendered HistoryListingContainer or null if timeData is empty.
+ */
 const renderHistoryToolContainer = (category, timeData, loading) => {
   if (timeData.length === 0) return null;
 
@@ -42,6 +50,13 @@ const renderHistoryToolContainer = (category, timeData, loading) => {
   );
 };
 
+/**
+ * Renders history tool containers for various time periods using the provided data object.
+ *
+ * @param {object} data - The data object containing time periods as properties (today, yesterday, previous7Days, previous30Days, monthsBefore).
+ * @param {boolean} loading - Indicates if data is currently being loaded.
+ * @returns {JSX.Element} Returns JSX elements representing history tool containers for each time period.
+ */
 const renderHistorySections = (data, loading) => {
   const { today, yesterday, previous7Days, previous30Days, monthsBefore } =
     data;
@@ -59,9 +74,4 @@ const renderHistorySections = (data, loading) => {
   );
 };
 
-export {
-  parseFirebaseText,
-  convertToUnixTimestamp,
-  renderHistoryToolContainer,
-  renderHistorySections,
-};
+export { parseFirebaseText, convertToUnixTimestamp, renderHistorySections };
