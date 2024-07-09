@@ -3,45 +3,19 @@ import Link from 'next/link';
 
 import useFilterByTime from '@/hooks/useFilterByTime';
 
-import HistoryListingContainer from '@/components/HistoryToolListingContainer';
-
 import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
+import { renderHistorySections } from '@/utils/TimeUtils';
+
 const HistoryToolPage = ({ data, loading }) => {
-  const { today, yesterday, previous7Days, previous30Days, monthsBefore } =
-    useFilterByTime(data);
+  const filteredData = useFilterByTime(data);
 
   const renderTitle = () => (
     <Grid {...styles.titleGridProps}>
       <Typography {...styles.titleProps}>Tool History</Typography>
     </Grid>
-  );
-
-  const renderHistoryToolContainer = (category, timeData) => {
-    if (timeData.length === 0) return null;
-
-    return (
-      <HistoryListingContainer
-        key={category}
-        data={timeData}
-        loading={loading}
-        category={category}
-      />
-    );
-  };
-
-  const renderHistorySections = () => (
-    <>
-      {renderHistoryToolContainer('Today', today)}
-      {renderHistoryToolContainer('Yesterday', yesterday)}
-      {renderHistoryToolContainer('Previous 7 days', previous7Days)}
-      {renderHistoryToolContainer('Previous 30 days', previous30Days)}
-      {Object.entries(monthsBefore).map(([month, timeData]) =>
-        renderHistoryToolContainer(month, timeData)
-      )}
-    </>
   );
 
   const renderEmptyMessage = () => (
@@ -58,15 +32,19 @@ const HistoryToolPage = ({ data, loading }) => {
   );
 
   const isHistoryEmpty =
-    today.length === 0 &&
-    yesterday.length === 0 &&
-    previous30Days.length === 0 &&
-    Object.values(monthsBefore).every((timeData) => timeData.length === 0);
+    filteredData.today.length === 0 &&
+    filteredData.yesterday.length === 0 &&
+    filteredData.previous30Days.length === 0 &&
+    Object.values(filteredData.monthsBefore).every(
+      (timeData) => timeData.length === 0
+    );
 
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
-      {isHistoryEmpty ? renderEmptyMessage() : renderHistorySections()}{' '}
+      {isHistoryEmpty
+        ? renderEmptyMessage()
+        : renderHistorySections(filteredData, loading)}
     </Grid>
   );
 };
