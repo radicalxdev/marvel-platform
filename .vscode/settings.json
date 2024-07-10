@@ -3,5 +3,6 @@
     {"pattern": "./functions/*"},
     {"pattern": "./frontend/*"}
   ],
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "files.trimTrailingWhitespace": true
 }

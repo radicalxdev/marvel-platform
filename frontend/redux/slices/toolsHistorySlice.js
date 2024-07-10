@@ -32,6 +32,4 @@ const toolsHistorySlice = createSlice({
   },
 });
 
-export const { resetToolsHistory } = toolsHistorySlice.actions;
-
 export default toolsHistorySlice.reducer;

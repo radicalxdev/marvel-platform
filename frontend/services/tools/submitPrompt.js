@@ -10,7 +10,7 @@ const submitPrompt = async (payload, files, dispatch) => {
     const formData = new FormData();
     formData.append('data', JSON.stringify(payload));
 
-    if (files && files.length > 0) {
+    if (!!files && files?.length > 0) {
       files.forEach((file, index) => {
         formData.append(`file${index}`, file);
       });
