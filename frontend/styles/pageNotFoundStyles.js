@@ -140,6 +140,17 @@ const pageNotFoundStyles = {
       WebkitTextFillColor: 'transparent',
     },
   },
+  midTitleProps: {
+    fontSize: { laptop: '60px', desktop: '80px', desktopMedium: '100px' },
+    fontFamily: 'Ethnocentric Regular Italics',
+    sx: {
+      textShadow: '0px 4px 30px rgba(26, 214, 161, 0.24)',
+      background: (theme) => theme.palette.primary.main,
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      textAlign: 'center',
+    },
+  },
   submitButtonProps: {
     color: 'purple',
     inverted: true,
