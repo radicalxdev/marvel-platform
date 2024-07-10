@@ -12,6 +12,7 @@ import moment from 'moment';
  * - `previous7Days`: Array of items created in the last 7 days.
  * - `previous30Days`: Array of items created in the last 30 days.
  * - `monthsBefore`: An object where each key is a month (e.g., "January 2023") containing an array of items created before the current month.
+ * - `isHistoryEmpty`: Boolean indicating whether all categorized data arrays are empty.
  */
 const useFilterByTime = (data) => {
   const [categorizedData, setCategorizedData] = useState({
@@ -21,6 +22,8 @@ const useFilterByTime = (data) => {
     previous30Days: [],
     monthsBefore: {},
   });
+
+  const [isHistoryEmpty, setIsHistoryEmpty] = useState(true);
 
   useEffect(() => {
     if (data) {
@@ -86,10 +89,17 @@ const useFilterByTime = (data) => {
         previous30Days,
         monthsBefore,
       });
+
+      const historyEmpty =
+        today.length === 0 &&
+        yesterday.length === 0 &&
+        previous30Days.length === 0 &&
+        Object.values(monthsBefore).every((timeData) => timeData.length === 0);
+      setIsHistoryEmpty(historyEmpty);
     }
   }, [data]);
 
-  return categorizedData;
+  return { ...categorizedData, isHistoryEmpty };
 };
 
 export default useFilterByTime;

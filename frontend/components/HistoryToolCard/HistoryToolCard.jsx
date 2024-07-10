@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Button, Card, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 
-import HistoryToolDrawer from '../HistoryToolDrawer/HistoryToolDrawer';
+import HistoryToolDrawer from '../HistoryToolDrawer';
 
 import styles from './styles';
 
@@ -51,10 +51,10 @@ const HistoryToolCard = (props) => {
     <Grid {...styles.contentGridProps}>
       <Typography {...styles.dateProps}>{createdDate}</Typography>
       <Typography {...styles.titleProps}>
-        {title ? truncateString(title, 30) : 'No Name Found'}
+        {title && truncateString(title, 30)}
       </Typography>
       <Typography {...styles.descriptionProps}>
-        {description ? truncateString(description, 50) : ''}
+        {description && truncateString(description, 50)}
       </Typography>
 
       <Button {...styles.previewButtonProps} onClick={toggleDrawer}>

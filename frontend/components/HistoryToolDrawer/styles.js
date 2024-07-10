@@ -19,9 +19,9 @@ const styles = {
         background: '#fff',
         width: '698px',
         p: '20px 40px',
-        overflowY: 'auto', // Ensure vertical scrollbar appears when content exceeds height
+        overflowY: 'auto',
         '&::-webkit-scrollbar': {
-          width: '12px', // Adjust scrollbar width here
+          width: '12px',
         },
         '&::-webkit-scrollbar-track': {
           backgroundColor: '#f1f1f1',
@@ -33,7 +33,7 @@ const styles = {
         '&::-webkit-scrollbar-thumb:hover': {
           backgroundColor: '#555',
         },
-        scrollbarWidth: 'thin', // For Firefox
+        scrollbarWidth: 'thin',
       },
     },
   },
@@ -162,12 +162,11 @@ const styles = {
   flashCardBorderProps: {
     border: '1px solid #ccc',
     borderRadius: '8px',
-    padding: '40px', // Increase padding to make the flash card taller
-    marginBottom: '24px', // Increase margin bottom for spacing between cards
+    padding: '40px',
+    marginBottom: '24px',
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
     width: '100%',
     boxSizing: 'border-box',
-    // Include padding and border in width calculation
   },
   flashCardConceptProps: {
     textAlign: 'center',
@@ -185,7 +184,7 @@ const styles = {
     fontWeight: 400,
     marginTop: '5px',
   },
-  // For HistoryDrawerButtons
+
   mainGridButtonProps: {
     container: true,
     item: true,

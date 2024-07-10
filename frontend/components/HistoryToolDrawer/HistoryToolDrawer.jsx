@@ -63,7 +63,7 @@ const HistoryToolDrawer = (props) => {
           <Typography {...styles.answerKeyTitleProps}>Answer Keys:</Typography>
           <List>
             {multipleChoiceList.map((item, index) => (
-              <React.Fragment key={index}>
+              <Grid key={index}>
                 <Grid>
                   <ListItem>
                     <Typography {...styles.answerKeyValueProps}>{`${
@@ -80,7 +80,7 @@ const HistoryToolDrawer = (props) => {
                     >{`Explanation: ${item.explanation}`}</Typography>
                   </ListItem>
                 </Grid>
-              </React.Fragment>
+              </Grid>
             ))}
           </List>
         </Grid>

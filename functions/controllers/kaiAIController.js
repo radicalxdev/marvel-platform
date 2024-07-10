@@ -253,17 +253,6 @@ app.post('/api/tool/', (req, res) => {
           },
         },
       });
-      logger.log('123131231231313132131');
-      // await createToolSession({
-      //   data: {
-      //     user: otherData.user,
-      //     tool_data: {
-      //       ...otherToolData,
-      //       inputs: modifiedInputs,
-      //     },
-      //     type: otherData.type,
-      //   },
-      // });
       res.status(200).json({ success: true, data: response.data });
     } catch (error) {
       logger.error('Error processing request:', error);
@@ -389,18 +378,6 @@ const createToolSession = onCall(async (props) => {
       .collection('toolSessions')
       .doc(toolSessionId);
     const toolSessionDoc = await toolSessionRef.get();
-    // // Create new tool session if it doesn't exist
-    // const toolSessionRef = await admin
-    //   .firestore()
-    //   .collection('toolSessions')
-    //   .add({
-    //     tool_data: [initialToolData],
-    //     user,
-    //     type,
-    //     messages,
-    //     createdAt: Timestamp.fromMillis(Date.now()),
-    //     updatedAt: Timestamp.fromMillis(Date.now()),
-    //   });
     if (toolSessionDoc.exists) {
       // Update the existing session by replacing the data
       await toolSessionRef.update({

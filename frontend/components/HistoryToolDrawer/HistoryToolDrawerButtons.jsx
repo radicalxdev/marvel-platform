@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
@@ -23,7 +23,6 @@ import {
  * @param {Array} props.flashCards - List of flashcards with concepts and definitions
  * @returns {JSX.Element} HistoryToolButtons component
  */
-
 const HistoryToolButtons = (props) => {
   const { createdDate, title, description, multipleChoiceList, flashCards } =
     props;
