@@ -6,6 +6,8 @@ import {
   InfoOutlined,
   Remove as RemoveIcon,
   Settings,
+  AutoAwesome as AutoAwesomeIcon,
+
 } from '@mui/icons-material';
 import {
   Button,
@@ -49,6 +51,7 @@ import {
 import { firestore } from '@/redux/store';
 import createChatSession from '@/services/chatbot/createChatSession';
 import sendMessage from '@/services/chatbot/sendMessage';
+import DefaultPrompts from './DefaultPrompts'; 
 
 const ChatInterface = () => {
   const messagesContainerRef = useRef();
@@ -348,6 +351,8 @@ const ChatInterface = () => {
     if (!openSettingsChat && !infoChatOpened)
       return (
         <Grid {...styles.bottomChatContent.bottomChatContentGridProps}>
+          {/* Default Prompts Section */}
+          <DefaultPrompts prompts={defaultPrompts} onSelect={handleSelectPrompt} />
           <Grid {...styles.bottomChatContent.chatInputGridProps(!!error)}>
             <TextField
               value={input}
@@ -418,6 +423,18 @@ const ChatInterface = () => {
         ) : null}
       </Paper>
     );
+  };
+
+  //Default prompts
+  const defaultPrompts = [
+    { icon: <AutoAwesomeIcon />, description: 'Suggest interactive ways to learn to code.' },
+    { icon: <AutoAwesomeIcon />, description: 'What books would you recommend for introduction to coding?' },
+    { icon: <AutoAwesomeIcon />, description: 'What are the new things that happened today?' },
+    { icon: <AutoAwesomeIcon />, description: 'Can you teach me new ways to code?' },
+  ];
+
+  const handleSelectPrompt = (prompt) => {
+    dispatch(setInput(prompt.description));
   };
 
   return (
