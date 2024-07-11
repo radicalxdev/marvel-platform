@@ -11,14 +11,6 @@ import { transformToolData } from '@/services/history/transformToolData';
 
 const LOADER_HISTS = new Array(4).fill().map((_, index) => ({ id: index + 1 }));
 
-/**
- * Renders the Tool History Listing Container component.
- *
- * @param {object} props - The props object.
- * @param {Array} props.data - The data to be displayed in the container.
- * @param {boolean} props.loading - The loading state.
- * @returns {JSX.Element} The rendered Tool History Listing Container component.
- */
 const ToolHistoryListingContainer = ({ data, loading }) => {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
   const [selectedCardData, setSelectedCardData] = useState(null);
@@ -57,7 +49,6 @@ const ToolHistoryListingContainer = ({ data, loading }) => {
       <Grid {...styles.innerListGridProps}>
         {data?.[category].map((item) => {
           const transformedData = transformToolData(item);
-
           const { title, content, backgroundImageUrl, logo, creationDate } =
             transformedData;
 
