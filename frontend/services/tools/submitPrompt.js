@@ -2,8 +2,6 @@ import axios from 'axios';
 
 import createToolSession from './createToolSession';
 
-import { fetchToolsHistory } from '@/redux/thunks/toolsHistory';
-
 const submitPrompt = async (payload, files, dispatch) => {
   try {
     const formData = new FormData();
@@ -31,14 +29,10 @@ const submitPrompt = async (payload, files, dispatch) => {
       sessionId: payload.sessionId,
     };
 
-    // Create new tool session and dispatch to update state
     const createdToolSession = await createToolSession(
       toolSessionPayload,
       dispatch
     );
-
-    // Fetch updated tools history to ensure Redux state is up to date
-    await dispatch(fetchToolsHistory({ userId: payload.user.id }));
 
     return response.data?.data;
   } catch (err) {

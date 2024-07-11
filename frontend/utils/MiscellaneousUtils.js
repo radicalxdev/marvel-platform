@@ -1,5 +1,4 @@
 import AVATAR_COLOURS from '@/constants/colours';
-import { ToolCardHandlers } from '@/constants/tools';
 
 /**
  * Generates an SVG string representing a shimmer effect.
