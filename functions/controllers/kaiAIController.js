@@ -362,41 +362,51 @@ const createChatSession = onCall(async (props) => {
 
 const createToolSession = onCall(async (props) => {
   try {
-    const { user, tool_data, type, messages, sessionId } = props.data;
-    if (!user || !tool_data || !type || !messages) {
+    const { user, tool_data, type, outputs, sessionId } = props.data;
+    if (!user || !tool_data || !type || !outputs) {
       logger.log('Missing required fields', props.data);
       throw new HttpsError('invalid-argument', 'Missing required fields');
     }
-
-    const toolSessionId = sessionId || uuidv4();
+    
     const initialToolData = {
       ...tool_data,
       timestamp: Timestamp.fromMillis(Date.now()),
     };
-    const toolSessionRef = admin
-      .firestore()
-      .collection('toolSessions')
-      .doc(toolSessionId);
-    const toolSessionDoc = await toolSessionRef.get();
-    if (toolSessionDoc.exists) {
-      // Update the existing session by replacing the data
-      await toolSessionRef.update({
-        tool_data: [initialToolData],
-        user,
-        type,
-        messages,
-        updatedAt: Timestamp.fromMillis(Date.now()),
-      });
+    let toolSessionRef;
+    let toolSessionId;
+
+    if (sessionId) {
+      toolSessionRef = admin.firestore().collection('toolSessions').doc(sessionId);
+      const toolSessionDoc = await toolSessionRef.get();
+      if (toolSessionDoc.exists) {
+        // Update the existing session by replacing the data
+        await toolSessionRef.update({
+          tool_data: [initialToolData],
+          user,
+          type,
+          outputs,
+          updatedAt: Timestamp.fromMillis(Date.now()),
+        });
+      } else {
+        throw new HttpsError('not-found', 'Session ID does not exist');
+      }
     } else {
       // Create a new session
-      await toolSessionRef.set({
+      toolSessionRef = await admin.firestore().collection('toolSessions').add({
         tool_data: [initialToolData],
         user,
         type,
-        messages,
+        outputs,
         createdAt: Timestamp.fromMillis(Date.now()),
         updatedAt: Timestamp.fromMillis(Date.now()),
       });
+      toolSessionId = toolSessionRef.id;
+      
+      // Update the document to include its ID
+      await toolSessionRef.update({
+        id: toolSessionId,
+      });
+
       logger.log('Created new tool session:', toolSessionId);
     }
 
@@ -405,6 +415,38 @@ const createToolSession = onCall(async (props) => {
       ...updatedToolSession.data(),
       id: updatedToolSession.id,
     };
+    // const toolSessionRef = admin
+    //   .firestore()
+    //   .collection('toolSessions')
+    //   .doc(toolSessionId);
+    // const toolSessionDoc = await toolSessionRef.get();
+    // if (toolSessionDoc.exists) {
+    //   // Update the existing session by replacing the data
+    //   await toolSessionRef.update({
+    //     tool_data: [initialToolData],
+    //     user,
+    //     type,
+    //     messages,
+    //     updatedAt: Timestamp.fromMillis(Date.now()),
+    //   });
+    // } else {
+    //   // Create a new session
+    //   await toolSessionRef.set({
+    //     tool_data: [initialToolData],
+    //     user,
+    //     type,
+    //     messages,
+    //     createdAt: Timestamp.fromMillis(Date.now()),
+    //     updatedAt: Timestamp.fromMillis(Date.now()),
+    //   });
+    //   logger.log('Created new tool session:', toolSessionId);
+    // }
+
+    // const updatedToolSession = await toolSessionRef.get();
+    // const createdToolSession = {
+    //   ...updatedToolSession.data(),
+    //   id: updatedToolSession.id,
+    // };
 
     logger.log(
       'Successfully created or updated tool session:',

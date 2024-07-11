@@ -28,7 +28,7 @@ const submitPrompt = async (payload, files, dispatch) => {
       user: payload.user,
       tool_data: { ...payload.tool_data },
       type: payload.type,
-      messages: response.data,
+      outputs: response.data,
       sessionId: payload.sessionId,
     };
 

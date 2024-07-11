@@ -31,12 +31,12 @@ const loadState = () => {
   }
 };
 
-// // Connect to Firebase Emulators if running locally
-// if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-//   connectAuthEmulator(auth, 'http://localhost:9099');
-//   connectFirestoreEmulator(firestore, 'localhost', 8080);
-//   connectFunctionsEmulator(functions, 'localhost', 5001);
-// }
+// Connect to Firebase Emulators if running locally
+if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+  connectAuthEmulator(auth, 'http://localhost:9099');
+  connectFirestoreEmulator(firestore, 'localhost', 8080);
+  connectFunctionsEmulator(functions, 'localhost', 5001);
+}
 
 const store = configureStore({
   reducer: {
