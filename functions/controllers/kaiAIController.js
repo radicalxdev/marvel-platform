@@ -415,38 +415,6 @@ const createToolSession = onCall(async (props) => {
       ...updatedToolSession.data(),
       id: updatedToolSession.id,
     };
-    // const toolSessionRef = admin
-    //   .firestore()
-    //   .collection('toolSessions')
-    //   .doc(toolSessionId);
-    // const toolSessionDoc = await toolSessionRef.get();
-    // if (toolSessionDoc.exists) {
-    //   // Update the existing session by replacing the data
-    //   await toolSessionRef.update({
-    //     tool_data: [initialToolData],
-    //     user,
-    //     type,
-    //     messages,
-    //     updatedAt: Timestamp.fromMillis(Date.now()),
-    //   });
-    // } else {
-    //   // Create a new session
-    //   await toolSessionRef.set({
-    //     tool_data: [initialToolData],
-    //     user,
-    //     type,
-    //     messages,
-    //     createdAt: Timestamp.fromMillis(Date.now()),
-    //     updatedAt: Timestamp.fromMillis(Date.now()),
-    //   });
-    //   logger.log('Created new tool session:', toolSessionId);
-    // }
-
-    // const updatedToolSession = await toolSessionRef.get();
-    // const createdToolSession = {
-    //   ...updatedToolSession.data(),
-    //   id: updatedToolSession.id,
-    // };
 
     logger.log(
       'Successfully created or updated tool session:',
@@ -462,42 +430,9 @@ const createToolSession = onCall(async (props) => {
   }
 });
 
-const fetchUserHistoryData = onCall(async (props) => {
-  try {
-    const { userId } = props.data;
-
-    if (!userId) {
-      throw new HttpsError(
-        'invalid-argument',
-        'Missing required field: userId'
-      );
-    }
-
-    const historyCollection = admin.firestore().collection('toolSessions');
-    const snapshot = await historyCollection
-      .where('user.id', '==', userId)
-      .get();
-
-    if (snapshot.empty) {
-      return { data: [] };
-    }
-
-    const historyData = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    return { data: historyData };
-  } catch (error) {
-    functions.logger.error('Error fetching history data:', error);
-    throw new HttpsError('internal', error.message);
-  }
-});
-
 module.exports = {
   chat,
   tool: https.onRequest(app),
   createChatSession,
   createToolSession,
-  fetchUserHistoryData,
 };
