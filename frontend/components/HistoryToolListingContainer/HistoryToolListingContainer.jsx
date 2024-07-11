@@ -1,28 +1,16 @@
-import React from 'react';
-
 import { Grid, Typography } from '@mui/material';
+import moment from 'moment';
+
+import { getToolCardData } from '@/constants/tools';
 
 import HistoryToolCard, { HistoryToolCardSkeleton } from '../HistoryToolCard';
 
 import styles from './styles';
 
-import { getToolCardData } from '@/utils/MiscellaneousUtils';
-
 const DEFAULT_HISTORY = new Array(4)
   .fill()
   .map((_, index) => ({ id: index + 1 }));
 
-/**
- * Renders a container displaying a list of historical tool cards,
- * including title, cards, and loader based on data loading state.
- *
- * @component
- * @param {Object} props - React props
- * @param {Array} props.data - Array of historical tool data
- * @param {string} props.category - Category title for the tool list
- * @param {boolean} props.loading - Loading state indicator
- * @returns {JSX.Element} Rendered history tool listing container
- */
 const HistoryToolListingContainer = (props) => {
   const { data, loading, category } = props;
 
@@ -51,7 +39,9 @@ const HistoryToolListingContainer = (props) => {
               key={index}
               title={title}
               description={item.description}
-              createdDate={item.createdDate}
+              createdDate={moment
+                .unix(item.createdAt.seconds)
+                .format('MM/DD/YYYY')}
               backgroundImgURL={backgroundImgURL}
               logo={logo}
               multipleChoiceList={multipleChoiceList}
@@ -66,7 +56,7 @@ const HistoryToolListingContainer = (props) => {
   const renderLoader = () => (
     <Grid {...styles.containerGridProps}>
       <Grid {...styles.innerListGridProps}>
-        {DEFAULT_HISTORY?.map((tool) => (
+        {DEFAULT_HISTORY.map((tool) => (
           <HistoryToolCardSkeleton key={tool.id} />
         ))}
       </Grid>

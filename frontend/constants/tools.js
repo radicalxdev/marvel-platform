@@ -9,7 +9,7 @@ const ToolCardHandlers = {
       (input) => input.name === 'topic'
     );
     const title = topicInput ? topicInput.value : 'N/A';
-    const multipleChoiceList = item.messages?.data?.data;
+    const multipleChoiceList = item.outputs?.data?.data;
     const backgroundImgURL =
       'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Quizify.png?alt=media&token=d1255f27-b1a1-444e-b96a-4a3ac559237d';
     const logo =
@@ -27,7 +27,7 @@ const ToolCardHandlers = {
       (input) => input.name === 'youtube_url'
     );
     const title = youtubeUrlInput ? youtubeUrlInput.value : 'N/A';
-    const flashCards = item.messages?.data?.data;
+    const flashCards = item.outputs?.data?.data;
     const backgroundImgURL =
       'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080';
     const logo =
@@ -49,4 +49,18 @@ const ToolCardHandlers = {
   }),
 };
 
-export { TOOLS_ID, ToolCardHandlers };
+/**
+ * Retrieves and processes tool card data based on the provided item using predefined ToolCard Handlers.
+ *
+ * @param {Object} item - The item containing tool data.
+ * @returns {Object} Processed tool card data.
+ */
+const getToolCardData = (item) => {
+  const toolId = item.tool_data?.[0]?.tool_id;
+
+  const handler = ToolCardHandlers[toolId] || ToolCardHandlers.default;
+
+  return handler(item);
+};
+
+export { TOOLS_ID, ToolCardHandlers, getToolCardData };

@@ -9,7 +9,7 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const busboy = require('busboy');
 const app = express();
-const functions = require('firebase-functions');
+
 const DEBUG = process.env.DEBUG;
 
 /**
@@ -367,7 +367,7 @@ const createToolSession = onCall(async (props) => {
       logger.log('Missing required fields', props.data);
       throw new HttpsError('invalid-argument', 'Missing required fields');
     }
-    
+
     const initialToolData = {
       ...tool_data,
       timestamp: Timestamp.fromMillis(Date.now()),
@@ -376,7 +376,10 @@ const createToolSession = onCall(async (props) => {
     let toolSessionId;
 
     if (sessionId) {
-      toolSessionRef = admin.firestore().collection('toolSessions').doc(sessionId);
+      toolSessionRef = admin
+        .firestore()
+        .collection('toolSessions')
+        .doc(sessionId);
       const toolSessionDoc = await toolSessionRef.get();
       if (toolSessionDoc.exists) {
         // Update the existing session by replacing the data
@@ -392,16 +395,19 @@ const createToolSession = onCall(async (props) => {
       }
     } else {
       // Create a new session
-      toolSessionRef = await admin.firestore().collection('toolSessions').add({
-        tool_data: [initialToolData],
-        user,
-        type,
-        outputs,
-        createdAt: Timestamp.fromMillis(Date.now()),
-        updatedAt: Timestamp.fromMillis(Date.now()),
-      });
+      toolSessionRef = await admin
+        .firestore()
+        .collection('toolSessions')
+        .add({
+          tool_data: [initialToolData],
+          user,
+          type,
+          outputs,
+          createdAt: Timestamp.fromMillis(Date.now()),
+          updatedAt: Timestamp.fromMillis(Date.now()),
+        });
       toolSessionId = toolSessionRef.id;
-      
+
       // Update the document to include its ID
       await toolSessionRef.update({
         id: toolSessionId,

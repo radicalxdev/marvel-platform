@@ -1,48 +1,30 @@
-// import { createAsyncThunk } from '@reduxjs/toolkit';
-// import { httpsCallable } from 'firebase/functions';
-
-// import { functions } from '@/redux/store';
-
-// const fetchToolsHistory = createAsyncThunk(
-//   'toolsHistory/fetch',
-//   async (_, { getState }) => {
-//     const {
-//       user: { data: userData },
-//     } = getState();
-
-//     if (!userData?.id) {
-//       throw new Error('User ID is not available in the state.');
-//     }
-
-//     try {
-//       const fetchHistory = httpsCallable(functions, 'fetchUserHistoryData');
-//       const response = await fetchHistory({ userId: userData.id });
-
-//       return response.data;
-//     } catch (error) {
-//       throw new Error(error.message || 'Failed to fetch tools history.');
-//     }
-//   }
-// );
-
-// export default fetchToolsHistory;
-
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { getFirestore } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore';
 
-const fetchToolsHistory = createAsyncThunk(
+import {
+  setToolsHistory,
+  setToolsHistoryError,
+} from '@/redux/slices/toolsHistorySlice';
+
+export const fetchToolsHistory = createAsyncThunk(
   'toolsHistory/fetch',
   async (_, { getState }) => {
-    const state = getState();
-    const { userId } = state.user.data;
-
-    if (!userId) {
-      throw new Error('User ID is not available in the state.');
-    }
-
     try {
-      const firestore = getFirestore(); // Get Firestore instance
+      const { user } = getState();
+
+      if (!user || !user.data || !user.data.id) {
+        throw new Error('User ID is not available in the state.');
+      }
+
+      const userId = user.data.id;
+      const firestore = getFirestore();
       const toolSessionsQuery = query(
         collection(firestore, 'toolSessions'),
         where('user.id', '==', userId)
@@ -50,18 +32,52 @@ const fetchToolsHistory = createAsyncThunk(
 
       const toolSessionsSnapshot = await getDocs(toolSessionsQuery);
 
-      if (toolSessionsSnapshot.empty) return { data: [] };
+      if (toolSessionsSnapshot.empty) {
+        return null;
+      }
 
       const toolSessions = toolSessionsSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      return { data: toolSessions };
+      return toolSessions;
     } catch (error) {
       throw new Error(error.message || 'Failed to fetch tools history.');
     }
   }
 );
 
-export default fetchToolsHistory;
+export const listenToToolsHistory = () => async (dispatch, getState) => {
+  try {
+    const { user } = getState();
+
+    if (!user || !user.data || !user.data.id) {
+      throw new Error('User ID is not available in the state.');
+    }
+
+    const userId = user.data.id;
+    const firestore = getFirestore();
+    const toolSessionsQuery = query(
+      collection(firestore, 'toolSessions'),
+      where('user.id', '==', userId)
+    );
+
+    return onSnapshot(
+      toolSessionsQuery,
+      (snapshot) => {
+        const toolSessions = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        dispatch(setToolsHistory(toolSessions));
+      },
+      (error) => {
+        dispatch(setToolsHistoryError(error.message));
+      }
+    );
+  } catch (error) {
+    dispatch(setToolsHistoryError(error.message));
+    return null;
+  }
+};

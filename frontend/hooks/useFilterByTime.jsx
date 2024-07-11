@@ -2,18 +2,15 @@ import { useEffect, useState } from 'react';
 
 import moment from 'moment';
 
-/**
- * Custom React hook to categorize data based on creation dates into different time periods.
- *
- * @param {Array} data The array of data items to categorize, where each item should have a `createdAt` field.
- * @returns {Object} An object containing categorized data:
- * - `today`: Array of items created today.
- * - `yesterday`: Array of items created yesterday.
- * - `previous7Days`: Array of items created in the last 7 days.
- * - `previous30Days`: Array of items created in the last 30 days.
- * - `monthsBefore`: An object where each key is a month (e.g., "January 2023") containing an array of items created before the current month.
- * - `isHistoryEmpty`: Boolean indicating whether all categorized data arrays are empty.
- */
+const findIndexToInsert = (array, item, createdAt) => {
+  for (let i = 0; i < array.length; i += 1) {
+    if (moment(array[i].createdAt).isBefore(createdAt)) {
+      return i;
+    }
+  }
+  return array.length;
+};
+
 const useFilterByTime = (data) => {
   const [categorizedData, setCategorizedData] = useState({
     today: [],
@@ -47,23 +44,17 @@ const useFilterByTime = (data) => {
       const startOfThisMonth = now.clone().startOf('month');
 
       data.forEach((item) => {
-        // Convert Firestore timestamp to Moment.js object (if available)
-        const createdAt =
-          item.createdAt && moment.unix(item.createdAt._seconds); // eslint-disable-line no-underscore-dangle
-
+        const createdAt = item.createdAt && moment.unix(item.createdAt.seconds); // Correctly access seconds
         if (!createdAt) return;
 
-        const formattedDate = createdAt.format('MM/DD/YYYY');
-        const newItem = { ...item, createdDate: formattedDate };
-
         if (createdAt.isSame(startOfToday, 'day')) {
-          today.push(newItem);
+          today.push(item);
         } else if (createdAt.isSame(startOfYesterday, 'day')) {
-          yesterday.push(newItem);
+          yesterday.push(item);
         } else if (
           createdAt.isBetween(startOfPrevious7Days, startOfToday, 'day', '[]')
         ) {
-          previous7Days.push(newItem);
+          previous7Days.push(item);
         } else if (
           createdAt.isBetween(
             startOfPrevious30Days,
@@ -72,14 +63,30 @@ const useFilterByTime = (data) => {
             '[]'
           )
         ) {
-          previous30Days.push(newItem);
+          previous30Days.push(item);
         } else if (createdAt.isBefore(startOfThisMonth, 'day')) {
           const monthKey = createdAt.format('MMMM YYYY');
           if (!monthsBefore[monthKey]) {
             monthsBefore[monthKey] = [];
           }
-          monthsBefore[monthKey].push(newItem);
+          const index = findIndexToInsert(
+            monthsBefore[monthKey],
+            item,
+            createdAt
+          );
+          monthsBefore[monthKey].splice(index, 0, item);
         }
+      });
+
+      const sortedMonthsBefore = Object.keys(monthsBefore).sort((a, b) => {
+        return (
+          moment(b, 'MMMM YYYY').valueOf() - moment(a, 'MMMM YYYY').valueOf()
+        );
+      });
+
+      const sortedMonthsBeforeData = {};
+      sortedMonthsBefore.forEach((monthKey) => {
+        sortedMonthsBeforeData[monthKey] = monthsBefore[monthKey];
       });
 
       setCategorizedData({
@@ -87,12 +94,13 @@ const useFilterByTime = (data) => {
         yesterday,
         previous7Days,
         previous30Days,
-        monthsBefore,
+        monthsBefore: sortedMonthsBeforeData,
       });
 
       const historyEmpty =
         today.length === 0 &&
         yesterday.length === 0 &&
+        previous7Days.length === 0 &&
         previous30Days.length === 0 &&
         Object.values(monthsBefore).every((timeData) => timeData.length === 0);
       setIsHistoryEmpty(historyEmpty);

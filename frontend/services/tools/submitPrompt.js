@@ -2,8 +2,7 @@ import axios from 'axios';
 
 import createToolSession from './createToolSession';
 
-import store from '@/redux/store';
-import fetchToolsHistory from '@/redux/thunks/toolsHistory';
+import { fetchToolsHistory } from '@/redux/thunks/toolsHistory';
 
 const submitPrompt = async (payload, files, dispatch) => {
   try {
@@ -32,25 +31,18 @@ const submitPrompt = async (payload, files, dispatch) => {
       sessionId: payload.sessionId,
     };
 
+    // Create new tool session and dispatch to update state
     const createdToolSession = await createToolSession(
       toolSessionPayload,
       dispatch
     );
 
-    const historyData = await dispatch(
-      fetchToolsHistory({ userId: payload.user.id })
-    );
-
-    const state = store.getState().toolsHistory;
-    const updatedData = [...state.data, createdToolSession];
-    const updatedState = { ...state, data: updatedData };
-
-    localStorage.setItem('toolsHistory', JSON.stringify(updatedState));
+    // Fetch updated tools history to ensure Redux state is up to date
+    await dispatch(fetchToolsHistory({ userId: payload.user.id }));
 
     return response.data?.data;
   } catch (err) {
     const { response } = err;
-
     throw new Error(
       response?.data?.message || `Error: could not send prompt, ${err}`
     );
