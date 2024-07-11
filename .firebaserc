@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "test4-2a3ef"
+    "default": "test-24a6d"
   },
   "targets": {
-    "test4-2a3ef": {
+    "test-24a6d": {
       "hosting": {
         "next": [
-          "test4-2a3ef"
+          "test-24a6d"
         ]
       }
     }
