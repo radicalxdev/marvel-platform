@@ -35,8 +35,8 @@ const kaiCommunicator = async (payload) => {
     const { messages, user, tool_data, type } = payload.data;
 
     const isToolCommunicator = type === BOT_TYPE.TOOL;
-    const KAI_API_KEY = process.env.KAI_API_KEY;
-    const KAI_ENDPOINT = process.env.KAI_ENDPOINT;
+    const KAI_API_KEY = 'AIzaSyBT0cxIrvcSUL8Ylfmrt8gra9BYb_K20kE';
+    const KAI_ENDPOINT = 'https://kai-ai-f63c8.wl.r.appspot.com/submit-tool';
 
     DEBUG &&
       logger.log(
@@ -262,6 +262,7 @@ app.post('/api/tool/', (req, res) => {
         response: response.data.data,
         tool_id: otherToolData.tool_id,
         topic,
+        userID: otherData.user.id,
       });
 
       res.status(200).json({ success: true, data: response.data });
@@ -276,6 +277,7 @@ app.post('/api/tool/', (req, res) => {
 /**
  * Save the tool session response to Firestore
  * @param {object} sessionData - The data to be saved to Firestore
+ * @param {string} userId - The ID of the user
  */
 const saveResponseToFirestore = async (sessionData) => {
   try {
