@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-function categorizeDate(creationDate, currentDate) {
+const categorizeDate = (creationDate, currentDate) => {
   // Remove time part from dates for comparison using moment
   const todayDateOnly = moment(currentDate).startOf('day');
   const creationDateOnly = moment(creationDate).startOf('day');
@@ -28,9 +28,9 @@ function categorizeDate(creationDate, currentDate) {
     return 'Year';
   }
   return 'Older';
-}
+};
 
-export function categorizeDataByDate(data) {
+export const categorizeDataByDate = (data) => {
   if (!data) return null;
   const newHistoryOutput = {
     Week: [],
@@ -50,4 +50,4 @@ export function categorizeDataByDate(data) {
   });
 
   return newHistoryOutput;
-}
+};

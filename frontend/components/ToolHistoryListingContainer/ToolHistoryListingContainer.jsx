@@ -47,19 +47,13 @@ const ToolHistoryListingContainer = ({ data, loading }) => {
   const renderCards = ({ category }) => (
     <Grid {...styles.containerGridProps}>
       <Grid {...styles.innerListGridProps}>
-        {data?.[category].map((item) => {
+        {data?.[category]?.map((item) => {
           const transformedData = transformToolData(item);
-          const { title, content, backgroundImageUrl, logo, creationDate } =
-            transformedData;
 
           return (
             <ToolHistoryCard
               key={item.id}
-              title={title}
-              content={content}
-              backgroundImageUrl={backgroundImageUrl}
-              logo={logo}
-              creationDate={creationDate}
+              {...transformedData}
               onOpen={() => handleOpenSidebar(transformedData)}
             />
           );

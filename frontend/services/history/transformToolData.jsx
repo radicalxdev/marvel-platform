@@ -8,7 +8,13 @@ import { TOOL_IDS } from '@/constants/tool_IDs';
  * @param {Object} param0 - An object containing topic, response, createdAt, and tool_id.
  * @returns {Object} - Transformed tool data including toolId, response, creationDate, title, content, backgroundImageUrl, and logo.
  */
-export const transformToolData = ({ topic, response, createdAt, tool_id }) => {
+export const transformToolData = ({
+  topic,
+  response,
+  createdAt,
+  tool_id,
+  description,
+}) => {
   const transformedDate = moment(createdAt.seconds * 1000)
     .toDate()
     .toLocaleDateString();
@@ -34,7 +40,7 @@ export const transformToolData = ({ topic, response, createdAt, tool_id }) => {
       }
 
       title = `Flashcards on ${primaryConcept} and More`;
-      content = `Includes concepts like ${notableConcepts}`;
+      content = description || `Includes concepts like ${notableConcepts}`; // if description is a prop in the future
       backgroundImageUrl =
         'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080';
       logo =
@@ -43,7 +49,7 @@ export const transformToolData = ({ topic, response, createdAt, tool_id }) => {
     }
     case TOOL_IDS.MCQ: {
       title = `Multiple Choice Assessment - ${topic}`;
-      content = `Multiple Choice Questions taken from ${topic}`;
+      content = description || `Multiple Choice Questions taken from ${topic}`; // if description is a prop in the future
       backgroundImageUrl =
         'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Quizify.png?alt=media&token=d1255f27-b1a1-444e-b96a-4a3ac559237d';
       logo =
