@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { firestore } from '@/redux/store';
-import { fetchToolHistory } from '@/redux/thunks/toolHistory';
+import {
+  fetchToolHistory,
+  listenToToolHistory,
+} from '@/redux/thunks/toolHistory';
 import { categorizeDataByDate } from '@/utils/DateUtils';
 
 const useToolHistoryProps = () => {
@@ -11,8 +13,18 @@ const useToolHistoryProps = () => {
   const { data, loading, error } = useSelector((state) => state.toolHistory);
 
   useEffect(() => {
-    // Dispatch the thunk to fetch output history data
-    if (!data) dispatch(fetchToolHistory({ firestore }));
+    // Dispatch the thunk to fetch tool history data
+    if (!data) {
+      dispatch(fetchToolHistory());
+    }
+
+    // Set up a listener to update the tool history in real-time
+    const unsubscribe = dispatch(listenToToolHistory());
+
+    // Clean up the listener on component unmount
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [dispatch, data]);
 
   // Categorize the data after it is fetched
