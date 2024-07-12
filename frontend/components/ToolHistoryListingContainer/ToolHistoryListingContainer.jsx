@@ -7,7 +7,7 @@ import ToolOutputHistoryDrawer from '../ToolOutputHistoryDrawer/ToolOutputHistor
 
 import styles from './styles';
 
-import { transformToolData } from '@/services/history/transformToolData';
+import { transformToolData } from '@/services/toolHistory/transformToolData';
 
 const LOADER_HISTS = new Array(4).fill().map((_, index) => ({ id: index + 1 }));
 

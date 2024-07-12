@@ -4,9 +4,9 @@ import moment from 'moment';
 
 import styles from './styles';
 
-import { copyToClipboard } from '@/services/history/copy';
-import { exportToCSV } from '@/services/history/export';
-import getToolRenderer from '@/services/history/getToolRenderer';
+import { copyToClipboard } from '@/services/toolHistory/copy';
+import { exportToCSV } from '@/services/toolHistory/export';
+import getToolRenderer from '@/services/toolHistory/getToolRenderer';
 
 const DEFAULT_DATA = {
   title: 'Default Title',
