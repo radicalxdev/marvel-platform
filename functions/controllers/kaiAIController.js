@@ -35,8 +35,8 @@ const kaiCommunicator = async (payload) => {
     const { messages, user, tool_data, type } = payload.data;
 
     const isToolCommunicator = type === BOT_TYPE.TOOL;
-    const KAI_API_KEY = process.env.KAI_API_KEY;
-    const KAI_ENDPOINT = process.env.KAI_ENDPOINT;
+    const KAI_API_KEY = 'AIzaSyBT0cxIrvcSUL8Ylfmrt8gra9BYb_K20kE';
+    const KAI_ENDPOINT = 'https://kai-ai-f63c8.wl.r.appspot.com/submit-tool';
 
     DEBUG &&
       logger.log(
