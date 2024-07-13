@@ -7,8 +7,11 @@ const styles = {
     sx: {
       backgroundColor: '#FFFFFF',
       display: 'flex',
+      height: '100%',
       flexDirection: 'column',
+      justifyContent: 'space-around',
       padding: '5%',
+      overflow: 'auto',
     },
   },
   headerProps: {
@@ -20,10 +23,13 @@ const styles = {
     anchor: 'right',
     sx: {
       width: '550px',
+      height: '100%',
       flexShrink: 0,
       '& .MuiDrawer-paper': {
         width: '550px',
+        height: '100%',
         boxSizing: 'border-box',
+        overflow: 'auto',
       },
     },
   },

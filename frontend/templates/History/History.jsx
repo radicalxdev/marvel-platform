@@ -34,17 +34,20 @@ const HistoryInterface = (props) => {
     );
   };
   const renderForm = () => {
-    return (
-      <Typography {...styles.sectionHeaderProps}>
-        This Week ({data != null ? data.length : 0})
-      </Typography>
-    );
+    if (!data || data.length === 0) {
+      return (
+        <Typography {...styles.sectionHeaderProps}>
+          No history exists
+        </Typography>
+      );
+    }
+
+    return <HistoryListing data={data} />;
   };
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
       {loading ? <ToolCardSkeleton /> : renderForm()}
-      <HistoryListing data={data} />
     </Grid>
   );
 };

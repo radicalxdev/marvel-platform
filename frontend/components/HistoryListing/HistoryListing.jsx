@@ -4,6 +4,8 @@ import { Grid } from '@mui/material';
 
 import HistoryCard from '../HistoryCard';
 
+import { convertToUnixTimestamp } from '@/utils/FirebaseUtils';
+
 /**
  * Component for rendering a listing of history cards in a grid layout.
  *
@@ -30,8 +32,8 @@ const HistoryListing = (props) => {
 
     const sortedArray = [...data].sort((a, b) => {
       if (property === 'createdAt') {
-        const dateA = new Date(a.createdAt);
-        const dateB = new Date(b.createdAt);
+        const dateA = convertToUnixTimestamp(a.createdAt);
+        const dateB = convertToUnixTimestamp(b.createdAt);
         return isAsc ? dateA - dateB : dateB - dateA;
       }
       if (a[property] < b[property]) return isAsc ? -1 : 1;
@@ -53,13 +55,7 @@ const HistoryListing = (props) => {
         sortedData.map((item, index) => (
           <Grid item key={index} xs={12} sm={6} md={4}>
             <HistoryCard
-              title={item.title}
-              description={item.description}
-              createdAt={item.createdAt}
-              backgroundImgURL={item.backgroundImgURL}
-              logo={item.logo}
-              toolId={item.toolId}
-              questions={item.questions}
+              cardData={item}
               onSortByTitle={handleSortByTitle}
               onSortByDate={handleSortByDate}
               onSortByDescription={handleSortByDescription}

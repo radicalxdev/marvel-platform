@@ -1,15 +1,9 @@
 import CloseIcon from '@mui/icons-material/Close';
 
-import {
-  Drawer,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  ListSubheader,
-  Typography,
-} from '@mui/material';
+import { Drawer, Grid, IconButton, Typography } from '@mui/material';
+
+import MultipleChoicePreview from './MultipleChoicePreview';
+import FlashCardPreview from './FlashCardPreview';
 
 import styles from './styles';
 
@@ -35,7 +29,7 @@ const HistoryPreview = (props) => {
     title,
     description,
     toolId,
-    questions,
+    outputs,
   } = props;
 
   /**
@@ -53,60 +47,15 @@ const HistoryPreview = (props) => {
     );
   };
 
-  /**
-   * Function to render the question details section of the history preview, including the category and list of questions with possible answers.
-   *
-   * @return {JSX.Element} Rendered question details component
-   */
-  const renderQuestionDetails = () => {
-    return (
-      <List>
-        <ListSubheader {...styles.listSubHeaderProps}>{title}</ListSubheader>
-        {questions.map((item, index) => (
-          <ListItem key={toolId} {...styles.listContentProps}>
-            <ListItemText
-              primary={`${index + 1}. ${item.question}`}
-              {...styles.listTextProps}
-            />
-            <List>
-              {item.possibleAnswers.map((answer, i) => (
-                <ListItem key={i}>
-                  <ListItemText
-                    primary={`${String.fromCharCode(97 + i)}. ${answer}`}
-                    {...styles.subListTextProps}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </ListItem>
-        ))}
-      </List>
-    );
-  };
-
-  /**
-   * Function to render the answer details section of the history preview, including the answer key.
-   *
-   * @return {JSX.Element} Rendered answer details component
-   */
-  const renderAnswerDetails = () => {
-    return (
-      <Grid>
-        <List>
-          <ListSubheader {...styles.listSubHeaderProps}>
-            Answer Key
-          </ListSubheader>
-          {questions.map((item, index) => (
-            <ListItem key={toolId}>
-              <ListItemText
-                primary={`${index + 1}. ${item.correctAnswer}`}
-                {...styles.subListTextProps}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </Grid>
-    );
+  const renderPreview = () => {
+    switch (toolId) {
+      case '0':
+        return <MultipleChoicePreview outputs={outputs} />;
+      case '1':
+        return <FlashCardPreview outputs={outputs} />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -118,8 +67,7 @@ const HistoryPreview = (props) => {
         <Drawer {...styles.drawerProps} open={open} onClose={togglePreview}>
           <Grid {...styles.previewContainerProps}>
             <Grid>{renderHeader()}</Grid>
-            <Grid>{renderQuestionDetails()}</Grid>
-            <Grid>{renderAnswerDetails()}</Grid>
+            <Grid>{renderPreview()}</Grid>
           </Grid>
         </Drawer>
       </Grid>
