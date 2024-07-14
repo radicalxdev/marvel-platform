@@ -26,6 +26,8 @@ import { auth } from '@/redux/store';
 
 import AUTH_REGEX from '@/regex/auth';
 
+import { SuccessNotification, ErrorNotification } from '@/components/Notification';
+
 const DEFAULT_FORM_VALUES = {
   email: '',
   password: '',
