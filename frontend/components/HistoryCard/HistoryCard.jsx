@@ -47,7 +47,7 @@ const HistoryCard = (props) => {
       switch (toolId) {
         case '0':
           title = inputs.topic;
-          description = `A ${inputs.num_questions} question Multiple Choice Quiz about the topic: ${title}`;
+          description = `${inputs.num_questions} Multiple Choice questions about the topic: ${title}`;
           backgroundImgURL =
             'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Quizify.png?alt=media&token=d1255f27-b1a1-444e-b96a-4a3ac559237d';
           logoURL =
@@ -56,7 +56,7 @@ const HistoryCard = (props) => {
         case '1':
           try {
             title = await fetchYoutubeTitle(inputs.youtubeUrl);
-            description = `A set of Flashcards about the youtube video: ${title}`;
+            description = `Set of Flashcards about the youtube video: ${title}`;
             backgroundImgURL =
               'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080';
             logoURL =
