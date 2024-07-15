@@ -1,13 +1,12 @@
 {
   "projects": {
-    "default": "kainotifs", 
-    "test": "kainotifs"
+    "default": "kai-ai-f63c8"
   },
   "targets": {
-    "kainotifs": {
+    "kai-ai-f63c8": {
       "hosting": {
         "next": [
-          "kainotifs"
+          "kai-ai-f63c8"
         ]
       }
     }
