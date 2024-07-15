@@ -64,13 +64,6 @@ const styles = {
       },
     }),
   },
-  notificationGridProps: {
-    container: true,
-    item: true,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   externalAuthButtonConfig: {
     variant: 'contained',
     size: 'large',

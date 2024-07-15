@@ -27,8 +27,11 @@ import { auth } from '@/redux/store';
 import AUTH_REGEX from '@/regex/auth';
 
 import { SuccessNotification, ErrorNotification } from '@/components/Notification';
-import { Snackbar, Button } from '@mui/material';
 import { Box } from '@mui/system';
+import React from 'react';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { Snackbar, Alert, Button } from '@mui/material';
 
 const DEFAULT_FORM_VALUES = {
   email: '',
@@ -158,31 +161,83 @@ const SignInForm = (props) => {
       />
     );
   };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenError(false);
+  };
   
   const renderErrorNotification = () => {
+    const action = (
+      <React.Fragment>
+        <IconButton
+          size="small"
+          aria-label="close"
+          color="inherit"
+          onClick={handleClose}
+        >
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </React.Fragment>
+    );
+
     return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-      >
-      <Grid item >
+      <>
       {openError && <Snackbar
-        open={true}
-        autoHideDuration={6000}
-        message="I love snacks"
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        sx={{
-          width: '10%',
-          top: '50px',
-          position: 'absolute',
-          right: 0,
-        }}
-      />}
-      </Grid>
-      </Grid>
+            open={true}
+            autoHideDuration={6000}
+            // message="Login with Google Failed!"
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            action={action}
+            style={{
+              position: 'absolute',
+              top: '7%',
+              // height: '200px',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '100%', // Adjust the max-width as needed
+              opacity: '1',
+              // boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.35)', // Adjust blur and transparency here
+
+              
+              // maxWidth: '50%', // Adjust the max-width as needed
+              // minWidth: '100px', // Adjust the min-width as needed
+            }}
+          >
+              <Alert
+              onClose={handleClose}
+              severity="error"
+              variant="filled"
+              // sx={{ width: '800px' }}
+              style={{
+                backgroundColor: '#3D252B',
+                color: '#FE6167', // Text color
+                padding: '12px, 20px, 12px, 20px',
+                borderRadius: '8px',
+                height: '95px',
+                fontSize: '16px',
+                fontFamily: 'Satoshi, sans-serif', // Using Satoshi for the main message
+                border: '1px solid #FE6167', // Border color and width
+                backgroundColor: 'rgba(211, 47, 47, 0.3)', // Semi-transparent background color
+                
+                // backgroundColor: 'rgba(255, 255, 255, 0.336)', // Background color with opacity
+
+                // backdropFilter: 'blur(10px)', // Adjust blur intensity as needed
+                // backgroundColor: 'rgba(255, 255, 255, 0.336)', // Background color with opacity
+              }}
+            >
+              <strong style={{ fontSize: '18px', fontFamily: 'Satoshi Bold, sans-serif', marginBottom: '8px'}}>
+                Login with Google Failed!
+              </strong> <br />
+              This account is not registered to a Radical account. <br />
+              <strong>Create an account</strong> to continue.
+            </Alert>
+            </Snackbar>
+      }
+      </>
     );
   }
 
