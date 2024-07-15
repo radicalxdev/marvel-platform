@@ -150,7 +150,13 @@ const SignUpForm = (props) => {
         setEmail(email.value);
         handleSwitch();
       } catch (err) {
-        handleOpenSnackBar(ALERT_COLORS.ERROR, err.message);
+        handleOpenSnackBar(
+          ALERT_COLORS.ERROR,
+          err.message,
+          'Sign Up Failed!',
+          'top',
+          'center'
+        );
       } finally {
         setLoading(false);
       }
