@@ -27,6 +27,8 @@ import { auth } from '@/redux/store';
 import AUTH_REGEX from '@/regex/auth';
 
 import { SuccessNotification, ErrorNotification } from '@/components/Notification';
+import { Snackbar, Button } from '@mui/material';
+import { Box } from '@mui/system';
 
 const DEFAULT_FORM_VALUES = {
   email: '',
@@ -53,6 +55,7 @@ const SignInForm = (props) => {
   const [error, setError] = useState(DEFAULT_ERR_STATE);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [openError, setOpenError] = useState(false);
 
   const { handleOpenSnackBar } = useContext(AuthContext);
 
@@ -101,6 +104,7 @@ const SignInForm = (props) => {
       dispatch(setLoading(true));
       router.push(ROUTES.HOME);
     } catch ({ code }) {
+      setOpenError(true);
       setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
     } finally {
       setSignInLoading(false);
@@ -154,6 +158,33 @@ const SignInForm = (props) => {
       />
     );
   };
+  
+  const renderErrorNotification = () => {
+    return (
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+      <Grid item >
+      {openError && <Snackbar
+        open={true}
+        autoHideDuration={6000}
+        message="I love snacks"
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={{
+          width: '10%',
+          top: '50px',
+          position: 'absolute',
+          right: 0,
+        }}
+      />}
+      </Grid>
+      </Grid>
+    );
+  }
 
   return (
     <FormContainer
@@ -161,6 +192,7 @@ const SignInForm = (props) => {
       onSuccess={(data) => handleSubmit(data)}
     >
       <Grid {...sharedStyles.formGridProps}>
+        {renderErrorNotification()}
         {renderEmailInput()}
         {renderPaswordInput()}
         {renderSubmitButton()}
