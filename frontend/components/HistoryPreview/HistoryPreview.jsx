@@ -1,9 +1,9 @@
 import CloseIcon from '@mui/icons-material/Close';
 
-import { Drawer, Grid, IconButton, Typography } from '@mui/material';
+import { Button, Drawer, Grid, IconButton, Typography } from '@mui/material';
 
-import MultipleChoicePreview from './MultipleChoicePreview';
 import FlashCardPreview from './FlashCardPreview';
+import MultipleChoicePreview from './MultipleChoicePreview';
 
 import styles from './styles';
 
@@ -32,6 +32,45 @@ const HistoryPreview = (props) => {
     outputs,
   } = props;
 
+  const handleCopy = () => {
+    // Combine the header and preview content into a single string
+    let contentToCopy = `Title: ${title}\nCreated At: ${createdAt}\nDescription: ${description}\n`;
+
+    // Format the outputs based on the toolId
+    if (toolId === '0') {
+      // Multiple Choice Quiz format
+      contentToCopy += '\nQuestions:\n';
+      Object.keys(outputs).forEach((key, index) => {
+        const questionData = outputs[key];
+        contentToCopy += `${index + 1}. ${questionData.question}\n\n`;
+        questionData.possibleAnswers.forEach((choice, choiceIndex) => {
+          contentToCopy += `    ${String.fromCharCode(
+            65 + choiceIndex
+          )}. ${choice}\n\n`;
+        });
+        contentToCopy += `Answer: ${questionData.correctAnswer}\n`;
+        contentToCopy += `Explanation: ${questionData.explanation}\n\n`;
+      });
+    } else if (toolId === '1') {
+      // Flashcard format
+      contentToCopy += '\nFlashcards:\n';
+      Object.keys(outputs).forEach((key, index) => {
+        const flashcardData = outputs[key];
+        contentToCopy += `    ${flashcardData.term}: ${flashcardData.definition}\n`;
+      });
+    }
+
+    // Copy the content to the clipboard
+    navigator.clipboard
+      .writeText(contentToCopy)
+      .then(() => {
+        alert('copied content successfully');
+      })
+      .catch((error) => {
+        alert('Error copying content: ', error);
+      });
+  };
+
   /**
    * Function to render the header section of the history preview, including the creation date, title, and description.
    *
@@ -58,6 +97,17 @@ const HistoryPreview = (props) => {
     }
   };
 
+  const renderOutputButtons = () => {
+    return (
+      <Grid {...styles.gridButtonProps}>
+        <Button {...styles.buttonProps} onClick={handleCopy}>
+          Copy
+        </Button>
+        <Button {...styles.buttonProps}>Export</Button>
+      </Grid>
+    );
+  };
+
   return (
     open && (
       <Grid {...styles.mainGridProps}>
@@ -68,6 +118,7 @@ const HistoryPreview = (props) => {
           <Grid {...styles.previewContainerProps}>
             <Grid>{renderHeader()}</Grid>
             <Grid>{renderPreview()}</Grid>
+            <Grid>{renderOutputButtons()}</Grid>
           </Grid>
         </Drawer>
       </Grid>

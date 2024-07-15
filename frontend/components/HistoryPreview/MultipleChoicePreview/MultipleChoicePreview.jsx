@@ -12,11 +12,11 @@ const MultipleChoicePreview = (props) => {
   const { outputs } = props;
 
   /**
-   * Function to render the question details section of the history preview, including the category and list of questions with possible answers.
+   * Function to render the question details section of the history preview, including the question, list of questions with possible answers, the actual answer, and explanation.
    *
    * @return {JSX.Element} Rendered question details component
    */
-  const renderQuestionDetails = () => {
+  const renderMultipleChoiceQuestions = () => {
     return (
       <List>
         {Object.keys(outputs).map((key, index) => {
@@ -37,6 +37,14 @@ const MultipleChoicePreview = (props) => {
                   </ListItem>
                 ))}
               </List>
+              <ListItemText
+                primary={`Answer: ${item.correctAnswer}`}
+                {...styles.subListTextProps}
+              />
+              <ListItemText
+                primary={`Explanation: ${item.explanation}`}
+                {...styles.subListTextProps}
+              />
             </ListItem>
           );
         })}
@@ -44,42 +52,9 @@ const MultipleChoicePreview = (props) => {
     );
   };
 
-  /**
-   * Function to render the answer details section of the history preview, including the answer key.
-   *
-   * @return {JSX.Element} Rendered answer details component
-   */
-  const renderAnswerDetails = () => {
-    return (
-      <Grid>
-        <List>
-          <ListSubheader {...styles.listSubHeaderProps}>
-            Answer Key
-          </ListSubheader>
-          {Object.keys(outputs).map((key, index) => {
-            const item = outputs[key];
-            return (
-              <ListItem key={index} {...styles.listContentProps}>
-                <ListItemText
-                  primary={`${index + 1}. ${item.correctAnswer}`}
-                  {...styles.subListTextProps}
-                />
-                <ListItemText
-                  primary={`Explanation: ${item.explanation}`}
-                  {...styles.subListTextProps}
-                />
-              </ListItem>
-            );
-          })}
-        </List>
-      </Grid>
-    );
-  };
-
   return (
     <Grid>
-      <Grid>{renderQuestionDetails()}</Grid>
-      <Grid>{renderAnswerDetails()}</Grid>
+      <Grid>{renderMultipleChoiceQuestions()}</Grid>
     </Grid>
   );
 };

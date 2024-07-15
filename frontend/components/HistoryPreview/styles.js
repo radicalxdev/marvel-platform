@@ -10,7 +10,7 @@ const styles = {
       height: '100%',
       flexDirection: 'column',
       justifyContent: 'space-around',
-      padding: '5%',
+      padding: '2% 5%',
       overflow: 'auto',
     },
   },
@@ -113,6 +113,26 @@ const styles = {
       display: '-webkit-box',
       WebkitLineClamp: 1,
       WebkitBoxOrient: 'vertical',
+    },
+  },
+  gridButtonProps: {
+    sx: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+    },
+  },
+  buttonProps: {
+    variant: 'contained',
+    color: 'primary',
+    backgroundColor: '#F2F2F2',
+    size: 'small',
+    sx: {
+      borderRadius: '100px',
+      transition: (theme) => theme.transitions.create('all'),
+      '&:hover': {
+        cursor: 'pointer',
+      },
     },
   },
 };
