@@ -32,6 +32,7 @@ import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Snackbar, Alert, Button } from '@mui/material';
+import Fade from '@mui/material/Fade';
 
 const DEFAULT_FORM_VALUES = {
   email: '',
@@ -186,10 +187,10 @@ const SignInForm = (props) => {
 
     return (
       <>
-      {openError && <Snackbar
-            open={true}
-            autoHideDuration={6000}
-            // message="Login with Google Failed!"
+      <Snackbar
+            open={openError}
+            autoHideDuration={3000}
+            TransitionComponent={(props) => <Fade {...props} timeout={{ enter: 500, exit: 500 }} />}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             action={action}
             style={{
@@ -199,13 +200,12 @@ const SignInForm = (props) => {
               left: '50%',
               transform: 'translate(-50%, -50%)',
               width: '100%', // Adjust the max-width as needed
-              opacity: '1',
-              // boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.35)', // Adjust blur and transparency here
 
               
               // maxWidth: '50%', // Adjust the max-width as needed
               // minWidth: '100px', // Adjust the min-width as needed
             }}
+            onClose={handleClose}
           >
               <Alert
               onClose={handleClose}
@@ -222,6 +222,7 @@ const SignInForm = (props) => {
                 fontFamily: 'Satoshi, sans-serif', // Using Satoshi for the main message
                 border: '1px solid #FE6167', // Border color and width
                 backgroundColor: 'rgba(211, 47, 47, 0.3)', // Semi-transparent background color
+                boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.35)', // Adjust blur and transparency here
                 
                 // backgroundColor: 'rgba(255, 255, 255, 0.336)', // Background color with opacity
 
@@ -236,7 +237,6 @@ const SignInForm = (props) => {
               <strong>Create an account</strong> to continue.
             </Alert>
             </Snackbar>
-      }
       </>
     );
   }
