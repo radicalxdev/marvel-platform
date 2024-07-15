@@ -52,7 +52,7 @@ const SignInForm = (props) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { handleOpenSnackBar } = useContext(AuthContext);
+  const { handleOpenSnackBar, setShowLoginSuccess } = useContext(AuthContext);
 
   const handleSubmit = async (data) => {
     try {
@@ -97,9 +97,18 @@ const SignInForm = (props) => {
 
       // If user is verified, redirect to home
       dispatch(setLoading(true));
+      setShowLoginSuccess(true);
+
       router.push(ROUTES.HOME);
     } catch ({ code }) {
       setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
+      handleOpenSnackBar(
+        ALERT_COLORS.ERROR,
+        'Incorrect Email Address / Incorrect Password / Invalid Email Address',
+        'Login Failed',
+        'top',
+        'center'
+      );
     } finally {
       setSignInLoading(false);
     }

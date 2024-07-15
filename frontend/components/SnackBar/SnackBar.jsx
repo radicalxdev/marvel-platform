@@ -1,4 +1,4 @@
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, AlertTitle, Snackbar } from '@mui/material';
 
 import ALERT_COLORS from '@/constants/notification';
 
@@ -8,7 +8,15 @@ import ALERT_COLORS from '@/constants/notification';
  * @return {ReactElement} The rendered Snackbar component.
  */
 const SnackBar = (props) => {
-  const { open, handleClose, message, severity } = props;
+  const {
+    open,
+    handleClose,
+    message,
+    severity = ALERT_COLORS.ERROR,
+    title,
+    vertical = 'top',
+    horizontal = 'right',
+  } = props;
 
   return (
     <Snackbar
@@ -16,9 +24,10 @@ const SnackBar = (props) => {
       autoHideDuration={6000}
       onClose={handleClose}
       color={ALERT_COLORS[severity]}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical, horizontal }}
     >
       <Alert severity={severity} onClose={handleClose}>
+        {title && <AlertTitle>{title}</AlertTitle>}
         {message}
       </Alert>
     </Snackbar>

@@ -1,11 +1,33 @@
+import { useContext, useEffect } from 'react';
+
 import { Grid, Typography } from '@mui/material';
+
+import { useSelector } from 'react-redux';
 
 import ToolsListingContainer from '@/components/ToolsListingContainer';
 
+import ALERT_COLORS from '@/constants/notification';
+
 import styles from './styles';
+
+import { AuthContext } from '@/providers/GlobalProvider';
 
 const HomePage = (props) => {
   const { data, loading } = props;
+
+  const { data: userData } = useSelector((state) => state.user);
+  const { handleOpenSnackBar, setShowLoginSuccess, showLoginSuccess } =
+    useContext(AuthContext);
+  useEffect(() => {
+    if (showLoginSuccess) {
+      handleOpenSnackBar(
+        ALERT_COLORS.SUCCESS,
+        `👋 Welcome back! ${userData?.fullName || 'Anonymous'}`,
+        'Login Successful!'
+      );
+      setShowLoginSuccess(false);
+    }
+  }, [showLoginSuccess]);
 
   const renderTitle = () => {
     return (

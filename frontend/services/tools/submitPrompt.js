@@ -37,9 +37,9 @@ const submitPrompt = async (payload, files, dispatch) => {
       dispatch
     );
 
-    const historyData = await dispatch(
-      fetchToolsHistory({ userId: payload.user.id })
-    );
+    // const historyData = await dispatch(
+    //   fetchToolsHistory({ userId: payload.user.id })
+    // );
 
     const state = store.getState().toolsHistory;
     const updatedData = [...state.data, createdToolSession];

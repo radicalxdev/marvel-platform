@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "kai-project-history"
+    "default": "kai-notifications"
   },
   "targets": {
-    "kai-project-history": {
+    "kai-notifications": {
       "hosting": {
         "next": [
-          "kai-project-history"
+          "kai-notifications"
         ]
       }
     }
