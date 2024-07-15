@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "kai-project-history"
+     "default": "kai-ai-f63c8"
   },
   "targets": {
-    "kai-project-history": {
+    "kai-ai-f63c8": {
       "hosting": {
         "next": [
-          "kai-project-history"
+          "kai-ai-f63c8"
         ]
       }
     }
