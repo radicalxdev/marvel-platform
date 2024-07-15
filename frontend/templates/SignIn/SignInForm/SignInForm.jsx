@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import AuthTextField from '@/components/AuthTextField';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import { AUTH_ERROR_MESSAGES } from '@/constants/auth';
+import { AUTH_ERROR_MESSAGES, AUTH_ERR_CODES } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 
 import ROUTES from '@/constants/routes';
@@ -108,8 +108,15 @@ const SignInForm = (props) => {
       dispatch(setLoading(true));
       router.push(ROUTES.HOME);
     } catch ({ code }) {
-      setOpenError(true);
-      setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
+      console.log(code);
+
+      if (code === AUTH_ERR_CODES.USER_NOT_FOUND) {
+        setOpenError(true);
+        
+      }
+      else {
+        setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
+      }
     } finally {
       setSignInLoading(false);
     }
