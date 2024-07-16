@@ -20,6 +20,7 @@ import {
   formatToStandardDate,
 } from '@/utils/FirebaseUtils';
 import fetchYoutubeTitle from '@/utils/YoutubeUtils'; // Assuming fetchYoutubeTitle returns a Promise
+import TOOLS_ID from '@/constants/tools';
 
 const HistoryCard = (props) => {
   const {
@@ -45,7 +46,7 @@ const HistoryCard = (props) => {
       );
 
       switch (toolId) {
-        case '0':
+        case TOOLS_ID.GEMINI_QUIZIFY:
           title = inputs.topic;
           description = `${inputs.num_questions} Multiple Choice questions about the topic: ${title}`;
           backgroundImgURL =
@@ -53,7 +54,7 @@ const HistoryCard = (props) => {
           logoURL =
             'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/QuizifyLogo.png?alt=media&token=9bf1d066-fba4-4063-9640-ef732e237d31';
           break;
-        case '1':
+        case TOOLS_ID.GEMINI_DYNAMO:
           try {
             title = await fetchYoutubeTitle(inputs.youtubeUrl);
             description = `Set of Flashcards about the youtube video: ${title}`;

@@ -6,10 +6,7 @@ const styles = {
   previewContainerProps: {
     sx: {
       backgroundColor: '#FFFFFF',
-      display: 'flex',
       height: '100%',
-      flexDirection: 'column',
-      justifyContent: 'space-around',
       padding: '2% 5%',
       overflow: 'auto',
     },
@@ -85,7 +82,7 @@ const styles = {
   dateProps: {
     fontFamily: 'Satoshi Regular',
     fontSize: '14px',
-    color: 'primary',
+    color: '#4900E4',
     backgroundColor: '#F2F2F2',
     borderRadius: '100px',
     padding: '5px',
@@ -123,12 +120,13 @@ const styles = {
     },
   },
   buttonProps: {
-    variant: 'contained',
-    color: 'primary',
-    backgroundColor: '#F2F2F2',
     size: 'small',
     sx: {
       borderRadius: '100px',
+      border: '1px solid black',
+      backgroundColor: '#F2F2F2',
+      padding: '7px',
+      color: '#4900E4',
       transition: (theme) => theme.transitions.create('all'),
       '&:hover': {
         cursor: 'pointer',

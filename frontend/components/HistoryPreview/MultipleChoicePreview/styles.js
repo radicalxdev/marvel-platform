@@ -1,38 +1,43 @@
 const styles = {
-  listContentProps: {
+  mainGridProps: {
+    container: true,
+    item: true,
+    mobileSmall: 12,
+    rowGap: 4,
+    px: 6,
+    py: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '10px',
     sx: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start',
+      background: (theme) => theme.palette.Common.White['100p'],
     },
   },
-  listSubHeaderProps: {
-    sx: {
-      position: 'relative',
-      backgroundColor: '#FFFFFF',
-      color: '#000000',
-      fontSize: '20px',
-      fontFamily: 'Satoshi Bold',
-    },
+  questionsGridProps: {
+    container: true,
+    item: true,
+    mobileSmall: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    rowGap: 1.5,
+    color: '#000000',
   },
-  listTextProps: {
-    sx: {
-      '& .MuiListItemText-primary': {
-        color: '#000000',
-        fontSize: '20px',
-        fontFamily: 'Satoshi Bold',
-      },
-    },
+  questionGridProps: {
+    container: true,
+    item: true,
+    gap: 1.5,
+    mobileSmall: 12,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
-  subListTextProps: {
-    sx: {
-      '& .MuiListItemText-primary': {
-        color: '#000000',
-        fontFamily: 'Satoshi Regular',
-        fontSize: '16px',
-      },
-    },
+  questionTitleProps: {
+    fontFamily: 'Satoshi Bold',
+    fontSize: { laptop: '18px', desktop: '20px' },
+  },
+  choiceProps: {
+    fontFamily: 'Satoshi Regular',
+    fontSize: { laptop: '18px', desktop: '20px' },
   },
 };
 

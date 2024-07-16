@@ -1,11 +1,4 @@
-import {
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  ListSubheader,
-} from '@mui/material';
-
+import { Box, Grid, Typography } from '@mui/material';
 import styles from './styles';
 
 const MultipleChoicePreview = (props) => {
@@ -18,44 +11,39 @@ const MultipleChoicePreview = (props) => {
    */
   const renderMultipleChoiceQuestions = () => {
     return (
-      <List>
-        {Object.keys(outputs).map((key, index) => {
+      <Grid container direction="column" {...styles.questionsGridProps}>
+        {Object.keys(outputs).map((key, questionNo) => {
           const item = outputs[key];
           return (
-            <ListItem key={index} {...styles.listContentProps}>
-              <ListItemText
-                primary={`${index + 1}. ${item.question}`}
-                {...styles.listTextProps}
-              />
-              <List>
+            <Grid
+              item
+              key={`question-${questionNo + 1}`}
+              {...styles.questionGridProps}
+            >
+              <Typography {...styles.questionTitleProps}>
+                {questionNo + 1}. {item.question}
+              </Typography>
+              <Box sx={{ ml: 2 }}>
                 {item.possibleAnswers.map((answer, i) => (
-                  <ListItem key={i}>
-                    <ListItemText
-                      primary={`${String.fromCharCode(97 + i)}. ${answer}`}
-                      {...styles.subListTextProps}
-                    />
-                  </ListItem>
+                  <Typography
+                    key={`answer-${questionNo + 1}-${i}`}
+                    {...styles.choiceProps}
+                  >
+                    {String.fromCharCode(65 + i)}. {answer}
+                  </Typography>
                 ))}
-              </List>
-              <ListItemText
-                primary={`Answer: ${item.correctAnswer}`}
-                {...styles.subListTextProps}
-              />
-              <ListItemText
-                primary={`Explanation: ${item.explanation}`}
-                {...styles.subListTextProps}
-              />
-            </ListItem>
+              </Box>
+              <Typography>{`Answer: ${item.correctAnswer}`}</Typography>
+              <Typography>{`Explanation: ${item.explanation}`}</Typography>
+            </Grid>
           );
         })}
-      </List>
+      </Grid>
     );
   };
 
   return (
-    <Grid>
-      <Grid>{renderMultipleChoiceQuestions()}</Grid>
-    </Grid>
+    <Grid {...styles.mainGridProps}>{renderMultipleChoiceQuestions()}</Grid>
   );
 };
 
