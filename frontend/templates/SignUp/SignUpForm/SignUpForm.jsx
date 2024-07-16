@@ -144,7 +144,10 @@ const SignUpForm = (props) => {
         await signUp(email.value, password.value, fullName.value);
         handleOpenSnackBar(
           ALERT_COLORS.SUCCESS,
-          'Account created successfully'
+          'Go verify your email to activate your account.',
+          'Email Verification Has Been Sent',
+          'top',
+          'center'
         );
 
         setEmail(email.value);

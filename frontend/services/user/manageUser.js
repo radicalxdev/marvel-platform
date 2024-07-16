@@ -2,7 +2,7 @@ import { sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 
 const sendVerification = (user) => {
   return sendEmailVerification(user, {
-    url: window.location.origin,
+    url: `${window.location.origin}?is_signup=true`,
     handleCodeInApp: true,
   });
 };

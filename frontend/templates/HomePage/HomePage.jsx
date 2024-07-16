@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import ToolsListingContainer from '@/components/ToolsListingContainer';
@@ -15,6 +16,7 @@ import { AuthContext } from '@/providers/GlobalProvider';
 const HomePage = (props) => {
   const { data, loading } = props;
 
+  // Login Success Notif
   const { data: userData } = useSelector((state) => state.user);
   const { handleOpenSnackBar, setShowLoginSuccess, showLoginSuccess } =
     useContext(AuthContext);
@@ -28,6 +30,18 @@ const HomePage = (props) => {
       setShowLoginSuccess(false);
     }
   }, [showLoginSuccess]);
+
+  // Sign Up Success Notif
+  const router = useRouter();
+  const isSignUp = router.query.is_signup === 'true';
+  if (isSignUp) {
+    handleOpenSnackBar(
+      ALERT_COLORS.SUCCESS,
+      `👋 Welcome to Kai! ${userData?.fullName || 'Anonymous'}`,
+      'Sign Up Successful!'
+    );
+    router.replace('/');
+  }
 
   const renderTitle = () => {
     return (
