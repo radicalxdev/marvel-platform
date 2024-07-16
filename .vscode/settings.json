@@ -1,8 +1,6 @@
 {
   "eslint.workingDirectories": [
-    {"pattern": "./functions/*"},
-    {"pattern": "./frontend/*"}
-  ],
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-  "files.trimTrailingWhitespace": true
+    { "pattern": "./functions/*" },
+    { "pattern": "./frontend/*" }
+  ]
 }
