@@ -1,11 +1,11 @@
 import { Grid, Typography } from '@mui/material';
 import moment from 'moment';
 
-import { getToolCardData } from '@/constants/tools';
-
 import HistoryToolCard, { HistoryToolCardSkeleton } from '../HistoryToolCard';
 
 import styles from './styles';
+
+import { getToolCardData } from '@/utils/ToolUtils';
 
 const DEFAULT_HISTORY = new Array(4)
   .fill()

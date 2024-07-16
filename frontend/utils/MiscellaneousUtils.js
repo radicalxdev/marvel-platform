@@ -224,13 +224,9 @@ function truncateString(str, num, suffix = '...') {
  * @param {Array} params.flashCards - List of flash cards with concepts and definitions.
  * @return {Promise<void>} A promise that resolves when the content is copied to the clipboard.
  */
-const copyContentToClipboard = ({
-  createdDate,
-  title,
-  description,
-  multipleChoiceList,
-  flashCards,
-}) => {
+const copyContentToClipboard = (props) => {
+  const { createdDate, title, description, multipleChoiceList, flashCards } =
+    props;
   return new Promise((resolve, reject) => {
     let content = `Created Date: ${createdDate}\n`;
     content += `Title: ${title}\n`;
@@ -277,13 +273,9 @@ const copyContentToClipboard = ({
  * @param {Array} params.multipleChoiceList - List of multiple choice questions and answers.
  * @param {Array} params.flashCards - List of flash cards with concepts and definitions.
  */
-const exportContentAsCSV = ({
-  createdDate,
-  title,
-  description,
-  multipleChoiceList,
-  flashCards,
-}) => {
+const exportContentAsCSV = (props) => {
+  const { createdDate, title, description, multipleChoiceList, flashCards } =
+    props;
   let csvContent = '"Created Date","Title","Description"\n';
   csvContent += `"${createdDate}","${title}","${description}"\n\n`;
 

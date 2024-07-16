@@ -57,7 +57,6 @@ const HistoryToolDrawer = (props) => {
           </List>
         </div>
       ))}
-      {/* Render answer keys and explanations after all questions */}
       {multipleChoiceList.length > 0 && (
         <Grid {...styles.answerKeyGridProps}>
           <Typography {...styles.answerKeyTitleProps}>Answer Keys:</Typography>

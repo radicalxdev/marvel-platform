@@ -9,7 +9,8 @@ import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-const HistoryToolPage = ({ data, loading }) => {
+const HistoryToolPage = (props) => {
+  const { data, loading } = props;
   const {
     today,
     yesterday,

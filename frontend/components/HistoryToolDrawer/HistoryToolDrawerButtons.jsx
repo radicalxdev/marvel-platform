@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
-import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import {
+  ContentCopyOutlined as ContentCopyOutlinedIcon,
+  FileDownloadOutlined as FileDownloadOutlinedIcon,
+} from '@mui/icons-material';
 import { Alert, Button, Grid, Snackbar } from '@mui/material';
 
 import styles from './styles';
