@@ -9,6 +9,7 @@ import MultipleChoicePreview from './MultipleChoicePreview';
 
 import styles from './styles';
 import TOOLS_ID from '@/constants/tools';
+import { formatCopyContent } from '@/utils/FormatUtils';
 
 /**
  * Component for rendering a preview of history details in a drawer.
@@ -36,37 +37,13 @@ const HistoryPreview = (props) => {
   } = props;
   const JsPDF = jsPDF;
   const handleCopy = () => {
-    // Combine the header and preview content into a single string
-    let contentToCopy = `Title: ${title}\nCreated At: ${createdAt}\nDescription: ${description}\n`;
-
-    // Format the outputs based on the toolId
-    switch (toolId) {
-      case TOOLS_ID.GEMINI_QUIZIFY:
-        // Multiple Choice Quiz format
-        contentToCopy += '\nQuestions:\n';
-        Object.keys(outputs).forEach((key, index) => {
-          const questionData = outputs[key];
-          contentToCopy += `${index + 1}. ${questionData.question}\n\n`;
-          questionData.possibleAnswers.forEach((choice, choiceIndex) => {
-            contentToCopy += `    ${String.fromCharCode(
-              65 + choiceIndex
-            )}. ${choice}\n\n`;
-          });
-          contentToCopy += `Answer: ${questionData.correctAnswer}\n`;
-          contentToCopy += `Explanation: ${questionData.explanation}\n\n`;
-        });
-        break;
-      case TOOLS_ID.GEMINI_DYNAMO:
-        // Flashcard format
-        contentToCopy += '\nFlashcards:\n';
-        Object.keys(outputs).forEach((key, index) => {
-          const flashcardData = outputs[key];
-          contentToCopy += `    ${flashcardData.term}: ${flashcardData.definition}\n`;
-        });
-        break;
-      default:
-        return null;
-    }
+    const contentToCopy = formatCopyContent(
+      title,
+      createdAt,
+      description,
+      toolId,
+      outputs
+    );
 
     // Copy the content to the clipboard
     navigator.clipboard
@@ -88,6 +65,8 @@ const HistoryPreview = (props) => {
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
     const maxTextWidth = pageWidth - margin * 2;
+    const cardWidth = pageWidth - margin * 10; // Adjust as needed
+    const cardHeight = 50; // Adjust as needed
 
     doc.setFontSize(12);
 
@@ -104,6 +83,7 @@ const HistoryPreview = (props) => {
     );
     doc.text(splitDescription, margin, margin + 20);
     let ycoord = margin + 50;
+
     // Add Flashcards or Multiple Choice Questions based on toolId
     switch (toolId) {
       case TOOLS_ID.GEMINI_QUIZIFY:
@@ -131,12 +111,34 @@ const HistoryPreview = (props) => {
         doc.text('Flashcards:', margin, margin + 40);
         Object.keys(outputs).forEach((key) => {
           const flashcardData = outputs[key];
-          doc.text(
-            `    ${flashcardData.term}: ${flashcardData.definition}`,
-            margin,
-            ycoord
-          );
-          ycoord += 10;
+
+          // Calculate positions to center the card
+          const cardX = (pageWidth - cardWidth) / 2;
+
+          // Draw the rectangle
+          doc.rect(cardX, ycoord, cardWidth, cardHeight);
+
+          // Center the text within the card
+          const termX = cardX + cardWidth / 2;
+          const definitionX = cardX + cardWidth / 2;
+          const termY = ycoord + cardHeight / 2 - 5;
+          const definitionY = ycoord + cardHeight / 2 + 5;
+
+          // Add the term and definition inside the rectangle
+          doc.setFontSize(14);
+          doc.text(flashcardData.term, termX, termY, { align: 'center' });
+          doc.setFontSize(12);
+          doc.text(flashcardData.definition, definitionX, definitionY, {
+            align: 'center',
+          });
+
+          ycoord += cardHeight + 10; // Adjust space between cards as needed
+
+          // Check if the y-coordinate exceeds the page height, then add a new page
+          if (ycoord + cardHeight > pageHeight) {
+            doc.addPage();
+            ycoord = margin;
+          }
         });
         break;
 
