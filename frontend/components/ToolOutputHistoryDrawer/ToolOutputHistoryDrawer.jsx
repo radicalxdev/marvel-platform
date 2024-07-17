@@ -10,9 +10,7 @@ import renderFlashcards from './toolRenderers/Flashcards';
 
 import renderMultipleChoiceQuiz from './toolRenderers/MultipleChoiceQuiz';
 
-import { copyToClipboard } from '@/services/toolHistory/copy';
-import { exportToCSV } from '@/services/toolHistory/export';
-import getToolRenderer from '@/services/toolHistory/getToolRenderer';
+import { copyToClipboard, exportToCSV } from '@/utils/ToolHistoryUtils';
 
 const DRAWER_RENDERERS = {
   [TOOLS.MCQ]: renderMultipleChoiceQuiz,
