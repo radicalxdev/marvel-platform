@@ -6,8 +6,6 @@ import {
   InfoOutlined,
   Remove as RemoveIcon,
   Settings,
-  AutoAwesome as AutoAwesomeIcon,
-
 } from '@mui/icons-material';
 import {
   Button,
@@ -20,7 +18,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -31,6 +36,7 @@ import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
 import CenterChatContentNoMessages from './CenterChatContentNoMessages';
 import ChatHistory from './ChatHistory';
 import ChatSpinner from './ChatSpinner';
+import DefaultPrompts from './DefaultPrompts';
 import Message from './Message';
 import styles from './styles';
 
@@ -50,8 +56,8 @@ import {
 } from '@/redux/slices/chatSlice';
 import { firestore } from '@/redux/store';
 import createChatSession from '@/services/chatbot/createChatSession';
+import generatePrompts from '@/services/chatbot/generatePrompts';
 import sendMessage from '@/services/chatbot/sendMessage';
-import DefaultPrompts from './DefaultPrompts'; 
 
 const ChatInterface = () => {
   const messagesContainerRef = useRef();
@@ -78,6 +84,7 @@ const ChatInterface = () => {
   const chatMessages = currentSession?.messages;
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
   const [showChatHistory, setShowChatHistory] = useState(false);
+  const [defaultPrompts, setDefaultPrompts] = useState([]);
 
   const startConversation = async (message) => {
     dispatch(
@@ -113,9 +120,34 @@ const ChatInterface = () => {
   useEffect(() => {
     return () => {
       localStorage.removeItem('sessionId');
+      setDefaultPrompts([]);
       dispatch(resetChat());
     };
   }, []);
+
+  const handleDefaultPrompts = async (start) => {
+    const currId = start ? localStorage.getItem('sessionId') : sessionId;
+    if ((chat.messages?.length > 0 || start) && currId) {
+      const session = doc(firestore, 'chatSessions', currId);
+      const document = await getDoc(session);
+      const data = document.data();
+
+      const prompts = await generatePrompts(data);
+      const suggestions = prompts.data.data[0].payload.text;
+
+      const suggestionsList = suggestions.split('\n');
+      suggestionsList.forEach((suggestion, index) => {
+        suggestionsList[index] = suggestion
+          .substring(3)
+          .replace(
+            /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
+            ''
+          ); // remove emojis
+      });
+
+      setDefaultPrompts(suggestionsList);
+    }
+  };
 
   useEffect(() => {
     let unsubscribe;
@@ -209,6 +241,7 @@ const ChatInterface = () => {
 
     if (!chatMessages) {
       await startConversation(message);
+      await handleDefaultPrompts(true);
       return;
     }
 
@@ -221,6 +254,7 @@ const ChatInterface = () => {
     dispatch(setTyping(true));
 
     await sendMessage({ message, id: sessionId }, dispatch);
+    await handleDefaultPrompts(false);
   };
 
   const handleQuickReply = async (option) => {
@@ -351,8 +385,12 @@ const ChatInterface = () => {
     if (!openSettingsChat && !infoChatOpened)
       return (
         <Grid {...styles.bottomChatContent.bottomChatContentGridProps}>
-          {/* Default Prompts Section */}
-          <DefaultPrompts prompts={defaultPrompts} onSelect={handleSelectPrompt} />
+          <DefaultPrompts
+            prompts={defaultPrompts}
+            onSelect={(prompt) => {
+              dispatch(setInput(prompt));
+            }}
+          />
           <Grid {...styles.bottomChatContent.chatInputGridProps(!!error)}>
             <TextField
               value={input}
@@ -418,23 +456,12 @@ const ChatInterface = () => {
                 fullName: userData.fullName,
                 id: userData.id,
               }}
+              setDefaultPrompts={setDefaultPrompts}
             />
           </>
         ) : null}
       </Paper>
     );
-  };
-
-  //Default prompts
-  const defaultPrompts = [
-    { icon: <AutoAwesomeIcon />, description: 'Suggest interactive ways to learn to code.' },
-    { icon: <AutoAwesomeIcon />, description: 'What books would you recommend for introduction to coding?' },
-    { icon: <AutoAwesomeIcon />, description: 'What are the new things that happened today?' },
-    { icon: <AutoAwesomeIcon />, description: 'Can you teach me new ways to code?' },
-  ];
-
-  const handleSelectPrompt = (prompt) => {
-    dispatch(setInput(prompt.description));
   };
 
   return (

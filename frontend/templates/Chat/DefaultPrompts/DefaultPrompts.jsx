@@ -1,6 +1,7 @@
-import { Button, Box, Typography } from '@mui/material';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import styles from './styles'; 
+import { Box, Button, Typography } from '@mui/material';
+
+import styles from './styles';
 
 const DefaultPrompts = ({ prompts, onSelect }) => (
   <Box sx={styles.defaultPromptsContainer}>
@@ -11,9 +12,7 @@ const DefaultPrompts = ({ prompts, onSelect }) => (
         sx={styles.defaultPromptButton}
         startIcon={<AutoAwesomeIcon />}
       >
-        <Typography variant="body1" sx={styles.defaultPromptDescription}>
-          {prompt.description}
-        </Typography>
+        <Typography sx={styles.defaultPromptDescription}>{prompt}</Typography>
       </Button>
     ))}
   </Box>

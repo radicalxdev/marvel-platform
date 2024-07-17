@@ -27,7 +27,7 @@ import {
   setSessionLoaded,
 } from '@/redux/slices/chatSlice';
 
-const ChatHistory = ({ user }) => {
+const ChatHistory = ({ user, setDefaultPrompts }) => {
   const [chatHistory, setChatHistory] = useState([]);
   const { chat } = useSelector((state) => state.chat);
   const db = getFirestore();
@@ -80,6 +80,7 @@ const ChatHistory = ({ user }) => {
       entry.timestamp = fixTimestamp(entry.timestamp);
     });
   };
+
   /**
    * gets the chat history for a given user
    * @param {Object} userData
@@ -103,6 +104,7 @@ const ChatHistory = ({ user }) => {
     history.sort((a, b) => {
       return b.updatedAt.toDate() - a.updatedAt.toDate();
     });
+
     history.forEach((data) => {
       const timeframe = processDate(data.updatedAt.toDate());
       const msgItem = {
@@ -125,6 +127,7 @@ const ChatHistory = ({ user }) => {
     const chatSession = chatSessionRef.data();
 
     fixTimestamps(chatSession);
+    setDefaultPrompts([]);
 
     dispatch(resetChat());
     dispatch(setChatSession(chatSession));
