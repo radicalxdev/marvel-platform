@@ -16,25 +16,23 @@ import { AuthContext } from '@/providers/GlobalProvider';
 const HomePage = (props) => {
   const { data, loading } = props;
 
-  // Login Success Notif
+  const { handleOpenSnackBar } = useContext(AuthContext);
+
   const { data: userData } = useSelector((state) => state.user);
-  const { handleOpenSnackBar, setShowLoginSuccess, showLoginSuccess } =
-    useContext(AuthContext);
-  useEffect(() => {
-    if (showLoginSuccess) {
-      handleOpenSnackBar(
-        ALERT_COLORS.SUCCESS,
-        `👋 Welcome back! ${userData?.fullName || 'Anonymous'}`,
-        'Login Successful!'
-      );
-      setShowLoginSuccess(false);
-    }
-  }, [showLoginSuccess]);
+  const router = useRouter();
+
+  // Login Success Notif
+  if (router.query.is_login === 'true') {
+    handleOpenSnackBar(
+      ALERT_COLORS.SUCCESS,
+      `👋 Welcome back! ${userData?.fullName || 'Anonymous'}`,
+      'Login Successful!'
+    );
+    router.replace('/');
+  }
 
   // Sign Up Success Notif
-  const router = useRouter();
-  const isSignUp = router.query.is_signup === 'true';
-  if (isSignUp) {
+  if (router.query.is_signup === 'true') {
     handleOpenSnackBar(
       ALERT_COLORS.SUCCESS,
       `👋 Welcome to Kai! ${userData?.fullName || 'Anonymous'}`,

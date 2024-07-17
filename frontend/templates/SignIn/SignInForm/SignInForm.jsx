@@ -52,7 +52,7 @@ const SignInForm = (props) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { handleOpenSnackBar, setShowLoginSuccess } = useContext(AuthContext);
+  const { handleOpenSnackBar } = useContext(AuthContext);
 
   const handleSubmit = async (data) => {
     try {
@@ -97,9 +97,7 @@ const SignInForm = (props) => {
 
       // If user is verified, redirect to home
       dispatch(setLoading(true));
-      setShowLoginSuccess(true);
-
-      router.push(ROUTES.HOME);
+      router.push(`${ROUTES.HOME}?is_login=true`);
     } catch ({ code }) {
       setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
       handleOpenSnackBar(

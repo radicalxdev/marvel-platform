@@ -33,7 +33,6 @@ const AuthProvider = (props) => {
     vertical: 'top',
     horizontal: 'right',
   });
-  const [showLoginSuccess, setShowLoginSuccess] = useState(false);
 
   const handleOpenSnackBar = (
     severity,
@@ -52,10 +51,7 @@ const AuthProvider = (props) => {
     setOpen(true);
   };
 
-  const memoizedValue = useMemo(
-    () => ({ handleOpenSnackBar, showLoginSuccess, setShowLoginSuccess }),
-    [showLoginSuccess]
-  );
+  const memoizedValue = useMemo(() => ({ handleOpenSnackBar }), []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return null;

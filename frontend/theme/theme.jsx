@@ -825,21 +825,46 @@ const theme = createTheme(
           },
         },
         styleOverrides: {
+          root: {
+            border: '1px solid',
+            borderRadius: '6px',
+            '.MuiAlertTitle-root': {
+              fontWeight: 'bold',
+            },
+            '&.MuiAlert-standardSuccess': {
+              backgroundColor: 'rgba(230, 219, 255, 1)',
+              color: globalTheme.palette.Common.Black['100p'],
+              '.MuiSvgIcon-root': {
+                color: globalTheme.palette.primary.main,
+              },
+              '.MuiAlertTitle-root': {
+                color: globalTheme.palette.primary.main,
+              },
+            },
+          },
+          standardError: {
+            borderColor: globalTheme.palette.Error.Main,
+          },
+          standardWarning: {
+            borderColor: globalTheme.palette.Warning.Main,
+          },
+          standardInfo: {
+            borderColor: globalTheme.palette.Info.Main,
+          },
+          standardSuccess: {
+            borderColor: globalTheme.palette.primary.main,
+          },
           filledError: {
             backgroundColor: globalTheme.palette.Error.Main,
-            borderRadius: '4px',
           },
           filledWarning: {
             backgroundColor: globalTheme.palette.Warning.Main,
-            borderRadius: '4px',
           },
           filledInfo: {
             backgroundColor: globalTheme.palette.Info.Main,
-            borderRadius: '4px',
           },
           filledSuccess: {
-            backgroundColor: globalTheme.palette.Success.Main,
-            borderRadius: '4px',
+            backgroundColor: globalTheme.palette.primary.main,
           },
         },
       },

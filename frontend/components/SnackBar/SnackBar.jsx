@@ -23,7 +23,6 @@ const SnackBar = (props) => {
       open={open}
       autoHideDuration={6000}
       onClose={handleClose}
-      color={ALERT_COLORS[severity]}
       anchorOrigin={{ vertical, horizontal }}
     >
       <Alert severity={severity} onClose={handleClose}>
