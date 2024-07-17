@@ -4,7 +4,7 @@ const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
 const { logger, https } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
-const { BOT_TYPE } = require('../constants');
+const { BOT_TYPE, MESSAGE_ROLES } = require('../constants');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const busboy = require('busboy');
@@ -362,8 +362,66 @@ const createChatSession = onCall(async (props) => {
   }
 });
 
+/**
+ * This generates the default prompts for the user given their previous chat history.
+ *
+ * @param {Object} props - properties for the function
+ *  @param {Object} props.data - the data for the function, containing the user, messages, and type
+ *    @param {Object} props.user - the user object
+ *    @param {Array} props.messages - the messages (chat history) between the user and ai
+ *    @param {Object} props.type - the bot type
+ *
+ * @returns {Promise<Object>} promise that resolves into an object containing the default prompts for the AI
+ */
+const generatePrompts = onCall(async (props) => {
+  try {
+    DEBUG && logger.log('Generating prompts started, data: ', props.data);
+
+    const { user, messages, type } = props.data;
+
+    if (!user || !messages || !type) {
+      logger.log('Missing required fields', props.data);
+      throw new HttpsError('invalid-argument', 'Missing required fields');
+    }
+
+    const initalPrompt = {
+      role: 'human',
+      type: 'text',
+      payload: {
+        text: 'Give me 3 questions a user might ask based on their previous responses below.\n',
+      },
+      timestamp: Timestamp.fromMillis(Date.now()),
+    };
+
+    const parsedMessages = messages
+      .filter((entry) => entry.role === MESSAGE_ROLES.HUMAN)
+      .slice(-5);
+
+    const response = await kaiCommunicator({
+      data: {
+        messages: [...parsedMessages, initalPrompt],
+        user,
+        type,
+      },
+    });
+
+    DEBUG &&
+      logger.log(
+        'successful response: ',
+        response?.data,
+        'type',
+        typeof response
+      );
+    return response;
+  } catch (error) {
+    logger.error(error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
 module.exports = {
   chat,
   tool: https.onRequest(app),
   createChatSession,
+  generatePrompts,
 };
