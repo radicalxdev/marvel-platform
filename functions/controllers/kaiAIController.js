@@ -288,8 +288,9 @@ const saveResponseToFirestore = async (sessionData) => {
         ...sessionData,
         createdAt: Timestamp.fromMillis(Date.now()),
       });
-
-    logger.log(`Tool session saved with ID: ${toolSessionRef.id}`);
+    if (DEBUG) {
+      logger.log(`Tool session saved with ID: ${toolSessionRef.id}`);
+    }
   } catch (error) {
     logger.error('Error saving tool session to Firestore:', error);
   }

@@ -1,4 +1,4 @@
-import { TOOL_NAMES } from '@/constants/tool_IDs';
+import { TOOL_NAMES } from '@/constants/tools';
 
 const TOOL_RENDERERS = {};
 const req = require.context(

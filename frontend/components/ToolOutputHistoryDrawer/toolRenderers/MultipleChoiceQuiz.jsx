@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Grid, List, ListItem, Typography } from '@mui/material';
 
 import styles from '../styles';

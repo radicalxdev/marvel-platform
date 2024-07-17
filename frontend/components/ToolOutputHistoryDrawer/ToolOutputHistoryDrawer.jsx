@@ -2,11 +2,22 @@ import { ContentCopy, FileDownload } from '@mui/icons-material';
 import { Button, Drawer, Grid, Typography } from '@mui/material';
 import moment from 'moment';
 
+import { TOOLS } from '@/constants/tools';
+
 import styles from './styles';
+
+import renderFlashcards from './toolRenderers/Flashcards';
+
+import renderMultipleChoiceQuiz from './toolRenderers/MultipleChoiceQuiz';
 
 import { copyToClipboard } from '@/services/toolHistory/copy';
 import { exportToCSV } from '@/services/toolHistory/export';
 import getToolRenderer from '@/services/toolHistory/getToolRenderer';
+
+const DRAWER_RENDERERS = {
+  [TOOLS.MCQ]: renderMultipleChoiceQuiz,
+  [TOOLS.FLASHCARDS]: renderFlashcards,
+};
 
 const DEFAULT_DATA = {
   title: 'Default Title',
@@ -57,7 +68,7 @@ const ToolOutputHistoryDrawer = (props) => {
   );
 
   const renderContent = () => {
-    const { toolRenderer: ToolRenderer } = getToolRenderer(data);
+    const ToolRenderer = DRAWER_RENDERERS[data.toolId];
 
     return (
       <Grid {...styles.containerGridProps}>

@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { TOOL_IDS } from '@/constants/tool_IDs';
+import { TOOLS } from '@/constants/tools';
 
 /**
  * Prepares data for the tool history card component based on the tool ID
@@ -25,7 +25,7 @@ export const transformToolData = ({
   let logo = '';
 
   switch (tool_id) {
-    case TOOL_IDS.FLASHCARDS: {
+    case TOOLS.FLASHCARDS: {
       const concepts = response?.map((item) => item.concept) || [];
       const primaryConcept = concepts[0] || 'Various Concepts';
 
@@ -47,7 +47,7 @@ export const transformToolData = ({
         'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188';
       break;
     }
-    case TOOL_IDS.MCQ: {
+    case TOOLS.MCQ: {
       title = `Multiple Choice Assessment - ${topic}`;
       content = description || `Multiple Choice Questions taken from ${topic}`; // if description is a prop in the future
       backgroundImageUrl =

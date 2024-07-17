@@ -8,19 +8,11 @@ const initialState = {
   error: null,
 };
 
-const toolHistorySlice = createSlice({
+const ToolHistorySlice = createSlice({
   name: 'toolHistory',
   initialState,
   reducers: {
-    setToolHistory: (state, action) => {
-      state.data = action.payload;
-      state.loading = false;
-      state.error = null;
-    },
-    setToolHistoryError: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-    },
+    // Define any synchronous reducers if needed
   },
   extraReducers: (builder) => {
     builder
@@ -39,5 +31,4 @@ const toolHistorySlice = createSlice({
   },
 });
 
-export const { setToolHistory, setToolHistoryError } = toolHistorySlice.actions;
-export default toolHistorySlice.reducer;
+export default ToolHistorySlice.reducer;
