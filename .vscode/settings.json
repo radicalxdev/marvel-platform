@@ -1,10 +1,6 @@
 {
   "eslint.workingDirectories": [
-    {"pattern": "./functions/*"},
-    {"pattern": "./frontend/*"}
-  ],
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-  "[javascript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  }
+    { "pattern": "./functions/*" },
+    { "pattern": "./frontend/*" }
+  ]
 }

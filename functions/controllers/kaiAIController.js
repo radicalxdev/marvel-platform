@@ -9,8 +9,8 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const busboy = require('busboy');
 const app = express();
-const DEBUG = process.env.DEBUG;
 
+const DEBUG = process.env.DEBUG;
 /**
  * Simulates communication with a Kai AI endpoint.
  *
@@ -33,9 +33,10 @@ const kaiCommunicator = async (payload) => {
     DEBUG && logger.log('kaiCommunicator started, data:', payload.data);
 
     const { messages, user, tool_data, type } = payload.data;
+
     const isToolCommunicator = type === BOT_TYPE.TOOL;
-    const KAI_API_KEY = process.env.NEXT_PUBLIC_KAI_API_KEY;
-    const KAI_ENDPOINT = process.env.NEXT_PUBLIC_KAI_ENDPOINT;
+    const KAI_API_KEY = process.env.KAI_API_KEY;
+    const KAI_ENDPOINT = process.env.KAI_ENDPOINT;
 
     DEBUG &&
       logger.log(
@@ -252,17 +253,8 @@ app.post('/api/tool/', (req, res) => {
           },
         },
       });
-      logger.log('123131231231313132131');
-      // await createToolSession({
-      //   data: {
-      //     user: otherData.user,
-      //     tool_data: {
-      //       ...otherToolData,
-      //       inputs: modifiedInputs,
-      //     },
-      //     type: otherData.type,
-      //   },
-      // });
+      DEBUG && logger.log(response);
+
       res.status(200).json({ success: true, data: response.data });
     } catch (error) {
       logger.error('Error processing request:', error);
