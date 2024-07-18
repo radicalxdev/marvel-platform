@@ -9,7 +9,7 @@ import AuthTextField from '@/components/AuthTextField';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import { AUTH_STEPS, VALIDATION_STATES } from '@/constants/auth';
+import { AUTH_CONTENT, AUTH_STEPS, VALIDATION_STATES } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 
 import styles from './styles';
@@ -144,10 +144,9 @@ const SignUpForm = (props) => {
         await signUp(email.value, password.value, fullName.value);
         handleOpenSnackBar(
           ALERT_COLORS.SUCCESS,
-          'Go verify your email to activate your account.',
-          'Email Verification Has Been Sent',
-          'top',
-          'center'
+          AUTH_CONTENT.EMAIL_VERIFICATION.message,
+          AUTH_CONTENT.EMAIL_VERIFICATION.title,
+          ['top', 'center']
         );
 
         setEmail(email.value);
@@ -156,9 +155,8 @@ const SignUpForm = (props) => {
         handleOpenSnackBar(
           ALERT_COLORS.ERROR,
           err.message,
-          'Sign Up Failed!',
-          'top',
-          'center'
+          AUTH_CONTENT.SIGNUP_FAILURE.title,
+          ['top', 'center']
         );
       } finally {
         setLoading(false);

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 
 import ToolsListingContainer from '@/components/ToolsListingContainer';
 
+import { AUTH_CONTENT } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 
 import styles from './styles';
@@ -20,13 +21,14 @@ const HomePage = (props) => {
 
   const { data: userData } = useSelector((state) => state.user);
   const router = useRouter();
+  const userName = userData?.fullName;
 
   // Login Success Notif
   if (router.query.is_login === 'true') {
     handleOpenSnackBar(
       ALERT_COLORS.SUCCESS,
-      `👋 Welcome back! ${userData?.fullName || 'Anonymous'}`,
-      'Login Successful!'
+      AUTH_CONTENT.LOGIN_SUCCESS.message(userName),
+      AUTH_CONTENT.LOGIN_SUCCESS.title
     );
     router.replace('/');
   }
@@ -35,8 +37,8 @@ const HomePage = (props) => {
   if (router.query.is_signup === 'true') {
     handleOpenSnackBar(
       ALERT_COLORS.SUCCESS,
-      `👋 Welcome to Kai! ${userData?.fullName || 'Anonymous'}`,
-      'Sign Up Successful!'
+      AUTH_CONTENT.SIGNUP_SUCCESS.message(userName),
+      AUTH_CONTENT.SIGNUP_SUCCESS.title
     );
     router.replace('/');
   }

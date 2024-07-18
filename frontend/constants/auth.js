@@ -22,12 +22,34 @@ const AUTH_ERROR_MESSAGES = {
   [AUTH_ERR_CODES.NETWORK_REQ_FAIL]:
     'A network error has occurred. Please try again.',
   [AUTH_ERR_CODES.INVALID_LOGIN_CREDENTIALS]: 'Invalid email or password',
-  // For Sign-in
+  // For Login
   [AUTH_ERR_CODES.USER_NOT_FOUND]: 'Email not found',
   [AUTH_ERR_CODES.WRONG_PASSWORD]: 'Wrong password',
   [AUTH_ERR_CODES.USER_DISABLED]: 'The user is currently disabled',
   // For Sign-up
   [AUTH_ERR_CODES.EMAIL_ALREADY_IN_USE]: 'This email address is already in use',
+};
+
+const AUTH_CONTENT = {
+  LOGIN_SUCCESS: {
+    title: 'Login Successful!',
+    message: (userName) => `👋 Welcome back! ${userName || 'Anonymous'}`,
+  },
+  LOGIN_FAILURE: {
+    title: 'Login Failed!',
+    message: (code) => AUTH_ERROR_MESSAGES[code],
+  },
+  SIGNUP_SUCCESS: {
+    title: 'Sign Up Successful!',
+    message: (userName) => `👋 Welcome to Kai! ${userName || 'Anonymous'}`,
+  },
+  SIGNUP_FAILURE: {
+    title: 'Sign Up Failed!',
+  },
+  EMAIL_VERIFICATION: {
+    title: 'Email Verification Required!',
+    message: 'Please check your inbox to verify your email.',
+  },
 };
 
 const VALIDATION_STATES = {
@@ -58,6 +80,7 @@ export {
   AUTH_ERR_CODES,
   FORGOT_PASSWORD_STEPS,
   AUTH_ERROR_MESSAGES,
+  AUTH_CONTENT,
   VALIDATION_STATES,
   AUTH_MODES,
   APP_ENV,

@@ -30,23 +30,15 @@ const AuthProvider = (props) => {
     severity: ALERT_COLORS.ERROR,
     message: '',
     title: '',
-    vertical: 'top',
-    horizontal: 'right',
+    direction: ['top', 'right'],
   });
 
-  const handleOpenSnackBar = (
-    severity,
-    message,
-    title,
-    vertical,
-    horizontal
-  ) => {
+  const handleOpenSnackBar = (severity, message, title, direction) => {
     setSnackBarConfig({
       severity,
       message,
       title,
-      vertical,
-      horizontal,
+      direction,
     });
     setOpen(true);
   };
@@ -87,8 +79,7 @@ const AuthProvider = (props) => {
         severity={snackBarConfig.severity}
         message={snackBarConfig.message}
         title={snackBarConfig.title}
-        vertical={snackBarConfig.vertical}
-        horizontal={snackBarConfig.horizontal}
+        direction={snackBarConfig.direction}
         handleClose={handleClose}
       />
     </AuthContext.Provider>

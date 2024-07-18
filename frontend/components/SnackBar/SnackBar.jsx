@@ -14,8 +14,7 @@ const SnackBar = (props) => {
     message,
     severity = ALERT_COLORS.ERROR,
     title,
-    vertical = 'top',
-    horizontal = 'right',
+    direction = ['top', 'right'],
   } = props;
 
   return (
@@ -23,7 +22,7 @@ const SnackBar = (props) => {
       open={open}
       autoHideDuration={6000}
       onClose={handleClose}
-      anchorOrigin={{ vertical, horizontal }}
+      anchorOrigin={{ vertical: direction[0], horizontal: direction[1] }}
     >
       <Alert severity={severity} onClose={handleClose}>
         {title && <AlertTitle>{title}</AlertTitle>}
