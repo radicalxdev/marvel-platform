@@ -53,8 +53,7 @@ const ToolForm = (props) => {
           ALERT_COLORS.ERROR,
           'Make sure you select PDF Files to continue making the quiz',
           'Unable to load files',
-          'top',
-          'right'
+          ['top', 'right']
         );
         return;
       }
@@ -89,16 +88,14 @@ const ToolForm = (props) => {
           ALERT_COLORS.ERROR,
           'Make sure you provide a video that is less than 600 seconds long',
           'Video Too Long!',
-          'top',
-          'right'
+          ['top', 'right']
         );
       } else {
         handleOpenSnackBar(
           ALERT_COLORS.ERROR,
           'An error occurred while submitting the form.',
           'Submission Error',
-          'top',
-          'right'
+          ['top', 'right']
         );
       }
 
