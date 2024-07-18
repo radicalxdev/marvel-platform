@@ -55,7 +55,7 @@ const InternalServerError = () => {
   const renderBodyText = () => (
     <Grid {...pageNotFoundStyles.bodyGridProps}>
       <Typography {...pageNotFoundStyles.bodyProps}>
-        Something went wrong on our end. We’re working to fix this issue.
+        Something went wrong on our end. We&apos;re working to fix this issue.
         <br />
         Please try again later or go back to the homepage.
       </Typography>
