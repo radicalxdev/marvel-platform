@@ -3,13 +3,12 @@ import { useRouter } from 'next/router';
 
 import Briefcase from '@/assets/svg/Briefcase.svg';
 import ChatBubble from '@/assets/svg/ChatBubble.svg';
-import MenuBook from '@/assets/svg/Menu book.svg';
 
 import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-import { chatRegex, historyRegex, homeRegex } from '@/regex/routes';
+import { chatRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
   {
@@ -24,12 +23,6 @@ const PAGES = [
     icon: <ChatBubble />,
     id: 'page_2',
   },
-  {
-    name: 'History',
-    link: ROUTES.HISTORY,
-    icon: <MenuBook />,
-    id: 'page_3',
-  },
 ];
 
 /**
@@ -42,22 +35,17 @@ const NavMenu = () => {
   const { pathname } = router;
 
   const setActive = (id) => {
-    const isNotHomePage = [
-      chatRegex.test(pathname) || historyRegex.test(pathname),
-    ].includes(true);
+    const isNotHomePage = [chatRegex.test(pathname)].includes(true);
 
     if (id === 'page_1')
       return isNotHomePage ? false : homeRegex.test(pathname);
 
-    if (id === 'page_2') return chatRegex.test(pathname);
-
-    if (id === 'page_3') return historyRegex.test(pathname);
-
-    return false;
+    return chatRegex.test(pathname);
   };
 
-  const handleRoute = (link) => {
+  const handleRoute = (link, id) => {
     router.push(link);
+    setActive(id);
   };
 
   return (
@@ -65,7 +53,7 @@ const NavMenu = () => {
       {PAGES.map((page) => (
         <MenuItem
           key={page.id}
-          onClick={() => handleRoute(page.link)}
+          onClick={() => handleRoute(page.link, page.id)}
           {...styles.menuItemProps(setActive(page.id))}
         >
           <Grid {...styles.innerMenuGridProps}>

@@ -1,11 +1,8 @@
 import axios from 'axios';
 
-import createToolSession from './createToolSession';
-
 import store from '@/redux/store';
-import fetchToolsHistory from '@/redux/thunks/toolsHistory';
 
-const submitPrompt = async (payload, files, dispatch) => {
+const submitPrompt = async (payload, files) => {
   try {
     const formData = new FormData();
     formData.append('data', JSON.stringify(payload));
@@ -23,29 +20,6 @@ const submitPrompt = async (payload, files, dispatch) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-
-    const toolSessionPayload = {
-      user: payload.user,
-      tool_data: { ...payload.tool_data },
-      type: payload.type,
-      messages: response.data,
-      sessionId: payload.sessionId,
-    };
-
-    const createdToolSession = await createToolSession(
-      toolSessionPayload,
-      dispatch
-    );
-
-    // const historyData = await dispatch(
-    //   fetchToolsHistory({ userId: payload.user.id })
-    // );
-
-    const state = store.getState().toolsHistory;
-    const updatedData = [...state.data, createdToolSession];
-    const updatedState = { ...state, data: updatedData };
-
-    localStorage.setItem('toolsHistory', JSON.stringify(updatedState));
 
     return response.data?.data;
   } catch (err) {

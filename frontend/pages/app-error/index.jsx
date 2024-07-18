@@ -4,30 +4,27 @@ import { useRouter } from 'next/router';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import MainAppLayout from '@/layouts/MainAppLayout';
 
+import ErrorIcon from '@/assets/svg/ErrorIcon.svg';
+
 import LargeLogo from '@/assets/svg/MenuLogo.svg';
-import Meteor from '@/assets/svg/Meteor.svg';
-import MeteorDetails1 from '@/assets/svg/MeteorDetails1.svg';
-import MeteorDetails2 from '@/assets/svg/MeteorDetails2.svg';
-import MeteorTrail1 from '@/assets/svg/MeteorTrail1.svg';
-import MeteorTrail2 from '@/assets/svg/MeteorTrail2.svg';
-import MeteorTrail3 from '@/assets/svg/MeteorTrail3.svg';
-import Planet from '@/assets/svg/planet.svg';
+
 import Star from '@/assets/svg/Star_3.svg';
-import YellowStar from '@/assets/svg/yellowStar.svg';
 
 import ROUTES from '@/constants/routes';
 
 import pageNotFoundStyles from '@/styles/pageNotFoundStyles';
 
 /**
- * Renders the page for when the requested route is not found.
+ * ApplicationError component displays a page indicating application errors.
+ * It provides an option to navigate back to the homepage.
  *
- * @return {JSX.Element} The JSX element representing the page.
+ * Uses MainAppLayout as the layout wrapper.
+ *
+ * @returns {JSX.Element} ApplicationErrorPage component UI
  */
-const PageNotFound = () => {
+const ApplicationError = () => {
   const router = useRouter();
   const theme = useTheme();
-
   const handleRouteToHome = () => {
     router.push(ROUTES.HOME);
   };
@@ -55,7 +52,7 @@ const PageNotFound = () => {
     return (
       <Grid {...pageNotFoundStyles.titleGridProps}>
         <Typography {...pageNotFoundStyles.subtitleProps}>
-          Lost in the Digital Cosmos? ☄️
+          Application Error
         </Typography>
       </Grid>
     );
@@ -65,15 +62,22 @@ const PageNotFound = () => {
     return (
       <Grid {...pageNotFoundStyles.bodyGridProps}>
         <Typography {...pageNotFoundStyles.bodyProps}>
-          Oops, it seems you&apos;ve entered a black hole! Don&apos;t worry, our
-          trusty AI, ReX, is here to help navigate you back to the known
-          universe. Try checking the URL or head back to our homepage to
-          continue your tech odyssey.
+          It’s not you it’s us, we’re trying to fix this issue for you <br />
+          Let’s go back to home for the time being!
         </Typography>
       </Grid>
     );
   };
 
+  const renderTopContent = () => {
+    return (
+      <Grid {...pageNotFoundStyles.sectionGridProps}>
+        <Typography {...pageNotFoundStyles.titleProps}>
+          <ErrorIcon />
+        </Typography>
+      </Grid>
+    );
+  };
   const renderGoHomeButton = () => {
     return (
       <Grid {...pageNotFoundStyles.buttonGridProps}>
@@ -84,14 +88,6 @@ const PageNotFound = () => {
           textColor="white"
           {...pageNotFoundStyles.submitButtonProps}
         />
-      </Grid>
-    );
-  };
-
-  const renderTopContent = () => {
-    return (
-      <Grid {...pageNotFoundStyles.sectionGridProps}>
-        <Typography {...pageNotFoundStyles.titleProps}>404</Typography>
       </Grid>
     );
   };
@@ -127,24 +123,6 @@ const PageNotFound = () => {
         {/* <Box {...pageNotFoundStyles.planetProps}>
           <Planet />
         </Box> */}
-        <Box {...pageNotFoundStyles.meteorProps}>
-          <Meteor />
-        </Box>
-        <Box {...pageNotFoundStyles.meteorDetails1Props}>
-          <MeteorDetails1 />
-        </Box>
-        <Box {...pageNotFoundStyles.meteorDetails2Props}>
-          <MeteorDetails2 />
-        </Box>
-        <Box {...pageNotFoundStyles.meteorTrail1Props}>
-          <MeteorTrail1 />
-        </Box>
-        <Box {...pageNotFoundStyles.meteorTrail2Props}>
-          <MeteorTrail2 />
-        </Box>
-        <Box {...pageNotFoundStyles.meteorTrail3Props}>
-          <MeteorTrail3 />
-        </Box>
         <Box {...pageNotFoundStyles.star1Props}>
           <Star />
         </Box>
@@ -162,8 +140,8 @@ const PageNotFound = () => {
     <Grid {...pageNotFoundStyles.mainGridProps}>
       {renderRadialBackground()}
       <Grid {...pageNotFoundStyles.contentGridProps}>
-        {renderLogo()}
         {renderIcons()}
+        {renderLogo()}
         {renderTopContent()}
         {renderBottomContent()}
       </Grid>
@@ -171,8 +149,8 @@ const PageNotFound = () => {
   );
 };
 
-PageNotFound.getLayout = function getLayout(page) {
+ApplicationError.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };
 
-export default PageNotFound;
+export default ApplicationError;

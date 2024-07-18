@@ -8,7 +8,9 @@ const ROUTES = {
   PASSWORD_RESET: '/password-reset',
   REDIRECT: '/redirect',
   CHAT: '/chat',
-  HISTORY: '/history',
+  APP_ERROR: '/app-error',
+  NETWORK_ERROR: '/network-error',
+  FOUR_OH_FOUR_ERROR: '/404',
 };
 
 export default ROUTES;
