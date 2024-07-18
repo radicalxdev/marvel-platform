@@ -44,6 +44,20 @@ const ToolForm = (props) => {
 
       dispatch(setResponse(null));
 
+      const invalidFile = files?.some(
+        (file) => file.type !== 'application/pdf'
+      );
+
+      if (invalidFile) {
+        handleOpenSnackBar(
+          ALERT_COLORS.ERROR,
+          'Make sure you select PDF Files to continue making the quiz',
+          'Unable to load files',
+          ['top', 'right']
+        );
+        return;
+      }
+
       const updateData = Object.entries(toolData).map(([name, value]) => ({
         name,
         value,
@@ -61,21 +75,33 @@ const ToolForm = (props) => {
             email: userData?.email,
           },
         },
-        files
+        files,
+        dispatch
       );
 
       dispatch(setResponse(response?.data));
       dispatch(setFormOpen(false));
       dispatch(setCommunicatorLoading(false));
     } catch (error) {
+      if (error.message.includes('Video is')) {
+        handleOpenSnackBar(
+          ALERT_COLORS.ERROR,
+          'Make sure you provide a video that is less than 600 seconds long',
+          'Video Too Long!',
+          ['top', 'right']
+        );
+      } else {
+        handleOpenSnackBar(
+          ALERT_COLORS.ERROR,
+          'An error occurred while submitting the form.',
+          'Submission Error',
+          ['top', 'right']
+        );
+      }
+
       dispatch(setCommunicatorLoading(false));
-      handleOpenSnackBar(
-        ALERT_COLORS.ERROR,
-        error?.message || 'Couldn\u0027t send prompt'
-      );
     }
   };
-
   const renderTextInput = (inputProps) => {
     const { name: inputName, placeholder, tooltip, label } = inputProps;
     const renderLabel = () => {
@@ -234,4 +260,5 @@ const ToolForm = (props) => {
     </FormContainer>
   );
 };
+
 export default ToolForm;

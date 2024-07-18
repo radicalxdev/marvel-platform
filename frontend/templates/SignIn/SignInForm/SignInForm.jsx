@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 
 import { Grid, Link, useTheme } from '@mui/material';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { useRouter } from 'next/router';
 
 import { FormContainer } from 'react-hook-form-mui';
 import { useDispatch } from 'react-redux';
@@ -10,10 +9,8 @@ import { useDispatch } from 'react-redux';
 import AuthTextField from '@/components/AuthTextField';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import { AUTH_ERROR_MESSAGES } from '@/constants/auth';
+import { AUTH_CONTENT } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
-
-import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
@@ -50,7 +47,6 @@ const SignInForm = (props) => {
   const [signInLoading, setSignInLoading] = useState(false);
   const [error, setError] = useState(DEFAULT_ERR_STATE);
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const { handleOpenSnackBar } = useContext(AuthContext);
 
@@ -90,16 +86,23 @@ const SignInForm = (props) => {
         signOut(auth);
         handleOpenSnackBar(
           ALERT_COLORS.INFO,
-          'Please check your inbox to verify your email'
+          AUTH_CONTENT.EMAIL_VERIFICATION.message,
+          AUTH_CONTENT.EMAIL_VERIFICATION.title,
+          ['top', 'center']
         );
         return;
       }
 
       // If user is verified, redirect to home
       dispatch(setLoading(true));
-      router.push(ROUTES.HOME);
+      // Redirect logic is at useRedirect.jsx
     } catch ({ code }) {
-      setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
+      handleOpenSnackBar(
+        ALERT_COLORS.ERROR,
+        AUTH_CONTENT.LOGIN_FAILURE.message(code),
+        AUTH_CONTENT.LOGIN_FAILURE.title,
+        ['top', 'center']
+      );
     } finally {
       setSignInLoading(false);
     }

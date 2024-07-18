@@ -7,6 +7,8 @@ import useRedirect from '@/hooks/useRedirect';
 
 import SnackBar from '@/components/SnackBar';
 
+import ALERT_COLORS from '@/constants/notification';
+
 import { setLoading, setUser } from '@/redux/slices/authSlice';
 import { setUserData } from '@/redux/slices/userSlice';
 import store, { auth, firestore, functions } from '@/redux/store';
@@ -24,20 +26,24 @@ const AuthProvider = (props) => {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  const [severity, setSeverity] = useState('success');
-  const [message, setMessage] = useState('Default Message');
+  const [snackBarConfig, setSnackBarConfig] = useState({
+    severity: ALERT_COLORS.ERROR,
+    message: '',
+    title: '',
+    direction: ['top', 'right'],
+  });
 
-  const handleOpenSnackBar = (newSeverity, newMessage) => {
-    setSeverity(newSeverity);
-    setMessage(newMessage);
+  const handleOpenSnackBar = (severity, message, title, direction) => {
+    setSnackBarConfig({
+      severity,
+      message,
+      title,
+      direction,
+    });
     setOpen(true);
   };
 
-  const memoizedValue = useMemo(() => {
-    return {
-      handleOpenSnackBar,
-    };
-  }, []);
+  const memoizedValue = useMemo(() => ({ handleOpenSnackBar }), []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return null;
@@ -70,8 +76,10 @@ const AuthProvider = (props) => {
       {children}
       <SnackBar
         open={open}
-        severity={severity}
-        message={message}
+        severity={snackBarConfig.severity}
+        message={snackBarConfig.message}
+        title={snackBarConfig.title}
+        direction={snackBarConfig.direction}
         handleClose={handleClose}
       />
     </AuthContext.Provider>

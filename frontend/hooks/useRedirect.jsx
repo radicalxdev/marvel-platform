@@ -63,7 +63,7 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
       }
 
       if (isAuthUrl) {
-        router.push(ROUTES.HOME);
+        router.push(`${ROUTES.HOME}?is_login=true`);
         return;
       }
       return;

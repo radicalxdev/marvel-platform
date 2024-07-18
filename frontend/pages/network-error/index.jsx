@@ -1,36 +1,32 @@
-import { Box, Grid, Typography, useTheme } from '@mui/material';
+// pages/networkError/index.jsx
+import React from 'react';
+
+import { Box, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import MainAppLayout from '@/layouts/MainAppLayout';
 
+import ErrorIcon from '@/assets/svg/ErrorIcon.svg';
+
 import LargeLogo from '@/assets/svg/MenuLogo.svg';
-import Meteor from '@/assets/svg/Meteor.svg';
-import MeteorDetails1 from '@/assets/svg/MeteorDetails1.svg';
-import MeteorDetails2 from '@/assets/svg/MeteorDetails2.svg';
-import MeteorTrail1 from '@/assets/svg/MeteorTrail1.svg';
-import MeteorTrail2 from '@/assets/svg/MeteorTrail2.svg';
-import MeteorTrail3 from '@/assets/svg/MeteorTrail3.svg';
-import Planet from '@/assets/svg/planet.svg';
+
 import Star from '@/assets/svg/Star_3.svg';
-import YellowStar from '@/assets/svg/yellowStar.svg';
 
 import ROUTES from '@/constants/routes';
 
 import pageNotFoundStyles from '@/styles/pageNotFoundStyles';
 
 /**
- * Renders the page for when the requested route is not found.
+ * NetworkError component displays a page indicating network errors.
+ * It suggests reconnecting and refreshing the page to continue.
  *
- * @return {JSX.Element} The JSX element representing the page.
+ * Uses MainAppLayout as the layout wrapper.
+ *
+ * @returns {JSX.Element} NetworkError component UI
  */
-const PageNotFound = () => {
-  const router = useRouter();
-  const theme = useTheme();
 
-  const handleRouteToHome = () => {
-    router.push(ROUTES.HOME);
-  };
+const NetworkError = () => {
+  const router = useRouter();
 
   const renderLogo = () => {
     return (
@@ -55,7 +51,7 @@ const PageNotFound = () => {
     return (
       <Grid {...pageNotFoundStyles.titleGridProps}>
         <Typography {...pageNotFoundStyles.subtitleProps}>
-          Lost in the Digital Cosmos? ☄️
+          Network Error
         </Typography>
       </Grid>
     );
@@ -65,25 +61,9 @@ const PageNotFound = () => {
     return (
       <Grid {...pageNotFoundStyles.bodyGridProps}>
         <Typography {...pageNotFoundStyles.bodyProps}>
-          Oops, it seems you&apos;ve entered a black hole! Don&apos;t worry, our
-          trusty AI, ReX, is here to help navigate you back to the known
-          universe. Try checking the URL or head back to our homepage to
-          continue your tech odyssey.
+          Seems like there is a problem with your internet, <br />
+          try reconnecting and refresh the page to continue
         </Typography>
-      </Grid>
-    );
-  };
-
-  const renderGoHomeButton = () => {
-    return (
-      <Grid {...pageNotFoundStyles.buttonGridProps}>
-        <GradientOutlinedButton
-          bgcolor={theme.palette.Common.White['100p']}
-          clickHandler={handleRouteToHome}
-          text="Go to Homepage"
-          textColor="white"
-          {...pageNotFoundStyles.submitButtonProps}
-        />
       </Grid>
     );
   };
@@ -91,7 +71,9 @@ const PageNotFound = () => {
   const renderTopContent = () => {
     return (
       <Grid {...pageNotFoundStyles.sectionGridProps}>
-        <Typography {...pageNotFoundStyles.titleProps}>404</Typography>
+        <Typography {...pageNotFoundStyles.titleProps}>
+          <ErrorIcon />
+        </Typography>
       </Grid>
     );
   };
@@ -102,7 +84,6 @@ const PageNotFound = () => {
         <Grid {...pageNotFoundStyles.mainContentGridProps}>
           {renderMainTitle()}
           {renderBodyText()}
-          {renderGoHomeButton()}
         </Grid>
       </Grid>
     );
@@ -127,24 +108,6 @@ const PageNotFound = () => {
         {/* <Box {...pageNotFoundStyles.planetProps}>
           <Planet />
         </Box> */}
-        <Box {...pageNotFoundStyles.meteorProps}>
-          <Meteor />
-        </Box>
-        <Box {...pageNotFoundStyles.meteorDetails1Props}>
-          <MeteorDetails1 />
-        </Box>
-        <Box {...pageNotFoundStyles.meteorDetails2Props}>
-          <MeteorDetails2 />
-        </Box>
-        <Box {...pageNotFoundStyles.meteorTrail1Props}>
-          <MeteorTrail1 />
-        </Box>
-        <Box {...pageNotFoundStyles.meteorTrail2Props}>
-          <MeteorTrail2 />
-        </Box>
-        <Box {...pageNotFoundStyles.meteorTrail3Props}>
-          <MeteorTrail3 />
-        </Box>
         <Box {...pageNotFoundStyles.star1Props}>
           <Star />
         </Box>
@@ -162,8 +125,8 @@ const PageNotFound = () => {
     <Grid {...pageNotFoundStyles.mainGridProps}>
       {renderRadialBackground()}
       <Grid {...pageNotFoundStyles.contentGridProps}>
-        {renderLogo()}
         {renderIcons()}
+        {renderLogo()}
         {renderTopContent()}
         {renderBottomContent()}
       </Grid>
@@ -171,8 +134,8 @@ const PageNotFound = () => {
   );
 };
 
-PageNotFound.getLayout = function getLayout(page) {
+NetworkError.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };
 
-export default PageNotFound;
+export default NetworkError;
