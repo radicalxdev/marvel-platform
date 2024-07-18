@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Grid, useMediaQuery } from '@mui/material';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import useErrorRouting from '@/hooks/useErrorRouting';
+import useNetworkStatus from '@/hooks/useNetworkStatus';
 
 import AppDisabled from '@/components/AppDisabled';
 import Loader from '@/components/Loader';
 
+import ROUTES from '@/constants/routes';
+
 import SideMenu from './SideMenu';
 import styles from './styles';
 
-import ApplicationError from '@/pages/app-error';
 import NetworkError from '@/pages/network-error';
 import { setLoading } from '@/redux/slices/authSlice';
 
@@ -25,21 +27,28 @@ const MainAppLayout = (props) => {
     theme.breakpoints.down('laptop')
   );
 
-  const { isOnline, showApplicationError, isErrorPage } = useErrorRouting();
+  const { isOnline } = useNetworkStatus();
+  const [isErrorPage, setIsErrorPage] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     dispatch(setLoading(false));
   }, [dispatch]);
+
+  useEffect(() => {
+    const isError =
+      router.pathname === ROUTES.APP_ERROR ||
+      router.pathname === ROUTES.NETWORK_ERROR ||
+      router.pathname === ROUTES.FOUR_OH_FOUR_ERROR;
+
+    setIsErrorPage(isError);
+  }, [router.pathname]);
 
   const renderHead = () => (
     <Head>
       <title>Kai AI</title>
     </Head>
   );
-
-  if (showApplicationError) {
-    return <ApplicationError />;
-  }
 
   const renderSideMenu = () => {
     return !isErrorPage && isOnline && <SideMenu />;

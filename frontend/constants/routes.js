@@ -8,7 +8,7 @@ const ROUTES = {
   PASSWORD_RESET: '/password-reset',
   REDIRECT: '/redirect',
   CHAT: '/chat',
-  APP_ERROR: '/app-error',
+  APP_ERROR: '/500',
   NETWORK_ERROR: '/network-error',
   FOUR_OH_FOUR_ERROR: '/404',
 };
