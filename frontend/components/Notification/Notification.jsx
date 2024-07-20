@@ -3,6 +3,7 @@ import styles from './styles';
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import Fade from '@mui/material/Fade';
 
 const SuccessNotification = ({ message, open }) => (
     <Snackbar
@@ -31,27 +32,14 @@ const ErrorNotification = ({ message, open, onClose }) => {
     <Snackbar
         open={open}
         autoHideDuration={6000}
+        TransitionComponent={(props) => <Fade {...props} timeout={{ enter: 500, exit: 500 }} />}
         onClose={onClose}
         action={closeButton}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        style={{
-            position: 'absolute',
-            top: '7%',
-            // height: '200px',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '50%', // Adjust the max-width as needed
-
-            
-            // maxWidth: '50%', // Adjust the max-width as needed
-            // minWidth: '100px', // Adjust the min-width as needed
-          }}
+        {...styles.ErrorNotification}
     >
         <Alert
             onClose={onClose}
-            severity="error"
-            variant="filled"
-            style={{...styles.ErrorNotification}}
+            {...styles.AlertNotification}
         >
             {message}
         </Alert>
