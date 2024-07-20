@@ -49,26 +49,9 @@ const ErrorNotification = ({ message, open, onClose }) => {
     >
         <Alert
             onClose={onClose}
-            severity='error'
-            variant='filled'
-            style={{
-                backgroundColor: '#3D252B',
-                color: '#FE6167', // Text color
-                padding: '12px, 20px, 12px, 20px',
-                borderRadius: '8px',
-                height: '95px',
-                fontSize: '16px',
-                fontFamily: 'Satoshi, sans-serif', // Using Satoshi for the main message
-                border: '1px solid #FE6167', // Border color and width
-                backgroundColor: 'rgba(211, 47, 47, 0.3)', // Semi-transparent background color
-                boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.35)', // Adjust blur and transparency here
-                
-                // backgroundColor: 'rgba(255, 255, 255, 0.336)', // Background color with opacity
-
-                // backdropFilter: 'blur(10px)', // Adjust blur intensity as needed
-                // backgroundColor: 'rgba(255, 255, 255, 0.336)', // Background color with opacity
-              }}
-            
+            severity="error"
+            variant="filled"
+            style={{...styles.ErrorNotification}}
         >
             {message}
         </Alert>

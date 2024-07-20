@@ -10,7 +10,7 @@ const styles = {
         border: '1px solid #FE6167', // Border color and width
         backgroundColor: 'rgba(211, 47, 47, 0.3)', // Semi-transparent background color
         boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.35)', // Adjust blur and transparency here
-      },
+      }
 }
   
 export default styles;
