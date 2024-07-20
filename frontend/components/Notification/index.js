@@ -1,1 +1,1 @@
-export { default } from './Notification';
+export { SuccessNotification, ErrorNotification } from './Notification';

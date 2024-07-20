@@ -26,7 +26,7 @@ import { auth } from '@/redux/store';
 
 import AUTH_REGEX from '@/regex/auth';
 
-import { SuccessNotification, ErrorNotification } from '@/components/Notification';
+import {ErrorNotification} from '@/components/Notification';
 import { Box } from '@mui/system';
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
@@ -179,72 +179,12 @@ const SignInForm = (props) => {
   };
   
   const renderErrorNotification = () => {
-    const action = (
-      <React.Fragment>
-        <IconButton
-          size="small"
-          aria-label="close"
-          color="inherit"
-          onClick={handleClose}
-        >
-          <CloseIcon fontSize="small" />
-        </IconButton>
-      </React.Fragment>
-    );
-
     return (
-      <>
-      <Snackbar
-            open={openError}
-            autoHideDuration={3000}
-            TransitionComponent={(props) => <Fade {...props} timeout={{ enter: 500, exit: 500 }} />}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            action={action}
-            style={{
-              position: 'absolute',
-              top: '7%',
-              // height: '200px',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '100%', // Adjust the max-width as needed
-
-              
-              // maxWidth: '50%', // Adjust the max-width as needed
-              // minWidth: '100px', // Adjust the min-width as needed
-            }}
-            onClose={handleClose}
-          >
-              <Alert
-              onClose={handleClose}
-              severity="error"
-              variant="filled"
-              // sx={{ width: '800px' }}
-              style={{
-                backgroundColor: '#3D252B',
-                color: '#FE6167', // Text color
-                padding: '12px, 20px, 12px, 20px',
-                borderRadius: '8px',
-                height: '95px',
-                fontSize: '16px',
-                fontFamily: 'Satoshi, sans-serif', // Using Satoshi for the main message
-                border: '1px solid #FE6167', // Border color and width
-                backgroundColor: 'rgba(211, 47, 47, 0.3)', // Semi-transparent background color
-                boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.35)', // Adjust blur and transparency here
-                
-                // backgroundColor: 'rgba(255, 255, 255, 0.336)', // Background color with opacity
-
-                // backdropFilter: 'blur(10px)', // Adjust blur intensity as needed
-                // backgroundColor: 'rgba(255, 255, 255, 0.336)', // Background color with opacity
-              }}
-            >
-              <strong style={{ fontSize: '18px', fontFamily: 'Satoshi Bold, sans-serif', marginBottom: '8px'}}>
-                Login with Google Failed!
-              </strong> <br />
-              This account is not registered to a Radical account. <br />
-              <strong>Create an account</strong> to continue.
-            </Alert>
-            </Snackbar>
-      </>
+      <ErrorNotification
+        open={openError}
+        onClose={handleClose}
+        message="Login with Google Failed! This account is not registered to a Radical account. Create an account to continue."
+      />
     );
   }
 
