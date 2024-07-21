@@ -1,6 +1,14 @@
 import { Close, FileCopyOutlined, GetAppOutlined } from '@mui/icons-material';
 
-import { Button, Drawer, Grid, IconButton, Typography } from '@mui/material';
+import {
+  Alert,
+  Button,
+  Drawer,
+  Grid,
+  IconButton,
+  Snackbar,
+  Typography,
+} from '@mui/material';
 
 import TOOLS_ID from '@/constants/tools';
 
@@ -8,6 +16,7 @@ import FlashCardPreview from './FlashCardPreview';
 import MultipleChoicePreview from './MultipleChoicePreview';
 
 import styles from './styles';
+import { useState } from 'react';
 
 /**
  * Component for rendering a preview of history details in a drawer.
@@ -35,6 +44,19 @@ const HistoryPreview = (props) => {
     outputs,
   } = props;
 
+  const [alertState, setAlertState] = useState({
+    open: false,
+    message: '',
+    severity: '',
+  });
+
+  const handleAlertClose = () => {
+    setAlertState({
+      ...alertState,
+      open: false,
+    });
+  };
+
   const handleCopy = () => {
     const contentToCopy = cardInstance.formatCopyContent(
       title,
@@ -43,14 +65,22 @@ const HistoryPreview = (props) => {
       outputs
     );
 
-    // Copy the content to the clipboard
+    // Copying the card content
     navigator.clipboard
       .writeText(contentToCopy)
       .then(() => {
-        alert('copied content successfully');
+        setAlertState({
+          open: true,
+          message: 'Copy card successfully!',
+          severity: 'success',
+        });
       })
       .catch((error) => {
-        alert('Error copying content: ', error);
+        setAlertState({
+          open: true,
+          message: 'Error copying card',
+          severity: 'error',
+        });
       });
 
     return null;
@@ -65,8 +95,20 @@ const HistoryPreview = (props) => {
     );
 
     // save and export to pdf
-    contentToExport.save(`${title}.pdf`);
-    return null;
+    try {
+      contentToExport.save(`${title}.pdf`);
+      setAlertState({
+        open: true,
+        message: 'Export card successfully!',
+        severity: 'success',
+      });
+    } catch (error) {
+      setAlertState({
+        open: true,
+        message: 'Error exporting card',
+        severity: 'error',
+      });
+    }
   };
 
   /**
@@ -133,6 +175,16 @@ const HistoryPreview = (props) => {
             <Grid item>{renderOutputButtons()}</Grid>
           </Grid>
         </Drawer>
+        <Snackbar
+          open={alertState.open}
+          autoHideDuration={6000}
+          onClose={handleAlertClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <Alert onClose={handleAlertClose} severity={alertState.severity}>
+            {alertState.message}
+          </Alert>
+        </Snackbar>
       </Grid>
     )
   );
