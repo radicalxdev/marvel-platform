@@ -71,11 +71,7 @@ const ChatInterface = () => {
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
 
   const startConversation = async (message) => {
-    dispatch(
-      setMessages({
-        role: MESSAGE_ROLE.AI,
-      })
-    );
+    dispatch(setMessages(message)); // Add user's message immediately
     dispatch(setTyping(true));
 
     // Define the chat payload
@@ -194,16 +190,16 @@ const ChatInterface = () => {
       },
     };
 
-    if (!chatMessages) {
-      await startConversation(message);
-      return;
-    }
-
     dispatch(
       setMessages({
         role: MESSAGE_ROLE.HUMAN,
       })
     );
+
+    if (!chatMessages) {
+      await startConversation(message);
+      return;
+    }
 
     dispatch(setTyping(true));
 
