@@ -1,13 +1,16 @@
 import jsPDF from 'jspdf';
 
-import HistoryCardTemplate from '../HistoryCardTemplate';
-
 import {
   convertToUnixTimestamp,
   formatToStandardDate,
 } from '@/utils/FirebaseUtils';
 
-class MultipleChoiceResponse extends HistoryCardTemplate {
+class MultipleChoiceResponse {
+  constructor(cardData) {
+    this.cardData = cardData;
+    this.somePlaceholder = 'This is a placeholder'; // Example usage
+  }
+
   async initializeCard() {
     let backgroundImgURL = '';
     let logoURL = '';
@@ -40,7 +43,8 @@ class MultipleChoiceResponse extends HistoryCardTemplate {
     };
   }
 
-  static formatCopyContent(title, createdAt, description, outputs) {
+  formatCopyContent(title, createdAt, description, outputs) {
+    const placeholder = this.somePlaceholder;
     // Combine the header and preview content into a single string
     let formattedContent = `Title: ${title}\nCreated At: ${createdAt}\nDescription: ${description}\n`;
     // Multiple Choice Quiz format
@@ -59,7 +63,8 @@ class MultipleChoiceResponse extends HistoryCardTemplate {
     return formattedContent;
   }
 
-  static formatExportContent(title, createdAt, description, outputs) {
+  formatExportContent(title, createdAt, description, outputs) {
+    const placeholder = this.somePlaceholder;
     const JsPDF = jsPDF;
     const doc = new JsPDF();
 
