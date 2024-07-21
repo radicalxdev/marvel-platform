@@ -9,6 +9,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '10px',
+    margin: '5% 0%',
     sx: {
       background: (theme) => theme.palette.Common.White['100p'],
     },
@@ -36,6 +37,10 @@ const styles = {
     fontSize: { laptop: '18px', desktop: '20px' },
   },
   choiceProps: {
+    fontFamily: 'Satoshi Regular',
+    fontSize: { laptop: '18px', desktop: '20px' },
+  },
+  questionAnswerProps: {
     fontFamily: 'Satoshi Regular',
     fontSize: { laptop: '18px', desktop: '20px' },
   },

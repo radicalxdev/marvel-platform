@@ -15,16 +15,9 @@ import HistoryPreview from '../HistoryPreview';
 
 import styles from './styles';
 
-import {
-  convertToUnixTimestamp,
-  formatToStandardDate,
-} from '@/utils/FirebaseUtils';
-import fetchYoutubeTitle from '@/utils/YoutubeUtils'; // Assuming fetchYoutubeTitle returns a Promise
-import TOOLS_ID from '@/constants/tools';
-
 const HistoryCard = (props) => {
   const {
-    cardData,
+    cardInstance,
     onSortByTitle,
     onSortByDate,
     onSortByDescription,
@@ -35,56 +28,12 @@ const HistoryCard = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let backgroundImgURL = '';
-      let logoURL = '';
-      let title = '';
-      let description = '';
-      const { createdAt, response, toolId } = cardData;
-      const { inputs, outputs } = response;
-      const formattedCreatedAt = formatToStandardDate(
-        new Date(convertToUnixTimestamp(createdAt))
-      );
-
-      switch (toolId) {
-        case TOOLS_ID.GEMINI_QUIZIFY:
-          title = inputs.topic;
-          description = `${inputs.num_questions} Multiple Choice questions about the topic: ${title}`;
-          backgroundImgURL =
-            'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Quizify.png?alt=media&token=d1255f27-b1a1-444e-b96a-4a3ac559237d';
-          logoURL =
-            'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/QuizifyLogo.png?alt=media&token=9bf1d066-fba4-4063-9640-ef732e237d31';
-          break;
-        case TOOLS_ID.GEMINI_DYNAMO:
-          try {
-            title = await fetchYoutubeTitle(inputs.youtubeUrl);
-            description = `Set of Flashcards about the youtube video: ${title}`;
-            backgroundImgURL =
-              'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080';
-            logoURL =
-              'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188';
-          } catch (error) {
-            console.error('Error fetching YouTube title:', error);
-          }
-          break;
-        default:
-          break;
-      }
-
-      const restructuredData = {
-        title,
-        description,
-        createdAt: formattedCreatedAt,
-        outputs,
-        backgroundImgURL,
-        logoURL,
-        toolId,
-      };
-
+      const restructuredData = await cardInstance.initializeCard();
       setRestructuredCardData(restructuredData);
     };
 
     fetchData();
-  }, [cardData]);
+  }, [cardInstance]);
 
   /**
    * Function to toggle the preview state of the history card.
@@ -153,6 +102,7 @@ const HistoryCard = (props) => {
         </CardContent>
       </Card>
       <HistoryPreview
+        cardInstance={cardInstance}
         open={openPreview}
         togglePreview={togglePreview}
         createdAt={restructuredCardData?.createdAt}

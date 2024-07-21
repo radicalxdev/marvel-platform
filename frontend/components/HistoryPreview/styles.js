@@ -7,6 +7,8 @@ const styles = {
     sx: {
       backgroundColor: '#FFFFFF',
       height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
       padding: '2% 5%',
       overflow: 'auto',
     },
@@ -75,7 +77,9 @@ const styles = {
       right: '575px',
       transition: (theme) => theme.transitions.create('all'),
       '&:hover': {
-        backgroundColor: '#d3d3d3',
+        cursor: 'pointer',
+        backgroundColor: '#FFFFFF',
+        color: '#97f8fb',
       },
     },
   },
@@ -130,6 +134,7 @@ const styles = {
       transition: (theme) => theme.transitions.create('all'),
       '&:hover': {
         cursor: 'pointer',
+        color: '#97f8fb',
       },
     },
   },

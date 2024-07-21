@@ -6,6 +6,7 @@ const styles = {
     rowGap: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    margin: '5% 0%',
   },
   questionsGridProps: {
     container: true,

@@ -1,4 +1,5 @@
 import { Box, Grid, Typography } from '@mui/material';
+
 import styles from './styles';
 
 const MultipleChoicePreview = (props) => {
@@ -11,7 +12,7 @@ const MultipleChoicePreview = (props) => {
    */
   const renderMultipleChoiceQuestions = () => {
     return (
-      <Grid container direction="column" {...styles.questionsGridProps}>
+      <Grid {...styles.questionsGridProps}>
         {Object.keys(outputs).map((key, questionNo) => {
           const item = outputs[key];
           return (
@@ -33,8 +34,12 @@ const MultipleChoicePreview = (props) => {
                   </Typography>
                 ))}
               </Box>
-              <Typography>{`Answer: ${item.correctAnswer}`}</Typography>
-              <Typography>{`Explanation: ${item.explanation}`}</Typography>
+              <Typography
+                {...styles.questionAnswerProps}
+              >{`Answer: ${item.correctAnswer}`}</Typography>
+              <Typography
+                {...styles.questionAnswerProps}
+              >{`Explanation: ${item.explanation}`}</Typography>
             </Grid>
           );
         })}

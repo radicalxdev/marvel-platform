@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { Grid } from '@mui/material';
 
+import TOOLS_RENDERS from '@/constants/toolsRenders';
+
 import HistoryCard from '../HistoryCard';
 
 import { convertToUnixTimestamp } from '@/utils/FirebaseUtils';
@@ -52,17 +54,21 @@ const HistoryListing = (props) => {
   return (
     <Grid container spacing={3}>
       {sortedData &&
-        sortedData.map((item, index) => (
-          <Grid item key={index} xs={12} sm={6} md={4}>
-            <HistoryCard
-              cardData={item}
-              onSortByTitle={handleSortByTitle}
-              onSortByDate={handleSortByDate}
-              onSortByDescription={handleSortByDescription}
-              onSortByToolId={handleSortByToolId}
-            />
-          </Grid>
-        ))}
+        sortedData.map((item, index) => {
+          const cardInstance = new TOOLS_RENDERS[item.toolId](item);
+          return (
+            <Grid item key={index} xs={12} sm={6} md={4}>
+              <HistoryCard
+                cardInstance={cardInstance}
+                cardData={item}
+                onSortByTitle={handleSortByTitle}
+                onSortByDate={handleSortByDate}
+                onSortByDescription={handleSortByDescription}
+                onSortByToolId={handleSortByToolId}
+              />
+            </Grid>
+          );
+        })}
     </Grid>
   );
 };
