@@ -6,11 +6,25 @@ const styles = {
   previewContainerProps: {
     sx: {
       backgroundColor: '#FFFFFF',
-      height: '100%',
+      height: '100%', // Ensure it takes the full height of the drawer
       display: 'flex',
       flexDirection: 'column',
       padding: '2% 5%',
-      overflow: 'auto',
+      overflowY: 'scroll', // Ensure vertical scrolling
+      scrollbarWidth: 'thin', // For Firefox
+      '&::-webkit-scrollbar': {
+        width: '8px', // For Chrome, Safari and Opera
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#ccc',
+        borderRadius: '4px',
+      },
+      '&::-webkit-scrollbar-thumb:hover': {
+        backgroundColor: '#aaa',
+      },
+      '&::-webkit-scrollbar-track': {
+        backgroundColor: '#f2f2f2',
+      },
     },
   },
   headerProps: {
@@ -22,13 +36,27 @@ const styles = {
     anchor: 'right',
     sx: {
       width: '550px',
-      height: '100%',
+      height: '100%', // Ensure it takes the full height of the viewport
       flexShrink: 0,
       '& .MuiDrawer-paper': {
         width: '550px',
-        height: '100%',
+        height: '100%', // Ensure it takes the full height of the viewport
         boxSizing: 'border-box',
-        overflow: 'auto',
+        overflow: 'auto', // Ensure vertical scrolling within the drawer
+        scrollbarWidth: 'thin', // For Firefox
+        '&::-webkit-scrollbar': {
+          width: '8px', // For Chrome, Safari and Opera
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: '#ccc',
+          borderRadius: '4px',
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: '#aaa',
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: '#f2f2f2',
+        },
       },
     },
   },
