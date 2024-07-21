@@ -29,7 +29,7 @@ const HistoryInterface = (props) => {
   const renderTitle = () => {
     return (
       <Grid {...styles.titleGridProps}>
-        <Typography {...styles.titleProps}>History</Typography>
+        <Typography {...styles.titleProps}>Output History</Typography>
       </Grid>
     );
   };
