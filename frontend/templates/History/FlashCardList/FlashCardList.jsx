@@ -90,6 +90,12 @@ class FlashCardList {
 
     doc.text('Flashcards:', margin, margin + 40);
     Object.keys(outputs).forEach((key) => {
+      // Check if the y-coordinate exceeds the page height, then add a new page
+      if (ycoord + cardHeight > pageHeight) {
+        doc.addPage();
+        ycoord = margin;
+      }
+
       const flashcardData = outputs[key];
 
       // Calculate positions to center the card
@@ -113,12 +119,6 @@ class FlashCardList {
       });
 
       ycoord += cardHeight + 10; // Adjust space between cards as needed
-
-      // Check if the y-coordinate exceeds the page height, then add a new page
-      if (ycoord + cardHeight > pageHeight) {
-        doc.addPage();
-        ycoord = margin;
-      }
     });
 
     return doc;
