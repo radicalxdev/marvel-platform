@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Close, FileCopyOutlined, GetAppOutlined } from '@mui/icons-material';
 
 import {
@@ -16,7 +18,6 @@ import FlashCardPreview from './FlashCardPreview';
 import MultipleChoicePreview from './MultipleChoicePreview';
 
 import styles from './styles';
-import { useState } from 'react';
 
 /**
  * Component for rendering a preview of history details in a drawer.
@@ -78,7 +79,7 @@ const HistoryPreview = (props) => {
       .catch((error) => {
         setAlertState({
           open: true,
-          message: 'Error copying card',
+          message: `Error copying card: ${error}`,
           severity: 'error',
         });
       });
@@ -105,7 +106,7 @@ const HistoryPreview = (props) => {
     } catch (error) {
       setAlertState({
         open: true,
-        message: 'Error exporting card',
+        message: `Error exporting card: ${error}`,
         severity: 'error',
       });
     }
