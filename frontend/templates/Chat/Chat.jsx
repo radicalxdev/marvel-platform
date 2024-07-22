@@ -279,6 +279,34 @@ const ChatInterface = () => {
     await sendMessage({ message, id: currentSession?.id }, dispatch);
   };
 
+  const handleSelectPrompt = async (prompt) => {
+    dispatch(setInput(prompt));
+    dispatch(setTyping(true));
+
+    setTimeout(async () => {
+      const message = {
+        role: MESSAGE_ROLE.HUMAN,
+        type: MESSAGE_TYPES.TEXT,
+        payload: {
+          text: prompt,
+        },
+      };
+      if (!chatMessages) {
+        await startConversation(message);
+        await handleDefaultPrompts(true);
+      } else {
+        dispatch(
+          setMessages({
+            role: MESSAGE_ROLE.HUMAN,
+          })
+        );
+        await sendMessage({ message, id: sessionId }, dispatch);
+        await handleDefaultPrompts(false);
+      }
+      dispatch(setTyping(false));
+    }, 500);
+  };
+
   /* Push Enter */
   const keyDownHandler = async (e) => {
     if (typing || !input || streaming) return;
@@ -387,9 +415,7 @@ const ChatInterface = () => {
         <Grid {...styles.bottomChatContent.bottomChatContentGridProps}>
           <DefaultPrompts
             prompts={defaultPrompts}
-            onSelect={(prompt) => {
-              dispatch(setInput(prompt));
-            }}
+            onSelect={(prompt) => handleSelectPrompt(prompt)}
           />
           <Grid {...styles.bottomChatContent.chatInputGridProps(!!error)}>
             <TextField
