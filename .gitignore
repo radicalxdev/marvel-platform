@@ -139,3 +139,7 @@ dist
 # Ignore back-end build output
 **/node_modules/
 **/build/
+
+#Ignore files that need to have someone's own credentials pushed to github
+functions/cloud_IAM_Key.json
+frontend/utils/YoutubeUtils.jsx
