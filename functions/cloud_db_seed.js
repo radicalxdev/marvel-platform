@@ -3,6 +3,11 @@ const { Timestamp } = require('firebase-admin/firestore');
 
 const db = admin.firestore();
 
+const convertToTimestamp = (dateStr) => {
+  const date = new Date(dateStr);
+  return Timestamp.fromDate(date);
+};
+
 const seedDatabase = async () => {
   const data = require('./seed_data.json');
   const history_data = require('./seed_history_data.json');
@@ -23,10 +28,27 @@ const seedDatabase = async () => {
       await db.collection('tools').doc(doc.id.toString()).set(doc);
       console.log(`Document with ID ${doc.id} added to the Tools collection`);
     });
-    Object.values(history_data).forEach(async (doc) => {
-      await db.collection('toolsHistory').doc(doc.id.toString()).set(doc);
-      console.log(`Document with ID ${doc.id} added to the History collection`);
-    });
+
+    // Process and set documents in 'toolsHistory' collection
+    for (const [id, doc] of Object.entries(history_data)) {
+      if (!id) {
+        console.warn(
+          'Skipping document with missing ID in toolsHistory collection'
+        );
+        continue;
+      }
+      if (doc.createdAt) {
+        doc.createdAt = convertToTimestamp(doc.createdAt);
+      }
+      if (doc.updatedAt) {
+        doc.updatedAt = convertToTimestamp(doc.updatedAt);
+      }
+      await db.collection('toolsHistory').doc(id.toString()).set(doc);
+      console.log(
+        `Document with ID ${id} added to the toolsHistory collection`
+      );
+    }
+
     console.log(
       'Kai AI installed successfully to firebase and is ready to go!'
     );

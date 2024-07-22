@@ -60,7 +60,6 @@ const HistoryListing = (props) => {
             <Grid item key={index} xs={12} sm={6} md={4}>
               <HistoryCard
                 cardInstance={cardInstance}
-                cardData={item}
                 onSortByTitle={handleSortByTitle}
                 onSortByDate={handleSortByDate}
                 onSortByDescription={handleSortByDescription}
