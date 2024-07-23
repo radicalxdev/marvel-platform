@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import ErrorPage from './ErrorPage';
+import NotFoundPage from '@/pages/404/index';
+import ApplicationErrorPage from '@/pages/ErrorApplication';
+import NetworkErrorPage from '@/pages/ErrorNetwork';
 
 function ErrorBoundary({ children }) {
   const [hasError, setHasError] = useState(false);
@@ -16,6 +18,7 @@ function ErrorBoundary({ children }) {
     // This is a placeholder for error handling logic
     const handleError = (errorObject, errorInfo) => {
       console.error('Uncaught error:', errorObject, errorInfo);
+      updateErrorState(errorObject);
     };
 
     // Example: Log something or clean up resources here
@@ -24,17 +27,20 @@ function ErrorBoundary({ children }) {
     };
   }, []);
 
+  const handleRetry = () => {
+    setHasError(false);
+    setError(null);
+    window.location.reload();
+  };
+
   if (hasError) {
-    return (
-      <ErrorPage
-        message="An Application Error Occurred. Please try again."
-        actionText="Go back to Homepage"
-        onAction={() => {
-          const url = '/'; // Avoid direct assignment in return statement
-          window.location.href = url;
-        }}
-      />
-    );
+    if (error && error.message && error.message.includes('Network Error')) {
+      return <NetworkErrorPage retry={handleRetry} />;
+    }
+    if (error && error.message && error.message.includes('404')) {
+      return <NotFoundPage />;
+    }
+    return <ApplicationErrorPage />;
   }
 
   return children;
