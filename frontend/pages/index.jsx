@@ -10,7 +10,6 @@ import fetchTools from '@/redux/thunks/tools';
 
 const Home = () => {
   const { data, loading, error } = useSelector((state) => state.tools);
-  console.log(data);
 
   const dispatch = useDispatch();
 
