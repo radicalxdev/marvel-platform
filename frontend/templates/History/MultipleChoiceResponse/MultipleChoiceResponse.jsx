@@ -70,6 +70,7 @@ class MultipleChoiceResponse {
 
     const margin = 10;
     const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
     const maxTextWidth = pageWidth - margin * 2;
 
     doc.setFontSize(12);
@@ -90,6 +91,12 @@ class MultipleChoiceResponse {
 
     doc.text('Questions:', margin, margin + 40);
     Object.keys(outputs).forEach((key, index) => {
+      // Check if the y-coordinate exceeds the page height, then add a new page
+      if (ycoord >= pageHeight - margin) {
+        doc.addPage();
+        ycoord = margin;
+      }
+
       const questionData = outputs[key];
       doc.text(`${index + 1}. ${questionData.question}`, margin, ycoord);
       ycoord += 10;
