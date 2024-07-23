@@ -1,3 +1,5 @@
+import { fontWeight } from '@mui/system';
+
 const pageNotFoundStyles = {
   mainGridProps: {
     position: 'relative',
@@ -88,9 +90,11 @@ const pageNotFoundStyles = {
   subtitleProps: {
     color: 'black',
     textAlign: 'center',
-    fontFamily: 'Satoshi Black',
-    fontSize: { laptop: '42px', desktop: '46px', desktopMedium: '50px' },
-    lineHeight: '92px',
+    fontFamily: 'Satoshi Medium',
+    fontSize: { laptop: '40px', desktop: '40px', desktopMedium: '50px' },
+    lineHeight: '54px',
+    fontWeight: '700',
+    letter: '-2%',
   },
   bodyGridProps: {
     container: true,
@@ -103,9 +107,11 @@ const pageNotFoundStyles = {
   bodyProps: {
     color: 'black',
     textAlign: 'center',
-    fontFamily: 'Satoshi Medium',
+    fontFamily: 'Satoshi Regular',
     fontSize: '18px',
     lineHeight: '30px',
+    fontWeight: '400',
+    letter: '-2%',
   },
   buttonGridProps: {
     position: 'relative',
@@ -133,6 +139,7 @@ const pageNotFoundStyles = {
   titleProps: {
     fontSize: { laptop: '80px', desktop: '100px', desktopMedium: '140px' },
     fontFamily: 'Ethnocentric Regular Italics',
+    letterSpacing: { laptop: '10px', desktop: '12px', desktopMedium: '15px' },
     sx: {
       textShadow: '0px 4px 30px rgba(26, 214, 161, 0.24)',
       background: (theme) => theme.palette.primary.main,
@@ -183,6 +190,18 @@ const pageNotFoundStyles = {
     bottom: '10%',
     left: '30%',
     width: 36,
+  },
+  logoGridProps: {
+    item: true,
+    container: true,
+    width: 'auto',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    sx: {
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
   },
   star3Props: {
     position: 'absolute',
