@@ -70,14 +70,18 @@ const ChatInterface = () => {
   const chatMessages = currentSession?.messages;
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
 
+  
   const startConversation = async (message) => {
+    // Optionally dispatch a temporary message for the user's input
     dispatch(
       setMessages({
-        role: MESSAGE_ROLE.AI,
+        role: MESSAGE_ROLE.HUMAN,
+        message,
       })
     );
+    
     dispatch(setTyping(true));
-
+  
     // Define the chat payload
     const chatPayload = {
       user: {
@@ -88,19 +92,19 @@ const ChatInterface = () => {
       type: 'chat',
       message,
     };
-
+  
     // Send a chat session
     const { status, data } = await createChatSession(chatPayload, dispatch);
-
+  
     // Remove typing bubble
     dispatch(setTyping(false));
     if (status === 'created') dispatch(setStreaming(true));
-
+  
     // Set chat session
     dispatch(setChatSession(data));
     dispatch(setSessionLoaded(true));
   };
-
+  
   useEffect(() => {
     return () => {
       localStorage.removeItem('sessionId');
@@ -193,21 +197,27 @@ const ChatInterface = () => {
         text: input,
       },
     };
-
+    
     if (!chatMessages) {
+      // Start a new conversation if there are no existing messages
       await startConversation(message);
       return;
     }
 
+    // Add the user's message to the chat
     dispatch(
       setMessages({
         role: MESSAGE_ROLE.HUMAN,
+        message
       })
     );
 
     dispatch(setTyping(true));
 
-    await sendMessage({ message, id: sessionId }, dispatch);
+    // Ensure the user’s message is displayed before sending the message
+    setTimeout(async () => {
+      await sendMessage({ message, id: sessionId }, dispatch);
+    }, 0);
   };
 
   const handleQuickReply = async (option) => {
