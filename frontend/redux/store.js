@@ -7,6 +7,7 @@ import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 
 import authReducer from './slices/authSlice';
 import chatReducer from './slices/chatSlice';
+import onboardingReducer from './slices/onboardingSlice';
 import toolsReducer from './slices/toolsSlice';
 import userReducer from './slices/userSlice';
 
@@ -31,6 +32,7 @@ const store = configureStore({
     user: userReducer,
     tools: toolsReducer,
     chat: chatReducer,
+    onboarding: onboardingReducer,
   },
 });
 
