@@ -2,14 +2,14 @@ import { useState } from 'react';
 
 import { FormControl, Grid, MenuItem, Select, Typography } from '@mui/material';
 
+import ORDER from '@/constants/sortingOrder';
 import TOOLS_RENDERS from '@/constants/toolsRenders';
 
 import HistoryCard from '../HistoryCard';
 
-import { getCategorizedData, handleSort } from '@/utils/HistoryListingUtils';
-
 import styles from './styles';
-import ORDER from '@/constants/sortingOrder';
+
+import { getCategorizedData, handleSort } from '@/utils/HistoryListingUtils';
 
 /**
  * Component for rendering a listing of history cards in a grid layout.

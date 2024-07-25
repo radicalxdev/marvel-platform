@@ -6,11 +6,12 @@ import { Button, Drawer, Grid, IconButton, Typography } from '@mui/material';
 
 import TOOLS_ID from '@/constants/tools';
 
+import SnackBar from '../SnackBar';
+
 import FlashCardPreview from './FlashCardPreview';
 import MultipleChoicePreview from './MultipleChoicePreview';
 
 import styles from './styles';
-import SnackBar from '../SnackBar';
 
 /**
  * Component for rendering a preview of history details in a drawer.
