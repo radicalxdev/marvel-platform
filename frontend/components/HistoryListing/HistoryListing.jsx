@@ -34,7 +34,9 @@ const HistoryListing = (props) => {
   const renderSection = (title, items) =>
     items.length > 0 && (
       <Grid {...styles.mainSectionProps}>
-        <Typography {...styles.sectionHeaderProps}>{title}</Typography>
+        <Typography {...styles.sectionHeaderProps}>
+          {title} ({items.length})
+        </Typography>
         <Grid container spacing={3}>
           {items.map((item, index) => {
             const cardInstance = new TOOLS_RENDERS[item.toolId](item);
