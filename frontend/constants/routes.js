@@ -8,7 +8,6 @@ const ROUTES = {
   PASSWORD_RESET: '/password-reset',
   REDIRECT: '/redirect',
   CHAT: '/chat',
-  HISTORY: '/history',
   ONBOARDING: '/onboarding/[onboardingId]',
 };
 

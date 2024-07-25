@@ -15,12 +15,7 @@ const Welcome = () => {
       <Typography {...styles.titleProps}>
         Welcome to <span style={{ color: '#8653FF' }}>Kai</span> 👋
       </Typography>
-      <Typography
-        color="#fff"
-        fontWeight={400}
-        fontSize="24px"
-        {...styles.descriptionProps}
-      >
+      <Typography {...styles.descriptionProps}>
         Let’s get started with your onboarding process.
       </Typography>
       <Button onClick={handleStart} {...styles.buttonProps}>
