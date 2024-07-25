@@ -5,21 +5,23 @@ const styles = {
     height: '100vh',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative',
     sx: {
       background:
-        'radial-gradient(circle, #4A426A 0%, #201E2B 50%, #000000 100%)',
+        'radial-gradient(circle at center -100px, #4A426A 0%, #201E2B 50%, #000000 100%)',
     },
   },
   progressBarContainer: {
-    position: 'absolute',
-    top: 0,
-    left: '35%',
-    width: '100%',
+    position: 'fixed',
     display: 'flex',
     justifyContent: 'center',
     py: 2,
     zIndex: 1,
+    sx: (theme) => ({
+      inset: '0 auto auto auto',
+      [theme.breakpoints.down('laptop')]: {
+        display: 'none',
+      },
+    }),
   },
   contentGrid: {
     container: true,
