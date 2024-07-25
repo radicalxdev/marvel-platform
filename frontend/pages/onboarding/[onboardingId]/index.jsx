@@ -1,19 +1,24 @@
 import { useRouter } from 'next/router';
 
-import useOnboardingProps from '@/hooks/useOnboardingProps'; // Adjust the path based on your actual structure
-
 import OnboardingLayout from '@/layouts/OnboardingLayout';
-import OnboardingPage from '@/templates/Onboarding';
+import OnboardingPage from '@/templates/Onboarding/Onboarding';
 
 const IndividualOnboardingPage = () => {
   const router = useRouter();
   const { onboardingId } = router.query;
 
-  const { onboardingData, loading } = useOnboardingProps(onboardingId);
+  // Mock data
+  const onboardingData = {
+    id: Number(onboardingId), // Ensure the id is a number
+    title: 'Welcome to Kai!',
+    content: 'Let’s get started!',
+  };
 
-  if (loading || !onboardingData) {
-    if (!onboardingData && !loading) router.push('/'); // Redirect if onboarding data is not found
-    return null;
+  // Simulating loading state
+  const loading = false;
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return <OnboardingPage onboardingData={onboardingData} />;
