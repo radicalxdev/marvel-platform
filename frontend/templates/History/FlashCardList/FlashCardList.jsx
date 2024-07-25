@@ -6,19 +6,14 @@ import {
 } from '@/utils/FirebaseUtils';
 import fetchYoutubeTitle from '@/utils/YoutubeUtils';
 
-class FlashCardList {
-  constructor(cardData) {
-    this.cardData = cardData;
-    this.somePlaceholder = 'This is a placeholder'; // Example usage
-  }
-
-  async initializeCard() {
+function FlashCardList(cardData) {
+  async function initializeCard() {
     let backgroundImgURL = '';
     let logoURL = '';
 
     let title = 'FlashCards for Youtube';
     let description = 'Set of Flashcards about a Youtube video';
-    const { createdAt, response, toolId } = this.cardData;
+    const { createdAt, response, toolId } = cardData;
     const { inputs, outputs } = response;
     const formattedCreatedAt = formatToStandardDate(
       new Date(convertToUnixTimestamp(createdAt))
@@ -32,7 +27,6 @@ class FlashCardList {
       logoURL =
         'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188';
     } catch (error) {
-      // Use a logging library or handle the error differently
       console.error('Error fetching YouTube title:', error);
     }
 
@@ -47,8 +41,7 @@ class FlashCardList {
     };
   }
 
-  formatCopyContent(title, createdAt, description, outputs) {
-    const placeholder = this.somePlaceholder;
+  function formatCopyContent(title, createdAt, description, outputs) {
     // Combine the header and preview content into a single string
     let formattedContent = `Title: ${title}\nCreated At: ${createdAt}\nDescription: ${description}\n`;
     // Flashcard format
@@ -60,8 +53,7 @@ class FlashCardList {
     return formattedContent;
   }
 
-  formatExportContent(title, createdAt, description, outputs) {
-    const placeholder = this.somePlaceholder;
+  function formatExportContent(title, createdAt, description, outputs) {
     const JsPDF = jsPDF;
     const doc = new JsPDF();
 
@@ -123,6 +115,12 @@ class FlashCardList {
 
     return doc;
   }
+
+  return {
+    initializeCard,
+    formatCopyContent,
+    formatExportContent,
+  };
 }
 
 export default FlashCardList;

@@ -16,13 +16,7 @@ import HistoryPreview from '../HistoryPreview';
 import styles from './styles';
 
 const HistoryCard = (props) => {
-  const {
-    cardInstance,
-    onSortByTitle,
-    onSortByDate,
-    onSortByDescription,
-    onSortByToolId,
-  } = props;
+  const { cardInstance } = props;
   const [openPreview, setOpenPreview] = useState(false);
   const [restructuredCardData, setRestructuredCardData] = useState(null);
 
@@ -54,25 +48,13 @@ const HistoryCard = (props) => {
 
     return (
       <Grid>
-        <Typography
-          component="span"
-          onClick={onSortByDate}
-          {...styles.dateProps}
-        >
+        <Typography {...styles.dateProps}>
           {restructuredCardData.createdAt}
         </Typography>
-        <Typography
-          component="span"
-          onClick={onSortByTitle}
-          {...styles.titleProps}
-        >
+        <Typography {...styles.titleProps}>
           {restructuredCardData.title}
         </Typography>
-        <Typography
-          component="span"
-          onClick={onSortByDescription}
-          {...styles.descriptionProps}
-        >
+        <Typography {...styles.descriptionProps}>
           {restructuredCardData.description}
         </Typography>
         <Button {...styles.previewButtonProps} onClick={togglePreview}>
@@ -92,7 +74,6 @@ const HistoryCard = (props) => {
             <Image
               src={restructuredCardData?.logoURL}
               alt="output history logo"
-              onClick={onSortByToolId}
               {...styles.imageProps}
             />
           </Grid>

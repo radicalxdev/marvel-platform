@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { Grid } from '@mui/material';
+import { FormControl, Grid, MenuItem, Select, Typography } from '@mui/material';
 
 import TOOLS_RENDERS from '@/constants/toolsRenders';
 
 import HistoryCard from '../HistoryCard';
 
-import { convertToUnixTimestamp } from '@/utils/FirebaseUtils';
+import { getCategorizedData, handleSort } from '@/utils/HistoryListingUtils';
+
+import styles from './styles';
+import ORDER from '@/constants/sortingOrder';
 
 /**
  * Component for rendering a listing of history cards in a grid layout.
@@ -19,56 +22,71 @@ import { convertToUnixTimestamp } from '@/utils/FirebaseUtils';
 const HistoryListing = (props) => {
   const { data } = props;
 
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('title');
-  const [sortedData, setSortedData] = useState(data);
+  const { thisWeek, thisMonth, thisYear, beyondThisYear } =
+    getCategorizedData(data);
+  const [order, setOrder] = useState(ORDER.DESC);
 
-  useEffect(() => {
-    setSortedData(data);
-  }, [data]);
+  const thisWeekSortedData = handleSort(order, thisWeek);
+  const thisMonthSortedData = handleSort(order, thisMonth);
+  const thisYearSortedData = handleSort(order, thisYear);
+  const beyondThisYearSortedData = handleSort(order, beyondThisYear);
 
-  const handleSort = (property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+  const renderSection = (title, items) =>
+    items.length > 0 && (
+      <Grid {...styles.mainSectionProps}>
+        <Typography {...styles.sectionHeaderProps}>{title}</Typography>
+        <Grid container spacing={3}>
+          {items.map((item, index) => {
+            const cardInstance = new TOOLS_RENDERS[item.toolId](item);
+            return (
+              <Grid item key={index} xs={12} sm={6} md={4}>
+                <HistoryCard cardInstance={cardInstance} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Grid>
+    );
 
-    const sortedArray = [...data].sort((a, b) => {
-      if (property === 'createdAt') {
-        const dateA = convertToUnixTimestamp(a.createdAt);
-        const dateB = convertToUnixTimestamp(b.createdAt);
-        return isAsc ? dateA - dateB : dateB - dateA;
-      }
-      if (a[property] < b[property]) return isAsc ? -1 : 1;
-      if (a[property] > b[property]) return isAsc ? 1 : -1;
-      return 0;
-    });
+  const renderDropDownMenu = () => (
+    <FormControl {...styles.formProps}>
+      <Select
+        value={order}
+        onChange={(e) => setOrder(e.target.value)}
+        {...styles.dropdownMenuProps}
+      >
+        <MenuItem value={ORDER.DESC}>Descending</MenuItem>
+        <MenuItem value={ORDER.ASC}>Ascending</MenuItem>
+      </Select>
+    </FormControl>
+  );
 
-    setSortedData(sortedArray);
+  const renderSectionsInOrder = () => {
+    if (order === ORDER.ASC) {
+      return (
+        <>
+          {renderSection('Beyond This Year', beyondThisYearSortedData)}
+          {renderSection('This Year', thisYearSortedData)}
+          {renderSection('This Month', thisMonthSortedData)}
+          {renderSection('This Week', thisWeekSortedData)}
+        </>
+      );
+    }
+    return (
+      <>
+        {renderSection('This Week', thisWeekSortedData)}
+        {renderSection('This Month', thisMonthSortedData)}
+        {renderSection('This Year', thisYearSortedData)}
+        {renderSection('Beyond This Year', beyondThisYearSortedData)}
+      </>
+    );
   };
 
-  const handleSortByTitle = () => handleSort('title');
-  const handleSortByDate = () => handleSort('createdAt');
-  const handleSortByDescription = () => handleSort('description');
-  const handleSortByToolId = () => handleSort('toolId');
-
   return (
-    <Grid container spacing={3}>
-      {sortedData &&
-        sortedData.map((item, index) => {
-          const cardInstance = new TOOLS_RENDERS[item.toolId](item);
-          return (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <HistoryCard
-                cardInstance={cardInstance}
-                onSortByTitle={handleSortByTitle}
-                onSortByDate={handleSortByDate}
-                onSortByDescription={handleSortByDescription}
-                onSortByToolId={handleSortByToolId}
-              />
-            </Grid>
-          );
-        })}
-    </Grid>
+    <div {...styles.mainGridProps}>
+      {renderDropDownMenu()}
+      {renderSectionsInOrder()}
+    </div>
   );
 };
 

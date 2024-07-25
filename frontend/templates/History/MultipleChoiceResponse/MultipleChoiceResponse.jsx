@@ -5,19 +5,14 @@ import {
   formatToStandardDate,
 } from '@/utils/FirebaseUtils';
 
-class MultipleChoiceResponse {
-  constructor(cardData) {
-    this.cardData = cardData;
-    this.somePlaceholder = 'This is a placeholder'; // Example usage
-  }
-
-  async initializeCard() {
+function MultipleChoiceResponse(cardData) {
+  async function initializeCard() {
     let backgroundImgURL = '';
     let logoURL = '';
 
     let title = 'Multiple Choice Quiz';
     let description = 'Multiple Choice questions about a certain topic';
-    const { createdAt, response, toolId } = this.cardData;
+    const { createdAt, response, toolId } = cardData;
     const { inputs, outputs } = response;
     const formattedCreatedAt = formatToStandardDate(
       new Date(convertToUnixTimestamp(createdAt))
@@ -43,8 +38,7 @@ class MultipleChoiceResponse {
     };
   }
 
-  formatCopyContent(title, createdAt, description, outputs) {
-    const placeholder = this.somePlaceholder;
+  function formatCopyContent(title, createdAt, description, outputs) {
     // Combine the header and preview content into a single string
     let formattedContent = `Title: ${title}\nCreated At: ${createdAt}\nDescription: ${description}\n`;
     // Multiple Choice Quiz format
@@ -63,8 +57,7 @@ class MultipleChoiceResponse {
     return formattedContent;
   }
 
-  formatExportContent(title, createdAt, description, outputs) {
-    const placeholder = this.somePlaceholder;
+  function formatExportContent(title, createdAt, description, outputs) {
     const JsPDF = jsPDF;
     const doc = new JsPDF();
 
@@ -116,6 +109,12 @@ class MultipleChoiceResponse {
 
     return doc;
   }
+
+  return {
+    initializeCard,
+    formatCopyContent,
+    formatExportContent,
+  };
 }
 
 export default MultipleChoiceResponse;
