@@ -31,15 +31,15 @@ const HistoryListing = (props) => {
   const thisYearSortedData = handleSort(order, thisYear);
   const beyondThisYearSortedData = handleSort(order, beyondThisYear);
 
-  const renderSection = (title, items) =>
-    items.length > 0 && (
+  const renderSection = (title, sectionData) =>
+    sectionData.length > 0 && (
       <Grid {...styles.mainSectionProps}>
         <Typography {...styles.sectionHeaderProps}>
-          {title} ({items.length})
+          {title} ({sectionData.length})
         </Typography>
         <Grid container spacing={3}>
-          {items.map((item, index) => {
-            const cardInstance = new TOOLS_RENDERS[item.toolId](item);
+          {sectionData.map((cardData, index) => {
+            const cardInstance = new TOOLS_RENDERS[cardData.toolId](cardData);
             return (
               <Grid item key={index} xs={12} sm={6} md={4}>
                 <HistoryCard cardInstance={cardInstance} />
@@ -51,16 +51,18 @@ const HistoryListing = (props) => {
     );
 
   const renderDropDownMenu = () => (
-    <FormControl {...styles.formProps}>
-      <Select
-        value={order}
-        onChange={(e) => setOrder(e.target.value)}
-        {...styles.dropdownMenuProps}
-      >
-        <MenuItem value={ORDER.DESC}>Descending</MenuItem>
-        <MenuItem value={ORDER.ASC}>Ascending</MenuItem>
-      </Select>
-    </FormControl>
+    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <FormControl {...styles.formProps}>
+        <Select
+          value={order}
+          onChange={(e) => setOrder(e.target.value)}
+          {...styles.selectOptionsProps}
+        >
+          <MenuItem value={ORDER.DESC}>Descending</MenuItem>
+          <MenuItem value={ORDER.ASC}>Ascending</MenuItem>
+        </Select>
+      </FormControl>
+    </div>
   );
 
   const renderSectionsInOrder = () => {
@@ -85,10 +87,10 @@ const HistoryListing = (props) => {
   };
 
   return (
-    <div {...styles.mainGridProps}>
+    <Grid {...styles.mainGridProps}>
       {renderDropDownMenu()}
       {renderSectionsInOrder()}
-    </div>
+    </Grid>
   );
 };
 

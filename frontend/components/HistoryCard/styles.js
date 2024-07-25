@@ -5,7 +5,7 @@ const styles = {
     container: true,
     item: true,
     sx: {
-      width: '600px',
+      width: '500px',
     },
   },
   historyCardProps: {

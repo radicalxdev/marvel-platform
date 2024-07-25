@@ -2,15 +2,7 @@ import { useState } from 'react';
 
 import { Close, FileCopyOutlined, GetAppOutlined } from '@mui/icons-material';
 
-import {
-  Alert,
-  Button,
-  Drawer,
-  Grid,
-  IconButton,
-  Snackbar,
-  Typography,
-} from '@mui/material';
+import { Button, Drawer, Grid, IconButton, Typography } from '@mui/material';
 
 import TOOLS_ID from '@/constants/tools';
 
@@ -18,6 +10,7 @@ import FlashCardPreview from './FlashCardPreview';
 import MultipleChoicePreview from './MultipleChoicePreview';
 
 import styles from './styles';
+import SnackBar from '../SnackBar';
 
 /**
  * Component for rendering a preview of history details in a drawer.
@@ -72,7 +65,7 @@ const HistoryPreview = (props) => {
       .then(() => {
         setAlertState({
           open: true,
-          message: 'Copy card successfully!',
+          message: 'Card copied successfully!',
           severity: 'success',
         });
       })
@@ -100,7 +93,7 @@ const HistoryPreview = (props) => {
       contentToExport.save(`${title}.pdf`);
       setAlertState({
         open: true,
-        message: 'Export card successfully!',
+        message: 'Card Exported successfully!',
         severity: 'success',
       });
     } catch (error) {
@@ -176,16 +169,12 @@ const HistoryPreview = (props) => {
             <Grid item>{renderOutputButtons()}</Grid>
           </Grid>
         </Drawer>
-        <Snackbar
+        <SnackBar
           open={alertState.open}
-          autoHideDuration={6000}
-          onClose={handleAlertClose}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <Alert onClose={handleAlertClose} severity={alertState.severity}>
-            {alertState.message}
-          </Alert>
-        </Snackbar>
+          handleClose={handleAlertClose}
+          message={alertState.message}
+          severity={alertState.severity}
+        />
       </Grid>
     )
   );

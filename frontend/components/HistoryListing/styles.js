@@ -1,5 +1,7 @@
 const styles = {
   mainGridProps: {
+    display: 'flex',
+    flexDirection: 'column',
     width: '100%',
   },
   mainSectionProps: {
@@ -21,7 +23,7 @@ const styles = {
       width: '200px',
     },
   },
-  dropdownMenuProps: {
+  selectOptionsProps: {
     sx: {
       color: 'black',
       border: '2px solid black',
