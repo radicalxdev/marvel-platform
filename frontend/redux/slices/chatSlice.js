@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
 
+import fetchChat from '../thunks/fetchChat';
+
 const initialState = {
   input: '',
   error: null,
@@ -20,6 +22,8 @@ const initialState = {
   historyLoaded: false,
   streamingDone: false,
   streaming: false,
+  displayQuickActions: false,
+  actionType: null,
 };
 
 const chatSlice = createSlice({
@@ -125,6 +129,30 @@ const chatSlice = createSlice({
     setExerciseId: (state, action) => {
       state.exerciseId = action.payload;
     },
+    setDisplayQuickActions: (state, action) => {
+      state.displayQuickActions = action.payload;
+    },
+    setActionType: (state, action) => {
+      state.actionType = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchChat.pending, (state) => {
+        state.sessionLoaded = false;
+        state.error = null;
+      })
+      .addCase(fetchChat.fulfilled, (state, action) => {
+        state.chat = action.payload;
+        state.sessionLoaded = true;
+        state.error = null;
+      })
+      .addCase(fetchChat.rejected, (state, action) => {
+        state.chat = {};
+        state.sessionLoaded = true;
+        console.error(action.error);
+        state.error = 'Could not fetch chat. Please try again.';
+      });
   },
 });
 
@@ -151,6 +179,8 @@ export const {
   resetExplainMyAnswer,
   setStreaming,
   setHistoryLoaded,
+  setDisplayQuickActions,
+  setActionType,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

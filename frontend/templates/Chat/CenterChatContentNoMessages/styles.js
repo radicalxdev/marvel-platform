@@ -6,7 +6,7 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     zIndex: 0,
-    mt: 10,
+    mt: 2.5,
     px: { laptop: 2, desktop: 2.5, desktopMedium: 3 },
     sx: {
       overflowY: 'auto',
@@ -76,8 +76,8 @@ const styles = {
     item: true,
     justifyContent: 'center',
     alignItems: 'center',
-    mobileSmall: 6,
-    maxWidth: '600px',
+    mobileSmall: 9,
+    maxWidth: '80%',
   },
 };
 

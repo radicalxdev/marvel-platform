@@ -5,6 +5,8 @@ import {
   InfoOutlined,
   Settings,
 } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+
 import {
   Button,
   Fade,
@@ -23,14 +25,19 @@ import NavigationIcon from '@/assets/svg/Navigation.svg';
 import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
 
 import CenterChatContentNoMessages from './CenterChatContentNoMessages';
+import ChatHistoryWindow from './ChatHistoryWindow';
 import ChatSpinner from './ChatSpinner';
+import DefaultPrompt from './DefaultPrompt';
 import Message from './Message';
+import QuickActions from './QuickActions';
 import styles from './styles';
 
 import {
   openInfoChat,
   resetChat,
+  setActionType,
   setChatSession,
+  setDisplayQuickActions,
   setError,
   setFullyScrolled,
   setInput,
@@ -41,6 +48,10 @@ import {
   setStreamingDone,
   setTyping,
 } from '@/redux/slices/chatSlice';
+import {
+  addHistoryEntry,
+  updateHistoryEntry,
+} from '@/redux/slices/historySlice';
 import { firestore } from '@/redux/store';
 import createChatSession from '@/services/chatbot/createChatSession';
 import sendMessage from '@/services/chatbot/sendMessage';
@@ -61,6 +72,8 @@ const ChatInterface = () => {
     streamingDone,
     streaming,
     error,
+    displayQuickActions,
+    actionType,
   } = useSelector((state) => state.chat);
   const { data: userData } = useSelector((state) => state.user);
 
@@ -70,7 +83,6 @@ const ChatInterface = () => {
   const chatMessages = currentSession?.messages;
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
 
-  
   const startConversation = async (message) => {
     // Optionally dispatch a temporary message for the user's input
     dispatch(
@@ -79,9 +91,9 @@ const ChatInterface = () => {
         message,
       })
     );
-    
+
     dispatch(setTyping(true));
-  
+
     // Define the chat payload
     const chatPayload = {
       user: {
@@ -92,19 +104,40 @@ const ChatInterface = () => {
       type: 'chat',
       message,
     };
-  
+
     // Send a chat session
     const { status, data } = await createChatSession(chatPayload, dispatch);
-  
+
     // Remove typing bubble
     dispatch(setTyping(false));
     if (status === 'created') dispatch(setStreaming(true));
-  
+
     // Set chat session
     dispatch(setChatSession(data));
     dispatch(setSessionLoaded(true));
+
+    /**
+     * Creates a new entry in the history store.
+     * The entry contains the session ID, the first message of the session,
+     * the creation and update timestamps of the session.
+     *
+     * @param {Object} data The session data object.
+     */
+    const newEntry = {
+      // The ID of the session.
+      id: data?.id,
+      // The first message of the session.
+      title: data?.messages[0]?.payload?.text,
+      // The timestamp of session creation.
+      createdAt: data?.createdAt,
+      // The timestamp of session last update.
+      updatedAt: data?.updatedAt,
+    };
+
+    // Add the new history entry to the Redux store.
+    dispatch(addHistoryEntry(newEntry));
   };
-  
+
   useEffect(() => {
     return () => {
       localStorage.removeItem('sessionId');
@@ -136,6 +169,19 @@ const ChatInterface = () => {
             const updatedMessages = updatedData.messages;
 
             const lastMessage = updatedMessages[updatedMessages.length - 1];
+            // Convert Firestore timestamp to JavaScript Date object and format it as an ISO string.
+            lastMessage.timestamp = lastMessage.timestamp
+              .toDate()
+              .toISOString();
+
+            // Update the history entry with the latest timestamp.
+            dispatch(
+              updateHistoryEntry({
+                id: sessionId,
+                updatedAt: updatedData.updatedAt.toDate().toISOString(),
+                // updatedAt: lastMessage.timestamp,
+              })
+            );
 
             if (lastMessage?.role === MESSAGE_ROLE.AI) {
               dispatch(
@@ -195,9 +241,10 @@ const ChatInterface = () => {
       type: MESSAGE_TYPES.TEXT,
       payload: {
         text: input,
+        action: actionType,
       },
     };
-    
+
     if (!chatMessages) {
       // Start a new conversation if there are no existing messages
       await startConversation(message);
@@ -208,7 +255,7 @@ const ChatInterface = () => {
     dispatch(
       setMessages({
         role: MESSAGE_ROLE.HUMAN,
-        message
+        message,
       })
     );
 
@@ -218,6 +265,7 @@ const ChatInterface = () => {
     setTimeout(async () => {
       await sendMessage({ message, id: sessionId }, dispatch);
     }, 0);
+    dispatch(setActionType(null));
   };
 
   const handleQuickReply = async (option) => {
@@ -229,6 +277,7 @@ const ChatInterface = () => {
       type: MESSAGE_TYPES.QUICK_REPLY,
       payload: {
         text: option,
+        action: actionType,
       },
     };
 
@@ -240,6 +289,8 @@ const ChatInterface = () => {
     dispatch(setTyping(true));
 
     await sendMessage({ message, id: currentSession?.id }, dispatch);
+
+    dispatch(setActionType(null));
   };
 
   /* Push Enter */
@@ -340,10 +391,39 @@ const ChatInterface = () => {
     );
   };
 
+  /**
+   * Render the Quick Action component as an InputAdornment.
+   * This component is used to toggle the display of the Quick Actions.
+   *
+   * @return {JSX.Element} The rendered Quick Action component.
+   */
+  const renderQuickAction = () => {
+    // Render the Quick Action component as an InputAdornment.
+    return (
+      <InputAdornment position="start">
+        {/* The Grid component used to display the Quick Action. */}
+        <Grid
+          // Handle the click event to toggle the display of the Quick Actions.
+          onClick={() => dispatch(setDisplayQuickActions(!displayQuickActions))}
+          {...styles.quickActionButton}
+        >
+          {/* Render the AddIcon component. */}
+          <AddIcon {...styles.quickActionButtonAddIcon} />
+          {/* Render the Typography component to display the text. */}
+          <Typography>Actions</Typography>
+        </Grid>
+      </InputAdornment>
+    );
+  };
+
   const renderBottomChatContent = () => {
     if (!openSettingsChat && !infoChatOpened)
       return (
         <Grid {...styles.bottomChatContent.bottomChatContentGridProps}>
+          {/* Default Prompt Component */}
+          <DefaultPrompt handleSendMessage={handleSendMessage} />
+          {/* Quick Actions Component */}
+          <QuickActions handleSendMessage={handleSendMessage} />
           <Grid {...styles.bottomChatContent.chatInputGridProps(!!error)}>
             <TextField
               value={input}
@@ -354,6 +434,7 @@ const ChatInterface = () => {
               disabled={!!error}
               focused={false}
               {...styles.bottomChatContent.chatInputProps(
+                renderQuickAction,
                 renderSendIcon,
                 !!error,
                 input
@@ -367,12 +448,16 @@ const ChatInterface = () => {
   };
 
   return (
-    <Grid {...styles.mainGridProps}>
-      {renderMoreChat()}
-      {renderCenterChatContent()}
-      {renderCenterChatContentNoMessages()}
-      {renderNewMessageIndicator()}
-      {renderBottomChatContent()}
+    <Grid {...styles.chatInterface}>
+      <Grid {...styles.mainGridProps}>
+        {renderMoreChat()}
+        {renderCenterChatContent()}
+        {renderCenterChatContentNoMessages()}
+        {renderNewMessageIndicator()}
+        {renderBottomChatContent()}
+      </Grid>
+      {/* ChatHistoryWindow component displays a sidebar that contains chat history. This component is rendered on the right side of the chat interface. */}
+      <ChatHistoryWindow />
     </Grid>
   );
 };

@@ -150,7 +150,11 @@ const chat = onCall(async (props) => {
       }))
     );
 
-    await chatSession.ref.update({ messages: updatedResponseMessages });
+    // Update the chat session with the updated response messages and the current timestamp.
+    await chatSession.ref.update({
+      messages: updatedResponseMessages, // Update the messages array with the new messages and timestamps
+      updatedAt: Timestamp.fromMillis(Date.now()), // Set the updatedAt timestamp to the current time
+    });
 
     if (DEBUG) {
       logger.log(
@@ -344,9 +348,17 @@ const createChatSession = onCall(async (props) => {
     const updatedChatSession = await chatSessionRef.get();
     DEBUG && logger.log('Updated chat session: ', updatedChatSession.data());
 
+    /**
+     * Creates a new chat session object by extracting relevant data from the Firestore document. Converts Firestore timestamps to ISO strings and includes the document ID.
+     * @param {Object} updatedChatSession The Firestore document containing the chat session data.
+     * @return {Object} The new chat session object.
+     */
     const createdChatSession = {
-      ...updatedChatSession.data(),
-      id: updatedChatSession.id,
+      ...updatedChatSession.data(), // Extract relevant data from Firestore document
+      // Convert Firestore timestamps to ISO strings
+      createdAt: updatedChatSession.data().createdAt.toDate().toISOString(),
+      updatedAt: updatedChatSession.data().updatedAt.toDate().toISOString(),
+      id: updatedChatSession.id, // Include the document ID
     };
 
     DEBUG && logger.log('Created chat session: ', createdChatSession);

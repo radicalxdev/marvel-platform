@@ -1,4 +1,14 @@
 const styles = {
+  chatInterface: {
+    container: true,
+    height: '100%',
+    width: '100%',
+    direction: 'row',
+    sx: {
+      flexWrap: 'nowrap',
+      position: 'relative',
+    },
+  },
   mainGridProps: {
     container: true,
     item: true,
@@ -9,6 +19,7 @@ const styles = {
     height: '100%',
     overflow: 'hidden',
     sx: {
+      position: 'relative',
       form: {
         width: '100%',
         height: '100%',
@@ -214,7 +225,7 @@ const styles = {
         borderRadius: '50px',
       },
     }),
-    chatInputProps: (renderSendIcon, error, input) => ({
+    chatInputProps: (renderQuicKAction, renderSendIcon, error, input) => ({
       type: 'text',
       placeholder: !error && 'Send a message',
       autoComplete: 'off',
@@ -234,11 +245,12 @@ const styles = {
           lineHeight: '35px',
         }),
         endAdornment: renderSendIcon(),
+        startAdornment: renderQuicKAction(),
       },
       FormHelperTextProps: {
         sx: {
           position: 'absolute',
-          transform: 'translate(55px, 30%)',
+          transform: 'translate(120px, 30%)',
           fontFamily: 'Satoshi Medium',
           fontSize: { mobileSmall: '16px', desktopMedium: '20px' },
           lineHeight: '35px',
@@ -361,6 +373,31 @@ const styles = {
         color: 'white',
       },
     }),
+  },
+
+  quickActionButton: {
+    sx: {
+      padding: '10px',
+      marginLeft: '-5px',
+      display: 'flex',
+      alignItems: 'center',
+      cursor: 'pointer',
+      backgroundColor: 'rgb(88,20,244)',
+      color: 'white',
+      borderRadius: '30px',
+      flexWrap: 'nowrap',
+      gap: '10px',
+      transition: 'background-color 0.1s ease, color 0.1s ease',
+      '&:hover': {
+        backgroundColor: 'rgb(123, 55, 255)',
+      },
+    },
+  },
+  quickActionButtonAddIcon: {
+    sx: {
+      border: '2px solid white',
+      borderRadius: '50%',
+    },
   },
 };
 
