@@ -5,10 +5,12 @@ import ALERT_COLORS from '@/constants/notification';
 /**
  * Renders a Snackbar component with alert messages.
  *
+ * @param {Object} props - The properties for the component.
+ * @param {boolean} props.htmlMessage - Determines if the message should be rendered as HTML.
  * @return {ReactElement} The rendered Snackbar component.
  */
 const SnackBar = (props) => {
-  const { open, handleClose, message, severity } = props;
+  const { open, handleClose, message, severity, htmlMessage } = props;
 
   return (
     <Snackbar
@@ -19,7 +21,11 @@ const SnackBar = (props) => {
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
       <Alert severity={severity} onClose={handleClose}>
-        {message}
+        {htmlMessage ? (
+          <div dangerouslySetInnerHTML={{ __html: message }} />
+        ) : (
+          message
+        )}
       </Alert>
     </Snackbar>
   );

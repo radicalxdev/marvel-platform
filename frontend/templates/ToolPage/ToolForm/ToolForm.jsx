@@ -41,16 +41,28 @@ const ToolForm = (props) => {
   const handleSubmitMultiForm = async (values) => {
     try {
       const { files, ...toolData } = values;
-
+      // Ensure all files are PDFs
+      const pdfFiles = files?.filter((file) => file.type === 'application/pdf');
+      if (!pdfFiles.length || pdfFiles.length !== files.length) {
+        handleOpenSnackBar(
+          'error',
+          '<strong>Unable to load files</strong><br>Make sure you select <strong>PDF Files</strong> to continue making the quiz.',
+          true // Indicate that this is an HTML message
+        );
+        return;
+      }
       dispatch(setResponse(null));
-
       const updateData = Object.entries(toolData).map(([name, value]) => ({
         name,
         value,
       }));
-      dispatch(setPrompt(values));
+      dispatch(
+        setPrompt({
+          tool_data: { tool_id: id, inputs: updateData },
+          type: 'tool',
+        })
+      );
       dispatch(setCommunicatorLoading(true));
-
       const response = await submitPrompt(
         {
           tool_data: { tool_id: id, inputs: updateData },
@@ -61,9 +73,8 @@ const ToolForm = (props) => {
             email: userData?.email,
           },
         },
-        files
+        pdfFiles // Ensure only PDFs are passed here
       );
-
       dispatch(setResponse(response?.data));
       dispatch(setFormOpen(false));
       dispatch(setCommunicatorLoading(false));
