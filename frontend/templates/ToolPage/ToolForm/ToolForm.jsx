@@ -50,7 +50,6 @@ const ToolForm = (props) => {
       }));
       dispatch(setPrompt(values));
       dispatch(setCommunicatorLoading(true));
-
       const response = await submitPrompt(
         {
           tool_data: { tool_id: id, inputs: updateData },

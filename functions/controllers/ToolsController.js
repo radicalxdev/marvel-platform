@@ -37,18 +37,15 @@ const createToolsHistory = onCall(async (props) => {
   } catch (error) {
     // Log the error and throw an HTTP error if document creation fails
     console.error('Error creating document:', error);
-    throw new HttpsError(
-      'internal',
-      'Unable to write document'
-    );
+    throw new HttpsError('internal', 'Unable to write document');
   }
 });
 
 // Function to update an existing tools history document
-const updateToolsHistory = onCall(async (data, context) => {
+const updateToolsHistory = onCall(async (props) => {
   try {
     // Destructure the necessary fields from the incoming data
-    const { toolId, userId, newResponse } = data;
+    const { toolId, userId, newResponse } = props.data;
 
     // Check if the toolId or userId fields are missing
     if (!toolId || !userId) {
@@ -64,10 +61,7 @@ const updateToolsHistory = onCall(async (data, context) => {
 
     // Check if the document exists
     if (!toolsHistoryDoc.exists) {
-      throw new HttpsError(
-        'not-found',
-        'Document does not exist'
-      );
+      throw new HttpsError('not-found', 'Document does not exist');
     }
 
     // Get the document data
@@ -103,18 +97,15 @@ const updateToolsHistory = onCall(async (data, context) => {
   } catch (error) {
     // Log the error and throw an HTTP error if document update fails
     console.error('Error updating document:', error);
-    throw new HttpsError(
-      'internal',
-      'Unable to update document'
-    );
+    throw new HttpsError('internal', 'Unable to update document');
   }
 });
 
 // Function to delete an existing tools history document
-const deleteToolsHistory = onCall(async (data, context) => {
+const deleteToolsHistory = onCall(async (props) => {
   try {
     // Destructure the necessary fields from the incoming data
-    const { toolId, userId } = data;
+    const { toolId, userId } = props.data;
 
     // Check if any of the required fields are missing
     if (!toolId || !userId) {
@@ -131,10 +122,7 @@ const deleteToolsHistory = onCall(async (data, context) => {
 
     // Check if the document exists
     if (toolsHistoryRef.empty) {
-      throw new HttpsError(
-        'not-found',
-        'Document does not exist'
-      );
+      throw new HttpsError('not-found', 'Document does not exist');
     }
 
     // Get the document data
@@ -160,19 +148,15 @@ const deleteToolsHistory = onCall(async (data, context) => {
   } catch (error) {
     // Log the error and throw an HTTP error if document update fails
     console.error('Error deleting document:', error);
-    throw new HttpsError(
-      'internal',
-      'Unable to delete document',
-      error
-    );
+    throw new HttpsError('internal', 'Unable to delete document', error);
   }
 });
 
 // Function to retrieve an existing tools history document
-const retrieveToolsHistory = onCall(async (data, context) => {
+const retrieveToolsHistory = onCall(async (props) => {
   try {
     // Destructure the necessary fields from the incoming data
-    const { toolId, userId } = data;
+    const { toolId, userId } = props.data;
 
     // Check if the toolId or userId fields are missing
     if (!toolId || !userId) {
@@ -189,10 +173,7 @@ const retrieveToolsHistory = onCall(async (data, context) => {
 
     // Check if the document exists
     if (toolsHistoryRef.empty) {
-      throw new HttpsError(
-        'not-found',
-        'Document does not exist'
-      );
+      throw new HttpsError('not-found', 'Document does not exist');
     }
     // Get the document data
     const docRef = toolsHistoryRef.docs[0];
@@ -215,11 +196,7 @@ const retrieveToolsHistory = onCall(async (data, context) => {
   } catch (error) {
     // Log the error and throw an HTTP error if document retrieve fails
     console.error('Error retrieving document:', error);
-    throw new HttpsError(
-      'internal',
-      'Unable to retrieve document',
-      error
-    );
+    throw new HttpsError('internal', 'Unable to retrieve document', error);
   }
 });
 

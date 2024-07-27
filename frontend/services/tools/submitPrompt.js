@@ -21,6 +21,8 @@ const submitPrompt = async (payload, files, dispatch) => {
       },
     });
 
+    console.log(response);
+
     const createToolsPayload = {
       userId: payload.user.id,
       toolId: payload.tool_data.tool_id,
