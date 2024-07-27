@@ -1,16 +1,16 @@
 const admin = require('firebase-admin');
-const functions = require('firebase-functions');
 const { Timestamp } = require('firebase-admin/firestore');
+const { onCall, HttpsError } = require('firebase-functions/v2/https');
 
 // Function to create a new tools history document
-const createToolsHistory = functions.https.onCall(async (data, context) => {
+const createToolsHistory = onCall(async (props) => {
   try {
     // Destructure the necessary fields from the incoming data
-    const { toolId, userId, response } = data;
+    const { toolId, userId, response } = props.data;
 
     // Check if any of the required fields are missing
     if (!toolId || !userId || !response) {
-      throw new functions.https.HttpsError('invalid-argument', 'Missing value');
+      throw new HttpsError('invalid-argument', 'Missing value');
     }
 
     // Prepare the data to be stored in Firestore
@@ -37,7 +37,7 @@ const createToolsHistory = functions.https.onCall(async (data, context) => {
   } catch (error) {
     // Log the error and throw an HTTP error if document creation fails
     console.error('Error creating document:', error);
-    throw new functions.https.HttpsError(
+    throw new HttpsError(
       'internal',
       'Unable to write document'
     );
@@ -45,14 +45,14 @@ const createToolsHistory = functions.https.onCall(async (data, context) => {
 });
 
 // Function to update an existing tools history document
-const updateToolsHistory = functions.https.onCall(async (data, context) => {
+const updateToolsHistory = onCall(async (data, context) => {
   try {
     // Destructure the necessary fields from the incoming data
     const { toolId, userId, newResponse } = data;
 
     // Check if the toolId or userId fields are missing
     if (!toolId || !userId) {
-      throw new functions.https.HttpsError('invalid-argument', 'Missing value');
+      throw new HttpsError('invalid-argument', 'Missing value');
     }
 
     // Get the document from Firestore using the provided toolId
@@ -64,7 +64,7 @@ const updateToolsHistory = functions.https.onCall(async (data, context) => {
 
     // Check if the document exists
     if (!toolsHistoryDoc.exists) {
-      throw new functions.https.HttpsError(
+      throw new HttpsError(
         'not-found',
         'Document does not exist'
       );
@@ -75,7 +75,7 @@ const updateToolsHistory = functions.https.onCall(async (data, context) => {
 
     // Check if the userId matches the userId of the document owner
     if (toolsHistory.userId !== userId) {
-      throw new functions.https.HttpsError(
+      throw new HttpsError(
         'permission-denied',
         'User does not have permission to update this document'
       );
@@ -103,7 +103,7 @@ const updateToolsHistory = functions.https.onCall(async (data, context) => {
   } catch (error) {
     // Log the error and throw an HTTP error if document update fails
     console.error('Error updating document:', error);
-    throw new functions.https.HttpsError(
+    throw new HttpsError(
       'internal',
       'Unable to update document'
     );
@@ -111,14 +111,14 @@ const updateToolsHistory = functions.https.onCall(async (data, context) => {
 });
 
 // Function to delete an existing tools history document
-const deleteToolsHistory = functions.https.onCall(async (data, context) => {
+const deleteToolsHistory = onCall(async (data, context) => {
   try {
     // Destructure the necessary fields from the incoming data
     const { toolId, userId } = data;
 
     // Check if any of the required fields are missing
     if (!toolId || !userId) {
-      throw new functions.https.HttpsError('invalid-argument', 'Missing value');
+      throw new HttpsError('invalid-argument', 'Missing value');
     }
 
     // Get the document from the 'toolsHistory' collection in Firestore
@@ -131,7 +131,7 @@ const deleteToolsHistory = functions.https.onCall(async (data, context) => {
 
     // Check if the document exists
     if (toolsHistoryRef.empty) {
-      throw new functions.https.HttpsError(
+      throw new HttpsError(
         'not-found',
         'Document does not exist'
       );
@@ -143,7 +143,7 @@ const deleteToolsHistory = functions.https.onCall(async (data, context) => {
 
     // Check if the userId matches the userId of the document owner
     if (toolsHistory.userId !== userId) {
-      throw new functions.https.HttpsError(
+      throw new HttpsError(
         'permission-denied',
         'User does not have permission to delete this document'
       );
@@ -160,7 +160,7 @@ const deleteToolsHistory = functions.https.onCall(async (data, context) => {
   } catch (error) {
     // Log the error and throw an HTTP error if document update fails
     console.error('Error deleting document:', error);
-    throw new functions.https.HttpsError(
+    throw new HttpsError(
       'internal',
       'Unable to delete document',
       error
@@ -169,14 +169,14 @@ const deleteToolsHistory = functions.https.onCall(async (data, context) => {
 });
 
 // Function to retrieve an existing tools history document
-const retrieveToolsHistory = functions.https.onCall(async (data, context) => {
+const retrieveToolsHistory = onCall(async (data, context) => {
   try {
     // Destructure the necessary fields from the incoming data
     const { toolId, userId } = data;
 
     // Check if the toolId or userId fields are missing
     if (!toolId || !userId) {
-      throw new functions.https.HttpsError('invalid-argument', 'Missing value');
+      throw new HttpsError('invalid-argument', 'Missing value');
     }
 
     // Get the document from the 'toolsHistory' collection in Firestore
@@ -189,7 +189,7 @@ const retrieveToolsHistory = functions.https.onCall(async (data, context) => {
 
     // Check if the document exists
     if (toolsHistoryRef.empty) {
-      throw new functions.https.HttpsError(
+      throw new HttpsError(
         'not-found',
         'Document does not exist'
       );
@@ -200,7 +200,7 @@ const retrieveToolsHistory = functions.https.onCall(async (data, context) => {
 
     // Check if the userId matches the userId of the document owner
     if (toolsHistory.userId !== userId) {
-      throw new functions.https.HttpsError(
+      throw new HttpsError(
         'permission-denied',
         'User does not have permission to update this document'
       );
@@ -215,7 +215,7 @@ const retrieveToolsHistory = functions.https.onCall(async (data, context) => {
   } catch (error) {
     // Log the error and throw an HTTP error if document retrieve fails
     console.error('Error retrieving document:', error);
-    throw new functions.https.HttpsError(
+    throw new HttpsError(
       'internal',
       'Unable to retrieve document',
       error

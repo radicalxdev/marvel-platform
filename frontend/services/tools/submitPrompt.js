@@ -1,6 +1,7 @@
 import axios from 'axios';
+import createToolsHistory from '../toolsHistory/createToolsHistory';
 
-const submitPrompt = async (payload, files) => {
+const submitPrompt = async (payload, files, dispatch) => {
   try {
     const formData = new FormData();
 
@@ -20,6 +21,16 @@ const submitPrompt = async (payload, files) => {
       },
     });
 
+    const createToolsPayload = {
+      userId: payload.user.id,
+      toolId: payload.tool_data.tool_id,
+      response: {
+        inputs: payload.tool_data.inputs,
+        outputs: response.data,
+      },
+    };
+
+    await createToolsHistory(createToolsPayload, dispatch);
     return response.data?.data;
   } catch (err) {
     const { response } = err;
