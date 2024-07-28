@@ -5,6 +5,8 @@ import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import MainAppLayout from '@/layouts/MainAppLayout';
 
 import LargeLogo from '@/assets/svg/MenuLogo.svg';
+import Meteor from '@/assets/svg/Meteor1.svg';
+import MeteorTail from '@/assets/svg/MeteorTail.svg';
 import Star3 from '@/assets/svg/Star_2.svg';
 import Star from '@/assets/svg/Star_3.svg';
 import Star2 from '@/assets/svg/Star_4.svg';
@@ -107,6 +109,12 @@ const PageNotFound = () => {
         </Box>
         <Box {...pageNotFoundStyles.star3Props}>
           <Star3 />
+        </Box>
+        <Box {...pageNotFoundStyles.Meteor}>
+          <Meteor />
+        </Box>
+        <Box {...pageNotFoundStyles.Tail}>
+          <MeteorTail />
         </Box>
       </>
     );

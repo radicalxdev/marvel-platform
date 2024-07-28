@@ -9,19 +9,19 @@ import AVATAR_COLOURS from '@/constants/colours';
  * @return {string} The SVG string with the shimmer effect.
  */
 const shimmerEffect = (w, h, r) => `
-<svg width="${w}" height="${h}"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width='${w}' height='${h}'  version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
   <defs>
-    <linearGradient id="g">
-      <stop stop-color="rgb(50, 50, 55)" offset="100%" />
+    <linearGradient id='g'>
+      <stop stop-color='rgb(50, 50, 55)' offset='100%' />
     </linearGradient>
   </defs>
-  <rect width="${w}" height="${h}" fill="rgb(31, 34, 42)" rx="${r || 0}" ry="${
+  <rect width='${w}' height='${h}' fill='rgb(31, 34, 42)' rx='${r || 0}' ry='${
   r || 0
 } />
-  <rect id="r" width="${w}" height="${h}" rx="${r || 0}" ry="${
+  <rect id='r' width='${w}' height='${h}' rx='${r || 0}' ry='${
   r || 0
-} fill="url(#g)" rx="10" ry="10" />
-  <animate xlink:href="#r" attributeName="opacity" values="0.4;1;0.4" keyTimes="0;0.5;1" dur="1.7s" repeatCount="indefinite"  />
+} fill='url(#g)' rx='10' ry='10' />
+  <animate xlink:href='#r' attributeName='opacity' values='0.4;1;0.4' keyTimes='0;0.5;1' dur='1.7s' repeatCount='indefinite'  />
 </svg>`;
 
 /**

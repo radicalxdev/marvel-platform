@@ -1,6 +1,6 @@
 # RadicalX Platform
 
-RadicalX is a platform that reimagines upskilling with financial rewards and AI. 
+RadicalX is a platform that reimagines upskilling with financial rewards and AI.
 
 ## Table of Contents
 
@@ -17,11 +17,10 @@ RadicalX is a platform that reimagines upskilling with financial rewards and AI.
 
 RadicalX offers a number of benefits to developers, including:
 
- - A personalized learning experience that is tailored to their individual needs and interests
- - The opportunity to work on real-world projects that are used by companies around the world
- - The chance to compete against other developers from around the world and win prizes
- - The ability to earn money while they learn
-
+- A personalized learning experience that is tailored to their individual needs and interests
+- The opportunity to work on real-world projects that are used by companies around the world
+- The chance to compete against other developers from around the world and win prizes
+- The ability to earn money while they learn
 
 ## Installation
 
@@ -47,15 +46,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 RadicalX offers a number of features that make it an ideal platform for developers who are looking to upskill and earn money. These features include:
 
- - Personalized learning experience: RadicalX uses AI to personalize the learning experience for each developer. This means that you will be able to learn at your own pace and focus on the topics that are most relevant to you.
- - Real-world projects: RadicalX offers a variety of real-world projects that you can work on. This is a great way to gain experience and build your portfolio.
- - Competition: RadicalX offers a variety of opportunities to compete against other developers. This is a great way to test your skills and improve your ranking.
- - Earn money: You can earn money by competing in sponsored coding contests and completing other tasks. This is a great way to offset the cost of learning and   earn some extra cash.
-
+- Personalized learning experience: RadicalX uses AI to personalize the learning experience for each developer. This means that you will be able to learn at your own pace and focus on the topics that are most relevant to you.
+- Real-world projects: RadicalX offers a variety of real-world projects that you can work on. This is a great way to gain experience and build your portfolio.
+- Competition: RadicalX offers a variety of opportunities to compete against other developers. This is a great way to test your skills and improve your ranking.
+- Earn money: You can earn money by competing in sponsored coding contests and completing other tasks. This is a great way to offset the cost of learning and earn some extra cash.
 
 ## Folder Structure
 
-This project is built using NextJS 12.3 therefore the structure of the folders and files are complementary to this framework, see below for more info: 
+This project is built using NextJS 12.3 therefore the structure of the folders and files are complementary to this framework, see below for more info:
 
 ```bash
 - /assets: Contains all the static files.
@@ -66,7 +64,7 @@ This project is built using NextJS 12.3 therefore the structure of the folders a
 
 - /firebase: Contains firebase init configurations
 
-- /funtions: Contains all serverless back-end code 
+- /funtions: Contains all serverless back-end code
     - index.js: main file exported from this folder
 
 - /layouts: Contains all project layouts
@@ -118,8 +116,3 @@ Here is the list for the technologies used in this project
 
 This project is intellectual property of RadicalX.
 Third-party libraries, assets, and dependencies used in this project are subject to their respective licenses.
-
-
-
-
-

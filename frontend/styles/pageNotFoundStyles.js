@@ -202,6 +202,7 @@ const pageNotFoundStyles = {
   titleProps: {
     fontSize: { laptop: '105px', desktop: '125px', desktopMedium: '165px' },
     fontFamily: 'Ethnocentric Regular Italics',
+    zIndex: 1,
     sx: {
       background: (theme) => theme.palette.primary.main,
       WebkitBackgroundClip: 'text',
@@ -224,39 +225,33 @@ const pageNotFoundStyles = {
       px: 4,
     },
   },
-  yellowStarProps: {
-    position: 'absolute',
-    top: '-5%',
-    left: '30%',
-    width: { laptop: '60px', dekstop: '64px', dekstopMedium: '90px' },
-  },
-  planetProps: {
-    position: 'absolute',
-    bottom: 0,
-    right: '20%',
-    width: { laptop: '60px', dekstop: '64px', dekstopMedium: '90px' },
-  },
-  rocketProps: {
-    position: 'absolute',
-    top: '35%',
-    left: { laptop: '10%', desktop: '15%', desktopMedium: '18%' },
-    width: { laptop: '60px', dekstop: '64px', dekstopMedium: '90px' },
-  },
   star1Props: {
     position: 'relative',
     color: '#5522FF',
     top: '-470px',
-    left: '-280px',
+    left: '-130px',
   },
   star2Props: {
     position: 'relative',
     bottom: '540px',
-    left: '250px',
+    left: '430px',
   },
   star3Props: {
     position: 'relative',
     bottom: '300px',
-    left: '250px',
+    left: '400px',
+  },
+  Meteor: {
+    position: 'relative',
+    top: '-455px',
+    left: '52px',
+    zIndex: 1,
+  },
+  Tail: {
+    position: 'relative',
+    top: '-500px',
+    right: '14px',
+    zIndex: 0,
   },
 };
 

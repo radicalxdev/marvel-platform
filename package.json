@@ -17,7 +17,11 @@
     "lint:fix": "cd frontend && npm run lint:fix && cd ../functions && npm run lint:fix"
   },
   "devDependencies": {
-    "firebase-tools": "^9.10.0"
+    "@eslint/js": "^9.8.0",
+    "eslint": "^9.8.0",
+    "eslint-plugin-react": "^7.35.0",
+    "firebase-tools": "^9.10.0",
+    "globals": "^15.8.0"
   },
   "dependencies": {
     "react-router-dom": "^6.25.1"

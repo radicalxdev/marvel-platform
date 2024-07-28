@@ -24,8 +24,6 @@ const Home = () => {
   return <HomePage data={data} loading={loading} error={error} />;
 };
 
-// HomePage data={data} loading={loading} error={error}
-
 Home.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };

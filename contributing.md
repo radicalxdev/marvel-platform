@@ -25,25 +25,32 @@ Start by forking the repository. This creates a copy of the repo under your GitH
 1. Clone your fork to your local machine:
    ```bash
    git clone https://github.com/your-username/repository-name.git
+   ```
 2. Navigate into the cloned directory::
    ```bash
    cd repository-name
+   ```
 3. Create a new branch for your feature::
    ```bash
    git checkout -b feature-branch-name
+   ```
 
 ### Step 3: Make Changes
+
 Make the required changes in your feature branch. If you have your development environment setup properly, eslint will run and ensure your code passes all rules before your commits are accepted.
 
 ### Step 4: Push Changes and Create a Pull Request
+
 1. Push your changes to your fork::
    ```bash
    git push origin feature-branch-name
+   ```
 2. Go to your fork on GitHub and click "New Pull Request".
 3. Set the base repository's sandbox branch as the base branch and your feature branch as the compare branch.
 4. Fill in the details of the pull request and submit it.
 
 # Final Steps
+
 Once your PR is submitted, it will be reviewed by our Team. Participate in the discussion and make any required changes. Once your PR is approved, it will be merged into the sandbox branch for further integration testing before it becomes part of the main project.
 
 Thank you for contributing to our project! Your efforts help us build and refine a product that meets the needs of our community.
