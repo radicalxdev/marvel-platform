@@ -65,57 +65,8 @@ const PageNotFound = () => {
 
   const renderTopContent = () => {
     return (
-      <Grid
-        {...pageNotFoundStyles.sectionGridProps}
-        style={{
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography
-          {...pageNotFoundStyles.titleProps}
-          style={{ position: 'relative', zIndex: 2 }}
-        >
-          4
-        </Typography>
-        <div style={{ position: 'relative', display: 'inline-block' }}>
-          <Typography
-            {...pageNotFoundStyles.titleProps}
-            style={{ position: 'relative', zIndex: 2 }}
-          >
-            0
-          </Typography>
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 2,
-            }}
-          >
-            <MeteorCircle />
-          </div>
-          <div
-            style={{
-              position: 'absolute',
-              top: '30%',
-              left: '110%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 1,
-            }}
-          >
-            <MeteorTail />
-          </div>
-        </div>
-        <Typography
-          {...pageNotFoundStyles.titleProps}
-          style={{ position: 'relative', zIndex: 2 }}
-        >
-          4
-        </Typography>
+      <Grid {...pageNotFoundStyles.sectionGridProps}>
+        <Typography {...pageNotFoundStyles.titleGridProps}>404</Typography>
       </Grid>
     );
   };
@@ -153,6 +104,12 @@ const PageNotFound = () => {
         </Box>
         <Box {...pageNotFoundStyles.star3Props}>
           <Star5 />
+        </Box>
+        <Box {...pageNotFoundStyles.MeteorCircle}>
+          <MeteorCircle />
+        </Box>
+        <Box {...pageNotFoundStyles.MeteorTail}>
+          <MeteorTail />
         </Box>
       </>
     );

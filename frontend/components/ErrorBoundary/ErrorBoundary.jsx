@@ -21,7 +21,6 @@ function ErrorBoundary({ children }) {
       updateErrorState(errorObject);
     };
 
-    // Example: Log something or clean up resources here
     return () => {
       // Cleanup actions if necessary
     };

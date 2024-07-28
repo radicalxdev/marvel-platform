@@ -15,6 +15,18 @@ const pageNotFoundStyles = {
       borderRadius: '22px',
     },
   },
+  Meteor: {
+    position: 'relative',
+    top: '-455px',
+    left: '52px',
+    zIndex: 1,
+  },
+  Tail: {
+    position: 'relative',
+    top: '-500px',
+    right: '14px',
+    zIndex: 0,
+  },
   mainContentGridProps: {
     position: 'relative',
     container: true,
@@ -165,18 +177,6 @@ const pageNotFoundStyles = {
     position: 'absolute',
     top: '-5%',
     left: '30%',
-    width: { laptop: '60px', dekstop: '64px', dekstopMedium: '90px' },
-  },
-  planetProps: {
-    position: 'absolute',
-    bottom: 0,
-    right: '20%',
-    width: { laptop: '60px', dekstop: '64px', dekstopMedium: '90px' },
-  },
-  rocketProps: {
-    position: 'absolute',
-    top: '35%',
-    left: { laptop: '10%', desktop: '15%', desktopMedium: '18%' },
     width: { laptop: '60px', dekstop: '64px', dekstopMedium: '90px' },
   },
   star1Props: {
