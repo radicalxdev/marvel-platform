@@ -117,37 +117,35 @@ const ChatInterface = () => {
     dispatch(setSessionLoaded(true));
   };
 
+  const handleDefaultPrompts = async (userId) => {
+    const document = doc(firestore, 'users', userId);
+    const userInfo = await getDoc(document);
+    const data = userInfo.data();
+
+    const prompts = await generatePrompts(data);
+    const suggestions = prompts.data.data[0].payload.text;
+
+    const suggestionsList = suggestions.split('\n');
+    suggestionsList.forEach((suggestion, index) => {
+      suggestionsList[index] = suggestion
+        .substring(3)
+        .replace(
+          /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
+          ''
+        ); // remove emojis
+    });
+
+    setDefaultPrompts(suggestionsList);
+  };
+
   useEffect(() => {
+    if (chatMessages?.length === 0 || !chatMessages)
+      handleDefaultPrompts(userData.id);
     return () => {
       localStorage.removeItem('sessionId');
-      setDefaultPrompts([]);
       dispatch(resetChat());
     };
   }, []);
-
-  const handleDefaultPrompts = async (start) => {
-    const currId = start ? localStorage.getItem('sessionId') : sessionId;
-    if ((chat.messages?.length > 0 || start) && currId) {
-      const session = doc(firestore, 'chatSessions', currId);
-      const document = await getDoc(session);
-      const data = document.data();
-
-      const prompts = await generatePrompts(data);
-      const suggestions = prompts.data.data[0].payload.text;
-
-      const suggestionsList = suggestions.split('\n');
-      suggestionsList.forEach((suggestion, index) => {
-        suggestionsList[index] = suggestion
-          .substring(3)
-          .replace(
-            /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
-            ''
-          ); // remove emojis
-      });
-
-      setDefaultPrompts(suggestionsList);
-    }
-  };
 
   useEffect(() => {
     let unsubscribe;
@@ -241,7 +239,6 @@ const ChatInterface = () => {
 
     if (!chatMessages) {
       await startConversation(message);
-      await handleDefaultPrompts(true);
       return;
     }
 
@@ -254,7 +251,6 @@ const ChatInterface = () => {
     dispatch(setTyping(true));
 
     await sendMessage({ message, id: sessionId }, dispatch);
-    await handleDefaultPrompts(false);
   };
 
   const handleQuickReply = async (option) => {
@@ -293,7 +289,6 @@ const ChatInterface = () => {
       };
       if (!chatMessages) {
         await startConversation(message);
-        await handleDefaultPrompts(true);
       } else {
         dispatch(
           setMessages({
@@ -301,7 +296,6 @@ const ChatInterface = () => {
           })
         );
         await sendMessage({ message, id: sessionId }, dispatch);
-        await handleDefaultPrompts(false);
       }
       dispatch(setTyping(false));
     }, 500);
@@ -410,13 +404,17 @@ const ChatInterface = () => {
   };
 
   const renderBottomChatContent = () => {
-    if (!openSettingsChat && !infoChatOpened)
+    if (!openSettingsChat && !infoChatOpened) {
       return (
         <Grid {...styles.bottomChatContent.bottomChatContentGridProps}>
-          <DefaultPrompts
-            prompts={defaultPrompts}
-            onSelect={(prompt) => handleSelectPrompt(prompt)}
-          />
+          {chatMessages?.length === 0 || !chatMessages ? (
+            <DefaultPrompts
+              onSelect={(prompt) => {
+                handleSelectPrompt(prompt);
+              }}
+              prompts={defaultPrompts}
+            />
+          ) : null}
           <Grid {...styles.bottomChatContent.chatInputGridProps(!!error)}>
             <TextField
               value={input}
@@ -435,7 +433,7 @@ const ChatInterface = () => {
           </Grid>
         </Grid>
       );
-
+    }
     return null;
   };
 
@@ -482,7 +480,6 @@ const ChatInterface = () => {
                 fullName: userData.fullName,
                 id: userData.id,
               }}
-              setDefaultPrompts={setDefaultPrompts}
             />
           </>
         ) : null}

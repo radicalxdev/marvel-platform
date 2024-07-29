@@ -4,7 +4,7 @@ const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
 const { logger, https } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
-const { BOT_TYPE, MESSAGE_ROLES } = require('../constants');
+const { BOT_TYPE } = require('../constants');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const busboy = require('busboy');
@@ -375,11 +375,11 @@ const createChatSession = onCall(async (props) => {
  */
 const generatePrompts = onCall(async (props) => {
   try {
-    DEBUG && logger.log('Generating prompts started, data: ', props.data);
+    DEBUG && logger.log('Generating prompts started');
 
-    const { user, messages, type } = props.data;
+    const { id, email, fullName } = props.data;
 
-    if (!user || !messages || !type) {
+    if (!id || !email || !fullName) {
       logger.log('Missing required fields', props.data);
       throw new HttpsError('invalid-argument', 'Missing required fields');
     }
@@ -388,20 +388,16 @@ const generatePrompts = onCall(async (props) => {
       role: 'human',
       type: 'text',
       payload: {
-        text: 'Give me 3 questions a user might ask based on their previous responses below.\n',
+        text: 'Give me 3 questions a user might ask at the beginning of a conversation with you.\n',
       },
       timestamp: Timestamp.fromMillis(Date.now()),
     };
 
-    const parsedMessages = messages
-      .filter((entry) => entry.role === MESSAGE_ROLES.HUMAN)
-      .slice(-5);
-
     const response = await kaiCommunicator({
       data: {
-        messages: [...parsedMessages, initalPrompt],
-        user,
-        type,
+        messages: [initalPrompt],
+        user: { id, email, fullName },
+        type: 'chat',
       },
     });
 
@@ -412,6 +408,7 @@ const generatePrompts = onCall(async (props) => {
         'type',
         typeof response
       );
+
     return response;
   } catch (error) {
     logger.error(error);

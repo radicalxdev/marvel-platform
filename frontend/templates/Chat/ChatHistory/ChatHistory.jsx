@@ -27,7 +27,7 @@ import {
   setSessionLoaded,
 } from '@/redux/slices/chatSlice';
 
-const ChatHistory = ({ user, setDefaultPrompts }) => {
+const ChatHistory = ({ user }) => {
   const [chatHistory, setChatHistory] = useState([]);
   const { chat } = useSelector((state) => state.chat);
   const db = getFirestore();
@@ -127,7 +127,6 @@ const ChatHistory = ({ user, setDefaultPrompts }) => {
     const chatSession = chatSessionRef.data();
 
     fixTimestamps(chatSession);
-    setDefaultPrompts([]);
 
     dispatch(resetChat());
     dispatch(setChatSession(chatSession));
