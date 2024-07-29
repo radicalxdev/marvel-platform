@@ -4,7 +4,7 @@ const styles = {
     flexDirection: 'column',
     height: '100vh',
     alignItems: 'center',
-    justifyContent: 'center',
+    color: 'white',
     sx: {
       background:
         'radial-gradient(circle at center -100px, #4A426A 0%, #201E2B 50%, #000000 100%)',
@@ -27,14 +27,13 @@ const styles = {
     container: true,
     direction: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
     sx: {
       flex: 1,
       textAlign: 'center',
       px: 2,
-      pt: 8, // Padding-top to make space for the fixed ProgressBar
+      mt: 14, // Padding-top to make space for the fixed ProgressBar
       position: 'relative',
-      maxWidth: 600, // Optional: set a maximum width for the content
+      overflow: 'auto',
     },
   },
   buttonContainer: {
