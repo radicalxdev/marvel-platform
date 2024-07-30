@@ -1,11 +1,7 @@
 require('dotenv').config({ path: '../.env' }); // Ensure this is at the top
 const admin = require('firebase-admin');
 
-const serviceAccount = require('./cloud_IAM_Key.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+admin.initializeApp();
 
 const userController = require('./controllers/userController');
 const kaiAIController = require('./controllers/kaiAIController');

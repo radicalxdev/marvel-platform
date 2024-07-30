@@ -20,15 +20,15 @@ const submitPrompt = async (payload, files, dispatch) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-
-    console.log(response);
+    // console.log(payload);
+    // console.log(response);
 
     const createToolsPayload = {
       userId: payload.user.id,
       toolId: payload.tool_data.tool_id,
       response: {
         inputs: payload.tool_data.inputs,
-        outputs: response.data,
+        outputs: response.data.data.data,
       },
     };
 
