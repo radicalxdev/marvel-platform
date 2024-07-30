@@ -1,79 +1,86 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 
 import { Facebook, LinkedIn, X as XIcon } from '@mui/icons-material';
-import { Button, Grid, InputLabel, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import {
+  Controller,
   FormContainer,
   TextareaAutosizeElement,
-  TextFieldElement,
+  useForm,
 } from 'react-hook-form-mui';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import ProfileTextField, {
+  InputWrapper,
+} from '@/components/ProfileTextField/index.js';
+
+import ALERT_COLORS from '@/constants/notification.js';
 
 import stylesOnboarding from '../styles.js';
 
 import styles from './styles.js';
 
-const InputWrapper = (props) => {
-  const { label, children } = props;
-  return (
-    <Grid>
-      <InputLabel {...styles.label}>{label}</InputLabel>
-      {children}
-    </Grid>
-  );
-};
+import { AuthContext } from '@/providers/GlobalProvider.jsx';
 
-const ProfileTextField = (props) => {
-  const { icon: Icon, ...otherProps } = props;
-  if (Icon) {
-    return (
-      <TextFieldElement
-        {...styles.input}
-        {...otherProps}
-        InputProps={{
-          startAdornment: (
-            <>
-              <Icon />
-              <span>|</span>
-            </>
-          ),
-        }}
-      />
-    );
-  }
-  return <TextFieldElement {...styles.input} {...otherProps} />;
-};
+import { setUserData } from '@/redux/slices/userSlice.js';
 
+/**
+ * Renders a profile setup form with fullname, occupation, social links, profile and bio inputs, and a submit button.
+ *
+ * @return {JSX.Element} The profile setup form component.
+ */
 const ProfileSetupForm = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { handleOpenSnackBar } = useContext(AuthContext);
+  const { data: userData } = useSelector((state) => state.user);
 
-  const [image, setImage] = useState('');
+  // Clear the prototype from userData in order to set defaultValues successfully
+  const defaultValues = Object.create(null);
+  Object.assign(defaultValues, userData);
+  const formContext = useForm({
+    defaultValues,
+    mode: 'onChange',
+  });
+  const {
+    control,
+    watch,
+    setValue,
+    formState: { errors },
+    handleSubmit,
+  } = formContext;
 
-  const handleSubmit = () => {
+  const onSubmit = () => {
+    dispatch(setUserData({ ...userData, ...watch() }));
     router.push('/onboarding/2');
   };
 
-  const handleTextarea = (e) => {
-    const wordCount = e.target.value.trim().split(/\s+/).length;
-    if (wordCount <= 200) {
-      // TODO
-    } else {
-      alert('No more than 200 words');
-    }
+  const onError = () => {
+    handleOpenSnackBar(ALERT_COLORS.ERROR, 'Oops! Some fields contain errors');
   };
 
   const renderFullName = () => (
-    <InputWrapper label="Full Name">
-      <ProfileTextField placeholder="Enter Name" name="name" fullWidth />
+    <InputWrapper label="Full Name" required>
+      <ProfileTextField
+        name="fullName"
+        control={control}
+        rules={{ required: 'Full Name is required!' }}
+        placeholder="Enter Name"
+        error={errors.fullName}
+      />
     </InputWrapper>
   );
 
   const renderOccupation = () => (
-    <InputWrapper label="Occupation">
+    <InputWrapper label="Occupation" required>
       <ProfileTextField
-        placeholder="Enter Occupation"
         name="occupation"
-        fullWidth
+        control={control}
+        rules={{ required: 'Occupation is required!' }}
+        placeholder="Enter Occupation"
+        error={errors.occupation}
       />
     </InputWrapper>
   );
@@ -82,22 +89,52 @@ const ProfileSetupForm = () => {
     <InputWrapper label="Social Links">
       <Grid {...styles.socialLinksContainer}>
         <ProfileTextField
+          name="facebook"
+          control={control}
+          rules={{
+            pattern: {
+              value: /https?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9._-]+\/?/,
+              message: 'Invalid Facebook URL',
+            },
+          }}
           icon={Facebook}
           placeholder="Paste Link"
-          name="facebook"
+          error={errors.facebook}
         />
         <ProfileTextField
+          name="linkedin"
+          control={control}
+          rules={{
+            pattern: {
+              value:
+                /^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile)/gm,
+              message: 'Invalid LinkedIn URL',
+            },
+          }}
           icon={LinkedIn}
           placeholder="Paste Link"
-          name="linkedin"
+          error={errors.linkedin}
         />
-        <ProfileTextField icon={XIcon} placeholder="Paste Link" name="x" />
+        <ProfileTextField
+          name="x"
+          control={control}
+          rules={{
+            pattern: {
+              value: /https?:\/\/(www\.)?x\.com\/\w+/g,
+              message: 'Invalid X URL',
+            },
+          }}
+          icon={XIcon}
+          placeholder="Paste Link"
+          error={errors.x}
+        />
       </Grid>
     </InputWrapper>
   );
 
+  const watchProfile = watch('profile');
   const renderProfile = () => {
-    const handleImageUpload = (e) => {
+    const handleImageUpload = (e, onChange) => {
       e.preventDefault();
       const file =
         e.type === 'change' ? e.target.files[0] : e.dataTransfer.files[0];
@@ -106,74 +143,99 @@ const ProfileSetupForm = () => {
       if (file) {
         // Check the file size
         if (file.size > maxSizeInBytes) {
-          alert('File is too large');
+          handleOpenSnackBar(
+            ALERT_COLORS.ERROR,
+            'The profile file size is over 1MB'
+          );
         } else {
-          setImage({ name: file.name });
-          // console.log(file);
+          onChange(file.name);
         }
       }
     };
     return (
-      <InputWrapper label="Profile">
-        <Grid
-          {...styles.imageUploadContainer}
-          // onDragOver={(e) => e.preventDefault()}
-          onDrop={handleImageUpload}
-        >
-          {image ? (
-            <Grid>
-              <Typography component="span">{image.name}</Typography>
-              <Button
-                variant="contained"
-                {...stylesOnboarding.button}
-                onClick={() => setImage('')}
-              >
-                Cancel
-              </Button>
-            </Grid>
-          ) : (
-            <>
-              <Typography>
-                Drag & Drop OR{' '}
-                <Typography component="span">Upload an Image</Typography>
-              </Typography>
-              <Typography>Formats: JPG, PNG, PDF | Upto 1 MB</Typography>
+      <Controller
+        name="profile"
+        control={control}
+        render={({ field: { onChange, onBlur, name } }) => (
+          <InputWrapper label="Profile">
+            <Grid {...styles.imageUploadContainer} onDrop={handleImageUpload}>
+              {watchProfile ? (
+                <Grid>
+                  <Typography component="span">{watchProfile}</Typography>
+                  <Button
+                    variant="contained"
+                    {...stylesOnboarding.button}
+                    onClick={() => setValue('profile', '')}
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
+              ) : (
+                <>
+                  <Typography>
+                    Drag & Drop OR{' '}
+                    <Typography component="span">Upload an Image</Typography>
+                  </Typography>
+                  <Typography>Formats: JPG, PNG, PDF | Upto 1 MB</Typography>
+                </>
+              )}
               <input
+                hidden={!!watchProfile}
                 type="file"
                 accept="image/png, image/jpg, application/pdf"
-                onChange={handleImageUpload}
+                onChange={(e) => handleImageUpload(e, onChange)}
+                name={name}
+                onBlur={onBlur}
               />
-            </>
-          )}
-        </Grid>
-      </InputWrapper>
+            </Grid>
+          </InputWrapper>
+        )}
+      />
     );
   };
 
+  const watchBio = watch('bio');
   const renderBio = () => (
     <InputWrapper label="Bio">
-      <TextareaAutosizeElement
-        placeholder="Introduce yourself in a few words"
+      <Controller
         name="bio"
-        resizeStyle="vertical"
-        rows={3}
-        {...styles.textarea}
-        onChange={handleTextarea}
+        control={control}
+        rules={{
+          validate: (fieldValue) =>
+            fieldValue ? fieldValue.trim().split(/\s+/).length <= 200 : true,
+        }}
+        render={({ field }) => (
+          <TextareaAutosizeElement
+            placeholder="Introduce yourself in a few words"
+            resizeStyle="vertical"
+            rows={3}
+            {...styles.textarea}
+            {...field}
+          />
+        )}
       />
+
       <Typography {...styles.wordLimit}>
-        Word Limit: <Typography component="span">200 Words</Typography>
+        Words:{' '}
+        <Typography {...styles.wordLimitError(errors.bio)}>
+          {watchBio ? watchBio.trim().split(/\s+/).length : '0'}/200
+        </Typography>
       </Typography>
     </InputWrapper>
   );
 
   return (
     <Grid {...stylesOnboarding.mainGrid}>
-      <Typography variant="h4" gutterBottom>
-        Profile Setup
+      <Typography {...stylesOnboarding.title}>Profile Setup</Typography>
+      <Typography {...stylesOnboarding.description}>
+        Get started by setting up your profile
       </Typography>
-      <Typography>Get started by setting up your profile</Typography>
 
-      <FormContainer defaultValues={{}} onSuccess={handleSubmit}>
+      <FormContainer
+        formContext={formContext}
+        onSuccess={handleSubmit(onSubmit)}
+        onError={onError}
+      >
         <Grid {...styles.formContainer}>
           <Grid {...styles.flexContainer}>
             {renderFullName()}
@@ -186,13 +248,7 @@ const ProfileSetupForm = () => {
 
           {renderBio()}
 
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            {...stylesOnboarding.button}
-          >
-            Next
-          </Button>
+          <Button {...stylesOnboarding.button}>Next</Button>
         </Grid>
       </FormContainer>
     </Grid>

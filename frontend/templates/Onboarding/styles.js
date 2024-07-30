@@ -2,18 +2,16 @@ const styles = {
   mainGrid: {
     width: 600,
     py: 4,
-    sx: {
-      h4: {
-        fontSize: '32px',
-      },
-      '& > p': {
-        mb: 4,
-        fontSize: '20px',
-        fontWeight: '300',
-      },
-    },
   },
+  title: {
+    variant: 'h4',
+    gutterBottom: true,
+    fontSize: '32px',
+  },
+  description: { mb: 4, fontSize: '20px', fontWeight: '300' },
   button: {
+    type: 'submit',
+    variant: 'contained',
     sx: { borderRadius: '999px', textTransform: 'none' },
   },
 };
