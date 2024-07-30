@@ -32,7 +32,7 @@ const HistoryPreview = (props) => {
     cardInstance,
     open,
     togglePreview,
-    createdAt,
+    updatedAt,
     title,
     description,
     toolId,
@@ -55,7 +55,7 @@ const HistoryPreview = (props) => {
   const handleCopy = () => {
     const contentToCopy = cardInstance.formatCopyContent(
       title,
-      createdAt,
+      updatedAt,
       description,
       outputs
     );
@@ -84,7 +84,7 @@ const HistoryPreview = (props) => {
   const handleExport = () => {
     const contentToExport = cardInstance.formatExportContent(
       title,
-      createdAt,
+      updatedAt,
       description,
       outputs
     );
@@ -114,7 +114,7 @@ const HistoryPreview = (props) => {
   const renderHeader = () => {
     return (
       <Grid {...styles.headerProps}>
-        <Typography {...styles.dateProps}>{createdAt}</Typography>
+        <Typography {...styles.dateProps}>{updatedAt}</Typography>
         <Typography {...styles.titleProps}>{title}</Typography>
         <Typography {...styles.descriptionProps}>{description}</Typography>
       </Grid>

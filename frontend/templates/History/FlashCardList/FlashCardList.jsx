@@ -13,14 +13,14 @@ function FlashCardList(cardData) {
 
     let title = 'FlashCards for Youtube';
     let description = 'Set of Flashcards about a Youtube video';
-    const { createdAt, response, toolId } = cardData;
+    const { updatedAt, response, toolId } = cardData;
     const { inputs, outputs } = response;
-    const formattedCreatedAt = formatToStandardDate(
-      new Date(convertToUnixTimestamp(createdAt))
+    const formattedUpdatedAt = formatToStandardDate(
+      new Date(convertToUnixTimestamp(updatedAt))
     );
 
     try {
-      title = await fetchYoutubeTitle(inputs.youtubeUrl);
+      title = await fetchYoutubeTitle(inputs[0].value);
       description = `Set of Flashcards about the YouTube video: ${title}`;
       backgroundImgURL =
         'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080';
@@ -33,46 +33,48 @@ function FlashCardList(cardData) {
     return {
       title,
       description,
-      createdAt: formattedCreatedAt,
-      outputs,
+      updatedAt: formattedUpdatedAt,
+      outputs: outputs.data,
       backgroundImgURL,
       logoURL,
       toolId,
     };
   }
 
-  function formatCopyContent(title, createdAt, description, outputs) {
+  function formatCopyContent(title, updatedAt, description, outputs) {
     // Combine the header and preview content into a single string
-    let formattedContent = `Title: ${title}\nCreated At: ${createdAt}\nDescription: ${description}\n`;
+    let formattedContent = `Title: ${title}\nUpdated At: ${updatedAt}\nDescription: ${description}\n`;
     // Flashcard format
-    formattedContent += '\nFlashcards:\n';
-    Object.keys(outputs).forEach((key) => {
-      const flashcardData = outputs[key];
-      formattedContent += `    ${flashcardData.term}: ${flashcardData.definition}\n`;
+    formattedContent += '\nFlashcards:\n\n';
+    outputs.forEach((flashcardData) => {
+      formattedContent += `${flashcardData.concept}: ${flashcardData.definition}\n\n`;
     });
     return formattedContent;
   }
 
-  function formatExportContent(title, createdAt, description, outputs) {
+  function formatExportContent(title, updatedAt, description, outputs) {
     const JsPDF = jsPDF;
     const doc = new JsPDF();
 
-    const margin = 10;
+    const margin = 8;
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
     const maxTextWidth = pageWidth - margin * 2;
-    const cardWidth = pageWidth - margin * 10; // Adjust as needed
-    const cardHeight = 50; // Adjust as needed
 
     doc.setFontSize(12);
 
     // Add Title
-    doc.text(`Title: ${title}`, margin, margin);
+    const splitTitle = doc.splitTextToSize(`Title: ${title}`, maxTextWidth);
+    doc.text(splitTitle, margin, margin);
 
-    // Add Created At
-    doc.text(`Created At: ${createdAt}`, margin, margin + 10);
+    // Add Updated At
+    const splitUpdatedAt = doc.splitTextToSize(
+      `Updated At: ${updatedAt}`,
+      maxTextWidth
+    );
+    doc.text(splitUpdatedAt, margin, margin + 10);
 
-    // Add Description with text wrapping
+    // Add Description
     const splitDescription = doc.splitTextToSize(
       `Description: ${description}`,
       maxTextWidth
@@ -81,14 +83,28 @@ function FlashCardList(cardData) {
     let ycoord = margin + 50;
 
     doc.text('Flashcards:', margin, margin + 40);
-    Object.keys(outputs).forEach((key) => {
+    outputs.forEach((flashcardData) => {
+      doc.setFontSize(14);
+      const splitConcept = doc.splitTextToSize(
+        flashcardData.concept,
+        maxTextWidth - 20
+      );
+      doc.setFontSize(12);
+      const splitDefinition = doc.splitTextToSize(
+        flashcardData.definition,
+        maxTextWidth - 20
+      );
+
+      // Determine card dimensions based on split text
+      const cardWidth = maxTextWidth - 20; // Keep card width within the max text width
+      const cardHeight =
+        10 + (splitConcept.length + splitDefinition.length) * 10; // Adjust height based on the number of lines
+
       // Check if the y-coordinate exceeds the page height, then add a new page
       if (ycoord + cardHeight > pageHeight) {
         doc.addPage();
         ycoord = margin;
       }
-
-      const flashcardData = outputs[key];
 
       // Calculate positions to center the card
       const cardX = (pageWidth - cardWidth) / 2;
@@ -97,17 +113,24 @@ function FlashCardList(cardData) {
       doc.rect(cardX, ycoord, cardWidth, cardHeight);
 
       // Center the text within the card
-      const termX = cardX + cardWidth / 2;
-      const definitionX = cardX + cardWidth / 2;
-      const termY = ycoord + cardHeight / 2 - 5;
-      const definitionY = ycoord + cardHeight / 2 + 5;
+      let currentY = ycoord + 10;
 
-      // Add the term and definition inside the rectangle
+      // Add the concept inside the rectangle
       doc.setFontSize(14);
-      doc.text(flashcardData.term, termX, termY, { align: 'center' });
+      splitConcept.forEach((line) => {
+        const textWidth = doc.getTextWidth(line);
+        const textX = cardX + (cardWidth - textWidth) / 2;
+        doc.text(line, textX, currentY);
+        currentY += 10; // Move to the next line
+      });
+
+      // Add the definition inside the rectangle
       doc.setFontSize(12);
-      doc.text(flashcardData.definition, definitionX, definitionY, {
-        align: 'center',
+      splitDefinition.forEach((line) => {
+        const textWidth = doc.getTextWidth(line);
+        const textX = cardX + (cardWidth - textWidth) / 2;
+        doc.text(line, textX, currentY);
+        currentY += 10; // Move to the next line
       });
 
       ycoord += cardHeight + 10; // Adjust space between cards as needed

@@ -1,11 +1,7 @@
 import { Grid, Typography } from '@mui/material';
 
-import { useRouter } from 'next/router';
-
 import HistoryListing from '@/components/HistoryListing';
 import ToolCardSkeleton from '@/components/ToolCard/Skeleton';
-
-import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
@@ -15,11 +11,7 @@ import styles from './styles';
  * @return {JSX.Element} Rendered history interface component
  */
 const HistoryInterface = (props) => {
-  const router = useRouter();
-
-  const { data, loading, error } = props;
-
-  const handleRoute = () => router.push(ROUTES.HISTORY);
+  const { data, loading } = props;
 
   /**
    * Function to render the title section of the history interface.

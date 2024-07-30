@@ -17,9 +17,8 @@ const FlashCardPreview = (props) => {
   const renderCards = () => {
     return (
       <Grid {...styles.questionsGridProps}>
-        {Object.keys(outputs).map((key, i) => {
-          const item = outputs[key];
-          return renderQuestion(item?.term, item?.definition, i + 1);
+        {outputs.map((item, i) => {
+          return renderQuestion(item?.concept, item?.definition, i + 1);
         })}
       </Grid>
     );

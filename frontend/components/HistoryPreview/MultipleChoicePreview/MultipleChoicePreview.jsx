@@ -13,8 +13,7 @@ const MultipleChoicePreview = (props) => {
   const renderMultipleChoiceQuestions = () => {
     return (
       <Grid {...styles.questionsGridProps}>
-        {Object.keys(outputs).map((key, questionNo) => {
-          const item = outputs[key];
+        {outputs.map((item, questionNo) => {
           return (
             <Grid
               item
@@ -25,18 +24,18 @@ const MultipleChoicePreview = (props) => {
                 {questionNo + 1}. {item.question}
               </Typography>
               <Box sx={{ ml: 2 }}>
-                {item.possibleAnswers.map((answer, i) => (
+                {item.choices.map((choice) => (
                   <Typography
-                    key={`answer-${questionNo + 1}-${i}`}
+                    key={`choice-${questionNo + 1}-${choice.key}`}
                     {...styles.choiceProps}
                   >
-                    {String.fromCharCode(65 + i)}. {answer}
+                    {choice.key}. {choice.value}
                   </Typography>
                 ))}
               </Box>
               <Typography
                 {...styles.questionAnswerProps}
-              >{`Answer: ${item.correctAnswer}`}</Typography>
+              >{`Answer: ${item.answer}`}</Typography>
               <Typography
                 {...styles.questionAnswerProps}
               >{`Explanation: ${item.explanation}`}</Typography>

@@ -28,7 +28,7 @@ const submitPrompt = async (payload, files, dispatch) => {
       toolId: payload.tool_data.tool_id,
       response: {
         inputs: payload.tool_data.inputs,
-        outputs: response.data.data.data,
+        outputs: response.data.data,
       },
     };
 

@@ -49,7 +49,7 @@ const HistoryCard = (props) => {
     return (
       <Grid>
         <Typography {...styles.dateProps}>
-          {restructuredCardData.createdAt}
+          {restructuredCardData.updatedAt}
         </Typography>
         <Typography {...styles.titleProps}>
           {restructuredCardData.title}
@@ -86,7 +86,7 @@ const HistoryCard = (props) => {
         cardInstance={cardInstance}
         open={openPreview}
         togglePreview={togglePreview}
-        createdAt={restructuredCardData?.createdAt}
+        updatedAt={restructuredCardData?.updatedAt}
         title={restructuredCardData?.title}
         description={restructuredCardData?.description}
         toolId={restructuredCardData?.toolId}

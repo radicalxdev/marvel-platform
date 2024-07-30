@@ -3,7 +3,6 @@ const { Timestamp } = require('firebase-admin/firestore');
 
 const db = admin.firestore();
 
-
 const seedDatabase = async () => {
   const data = require('./seed_data.json');
 

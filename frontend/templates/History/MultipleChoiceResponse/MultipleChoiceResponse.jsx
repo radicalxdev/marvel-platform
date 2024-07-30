@@ -12,14 +12,14 @@ function MultipleChoiceResponse(cardData) {
 
     let title = 'Multiple Choice Quiz';
     let description = 'Multiple Choice questions about a certain topic';
-    const { createdAt, response, toolId } = cardData;
+    const { updatedAt, response, toolId } = cardData;
     const { inputs, outputs } = response;
-    const formattedCreatedAt = formatToStandardDate(
-      new Date(convertToUnixTimestamp(createdAt))
+    const formattedUpdatedAt = formatToStandardDate(
+      new Date(convertToUnixTimestamp(updatedAt))
     );
     try {
-      title = inputs.topic;
-      description = `${inputs.num_questions} Multiple Choice questions about the topic: ${title}`;
+      title = inputs[0].value;
+      description = `${inputs[1].value} Multiple Choice questions about the topic: ${title}`;
       backgroundImgURL =
         'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Quizify.png?alt=media&token=d1255f27-b1a1-444e-b96a-4a3ac559237d';
       logoURL =
@@ -30,34 +30,31 @@ function MultipleChoiceResponse(cardData) {
     return {
       title,
       description,
-      createdAt: formattedCreatedAt,
-      outputs,
+      updatedAt: formattedUpdatedAt,
+      outputs: outputs.data,
       backgroundImgURL,
       logoURL,
       toolId,
     };
   }
 
-  function formatCopyContent(title, createdAt, description, outputs) {
+  function formatCopyContent(title, updatedAt, description, outputs) {
     // Combine the header and preview content into a single string
-    let formattedContent = `Title: ${title}\nCreated At: ${createdAt}\nDescription: ${description}\n`;
+    let formattedContent = `Title: ${title}\nUpdated At: ${updatedAt}\nDescription: ${description}\n`;
     // Multiple Choice Quiz format
-    formattedContent += '\nQuestions:\n';
-    Object.keys(outputs).forEach((key, index) => {
-      const questionData = outputs[key];
+    formattedContent += '\nQuestions:\n\n';
+    outputs.forEach((questionData, index) => {
       formattedContent += `${index + 1}. ${questionData.question}\n\n`;
-      questionData.possibleAnswers.forEach((choice, choiceIndex) => {
-        formattedContent += `    ${String.fromCharCode(
-          65 + choiceIndex
-        )}. ${choice}\n\n`;
+      questionData.choices.forEach((choice) => {
+        formattedContent += `    ${choice.key}. ${choice.value}\n\n`;
       });
-      formattedContent += `Answer: ${questionData.correctAnswer}\n`;
+      formattedContent += `Answer: ${questionData.answer}\n`;
       formattedContent += `Explanation: ${questionData.explanation}\n\n`;
     });
     return formattedContent;
   }
 
-  function formatExportContent(title, createdAt, description, outputs) {
+  function formatExportContent(title, updatedAt, description, outputs) {
     const JsPDF = jsPDF;
     const doc = new JsPDF();
 
@@ -69,10 +66,15 @@ function MultipleChoiceResponse(cardData) {
     doc.setFontSize(12);
 
     // Add Title
-    doc.text(`Title: ${title}`, margin, margin);
+    const splitTitle = doc.splitTextToSize(`Title: ${title}`, maxTextWidth);
+    doc.text(splitTitle, margin, margin);
 
     // Add Created At
-    doc.text(`Created At: ${createdAt}`, margin, margin + 10);
+    const splitCreatedAt = doc.splitTextToSize(
+      `Created At: ${updatedAt}`,
+      maxTextWidth
+    );
+    doc.text(splitCreatedAt, margin, margin + 10);
 
     // Add Description with text wrapping
     const splitDescription = doc.splitTextToSize(
@@ -83,28 +85,66 @@ function MultipleChoiceResponse(cardData) {
     let ycoord = margin + 50;
 
     doc.text('Questions:', margin, margin + 40);
-    Object.keys(outputs).forEach((key, index) => {
-      // Check if the y-coordinate exceeds the page height, then add a new page
-      if (ycoord >= pageHeight - margin) {
-        doc.addPage();
-        ycoord = margin;
-      }
-
-      const questionData = outputs[key];
-      doc.text(`${index + 1}. ${questionData.question}`, margin, ycoord);
-      ycoord += 10;
-      questionData.possibleAnswers.forEach((choice, choiceIndex) => {
-        doc.text(
-          `    ${String.fromCharCode(65 + choiceIndex)}. ${choice}`,
-          margin,
-          ycoord
-        );
+    outputs.forEach((questionData, index) => {
+      // Split and add question text
+      const splitQuestion = doc.splitTextToSize(
+        `${index + 1}. ${questionData.question}`,
+        maxTextWidth
+      );
+      splitQuestion.forEach((line) => {
+        if (ycoord >= pageHeight - margin) {
+          doc.addPage();
+          ycoord = margin;
+        }
+        doc.text(line, margin, ycoord);
         ycoord += 10;
       });
-      doc.text(`Answer: ${questionData.correctAnswer}`, margin, ycoord);
-      ycoord += 10;
-      doc.text(`Explanation: ${questionData.explanation}`, margin, ycoord);
-      ycoord += 20; // Add some space before the next question
+
+      // Split and add choices text
+      questionData.choices.forEach((choice) => {
+        const splitChoice = doc.splitTextToSize(
+          `    ${choice.key}. ${choice.value}`,
+          maxTextWidth
+        );
+        splitChoice.forEach((line) => {
+          if (ycoord >= pageHeight - margin) {
+            doc.addPage();
+            ycoord = margin;
+          }
+          doc.text(line, margin, ycoord);
+          ycoord += 10;
+        });
+      });
+
+      // Split and add answer text
+      const splitAnswer = doc.splitTextToSize(
+        `Answer: ${questionData.answer}`,
+        maxTextWidth
+      );
+      splitAnswer.forEach((line) => {
+        if (ycoord >= pageHeight - margin) {
+          doc.addPage();
+          ycoord = margin;
+        }
+        doc.text(line, margin, ycoord);
+        ycoord += 10;
+      });
+
+      // Split and add explanation text
+      const splitExplanation = doc.splitTextToSize(
+        `Explanation: ${questionData.explanation}`,
+        maxTextWidth
+      );
+      splitExplanation.forEach((line) => {
+        if (ycoord >= pageHeight - margin) {
+          doc.addPage();
+          ycoord = margin;
+        }
+        doc.text(line, margin, ycoord);
+        ycoord += 10;
+      });
+
+      ycoord += 10; // Add some space before the next question
     });
 
     return doc;
