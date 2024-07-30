@@ -28,6 +28,7 @@ import CenterChatContentNoMessages from './CenterChatContentNoMessages';
 import ChatHistoryWindow from './ChatHistoryWindow';
 import ChatSpinner from './ChatSpinner';
 import DefaultPrompt from './DefaultPrompt';
+import DiscoveryLibraryWindow from './DiscoveryLibraryWindow';
 import Message from './Message';
 import QuickActions from './QuickActions';
 import styles from './styles';
@@ -449,6 +450,7 @@ const ChatInterface = () => {
 
   return (
     <Grid {...styles.chatInterface}>
+      <DiscoveryLibraryWindow />
       <Grid {...styles.mainGridProps}>
         {renderMoreChat()}
         {renderCenterChatContent()}

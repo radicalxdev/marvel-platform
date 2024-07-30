@@ -1,5 +1,3 @@
-import { MarginOutlined } from "@mui/icons-material";
-
 /**
  * Styles for the DefaultPrompt component
  */
@@ -7,12 +5,11 @@ const styles = {
   defaultPromptsGridContainer: {
     container: true,
     sx: {
-      width: '90%',
       display: 'flex',
       flexDirection: 'row',
       gap: '10px',
       marginBottom: '10px',
-      marginLeft:'10px'
+      marginLeft: '10px',
     },
   },
   defaultPrompt: {
@@ -37,7 +34,8 @@ const styles = {
         borderRadius: '10px',
         padding: '2px',
         background: 'linear-gradient(45deg, #a597cc, #5e20f3)',
-        WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+        WebkitMask:
+          'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
         WebkitMaskComposite: 'xor',
         maskComposite: 'exclude',
       },

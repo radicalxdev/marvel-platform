@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
+
 import { Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { DEFAULT_PROMPTS } from '@/constants/bots';
-import { setInput } from '@/redux/slices/chatSlice';
+
 import MenuLogo from '@/assets/svg/PurpleStar.svg'; // Import MenuLogo
 
+import { DEFAULT_PROMPTS } from '@/constants/bots';
+
 import styles from './styles';
+
+import { setInput } from '@/redux/slices/chatSlice';
 
 /**
  * Renders the default prompt component.

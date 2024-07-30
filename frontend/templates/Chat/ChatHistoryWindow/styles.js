@@ -2,6 +2,13 @@
  * Contains styles for various components related to the chat history window.
  */
 const styles = {
+  openChatHistoryContainer: {
+    item: true,
+    sx: {
+      width: 'fit-content',
+      height: 'fit-content',
+    },
+  },
   /**
    * Styles for the chat history sidebar.
    */
@@ -18,14 +25,14 @@ const styles = {
       borderRadius: '15px',
       // Set the background to black.
       backgroundColor: '#000000',
-      // Set the min-width to 25%.
-      minWidth: '25%',
+      // Set the min-width to 20%.
+      minWidth: '20%',
+      // Set the max width to 20%.
+      maxWidth: '20%',
       // Set the height to 100%.
       height: '100%',
       // Set the color to white.
       color: '#ffffff',
-      // Set the max width of the sidebar to 25%.
-      maxWidth: '25%',
     },
   },
   /**

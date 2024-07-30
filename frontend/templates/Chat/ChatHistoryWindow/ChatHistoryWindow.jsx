@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
 import ChatIcon from '@mui/icons-material/Chat';
+import HistoryIcon from '@mui/icons-material/History';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Button, Fab, Grid, Tooltip, Typography } from '@mui/material';
+import { Fab, Grid, Tooltip, Typography } from '@mui/material';
 
 import { useDispatch } from 'react-redux';
 
@@ -47,26 +47,30 @@ const ChatHistoryWindow = () => {
   return (
     // Conditionally render the chat history sidebar based on the showHistorySidebar state
     !showHistorySidebar ? (
-      // Render the open chat history button
-      <Fab
-        aria-label="open chat history"
-        onClick={toggleHistorySidebar}
-        {...styles.toggleHistoryButton(showHistorySidebar)}
-      >
-        <AddIcon />
-      </Fab>
+      <Grid {...styles.openChatHistoryContainer}>
+        {/* // Render the open chat history button */}
+        <Tooltip title="Open chat history" arrow>
+          <Fab
+            aria-label="open chat history"
+            onClick={toggleHistorySidebar}
+            {...styles.toggleHistoryButton(showHistorySidebar)}
+          >
+            <HistoryIcon />
+          </Fab>
+        </Tooltip>
+      </Grid>
     ) : (
       // Render the chat history sidebar
       <Grid {...styles.historySideBar}>
         {/* Header of the sidebar */}
         <Grid {...styles.historySideBarHeader}>
           <Grid>
-            <Tooltip
-              title="Start a chat with Kai"
-              arrow
-              onClick={() => newChat()}
-            >
-              <Fab {...styles.newChatIcon} aria-label="Start a chat with Kai">
+            <Tooltip title="Start a chat with Kai" arrow>
+              <Fab
+                aria-label="Start a chat with Kai"
+                onClick={() => newChat()}
+                {...styles.newChatIcon}
+              >
                 <ChatIcon />
               </Fab>
             </Tooltip>
@@ -80,24 +84,16 @@ const ChatHistoryWindow = () => {
             </Typography>
           </Grid>
           {/* Close chat history button */}
-          <Fab
-            aria-label="close chat history"
-            size="medium"
-            onClick={toggleHistorySidebar}
-            {...styles.toggleHistoryButton(showHistorySidebar)}
-          >
-            <RemoveIcon />
-          </Fab>
+          <Tooltip title="Close chat history" arrow>
+            <Fab
+              aria-label="close chat history"
+              onClick={toggleHistorySidebar}
+              {...styles.toggleHistoryButton(showHistorySidebar)}
+            >
+              <RemoveIcon />
+            </Fab>
+          </Tooltip>
         </Grid>
-
-        {/* Add new chat button */}
-        {/* Add new chat button with onClick event handler to reset the state of the chat reducer. */}
-        {/* <Grid {...styles.newChatContainer}>
-          <Button {...styles.newChatButton} onClick={() => newChat()}>
-            <AddIcon />
-            <Typography>&nbsp;&nbsp;Start a new chat</Typography>
-          </Button>
-        </Grid> */}
 
         {/* Chat history section of the sidebar */}
         <Grid {...styles.chatHistory}>
