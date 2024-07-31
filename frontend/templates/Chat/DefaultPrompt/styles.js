@@ -17,7 +17,7 @@ const styles = {
     item: true,
     sx: {
       position: 'relative',
-      padding: '5px 10px',
+      padding: '10px', // Changed padding to be equal
       display: 'flex',
       alignItems: 'center',
       flex: '1',
@@ -33,7 +33,7 @@ const styles = {
         inset: 0,
         borderRadius: '10px',
         padding: '2px',
-        background: 'linear-gradient(45deg, #a597cc, #5e20f3)',
+        background: 'linear-gradient(45deg, #8c6d9a, #5e20f3)', // Darker gradient color
         WebkitMask:
           'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
         WebkitMaskComposite: 'xor',
