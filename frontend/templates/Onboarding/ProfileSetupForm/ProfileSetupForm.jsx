@@ -24,26 +24,18 @@ import styles from './styles.js';
 
 import { AuthContext } from '@/providers/GlobalProvider.jsx';
 
-import { setUserData } from '@/redux/slices/userSlice.js';
+import { setTempData } from '@/redux/slices/onboardingSlice.js';
 
-/**
- * Renders a profile setup form with fullname, occupation, social links, profile and bio inputs, and a submit button.
- *
- * @return {JSX.Element} The profile setup form component.
- */
-const ProfileSetupForm = () => {
+const ProfileSetupForm = ({ onNext, tempData }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { handleOpenSnackBar } = useContext(AuthContext);
-  const { data: userData } = useSelector((state) => state.user);
 
-  // Clear the prototype from userData in order to set defaultValues successfully
-  const defaultValues = Object.create(null);
-  Object.assign(defaultValues, userData);
   const formContext = useForm({
-    defaultValues,
+    defaultValues: tempData,
     mode: 'onChange',
   });
+
   const {
     control,
     watch,
@@ -52,9 +44,26 @@ const ProfileSetupForm = () => {
     handleSubmit,
   } = formContext;
 
-  const onSubmit = () => {
-    dispatch(setUserData({ ...userData, ...watch() }));
-    router.push('/onboarding/2');
+  const onSubmit = (data) => {
+    const template = {
+      fullName: '',
+      occupation: '',
+      facebook: '',
+      linkedin: '',
+      x: '',
+      profile: '',
+      bio: '',
+    };
+
+    // Merge the template with the user-provided data, overriding defaults
+    const completeData = Object.keys(template).reduce((acc, key) => {
+      acc[key] = data[key] !== undefined ? data[key] : template[key];
+      return acc;
+    }, {});
+
+    console.log('Submitting complete form data:', completeData);
+    dispatch(setTempData(completeData)); // Store complete form data in Redux
+    onNext(completeData); // Pass complete data to OnboardingPage and proceed to the next step
   };
 
   const onError = () => {
@@ -141,7 +150,6 @@ const ProfileSetupForm = () => {
       const maxSizeInBytes = 1024 ** 2; // 1MB
 
       if (file) {
-        // Check the file size
         if (file.size > maxSizeInBytes) {
           handleOpenSnackBar(
             ALERT_COLORS.ERROR,
@@ -176,7 +184,7 @@ const ProfileSetupForm = () => {
                     Drag & Drop OR{' '}
                     <Typography component="span">Upload an Image</Typography>
                   </Typography>
-                  <Typography>Formats: JPG, PNG, PDF | Upto 1 MB</Typography>
+                  <Typography>Formats: JPG, PNG, PDF | Up to 1 MB</Typography>
                 </>
               )}
               <input
@@ -214,7 +222,6 @@ const ProfileSetupForm = () => {
           />
         )}
       />
-
       <Typography {...styles.wordLimit}>
         Words:{' '}
         <Typography {...styles.wordLimitError(errors.bio)}>
@@ -241,14 +248,12 @@ const ProfileSetupForm = () => {
             {renderFullName()}
             {renderOccupation()}
           </Grid>
-
           {renderSocialLinks()}
-
           {renderProfile()}
-
           {renderBio()}
-
-          <Button {...stylesOnboarding.button}>Next</Button>
+          <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+            Next
+          </Button>
         </Grid>
       </FormContainer>
     </Grid>

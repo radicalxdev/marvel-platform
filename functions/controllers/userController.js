@@ -24,6 +24,7 @@ exports.signUpUser = https.onCall(async (data, context) => {
     id: uid,
     email,
     fullName,
+    needsBoarding: true,
   };
   await userRef.set(userDoc);
   return { status: 'success', message: 'User document created successfully' };

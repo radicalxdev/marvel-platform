@@ -1,24 +1,23 @@
+import React from 'react';
+
 import { Button, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import styles from './styles';
-
-const Welcome = () => {
+const Welcome = ({ onNext }) => {
   const router = useRouter();
 
   const handleStart = () => {
-    router.push('/onboarding/1');
+    onNext();
+    router.push('/onboarding/1'); // Proceed to the first step
   };
 
   return (
-    <Grid {...styles.mainGridProps}>
-      <Typography {...styles.titleProps}>
-        Welcome to <span style={{ color: '#8653FF' }}>Kai</span> 👋
+    <Grid sx={{ p: 3, textAlign: 'center' }}>
+      <Typography variant="h4" gutterBottom>
+        Welcome to Kai!
       </Typography>
-      <Typography {...styles.descriptionProps}>
-        Let’s get started with your onboarding process.
-      </Typography>
-      <Button onClick={handleStart} {...styles.buttonProps}>
+      <Typography>Let’s get started with your onboarding process.</Typography>
+      <Button variant="contained" onClick={handleStart}>
         Start Here
       </Button>
     </Grid>
