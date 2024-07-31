@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import MainAppLayout from '@/layouts/MainAppLayout';
 
+import Logo from '@/assets/svg/KaiAILogo.svg';
 import MeteorCircle from '@/assets/svg/Meteor1.svg';
 import MeteorTail from '@/assets/svg/MeteorTail.svg';
 import Star3 from '@/assets/svg/Star_3.svg';
@@ -27,6 +28,24 @@ const PageNotFound = () => {
     router.push(ROUTES.HOME);
   };
 
+  const renderLogo = () => {
+    return (
+      <Grid
+        onClick={() => router.push(ROUTES.HOME)}
+        {...pageNotFoundStyles.LogoGridProps}
+      >
+        <Grid {...pageNotFoundStyles.LogoImageGridProps}>
+          <Logo />
+        </Grid>
+        <Grid {...pageNotFoundStyles.LogotitleGridProps}>
+          <Typography {...pageNotFoundStyles.LogotitleProps}>KAI.AI</Typography>
+          <Typography {...pageNotFoundStyles.LogosubtitleProps}>
+            AI Teaching Assistant
+          </Typography>
+        </Grid>
+      </Grid>
+    );
+  };
   const renderMainTitle = () => {
     return (
       <Grid {...pageNotFoundStyles.titleGridProps}>
@@ -118,6 +137,7 @@ const PageNotFound = () => {
   return (
     <Grid {...pageNotFoundStyles.mainGridProps}>
       {renderRadialBackground()}
+      <Grid {...pageNotFoundStyles.LogocontentGridProps}>{renderLogo()}</Grid>
       <Grid {...pageNotFoundStyles.TopcontentGridProps}>
         {renderTopContent()}
       </Grid>

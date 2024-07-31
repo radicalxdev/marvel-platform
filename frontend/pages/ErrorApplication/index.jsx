@@ -1,24 +1,145 @@
-import React from 'react';
+import { Box, Grid, Typography, useTheme } from '@mui/material';
+import { useRouter } from 'next/router';
 
-import { Button, Grid, Typography } from '@mui/material';
-
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import MainAppLayout from '@/layouts/MainAppLayout';
 
+import ErrorWindow from '@/assets/svg/ErrorWindow.svg';
+import Logo from '@/assets/svg/KaiAILogo.svg';
+import Star3 from '@/assets/svg/Star_3.svg';
+import Star4 from '@/assets/svg/Star_4.svg';
+import Star5 from '@/assets/svg/Star_5.svg';
+
+import ROUTES from '@/constants/routes';
+
+import ApplicationErrorStyle from '@/styles/pageNotFoundStyles';
+
+/**
+ * Renders the page for when the requested route is not found.
+ *
+ * @return {JSX.Element} The JSX element representing the page.
+ */
+
 const ApplicationErrorPage = () => {
+  const router = useRouter();
+  const theme = useTheme();
+
+  const handleRouteToHome = () => {
+    router.push(ROUTES.HOME);
+  };
+
+  const renderLogo = () => {
+    return (
+      <Grid
+        onClick={() => router.push(ROUTES.HOME)}
+        {...ApplicationErrorStyle.LogoGridProps}
+      >
+        <Grid {...ApplicationErrorStyle.LogoImageGridProps}>
+          <Logo />
+        </Grid>
+        <Grid {...ApplicationErrorStyle.LogotitleGridProps}>
+          <Typography {...ApplicationErrorStyle.LogotitleProps}>
+            KAI.AI
+          </Typography>
+          <Typography {...ApplicationErrorStyle.LogosubtitleProps}>
+            AI Teaching Assistant
+          </Typography>
+        </Grid>
+      </Grid>
+    );
+  };
+
+  const renderMainTitle = () => {
+    return (
+      <Grid {...ApplicationErrorStyle.titleGridProps}>
+        <Typography {...ApplicationErrorStyle.subtitleProps}>
+          Application Error
+        </Typography>
+      </Grid>
+    );
+  };
+
+  const renderBottomContent = () => {
+    return (
+      <Grid {...ApplicationErrorStyle.BottomGridprops}>
+        <Typography {...ApplicationErrorStyle.bodyProps}>
+          It&apos;s not you it&apos;s us, we&apos;re trying to fix this issue
+          for you
+          <br />
+          Let&apos;s go back to home for the time being!
+        </Typography>
+      </Grid>
+    );
+  };
+
+  const renderGoHomeButton = () => {
+    return (
+      <Grid {...ApplicationErrorStyle.buttonGridProps}>
+        <GradientOutlinedButton
+          bgcolor={theme.palette.Common.White['100p']}
+          clickHandler={handleRouteToHome}
+          text="Back to Homepage"
+          textColor="white"
+          {...ApplicationErrorStyle.submitButtonProps}
+        />
+      </Grid>
+    );
+  };
+
+  const renderApplicationError = () => {
+    return (
+      <Grid {...ApplicationErrorStyle.ErrorWindow}>
+        <ErrorWindow />
+      </Grid>
+    );
+  };
+
+  const renderRadialBackground = () => {
+    return (
+      <>
+        <Box {...ApplicationErrorStyle.radialBg1Props} />
+        <Box {...ApplicationErrorStyle.radialBg2Props} />
+        <Box {...ApplicationErrorStyle.radialBg3Props} />
+      </>
+    );
+  };
+
+  const renderIcons = () => {
+    return (
+      <>
+        <Box {...ApplicationErrorStyle.star1Props}>
+          <Star3 />
+        </Box>
+        <Box {...ApplicationErrorStyle.star2Props}>
+          <Star4 />
+        </Box>
+        <Box {...ApplicationErrorStyle.star3Props}>
+          <Star5 />
+        </Box>
+      </>
+    );
+  };
   return (
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="center"
-      style={{ height: '100vh', textAlign: 'center' }}
-    >
-      <Typography variant="h1">Application Error</Typography>
-      <Typography variant="h6">
-        An error occurred in the application. Please try again later.
-      </Typography>
-      <Button variant="contained" color="primary" href="/">
-        Go to Homepage
-      </Button>
+    <Grid {...ApplicationErrorStyle.mainGridProps}>
+      {renderRadialBackground()}
+      <Grid {...ApplicationErrorStyle.LogocontentGridProps}>
+        {renderLogo()}
+      </Grid>
+      <Grid {...ApplicationErrorStyle.TopcontentGridProps}>
+        {renderMainTitle()}
+      </Grid>
+      <Grid {...ApplicationErrorStyle.BottomcontentGridProps}>
+        {renderBottomContent()}
+      </Grid>
+      <Grid {...ApplicationErrorStyle.LogocontentGridProps}>
+        {renderApplicationError()}
+      </Grid>
+      <Grid {...ApplicationErrorStyle.IconcontentGridprops}>
+        {renderIcons()}
+      </Grid>
+      <Grid {...ApplicationErrorStyle.IconcontentGridprops}>
+        {renderGoHomeButton()}
+      </Grid>
     </Grid>
   );
 };
