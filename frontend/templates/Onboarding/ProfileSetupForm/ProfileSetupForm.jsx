@@ -23,7 +23,7 @@ import styles from './styles.js';
 
 import { AuthContext } from '@/providers/GlobalProvider.jsx';
 
-import { setTempData } from '@/redux/slices/userSlice.js';
+import { setTempData } from '@/redux/slices/onboardingSlice.js';
 
 const ProfileSetupForm = ({ onNext, tempData }) => {
   const dispatch = useDispatch();

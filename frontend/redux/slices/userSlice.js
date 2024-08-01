@@ -1,35 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchUserData, submitOnboardingData } from '../thunks/user';
+import { fetchUserData, updateUserData } from '../thunks/user';
 
 const initialState = {
   data: null,
   loading: false,
   error: null,
-  step: 1,
-  completed: false,
-  tempData: {},
 };
 
-const userData = createSlice({
+const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     reset: () => initialState,
     setUserData: (state, action) => {
       state.data = action.payload;
-    },
-    setStep: (state, action) => {
-      state.step = action.payload;
-    },
-    setCompleted: (state, action) => {
-      state.completed = action.payload;
-    },
-    setTempData: (state, action) => {
-      state.tempData = { ...state.tempData, ...action.payload };
-    },
-    clearTempData: (state) => {
-      state.tempData = {};
     },
   },
   extraReducers: (builder) => {
@@ -45,29 +30,21 @@ const userData = createSlice({
         state.error = 'Could not get user data';
         state.loading = false;
       })
-      .addCase(submitOnboardingData.pending, (state) => {
+      .addCase(updateUserData.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(submitOnboardingData.fulfilled, (state) => {
+      .addCase(updateUserData.fulfilled, (state, action) => {
         state.loading = false;
-        state.completed = true;
-        state.tempData = {}; // Clear temp data on success
+        state.data = { ...state.data, ...action.payload };
       })
-      .addCase(submitOnboardingData.rejected, (state, action) => {
+      .addCase(updateUserData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const {
-  reset,
-  setUserData,
-  setStep,
-  setCompleted,
-  setTempData,
-  clearTempData,
-} = userData.actions;
+export const { reset, setUserData } = userSlice.actions;
 
-export default userData.reducer;
+export default userSlice.reducer;

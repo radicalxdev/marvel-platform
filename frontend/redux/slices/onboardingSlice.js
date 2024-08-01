@@ -1,11 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchUserData, submitOnboardingData } from '../thunks/user';
-
 const initialState = {
-  data: null,
-  loading: false,
-  error: null,
   step: 1,
   completed: false,
   tempData: {},
@@ -28,34 +23,6 @@ const onboardingSlice = createSlice({
     clearTempData: (state) => {
       state.tempData = {};
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchUserData.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchUserData.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
-      })
-      .addCase(fetchUserData.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-      .addCase(submitOnboardingData.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(submitOnboardingData.fulfilled, (state) => {
-        state.loading = false;
-        state.completed = true;
-        state.tempData = {}; // Clear temp data on success
-      })
-      .addCase(submitOnboardingData.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
   },
 });
 

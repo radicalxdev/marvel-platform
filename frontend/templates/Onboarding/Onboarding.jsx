@@ -9,9 +9,13 @@ import ProfileSetupForm from './ProfileSetupForm';
 import SystemConfigs from './SystemConfigs/SystemsConfig';
 import Welcome from './Welcome';
 
-import { setCompleted, setStep, setTempData } from '@/redux/slices/userSlice';
+import {
+  setCompleted,
+  setStep,
+  setTempData,
+} from '@/redux/slices/onboardingSlice';
 import { firestore } from '@/redux/store';
-import { submitOnboardingData } from '@/redux/thunks/user';
+import { updateUserData } from '@/redux/thunks/user';
 
 const onboardingComponents = {
   0: Welcome,
@@ -24,8 +28,8 @@ const onboardingComponents = {
 const OnboardingPage = ({ onboardingData }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const step = useSelector((state) => state.user.step);
-  const tempData = useSelector((state) => state.user.tempData);
+  const step = useSelector((state) => state.onboarding.step);
+  const tempData = useSelector((state) => state.onboarding.tempData);
 
   useEffect(() => {
     if (onboardingData.id !== step) {
@@ -40,9 +44,9 @@ const OnboardingPage = ({ onboardingData }) => {
       dispatch(setTempData(formData)); // Store form data in Redux
     }
 
-    if (onboardingData.id === Object.keys(onboardingComponents).length - 2) {
+    if (onboardingComponents[onboardingData.id] === FinalSteps) {
       console.log('Submitting onboarding data:', tempData);
-      dispatch(submitOnboardingData({ firestore, data: tempData }));
+      dispatch(updateUserData({ firestore, data: tempData }));
       dispatch(setCompleted(true));
     }
     dispatch(setStep(onboardingData.id + 1)); // Update the step in Redux

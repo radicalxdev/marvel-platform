@@ -32,10 +32,10 @@ export const fetchUserData = createAsyncThunk(
 );
 
 // Thunk for submitting onboarding data
-export const submitOnboardingData = createAsyncThunk(
+export const updateUserData = createAsyncThunk(
   'onboarding/submitOnboardingData',
   async ({ firestore, data }, { getState, rejectWithValue }) => {
-    console.log('submitOnboardingData thunk called'); // Log at the very start
+    console.log('updateUserData thunk called'); // Log at the very start
 
     try {
       const { user } = getState();
