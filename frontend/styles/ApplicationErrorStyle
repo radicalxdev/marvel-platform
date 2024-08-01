@@ -1,4 +1,4 @@
-const pageNotFoundStyles = {
+const ApplicationErrorStyle = {
   // Logo for the 404 page
   LogoImageGridProps: {
     container: true,
@@ -245,18 +245,11 @@ const pageNotFoundStyles = {
     left: '400px',
     top: '30px',
   },
-  Meteor: {
+  NetworkLogo: {
     position: 'relative',
-    top: '-455px',
-    left: '64px',
-    zIndex: 1,
-  },
-  Tail: {
-    position: 'relative',
-    top: '-486px',
-    right: '13px',
-    zIndex: 0,
+    top: '200px',
+    left: '40px',
   },
 };
 
-export default pageNotFoundStyles;
+export default ApplicationErrorStyle;

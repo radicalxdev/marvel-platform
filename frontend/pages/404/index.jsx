@@ -37,20 +37,15 @@ const PageNotFound = () => {
         <Grid {...pageNotFoundStyles.LogoImageGridProps}>
           <Logo />
         </Grid>
-        <Grid {...pageNotFoundStyles.LogotitleGridProps}>
-          <Typography {...pageNotFoundStyles.LogotitleProps}>KAI.AI</Typography>
-          <Typography {...pageNotFoundStyles.LogosubtitleProps}>
-            AI Teaching Assistant
-          </Typography>
-        </Grid>
       </Grid>
     );
   };
+
   const renderMainTitle = () => {
     return (
       <Grid {...pageNotFoundStyles.titleGridProps}>
         <Typography {...pageNotFoundStyles.subtitleProps}>
-          Oops, it seems you&apos;ve entered a black hole!
+          Oops, it seems like you&apos;ve entered a black hole!
         </Typography>
       </Grid>
     );
@@ -85,7 +80,7 @@ const PageNotFound = () => {
   const renderTopContent = () => {
     return (
       <Grid {...pageNotFoundStyles.sectionGridProps}>
-        <Typography {...pageNotFoundStyles.titleGridProps}>404</Typography>
+        <Typography {...pageNotFoundStyles.titleProps}>404</Typography>
       </Grid>
     );
   };
@@ -124,10 +119,10 @@ const PageNotFound = () => {
         <Box {...pageNotFoundStyles.star3Props}>
           <Star5 />
         </Box>
-        <Box {...pageNotFoundStyles.MeteorCircle}>
+        <Box {...pageNotFoundStyles.Meteor}>
           <MeteorCircle />
         </Box>
-        <Box {...pageNotFoundStyles.MeteorTail}>
+        <Box {...pageNotFoundStyles.Tail}>
           <MeteorTail />
         </Box>
       </>

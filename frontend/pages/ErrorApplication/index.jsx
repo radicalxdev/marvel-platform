@@ -64,9 +64,7 @@ const ApplicationErrorPage = () => {
       <Grid {...ApplicationErrorStyle.BottomGridprops}>
         <Typography {...ApplicationErrorStyle.bodyProps}>
           It&apos;s not you it&apos;s us, we&apos;re trying to fix this issue
-          for you
-          <br />
-          Let&apos;s go back to home for the time being!
+          for you. Let&apos;s go back to home for the time being!
         </Typography>
       </Grid>
     );

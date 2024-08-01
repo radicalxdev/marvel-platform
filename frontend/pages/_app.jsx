@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { GoogleAnalytics } from 'nextjs-google-analytics';
 
 import ErrorBoundary from '@/components/ErrorBoundary';
+import NetworkStatus from '@/components/NetworkStatus/NetworkStatus';
 
 import firebaseConfig from '@/firebase/config';
 
@@ -20,11 +21,13 @@ const App = ({ Component, pageProps }) => {
     <ThemeProvider theme={theme}>
       <GlobalProvider>
         <ErrorBoundary>
-          <GoogleAnalytics
-            trackPageViews
-            gaMeasurementId={firebaseConfig.measurementId}
-          />
-          {getLayout(<Component {...pageProps} />, query)}
+          <NetworkStatus>
+            <GoogleAnalytics
+              trackPageViews
+              gaMeasurementId={firebaseConfig.measurementId}
+            />
+            {getLayout(<Component {...pageProps} />, query)}
+          </NetworkStatus>
         </ErrorBoundary>
       </GlobalProvider>
     </ThemeProvider>

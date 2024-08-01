@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import MainAppLayout from '@/layouts/MainAppLayout';
@@ -11,7 +11,7 @@ import Star5 from '@/assets/svg/Star_5.svg';
 
 import ROUTES from '@/constants/routes';
 
-import NetworkErrorStyle from '@/styles/pageNotFoundStyles';
+import NetworkErrorStyle from '@/styles/NetworkErrorStyle';
 
 /**
  * Renders the page for when the requested route is not found.
@@ -21,11 +21,6 @@ import NetworkErrorStyle from '@/styles/pageNotFoundStyles';
 
 const NetworkErrorPage = () => {
   const router = useRouter();
-  const theme = useTheme();
-
-  const handleRouteToHome = () => {
-    router.push(ROUTES.HOME);
-  };
 
   const renderLogo = () => {
     return (
@@ -36,12 +31,6 @@ const NetworkErrorPage = () => {
         <Grid {...NetworkErrorStyle.LogoImageGridProps}>
           <Logo />
         </Grid>
-        <Grid {...NetworkErrorStyle.LogotitleGridProps}>
-          <Typography {...NetworkErrorStyle.LogotitleProps}>KAI.AI</Typography>
-          <Typography {...NetworkErrorStyle.LogosubtitleProps}>
-            AI Teaching Assistant
-          </Typography>
-        </Grid>
       </Grid>
     );
   };
@@ -50,28 +39,26 @@ const NetworkErrorPage = () => {
     return (
       <Grid {...NetworkErrorStyle.titleGridProps}>
         <Typography {...NetworkErrorStyle.subtitleProps}>
-          Application Error
+          Network Error
         </Typography>
       </Grid>
     );
   };
 
-  const renderBottomContent = () => {
+  const renderBodyText = () => {
     return (
-      <Grid {...NetworkErrorStyle.BottomGridprops}>
+      <Grid {...NetworkErrorStyle.bodyGridProps}>
         <Typography {...NetworkErrorStyle.bodyProps}>
-          It&apos;s not you it&apos;s us, we&apos;re trying to fix this issue
-          for you
-          <br />
-          Let&apos;s go back to home for the time being!
+          Seems like there is a problem with your internet, try reconnecting and
+          refresh the page to continue.
         </Typography>
       </Grid>
     );
   };
 
-  const renderApplicationError = () => {
+  const renderNetworkError = () => {
     return (
-      <Grid {...NetworkErrorStyle.ErrorWindow}>
+      <Grid {...NetworkErrorStyle.NetworkLogo}>
         <ErrorWindow />
       </Grid>
     );
@@ -102,18 +89,36 @@ const NetworkErrorPage = () => {
       </>
     );
   };
+
+  const renderTopContent = () => {
+    return (
+      <Grid {...NetworkErrorStyle.sectionGridProps}>
+        <Typography {...NetworkErrorStyle.titleProps} />
+      </Grid>
+    );
+  };
+
+  const renderBottomContent = () => {
+    return (
+      <Grid {...NetworkErrorStyle.sectionGridProps}>
+        <Grid {...NetworkErrorStyle.mainContentGridProps}>
+          {renderNetworkError()}
+          {renderMainTitle()}
+          {renderBodyText()}
+        </Grid>
+      </Grid>
+    );
+  };
+
   return (
     <Grid {...NetworkErrorStyle.mainGridProps}>
       {renderRadialBackground()}
       <Grid {...NetworkErrorStyle.LogocontentGridProps}>{renderLogo()}</Grid>
       <Grid {...NetworkErrorStyle.TopcontentGridProps}>
-        {renderMainTitle()}
+        {renderTopContent()}
       </Grid>
       <Grid {...NetworkErrorStyle.BottomcontentGridProps}>
         {renderBottomContent()}
-      </Grid>
-      <Grid {...NetworkErrorStyle.LogocontentGridProps}>
-        {renderApplicationError()}
       </Grid>
       <Grid {...NetworkErrorStyle.IconcontentGridprops}>{renderIcons()}</Grid>
     </Grid>

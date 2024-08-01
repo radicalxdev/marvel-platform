@@ -1,75 +1,45 @@
-const pageNotFoundStyles = {
-  // Logo for the 404 page
+const NetworkErrorStyle = {
+  // Logo Grid Props
   LogoImageGridProps: {
     container: true,
     item: true,
-    mobileSmall: 'auto',
-    position: 'relative',
-    top: '-32px',
-    left: '125%',
-  },
-  LogotitleGridProps: {
-    container: true,
-    item: true,
-    mobileSmall: true,
-    flexDirection: 'column',
-    alignItems: 'center',
+    xs: 'auto',
     justifyContent: 'center',
-  },
-  LogotitleProps: {
-    fontFamily: 'Ethnocentric Regular',
-    fontSize: '32px',
-    color: 'black',
+    alignItems: 'center',
     position: 'relative',
-    top: '-85px',
-    left: '59px',
-  },
-  LogosubtitleProps: {
-    fontFamily: 'Satoshi Bold',
-    fontSize: '13.5px',
-    color: '#AD83FF',
-    textAlign: 'left',
-    position: 'relative',
-    top: '-200px',
-    left: '59.5px',
   },
   LogocontentGridProps: {
-    position: 'fixed',
     container: true,
     item: true,
     justifyContent: 'center',
     alignItems: 'center',
-    rowGap: 2,
-    top: '40px',
-    left: '-40px',
+    position: 'relative',
+    top: '40px', // Adjust if necessary for vertical centering
   },
   mainGridProps: {
-    position: 'relative',
-    top: '35px',
     container: true,
     item: true,
     xs: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%',
-    overflow: 'hidden',
-    maxWidth: { laptop: '1450px' },
-    sx: {
-      borderRadius: '22px',
+    style: {
+      height: '100vh', // Full viewport height
+      backgroundColor: '#ffffff', // White background
+      overflow: 'hidden', // Prevent content overflow
     },
   },
   mainContentGridProps: {
-    position: 'relative',
     container: true,
     item: true,
     xs: 10,
     md: 8,
     xl: 5,
     justifyContent: 'center',
+    alignItems: 'center',
+    direction: 'column',
     rowGap: 1,
   },
   TopcontentGridProps: {
-    position: 'relative',
     container: true,
     item: true,
     justifyContent: 'center',
@@ -78,9 +48,7 @@ const pageNotFoundStyles = {
     rowGap: 2,
   },
   BottomcontentGridProps: {
-    position: 'relative',
     container: true,
-    top: '-18px',
     item: true,
     justifyContent: 'center',
     alignItems: 'center',
@@ -88,13 +56,20 @@ const pageNotFoundStyles = {
     rowGap: 2,
   },
   IconcontentGridProps: {
-    position: 'relative',
     container: true,
     item: true,
     justifyContent: 'center',
     alignItems: 'center',
     height: 'auto',
     rowGap: 2,
+  },
+  NetworkLogo: {
+    container: true,
+    item: true,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    left: '0px',
   },
   radialBg1Props: {
     position: 'absolute',
@@ -163,11 +138,11 @@ const pageNotFoundStyles = {
     xs: 9,
     xl: 8,
     justifyContent: 'center',
+    alignItems: 'center',
     mb: 3,
+    direction: 'column',
   },
   bodyProps: {
-    position: 'relative',
-    top: '18px',
     color: 'black',
     textAlign: 'center',
     fontFamily: 'Satoshi Regular',
@@ -179,7 +154,6 @@ const pageNotFoundStyles = {
     letterSpacing: '-2%',
   },
   buttonGridProps: {
-    position: 'relative',
     container: true,
     item: true,
     xs: 12,
@@ -202,32 +176,6 @@ const pageNotFoundStyles = {
       },
     },
   },
-  titleProps: {
-    fontSize: { laptop: '105px', desktop: '125px', desktopMedium: '165px' },
-    fontFamily: 'Ethnocentric Regular Italics',
-    zIndex: 1,
-    sx: {
-      background: (theme) => theme.palette.primary.main,
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: '#856AFF',
-    },
-    position: 'relative',
-    top: '25px',
-  },
-  submitButtonProps: {
-    color: 'purple',
-    inverted: true,
-    extraProps: {
-      padding: '2px',
-      height: { md: '54px', xl: '60px' },
-      width: 'auto',
-    },
-    extraButtonProps: {
-      fontFamily: 'Satoshi Bold',
-      fontSize: '16px',
-      px: 4,
-    },
-  },
   star1Props: {
     position: 'relative',
     color: '#5522FF',
@@ -241,22 +189,10 @@ const pageNotFoundStyles = {
   },
   star3Props: {
     position: 'relative',
-    bottom: '300px',
+    bottom: '700px',
     left: '400px',
     top: '30px',
   },
-  Meteor: {
-    position: 'relative',
-    top: '-455px',
-    left: '64px',
-    zIndex: 1,
-  },
-  Tail: {
-    position: 'relative',
-    top: '-486px',
-    right: '13px',
-    zIndex: 0,
-  },
 };
 
-export default pageNotFoundStyles;
+export default NetworkErrorStyle;
