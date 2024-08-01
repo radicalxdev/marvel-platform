@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "onboarding-d605f"
+    "default": "kai-onboarding"
   },
   "targets": {
-    "onboarding-d605f": {
+    "kai-onboarding": {
       "hosting": {
         "next": [
-          "onboarding-d605f"
+          "kai-onboarding"
         ]
       }
     }
