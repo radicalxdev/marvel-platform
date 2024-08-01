@@ -1,18 +1,32 @@
 const styles = {
   mainGrid: {
-    width: 600,
+    maxWidth: 600,
     py: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    flexGrow: 1,
   },
-  title: {
+  titleProps: {
     variant: 'h4',
     gutterBottom: true,
     fontSize: '32px',
   },
-  description: { mb: 4, fontSize: '20px', fontWeight: '300' },
-  button: {
+  descriptionProps: { mb: 4, fontSize: '20px', fontWeight: '300' },
+  buttonProps: {
     type: 'submit',
     variant: 'contained',
-    sx: { borderRadius: '999px', textTransform: 'none' },
+    sx: {
+      backgroundColor: '#8653FF',
+      borderRadius: '30px',
+      padding: '16px 82px',
+      textTransform: 'none',
+      fontSize: 20,
+      color: '#fff',
+      '&:hover': {
+        backgroundColor: '#6e3aef',
+      },
+    },
   },
 };
 

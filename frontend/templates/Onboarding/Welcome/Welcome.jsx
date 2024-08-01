@@ -3,6 +3,8 @@ import React from 'react';
 import { Button, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import styles from '../styles.js';
+
 const Welcome = ({ onNext }) => {
   const router = useRouter();
 
@@ -12,12 +14,12 @@ const Welcome = ({ onNext }) => {
   };
 
   return (
-    <Grid sx={{ p: 3, textAlign: 'center' }}>
-      <Typography variant="h4" gutterBottom>
-        Welcome to Kai!
+    <Grid {...styles.mainGrid}>
+      <Typography {...styles.titleProps}>Welcome to Kai 👋</Typography>
+      <Typography {...styles.descriptionProps}>
+        Let&lsquo;s get started with your onboarding process.
       </Typography>
-      <Typography>Let’s get started with your onboarding process.</Typography>
-      <Button variant="contained" onClick={handleStart}>
+      <Button {...styles.buttonProps} onClick={handleStart}>
         Start Here
       </Button>
     </Grid>

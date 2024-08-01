@@ -163,7 +163,10 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
         control={control}
         render={({ field: { onChange, onBlur, name } }) => (
           <InputWrapper label="Profile">
-            <Grid {...styles.imageUploadContainer} onDrop={handleImageUpload}>
+            <Grid
+              {...styles.imageUploadContainer}
+              onDrop={(e) => handleImageUpload(e, onChange)}
+            >
               {watchProfile ? (
                 <Grid>
                   <Typography component="span">{watchProfile}</Typography>
@@ -229,9 +232,9 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
   );
 
   return (
-    <Grid {...stylesOnboarding.mainGrid}>
-      <Typography {...stylesOnboarding.title}>Profile Setup</Typography>
-      <Typography {...stylesOnboarding.description}>
+    <Grid {...stylesOnboarding.mainGrid} {...styles.mainGrid}>
+      <Typography {...stylesOnboarding.titleProps}>Profile Setup</Typography>
+      <Typography {...stylesOnboarding.descriptionProps}>
         Get started by setting up your profile
       </Typography>
 
@@ -248,9 +251,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
           {renderSocialLinks()}
           {renderProfile()}
           {renderBio()}
-          <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-            Next
-          </Button>
+          <Button {...stylesOnboarding.buttonProps}>Next</Button>
         </Grid>
       </FormContainer>
     </Grid>

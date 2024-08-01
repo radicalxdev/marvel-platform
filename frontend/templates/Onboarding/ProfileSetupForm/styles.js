@@ -1,4 +1,7 @@
 const styles = {
+  mainGrid: {
+    width: 600,
+  },
   formContainer: {
     display: 'flex',
     flexDirection: 'column',

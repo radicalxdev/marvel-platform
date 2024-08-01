@@ -21,11 +21,7 @@ const OnboardingLayout = (props) => {
     </Head>
   );
 
-  const renderApp = () => (
-    <Grid {...styles.contentGrid}>
-      <Grid>{children}</Grid>
-    </Grid>
-  );
+  const renderApp = () => <Grid {...styles.contentGrid}>{children}</Grid>;
 
   return (
     <Grid {...styles.mainGrid}>

@@ -1,6 +1,8 @@
 import { Button, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import styles from '../styles';
+
 const Complete = () => {
   const router = useRouter();
 
@@ -9,14 +11,12 @@ const Complete = () => {
   };
 
   return (
-    <Grid sx={{ p: 3, textAlign: 'center' }}>
-      <Typography variant="h4" gutterBottom>
-        Onboarding Complete!
-      </Typography>
-      <Typography variant="body1" paragraph>
+    <Grid {...styles.mainGrid}>
+      <Typography {...styles.titleProps}>Onboarding Complete!</Typography>
+      <Typography {...styles.descriptionProps}>
         Congrats! the onboarding is complete, continue to go to homepage
       </Typography>
-      <Button variant="contained" onClick={handleGoHome}>
+      <Button {...styles.buttonProps} onClick={handleGoHome}>
         Continue
       </Button>
     </Grid>
