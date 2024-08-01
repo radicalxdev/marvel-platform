@@ -2,7 +2,6 @@ import { useContext } from 'react';
 
 import { Facebook, LinkedIn, X as XIcon } from '@mui/icons-material';
 import { Button, Grid, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import {
   Controller,
   FormContainer,
@@ -10,7 +9,7 @@ import {
   useForm,
 } from 'react-hook-form-mui';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import ProfileTextField, {
   InputWrapper,
@@ -24,10 +23,9 @@ import styles from './styles.js';
 
 import { AuthContext } from '@/providers/GlobalProvider.jsx';
 
-import { setTempData } from '@/redux/slices/onboardingSlice.js';
+import { setTempData } from '@/redux/slices/userSlice.js';
 
 const ProfileSetupForm = ({ onNext, tempData }) => {
-  const router = useRouter();
   const dispatch = useDispatch();
   const { handleOpenSnackBar } = useContext(AuthContext);
 
@@ -61,7 +59,6 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
       return acc;
     }, {});
 
-    console.log('Submitting complete form data:', completeData);
     dispatch(setTempData(completeData)); // Store complete form data in Redux
     onNext(completeData); // Pass complete data to OnboardingPage and proceed to the next step
   };

@@ -8,7 +8,7 @@ const initialState = {
   error: null,
   step: 1,
   completed: false,
-  tempData: {}, // Temporary storage for form data
+  tempData: {},
 };
 
 const onboardingSlice = createSlice({

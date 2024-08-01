@@ -1,14 +1,10 @@
 import React from 'react';
 
 import { Button, Grid, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 
 const SystemConfigs = ({ onNext }) => {
-  const router = useRouter();
-
   const handleNext = () => {
     onNext();
-    // router.push('/onboarding/3'); // Proceed to the next step
   };
 
   return (

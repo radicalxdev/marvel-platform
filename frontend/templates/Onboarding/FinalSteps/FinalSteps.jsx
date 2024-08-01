@@ -1,14 +1,10 @@
 import React from 'react';
 
 import { Button, Grid, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 
 const FinalSteps = ({ onNext }) => {
-  const router = useRouter();
-
   const handleFinish = () => {
-    onNext(); // Finalize onboarding
-    // router.push('/onboarding/4'); // Navigate to the final step
+    onNext();
   };
 
   return (

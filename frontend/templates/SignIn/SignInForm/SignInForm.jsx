@@ -101,7 +101,6 @@ const SignInForm = (props) => {
       const userData = await dispatch(
         fetchUserData({ firestore, id: userCred.user.uid })
       ).unwrap();
-      console.log('Fetched userData:', userData);
       if (userData?.needsBoarding) {
         router.replace(ROUTES.ONBOARDING);
       } else {
