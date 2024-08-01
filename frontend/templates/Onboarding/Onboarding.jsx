@@ -38,14 +38,11 @@ const OnboardingPage = ({ onboardingData }) => {
   }, [dispatch, onboardingData.id, step]);
 
   const handleNext = (formData = {}) => {
-    console.log('Current Form Data:', formData);
     if (onboardingComponents[onboardingData.id] === ProfileSetupForm) {
-      console.log('Storing form data in Redux');
       dispatch(setTempData(formData)); // Store form data in Redux
     }
 
     if (onboardingComponents[onboardingData.id] === FinalSteps) {
-      console.log('Submitting onboarding data:', tempData);
       dispatch(updateUserData({ firestore, data: tempData }));
       dispatch(setCompleted(true));
     }

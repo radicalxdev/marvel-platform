@@ -35,20 +35,16 @@ export const fetchUserData = createAsyncThunk(
 export const updateUserData = createAsyncThunk(
   'onboarding/submitOnboardingData',
   async ({ firestore, data }, { getState, rejectWithValue }) => {
-    console.log('updateUserData thunk called'); // Log at the very start
-
     try {
       const { user } = getState();
       const userId = user?.data?.id;
 
       const userDocRef = doc(firestore, 'users', userId);
-      console.log('Document reference created:', userDocRef);
 
       await setDoc(userDocRef, data, { merge: true });
 
       return data;
     } catch (error) {
-      console.error('Error submitting onboarding data:', error);
       return rejectWithValue(error.message);
     }
   }
