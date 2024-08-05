@@ -16,12 +16,14 @@ const KaiHistory = () => {
 
   useEffect(() => {
     const fetchKaiHistory = async () => {
-      const userId = auth.currentUser.uid;
-      await dispatch(fetchHistory({ firestore, id: userId }));
+      const userId = auth.currentUser?.uid;
+      if (userId) {
+        dispatch(fetchHistory({ firestore, id: userId }));
+      }
     };
 
-    if (!data) fetchKaiHistory();
-  }, []);
+    fetchKaiHistory();
+  }, [dispatch, firestore, auth.currentUser]);
 
   return <HistoryPage data={data} loading={loading} error={error} />;
 };
