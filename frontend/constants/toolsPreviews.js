@@ -1,5 +1,6 @@
 import FlashCardPreview from '@/components/HistoryPreview/FlashCardPreview';
 import MultipleChoicePreview from '@/components/HistoryPreview/MultipleChoicePreview';
+
 import TOOLS_ID from './tools';
 
 const TOOLS_PREVIEWS = {
