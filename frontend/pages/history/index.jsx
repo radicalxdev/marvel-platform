@@ -1,14 +1,8 @@
-import useToolHistoryProps from '@/hooks/useToolHistoryProps';
-
 import MainAppLayout from '@/layouts/MainAppLayout';
 import ToolHistoryPage from '@/templates/ToolHistoryPage';
 
 const ToolOutputHistory = () => {
-  const { categorizedData, loading, error } = useToolHistoryProps();
-
-  return (
-    <ToolHistoryPage data={categorizedData} loading={loading} error={error} />
-  );
+  return <ToolHistoryPage />;
 };
 
 ToolOutputHistory.getLayout = function getLayout(page) {

@@ -17,12 +17,11 @@ const styles = {
   },
   errorTitle: {
     variant: 'h4',
-    color: 'error',
     fontWeight: 'bold',
   },
   errorMessage: {
     variant: 'body1',
-    color: 'textSecondary',
+    color: 'error',
   },
 };
 

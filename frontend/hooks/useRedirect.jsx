@@ -10,6 +10,7 @@ import ROUTES from '@/constants/routes';
 
 import { setEmailVerified, setLoading } from '@/redux/slices/authSlice';
 import { auth } from '@/redux/store';
+import { fetchToolHistory } from '@/redux/thunks/toolHistory';
 import fetchUserData from '@/redux/thunks/user';
 
 const redirectRegex = /\/redirect.*/;
@@ -22,7 +23,8 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
   const { data: authData, loading } = useSelector((state) => state.auth);
 
   const fetchUserRelatedData = async (id) => {
-    await dispatch(fetchUserData({ firestore, id }));
+    dispatch(fetchUserData({ firestore, id }));
+    dispatch(fetchToolHistory({ firestore }));
   };
 
   useEffect(() => {

@@ -1,20 +1,19 @@
 import { Grid, Typography } from '@mui/material';
 
+import { useSelector } from 'react-redux';
+
 import ToolHistoryListingContainer from '@/components/ToolHistoryListingContainer';
 
 import styles from './styles';
 
-const ToolHistoryPage = (props) => {
-  const { data, loading, error } = props;
+const ToolHistoryPage = () => {
+  const { data, loading, error } = useSelector((state) => state.toolHistory);
 
   if (error) {
     return (
       <Grid {...styles.errorContainer}>
         <Typography {...styles.errorTitle}>
-          Error: Could not fetch history data.
-        </Typography>
-        <Typography {...styles.errorMessage}>
-          Please try again later.
+          {error || 'Something went wrong'}
         </Typography>
       </Grid>
     );
