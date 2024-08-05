@@ -9,7 +9,10 @@ import HistoryCard from '../HistoryCard';
 
 import styles from './styles';
 
-import { getCategorizedData, handleSort } from '@/utils/HistoryListingUtils';
+import {
+  getCategorizedData,
+  handleSort,
+} from '@/utils/ToolsHistoryUtils/SortingToolsHistoryUtils';
 
 /**
  * Component for rendering a listing of history cards in a grid layout.

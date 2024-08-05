@@ -4,12 +4,9 @@ import { Close, FileCopyOutlined, GetAppOutlined } from '@mui/icons-material';
 
 import { Button, Drawer, Grid, IconButton, Typography } from '@mui/material';
 
-import TOOLS_ID from '@/constants/tools';
+import TOOLS_PREVIEWS from '@/constants/toolsPreviews';
 
 import SnackBar from '../SnackBar';
-
-import FlashCardPreview from './FlashCardPreview';
-import MultipleChoicePreview from './MultipleChoicePreview';
 
 import styles from './styles';
 
@@ -122,14 +119,8 @@ const HistoryPreview = (props) => {
   };
 
   const renderPreview = () => {
-    switch (toolId) {
-      case TOOLS_ID.GEMINI_QUIZIFY:
-        return <MultipleChoicePreview outputs={outputs} />;
-      case TOOLS_ID.GEMINI_DYNAMO:
-        return <FlashCardPreview outputs={outputs} />;
-      default:
-        return null;
-    }
+    const PreviewComponent = TOOLS_PREVIEWS[toolId];
+    return PreviewComponent ? <PreviewComponent outputs={outputs} /> : null;
   };
 
   const renderOutputButtons = () => {

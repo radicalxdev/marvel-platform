@@ -6,7 +6,7 @@ import {
 } from '@/utils/FirebaseUtils';
 import fetchYoutubeTitle from '@/utils/YoutubeUtils';
 
-function FlashCardList(cardData) {
+function FlashCardListUtils(cardData) {
   async function initializeCard() {
     let backgroundImgURL = '';
     let logoURL = '';
@@ -146,4 +146,4 @@ function FlashCardList(cardData) {
   };
 }
 
-export default FlashCardList;
+export default FlashCardListUtils;

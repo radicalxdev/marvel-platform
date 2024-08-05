@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import ORDER from '@/constants/sortingOrder';
 
-import { convertToUnixTimestamp } from './FirebaseUtils';
+import { convertToUnixTimestamp } from '../FirebaseUtils';
 
 const getCategorizedData = (sortedData) => {
   const now = moment();

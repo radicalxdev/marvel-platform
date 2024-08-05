@@ -10,7 +10,7 @@ import styles from './styles';
  *
  * @return {JSX.Element} Rendered history interface component
  */
-const HistoryInterface = (props) => {
+const History = (props) => {
   const { data, loading } = props;
 
   /**
@@ -44,4 +44,4 @@ const HistoryInterface = (props) => {
   );
 };
 
-export default HistoryInterface;
+export default History;

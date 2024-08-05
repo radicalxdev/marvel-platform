@@ -1,11 +1,11 @@
-import FlashCardList from '@/templates/History/FlashCardList';
-import MultipleChoiceResponse from '@/templates/History/MultipleChoiceResponse';
+import FlashCardListUtils from '@/utils/ToolsHistoryUtils/FlashCardListUtils';
+import MultipleChoiceResponseUtils from '@/utils/ToolsHistoryUtils/MultipleChoiceResponseUtils';
 
 import TOOLS_ID from './tools';
 
 const TOOLS_RENDERS = {
-  [TOOLS_ID.GEMINI_DYNAMO]: FlashCardList,
-  [TOOLS_ID.GEMINI_QUIZIFY]: MultipleChoiceResponse,
+  [TOOLS_ID.GEMINI_DYNAMO]: FlashCardListUtils,
+  [TOOLS_ID.GEMINI_QUIZIFY]: MultipleChoiceResponseUtils,
 };
 
 export default TOOLS_RENDERS;

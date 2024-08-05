@@ -5,7 +5,7 @@ import {
   formatToStandardDate,
 } from '@/utils/FirebaseUtils';
 
-function MultipleChoiceResponse(cardData) {
+function MultipleChoiceResponseUtils(cardData) {
   async function initializeCard() {
     let backgroundImgURL = '';
     let logoURL = '';
@@ -157,4 +157,4 @@ function MultipleChoiceResponse(cardData) {
   };
 }
 
-export default MultipleChoiceResponse;
+export default MultipleChoiceResponseUtils;
