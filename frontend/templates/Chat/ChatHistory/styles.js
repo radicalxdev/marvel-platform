@@ -49,6 +49,15 @@ const styles = {
       color: 'gray',
       fontSize: '0.6rem',
       paddingLeft: '1rem',
+      whiteSpace: 'nowrap',
+    },
+  },
+  historyTitleProps: {
+    sx: {
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      fontSize: '0.8rem',
     },
   },
 };

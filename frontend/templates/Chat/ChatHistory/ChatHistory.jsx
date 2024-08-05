@@ -51,7 +51,16 @@ const ChatHistory = ({ user }) => {
     // check the timeframe of given date
     if (date.setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0))
       return 'Today';
-    if (date.setDate(date.getDate()) === date.setDate(today.getDate() - 1))
+
+    const monthBoundaryCheck =
+      date.getDate() === 31 &&
+      today.getDate() === 1 &&
+      today.getMonth() - 1 === date.getMonth();
+
+    if (
+      date.setDate(date.getDate()) === date.setDate(today.getDate() - 1) ||
+      monthBoundaryCheck
+    )
       return 'Yesterday';
     if (
       lastMonday.getTime() <= date.getTime() &&
@@ -157,8 +166,10 @@ const ChatHistory = ({ user }) => {
               }}
             >
               <Button {...styles.chatHistoryTextProps}>
-                {' '}
-                {entry.message}{' '}
+                <Typography {...styles.historyTitleProps}>
+                  {' '}
+                  {entry.message}{' '}
+                </Typography>
                 <Typography {...styles.timestampProps}>
                   {' '}
                   {format(entry.timestamp.toDate(), 'h:mm aa')}{' '}

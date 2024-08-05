@@ -5,15 +5,16 @@ import styles from './styles';
 
 const DefaultPrompts = ({ prompts, onSelect }) => {
   return (
-    <Box sx={styles.defaultPromptsContainer}>
+    <Box {...styles.defaultPromptsContainer}>
       {prompts.map((prompt, index) => (
         <Button
           key={index}
           onClick={() => onSelect(prompt)}
-          sx={styles.defaultPromptButton}
           startIcon={<AutoAwesomeIcon />}
+          variant="outlined"
+          {...styles.defaultPromptButton}
         >
-          <Typography sx={styles.defaultPromptDescription}>{prompt}</Typography>
+          <Typography {...styles.defaultPromptDescription}>{prompt}</Typography>
         </Button>
       ))}
     </Box>

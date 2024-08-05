@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 
 import {
-  Add as AddIcon,
   ArrowDownwardOutlined,
+  ArrowDropUp as ArrowUp,
+  SmsRounded as ChatIcon,
   InfoOutlined,
   Remove as RemoveIcon,
   Settings,
 } from '@mui/icons-material';
 import {
+  Box,
   Button,
   Fab,
   Fade,
@@ -87,9 +89,11 @@ const ChatInterface = () => {
   const [defaultPrompts, setDefaultPrompts] = useState([]);
 
   const startConversation = async (message) => {
+    // Optionally dispatch a temporary message for the user's input
     dispatch(
       setMessages({
-        role: MESSAGE_ROLE.AI,
+        role: MESSAGE_ROLE.HUMAN,
+        message,
       })
     );
     dispatch(setTyping(true));
@@ -265,14 +269,24 @@ const ChatInterface = () => {
       },
     };
 
+    if (!chatMessages) {
+      // Start a new conversation if there are no existing messages
+      await startConversation(message);
+      return;
+    }
+
     dispatch(
       setMessages({
         role: MESSAGE_ROLE.HUMAN,
+        message,
       })
     );
     dispatch(setTyping(true));
 
-    await sendMessage({ message, id: currentSession?.id }, dispatch);
+    // Ensure the user’s message is displayed before sending the message
+    setTimeout(async () => {
+      await sendMessage({ message, id: sessionId }, dispatch);
+    }, 0);
   };
 
   const handleSelectPrompt = async (prompt) => {
@@ -448,7 +462,7 @@ const ChatInterface = () => {
             : styles.chatHistory.chatHistoryButtonFabPropsHide)}
           onClick={handleShowChatHistory}
         >
-          <AddIcon {...styles.chatHistory.chatHistoryButtonIconProps} />
+          <ArrowUp {...styles.chatHistory.chatHistoryButtonIconProps} />
         </Fab>
       </div>
     );
@@ -487,8 +501,32 @@ const ChatInterface = () => {
     );
   };
 
+  const testRender = () => {
+    return (
+      <Box {...styles.topBar.barProps}>
+        <Button
+          startIcon={<ChatIcon />}
+          onClick={() => {
+            localStorage.removeItem('sessionId');
+            dispatch(resetChat());
+          }}
+          {...styles.topBar.newChatProps}
+        >
+          Chat
+        </Button>
+        <Button startIcon={<ChatIcon />} {...styles.topBar.newChatProps}>
+          Discovery
+        </Button>
+        <Button startIcon={<ChatIcon />} {...styles.topBar.newChatProps}>
+          Home
+        </Button>
+      </Box>
+    );
+  };
+
   return (
     <Grid {...styles.mainGridProps(showChatHistory)}>
+      {testRender()}
       {renderMoreChat()}
       {renderCenterChatContent()}
       {renderCenterChatContentNoMessages()}

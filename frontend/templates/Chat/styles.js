@@ -1,5 +1,3 @@
-const historyButtonAlign = 10;
-
 const styles = {
   mainGridProps: (showChatHistory) => ({
     container: true,
@@ -370,33 +368,33 @@ const styles = {
     chatHistoryButtonFabProps: {
       sx: {
         position: 'absolute',
-        top: historyButtonAlign + 1,
-        right: historyButtonAlign + 12,
+        bottom: 59,
+        right: 22,
         backgroundColor: 'transparent',
         border: '2px solid #7350FF',
         boxShadow: 'none',
         '&:hover': {
           backgroundColor: 'transparent',
         },
-        transition: '1s',
+        transition: '0.7s',
         opacity: 1,
       },
     },
     chatHistoryButtonFabPropsHide: {
       sx: {
         position: 'absolute',
-        top: historyButtonAlign + 1,
-        right: historyButtonAlign + 12,
+        bottom: 59,
+        right: 22,
         backgroundColor: 'black',
         '&:hover': {
           backgroundColor: 'black',
         },
         border: '2px solid black',
         boxShadow: 'none',
-        transition: '0.5s',
+        transition: '0.4s',
         opacity: 0,
-        rotate: '360deg',
         pointerEvents: 'none',
+        rotate: '180deg',
       },
     },
     chatHistoryButtonIconProps: {
@@ -408,10 +406,10 @@ const styles = {
     chatHistoryContainerProps: {
       style: {
         position: 'absolute',
-        top: historyButtonAlign,
-        right: historyButtonAlign,
+        bottom: 60,
+        right: 10,
         width: '320px',
-        height: '95%',
+        height: '90%',
         backgroundColor: '#181A20',
         border: '1px solid',
         borderColor: 'purple',
@@ -425,8 +423,8 @@ const styles = {
     chatHistoryContainerClose: {
       style: {
         position: 'absolute',
-        top: historyButtonAlign,
-        right: historyButtonAlign,
+        bottom: 60,
+        right: 10,
         transition: '0.4s',
         width: 0,
         height: 0,
@@ -477,6 +475,34 @@ const styles = {
         paddingBottom: '8px',
         borderRadius: '8px',
         color: '#FFFFFF',
+      },
+    },
+  },
+  topBar: {
+    newChatProps: {
+      sx: {
+        textTransform: 'none',
+        color: 'gray',
+        border: '2px solid transparent',
+        background: 'transparent',
+        '&:hover': {
+          background:
+            'linear-gradient(white, white) padding-box, linear-gradient(to right, #8e2de2, #4a00e0) border-box transparent',
+          color: '#8e2de2',
+          border: '2px solid transparent',
+        },
+        transition: 'all 0.3s',
+      },
+    },
+    barProps: {
+      sx: {
+        width: '100%',
+        backgroundColor: 'white',
+        borderRadius: '15px 15px',
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '5px',
+        gap: '1.5rem',
       },
     },
   },
