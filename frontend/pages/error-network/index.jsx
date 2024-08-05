@@ -56,10 +56,24 @@ const NetworkErrorPage = () => {
     );
   };
 
-  const renderNetworkError = () => {
+  const renderTopContent = () => {
     return (
-      <Grid {...NetworkErrorStyle.ErrorWindow}>
-        <ErrorWindow />
+      <Grid {...NetworkErrorStyle.sectionGridProps}>
+        <Typography {...NetworkErrorStyle.titleProps} />
+      </Grid>
+    );
+  };
+
+  const renderBottomContent = () => {
+    return (
+      <Grid {...NetworkErrorStyle.sectionGridProps}>
+        <Grid {...NetworkErrorStyle.mainContentGridProps}>
+          <Grid {...NetworkErrorStyle.ErrorWindow}>
+            <ErrorWindow />
+          </Grid>
+          {renderMainTitle()}
+          {renderBodyText()}
+        </Grid>
       </Grid>
     );
   };
@@ -90,32 +104,11 @@ const NetworkErrorPage = () => {
     );
   };
 
-  const renderTopContent = () => {
-    return (
-      <Grid {...NetworkErrorStyle.sectionGridProps}>
-        <Typography {...NetworkErrorStyle.titleProps} />
-      </Grid>
-    );
-  };
-
-  const renderBottomContent = () => {
-    return (
-      <Grid {...NetworkErrorStyle.sectionGridProps}>
-        <Grid {...NetworkErrorStyle.mainContentGridProps}>
-          {renderNetworkError()}
-          {renderMainTitle()}
-          {renderBodyText()}
-        </Grid>
-      </Grid>
-    );
-  };
-
   return (
     <Grid {...NetworkErrorStyle.mainGridProps}>
       {renderRadialBackground()}
       <Grid {...NetworkErrorStyle.LogocontentGridProps}>{renderLogo()}</Grid>
       <Grid {...NetworkErrorStyle.TopcontentGridProps}>
-        {' '}
         {renderTopContent()}
       </Grid>
       <Grid {...NetworkErrorStyle.BottomcontentGridProps}>

@@ -71,6 +71,7 @@ const PageNotFound = () => {
           clickHandler={handleRouteToHome}
           text="Back to Homepage"
           textColor="white"
+          background="linear-gradient(90deg, #856AFF 0%, #6D4DFF 100%)"
           {...pageNotFoundStyles.submitButtonProps}
         />
       </Grid>
@@ -79,8 +80,16 @@ const PageNotFound = () => {
 
   const renderTopContent = () => {
     return (
-      <Grid {...pageNotFoundStyles.sectionGridProps}>
-        <Typography {...pageNotFoundStyles.titleProps}>404</Typography>
+      <Grid {...pageNotFoundStyles.sectionGridProps} container>
+        <Grid {...pageNotFoundStyles.titleContainerProps}>
+          <Typography {...pageNotFoundStyles.titleProps}>404</Typography>
+          <Box {...pageNotFoundStyles.Meteor}>
+            <MeteorCircle />
+          </Box>
+          <Box {...pageNotFoundStyles.Tail}>
+            <MeteorTail />
+          </Box>
+        </Grid>
       </Grid>
     );
   };
@@ -96,7 +105,6 @@ const PageNotFound = () => {
       </Grid>
     );
   };
-
   const renderRadialBackground = () => {
     return (
       <>
@@ -118,12 +126,6 @@ const PageNotFound = () => {
         </Box>
         <Box {...pageNotFoundStyles.star3Props}>
           <Star5 />
-        </Box>
-        <Box {...pageNotFoundStyles.Meteor}>
-          <MeteorCircle />
-        </Box>
-        <Box {...pageNotFoundStyles.Tail}>
-          <MeteorTail />
         </Box>
       </>
     );

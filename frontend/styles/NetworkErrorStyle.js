@@ -52,6 +52,7 @@ const NetworkErrorStyle = {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
+    bgcolor: '#FFFFFF',
     overflow: 'hidden',
     maxWidth: { laptop: '1450px' },
     sx: {
@@ -231,18 +232,20 @@ const NetworkErrorStyle = {
   star1Props: {
     position: 'relative',
     color: '#5522FF',
-    top: '-400px',
-    left: '-240px',
+    top: '-420px',
+    width: '42px',
+    height: '46px',
+    left: '-210px',
   },
   star2Props: {
     position: 'relative',
-    bottom: '240px',
-    left: '210px',
+    top: '-290px',
+    left: '310px',
   },
   star3Props: {
     position: 'relative',
-    left: '205px',
-    top: '-550px',
+    left: '200px',
+    top: '-560px',
   },
   NetworkLogo: {
     position: 'relative',

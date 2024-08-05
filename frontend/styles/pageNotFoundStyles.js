@@ -39,7 +39,7 @@ const pageNotFoundStyles = {
     item: true,
     justifyContent: 'center',
     alignItems: 'center',
-    rowGap: 2,
+    rowGap: 1,
     top: '40px',
     left: '-40px',
   },
@@ -75,7 +75,7 @@ const pageNotFoundStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     height: 'auto',
-    rowGap: 2,
+    rowGap: 0,
   },
   BottomcontentGridProps: {
     position: 'relative',
@@ -154,8 +154,10 @@ const pageNotFoundStyles = {
     textAlign: 'center',
     fontFamily: 'Satoshi Bold',
     fontWeight: 700,
-    fontSize: { laptop: '30px', desktop: '36px', desktopMedium: '40px' },
+    width: '490px',
+    fontSize: { laptop: '40px', desktop: '40px', desktopMedium: '40px' },
     lineHeight: '54px',
+    marginTop: '-80px',
   },
   bodyGridProps: {
     container: true,
@@ -202,8 +204,14 @@ const pageNotFoundStyles = {
       },
     },
   },
+  titleContainerProps: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   titleProps: {
-    fontSize: { laptop: '105px', desktop: '125px', desktopMedium: '165px' },
+    fontSize: { laptop: '113px', desktop: '113px', desktopMedium: '113px' },
     fontFamily: 'Ethnocentric Regular Italics',
     zIndex: 1,
     sx: {
@@ -212,7 +220,8 @@ const pageNotFoundStyles = {
       WebkitTextFillColor: '#856AFF',
     },
     position: 'relative',
-    top: '25px',
+    top: '0px',
+    marginBottom: '0px',
   },
   submitButtonProps: {
     color: 'purple',
@@ -231,30 +240,33 @@ const pageNotFoundStyles = {
   star1Props: {
     position: 'relative',
     color: '#5522FF',
-    top: '-470px',
-    left: '-130px',
+    top: '-550px',
+    width: '42px',
+    height: '46px',
+    left: '-160px',
   },
   star2Props: {
     position: 'relative',
-    bottom: '540px',
-    left: '430px',
+    top: '-290px',
+    left: '310px',
   },
   star3Props: {
     position: 'relative',
-    bottom: '300px',
-    left: '400px',
-    top: '30px',
+    left: '170px',
+    top: '-580px',
   },
   Meteor: {
-    position: 'relative',
-    top: '-455px',
-    left: '64px',
+    position: 'absolute',
+    top: '28%',
+    left: '43.5%',
+    transform: 'translate(-50%, -50%)', // Center it
     zIndex: 1,
   },
   Tail: {
-    position: 'relative',
-    top: '-486px',
-    right: '13px',
+    position: 'absolute',
+    top: '-5%',
+    left: '38.5%',
+    transform: 'translate(-50%, -50%)', // Center it
     zIndex: 0,
   },
 };

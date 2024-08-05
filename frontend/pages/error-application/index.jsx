@@ -76,10 +76,25 @@ const ApplicationErrorPage = () => {
     );
   };
 
-  const renderApplicationError = () => {
+  const renderTopContent = () => {
     return (
-      <Grid {...ApplicationErrorStyle.ErrorWindow}>
-        <ErrorWindow />
+      <Grid {...ApplicationErrorStyle.sectionGridProps}>
+        <Typography {...ApplicationErrorStyle.titleProps} />
+      </Grid>
+    );
+  };
+
+  const renderBottomContent = () => {
+    return (
+      <Grid {...ApplicationErrorStyle.sectionGridProps}>
+        <Grid {...ApplicationErrorStyle.mainContentGridProps}>
+          <Grid {...ApplicationErrorStyle.ErrorWindow}>
+            <ErrorWindow />
+          </Grid>
+          {renderMainTitle()}
+          {renderBodyText()}
+          {renderGoHomeButton()}
+        </Grid>
       </Grid>
     );
   };
@@ -109,25 +124,6 @@ const ApplicationErrorPage = () => {
       </>
     );
   };
-  const renderTopContent = () => {
-    return (
-      <Grid {...ApplicationErrorStyle.sectionGridProps}>
-        <Typography {...ApplicationErrorStyle.titleProps} />
-      </Grid>
-    );
-  };
-
-  const renderBottomContent = () => {
-    return (
-      <Grid {...ApplicationErrorStyle.sectionGridProps}>
-        <Grid {...ApplicationErrorStyle.mainContentGridProps}>
-          {renderApplicationError()}
-          {renderMainTitle()}
-          {renderBodyText()}
-        </Grid>
-      </Grid>
-    );
-  };
 
   return (
     <Grid {...ApplicationErrorStyle.mainGridProps}>
@@ -136,18 +132,13 @@ const ApplicationErrorPage = () => {
         {renderLogo()}
       </Grid>
       <Grid {...ApplicationErrorStyle.TopcontentGridProps}>
-        {' '}
         {renderTopContent()}
       </Grid>
       <Grid {...ApplicationErrorStyle.BottomcontentGridProps}>
-        {' '}
         {renderBottomContent()}
       </Grid>
       <Grid {...ApplicationErrorStyle.IconcontentGridprops}>
         {renderIcons()}
-      </Grid>
-      <Grid {...ApplicationErrorStyle.IconcontentGridprops}>
-        {renderGoHomeButton()}
       </Grid>
     </Grid>
   );

@@ -154,7 +154,8 @@ const ApplicationErrorStyle = {
     textAlign: 'center',
     fontFamily: 'Satoshi Bold',
     fontWeight: 700,
-    fontSize: { laptop: '30px', desktop: '36px', desktopMedium: '40px' },
+
+    fontSize: { laptop: '40px', desktop: '40px', desktopMedium: '40px' },
     lineHeight: '54px',
   },
   bodyGridProps: {
@@ -174,7 +175,7 @@ const ApplicationErrorStyle = {
     fontWeight: 400,
     fontSize: '22px',
     lineHeight: '32.4px',
-    width: '612px',
+    width: '530px',
     height: '96px',
     letterSpacing: '-2%',
   },
@@ -201,6 +202,12 @@ const ApplicationErrorStyle = {
         bgcolor: '#242038',
       },
     },
+  },
+  subtitleContainerProps: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   titleProps: {
     fontSize: { laptop: '105px', desktop: '125px', desktopMedium: '165px' },
@@ -231,18 +238,20 @@ const ApplicationErrorStyle = {
   star1Props: {
     position: 'relative',
     color: '#5522FF',
-    top: '-400px',
-    left: '-130px',
+    top: '-420px',
+    width: '42px',
+    height: '46px',
+    left: '-210px',
   },
   star2Props: {
     position: 'relative',
-    bottom: '240px',
-    left: '330px',
+    top: '-290px',
+    left: '310px',
   },
   star3Props: {
     position: 'relative',
-    left: '350px',
-    top: '-550px',
+    left: '200px',
+    top: '-560px',
   },
   NetworkLogo: {
     position: 'relative',
