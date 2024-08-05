@@ -8,9 +8,7 @@ export const fetchToolHistory = createAsyncThunk(
       const { user } = getState();
       const userId = user?.data?.id;
 
-      if (!userId) {
-        return rejectWithValue('User ID is not available');
-      }
+      if (!userId) return rejectWithValue('User ID is not available');
 
       const toolSessionSnapshot = query(
         collection(firestore, 'toolSessions'),
@@ -18,6 +16,9 @@ export const fetchToolHistory = createAsyncThunk(
       );
 
       const querySnapshot = await getDocs(toolSessionSnapshot);
+
+      if (querySnapshot.empty) return rejectWithValue('No tool sessions found');
+
       const outputData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),

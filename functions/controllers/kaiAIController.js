@@ -274,6 +274,7 @@ app.post('/api/tool/', (req, res) => {
 
   bb.end(req.rawBody);
 });
+
 /**
  * Save the tool session response to Firestore
  * @param {object} sessionData - The data to be saved to Firestore
