@@ -9,6 +9,8 @@ const ROUTES = {
   REDIRECT: '/redirect',
   CHAT: '/chat',
   HISTORY: '/history',
+  APPERRORPAGE: '/error-application',
+  NETWORKERROORPAGE: '/error-network',
 };
 
 export default ROUTES;

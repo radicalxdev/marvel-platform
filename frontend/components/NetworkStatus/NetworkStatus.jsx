@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import NetworkErrorPage from '@/pages/ErrorNetwork';
+import NetworkErrorPage from '@/pages/error-network';
 
 const NetworkStatus = ({ children }) => {
   const [isOnline, setIsOnline] = useState(true);

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import NotFoundPage from '@/pages/404/index';
-import ApplicationErrorPage from '@/pages/ErrorApplication';
-import NetworkErrorPage from '@/pages/ErrorNetwork';
+import ApplicationErrorPage from '@/pages/error-application';
+import NetworkErrorPage from '@/pages/error-network';
 
 function ErrorBoundary({ children }) {
   const [hasError, setHasError] = useState(false);

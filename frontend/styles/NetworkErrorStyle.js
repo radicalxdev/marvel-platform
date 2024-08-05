@@ -1,45 +1,75 @@
 const NetworkErrorStyle = {
-  // Logo Grid Props
+  // Logo for the 404 page
   LogoImageGridProps: {
     container: true,
     item: true,
-    xs: 'auto',
-    justifyContent: 'center',
-    alignItems: 'center',
+    mobileSmall: 'auto',
     position: 'relative',
+    top: '-32px',
+    left: '125%',
+  },
+  LogotitleGridProps: {
+    container: true,
+    item: true,
+    mobileSmall: true,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  LogotitleProps: {
+    fontFamily: 'Ethnocentric Regular',
+    fontSize: '32px',
+    color: 'black',
+    position: 'relative',
+    top: '-85px',
+    left: '59px',
+  },
+  LogosubtitleProps: {
+    fontFamily: 'Satoshi Bold',
+    fontSize: '13.5px',
+    color: '#AD83FF',
+    textAlign: 'left',
+    position: 'relative',
+    top: '-200px',
+    left: '59.5px',
   },
   LogocontentGridProps: {
+    position: 'fixed',
     container: true,
     item: true,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
-    top: '40px', // Adjust if necessary for vertical centering
+    rowGap: 2,
+    top: '40px',
+    left: '-40px',
   },
   mainGridProps: {
+    position: 'relative',
+    top: '35px',
     container: true,
     item: true,
     xs: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    style: {
-      height: '100vh', // Full viewport height
-      backgroundColor: '#ffffff', // White background
-      overflow: 'hidden', // Prevent content overflow
+    height: '100%',
+    overflow: 'hidden',
+    maxWidth: { laptop: '1450px' },
+    sx: {
+      borderRadius: '22px',
     },
   },
   mainContentGridProps: {
+    position: 'relative',
     container: true,
     item: true,
     xs: 10,
     md: 8,
     xl: 5,
     justifyContent: 'center',
-    alignItems: 'center',
-    direction: 'column',
     rowGap: 1,
   },
   TopcontentGridProps: {
+    position: 'relative',
     container: true,
     item: true,
     justifyContent: 'center',
@@ -48,7 +78,9 @@ const NetworkErrorStyle = {
     rowGap: 2,
   },
   BottomcontentGridProps: {
+    position: 'relative',
     container: true,
+    top: '-18px',
     item: true,
     justifyContent: 'center',
     alignItems: 'center',
@@ -56,20 +88,13 @@ const NetworkErrorStyle = {
     rowGap: 2,
   },
   IconcontentGridProps: {
+    position: 'relative',
     container: true,
     item: true,
     justifyContent: 'center',
     alignItems: 'center',
     height: 'auto',
     rowGap: 2,
-  },
-  NetworkLogo: {
-    container: true,
-    item: true,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    left: '0px',
   },
   radialBg1Props: {
     position: 'absolute',
@@ -138,11 +163,11 @@ const NetworkErrorStyle = {
     xs: 9,
     xl: 8,
     justifyContent: 'center',
-    alignItems: 'center',
     mb: 3,
-    direction: 'column',
   },
   bodyProps: {
+    position: 'relative',
+    top: '18px',
     color: 'black',
     textAlign: 'center',
     fontFamily: 'Satoshi Regular',
@@ -154,6 +179,7 @@ const NetworkErrorStyle = {
     letterSpacing: '-2%',
   },
   buttonGridProps: {
+    position: 'relative',
     container: true,
     item: true,
     xs: 12,
@@ -176,22 +202,52 @@ const NetworkErrorStyle = {
       },
     },
   },
+  titleProps: {
+    fontSize: { laptop: '105px', desktop: '125px', desktopMedium: '165px' },
+    fontFamily: 'Ethnocentric Regular Italics',
+    zIndex: 1,
+    sx: {
+      background: (theme) => theme.palette.primary.main,
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: '#856AFF',
+    },
+    position: 'relative',
+    top: '25px',
+  },
+  submitButtonProps: {
+    color: 'purple',
+    inverted: true,
+    extraProps: {
+      padding: '2px',
+      height: { md: '54px', xl: '60px' },
+      width: 'auto',
+    },
+    extraButtonProps: {
+      fontFamily: 'Satoshi Bold',
+      fontSize: '16px',
+      px: 4,
+    },
+  },
   star1Props: {
     position: 'relative',
     color: '#5522FF',
-    top: '-470px',
-    left: '-130px',
+    top: '-400px',
+    left: '-240px',
   },
   star2Props: {
     position: 'relative',
-    bottom: '540px',
-    left: '430px',
+    bottom: '240px',
+    left: '210px',
   },
   star3Props: {
     position: 'relative',
-    bottom: '700px',
-    left: '400px',
-    top: '30px',
+    left: '205px',
+    top: '-550px',
+  },
+  NetworkLogo: {
+    position: 'relative',
+    top: '200px',
+    left: '40px',
   },
 };
 

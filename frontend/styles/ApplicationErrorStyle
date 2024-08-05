@@ -231,19 +231,18 @@ const ApplicationErrorStyle = {
   star1Props: {
     position: 'relative',
     color: '#5522FF',
-    top: '-470px',
+    top: '-400px',
     left: '-130px',
   },
   star2Props: {
     position: 'relative',
-    bottom: '540px',
-    left: '430px',
+    bottom: '240px',
+    left: '330px',
   },
   star3Props: {
     position: 'relative',
-    bottom: '300px',
-    left: '400px',
-    top: '30px',
+    left: '350px',
+    top: '-550px',
   },
   NetworkLogo: {
     position: 'relative',

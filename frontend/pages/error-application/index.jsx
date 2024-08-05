@@ -12,7 +12,7 @@ import Star5 from '@/assets/svg/Star_5.svg';
 
 import ROUTES from '@/constants/routes';
 
-import ApplicationErrorStyle from '@/styles/pageNotFoundStyles';
+import ApplicationErrorStyle from '@/styles/ApplicationErrorStyle';
 
 /**
  * Renders the page for when the requested route is not found.
@@ -37,14 +37,6 @@ const ApplicationErrorPage = () => {
         <Grid {...ApplicationErrorStyle.LogoImageGridProps}>
           <Logo />
         </Grid>
-        <Grid {...ApplicationErrorStyle.LogotitleGridProps}>
-          <Typography {...ApplicationErrorStyle.LogotitleProps}>
-            KAI.AI
-          </Typography>
-          <Typography {...ApplicationErrorStyle.LogosubtitleProps}>
-            AI Teaching Assistant
-          </Typography>
-        </Grid>
       </Grid>
     );
   };
@@ -59,9 +51,9 @@ const ApplicationErrorPage = () => {
     );
   };
 
-  const renderBottomContent = () => {
+  const renderBodyText = () => {
     return (
-      <Grid {...ApplicationErrorStyle.BottomGridprops}>
+      <Grid {...ApplicationErrorStyle.bodyGridProps}>
         <Typography {...ApplicationErrorStyle.bodyProps}>
           It&apos;s not you it&apos;s us, we&apos;re trying to fix this issue
           for you. Let&apos;s go back to home for the time being!
@@ -117,6 +109,26 @@ const ApplicationErrorPage = () => {
       </>
     );
   };
+  const renderTopContent = () => {
+    return (
+      <Grid {...ApplicationErrorStyle.sectionGridProps}>
+        <Typography {...ApplicationErrorStyle.titleProps} />
+      </Grid>
+    );
+  };
+
+  const renderBottomContent = () => {
+    return (
+      <Grid {...ApplicationErrorStyle.sectionGridProps}>
+        <Grid {...ApplicationErrorStyle.mainContentGridProps}>
+          {renderApplicationError()}
+          {renderMainTitle()}
+          {renderBodyText()}
+        </Grid>
+      </Grid>
+    );
+  };
+
   return (
     <Grid {...ApplicationErrorStyle.mainGridProps}>
       {renderRadialBackground()}
@@ -124,13 +136,12 @@ const ApplicationErrorPage = () => {
         {renderLogo()}
       </Grid>
       <Grid {...ApplicationErrorStyle.TopcontentGridProps}>
-        {renderMainTitle()}
+        {' '}
+        {renderTopContent()}
       </Grid>
       <Grid {...ApplicationErrorStyle.BottomcontentGridProps}>
+        {' '}
         {renderBottomContent()}
-      </Grid>
-      <Grid {...ApplicationErrorStyle.LogocontentGridProps}>
-        {renderApplicationError()}
       </Grid>
       <Grid {...ApplicationErrorStyle.IconcontentGridprops}>
         {renderIcons()}

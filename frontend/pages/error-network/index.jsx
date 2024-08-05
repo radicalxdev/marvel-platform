@@ -58,7 +58,7 @@ const NetworkErrorPage = () => {
 
   const renderNetworkError = () => {
     return (
-      <Grid {...NetworkErrorStyle.NetworkLogo}>
+      <Grid {...NetworkErrorStyle.ErrorWindow}>
         <ErrorWindow />
       </Grid>
     );
@@ -115,6 +115,7 @@ const NetworkErrorPage = () => {
       {renderRadialBackground()}
       <Grid {...NetworkErrorStyle.LogocontentGridProps}>{renderLogo()}</Grid>
       <Grid {...NetworkErrorStyle.TopcontentGridProps}>
+        {' '}
         {renderTopContent()}
       </Grid>
       <Grid {...NetworkErrorStyle.BottomcontentGridProps}>
