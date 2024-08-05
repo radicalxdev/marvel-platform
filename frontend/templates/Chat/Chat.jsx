@@ -31,6 +31,7 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import DiscoveryIcon from '@/assets/svg/add-block2.svg';
 import NavigationIcon from '@/assets/svg/Navigation.svg';
 
 import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
@@ -39,7 +40,9 @@ import CenterChatContentNoMessages from './CenterChatContentNoMessages';
 import ChatHistory from './ChatHistory';
 import ChatSpinner from './ChatSpinner';
 import DefaultPrompts from './DefaultPrompts';
+import DiscoveryLibraryUI from './DiscoveryLibraryUI';
 import Message from './Message';
+import QuickActionButton from './QuickActionButton';
 import styles from './styles';
 
 import {
@@ -87,6 +90,8 @@ const ChatInterface = () => {
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
   const [showChatHistory, setShowChatHistory] = useState(false);
   const [defaultPrompts, setDefaultPrompts] = useState([]);
+  const [showPrompts, setShowPrompts] = useState(true);
+  const [showDiscovery, setShowDiscovery] = useState(false);
 
   const startConversation = async (message) => {
     // Optionally dispatch a temporary message for the user's input
@@ -338,6 +343,7 @@ const ChatInterface = () => {
 
   const handleShowChatHistory = () => {
     setShowChatHistory(!showChatHistory);
+    setShowDiscovery(false);
   };
 
   const renderMoreChat = () => {
@@ -417,11 +423,24 @@ const ChatInterface = () => {
     );
   };
 
+  const renderQuickAction = () => {
+    return (
+      <InputAdornment position="start">
+        <Grid {...styles.bottomChatContent.bottomChatContentGridProps}>
+          <QuickActionButton
+            defaultText="Actions"
+            setShowPrompts={setShowPrompts}
+          />
+        </Grid>
+      </InputAdornment>
+    );
+  };
+
   const renderBottomChatContent = () => {
     if (!openSettingsChat && !infoChatOpened) {
       return (
         <Grid {...styles.bottomChatContent.bottomChatContentGridProps}>
-          {chatMessages?.length === 0 || !chatMessages ? (
+          {(chatMessages?.length === 0 || !chatMessages) && showPrompts ? (
             <DefaultPrompts
               onSelect={(prompt) => {
                 handleSelectPrompt(prompt);
@@ -439,6 +458,7 @@ const ChatInterface = () => {
               disabled={!!error}
               focused={false}
               {...styles.bottomChatContent.chatInputProps(
+                renderQuickAction,
                 renderSendIcon,
                 !!error,
                 input
@@ -505,29 +525,45 @@ const ChatInterface = () => {
     return (
       <Box {...styles.topBar.barProps}>
         <Button
+          variant="outlined"
           startIcon={<ChatIcon />}
           onClick={() => {
             localStorage.removeItem('sessionId');
             dispatch(resetChat());
           }}
-          {...styles.topBar.newChatProps}
+          {...styles.actionButtonProps}
         >
           Chat
         </Button>
-        <Button startIcon={<ChatIcon />} {...styles.topBar.newChatProps}>
+        <Button
+          variant="outlined"
+          startIcon={<DiscoveryIcon />}
+          {...styles.actionButtonProps}
+          onClick={() => {
+            setShowDiscovery(!showDiscovery);
+            setShowChatHistory(false);
+          }}
+        >
           Discovery
-        </Button>
-        <Button startIcon={<ChatIcon />} {...styles.topBar.newChatProps}>
-          Home
         </Button>
       </Box>
     );
   };
 
+  const renderDiscoveryLibrary = () => {
+    return (
+      <DiscoveryLibraryUI
+        show={showDiscovery}
+        handleSendMessage={handleSelectPrompt}
+      />
+    );
+  };
+
   return (
-    <Grid {...styles.mainGridProps(showChatHistory)}>
+    <Grid {...styles.mainGridProps(showChatHistory, showDiscovery)}>
       {testRender()}
       {renderMoreChat()}
+      {renderDiscoveryLibrary()}
       {renderCenterChatContent()}
       {renderCenterChatContentNoMessages()}
       {renderNewMessageIndicator()}

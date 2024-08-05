@@ -1,5 +1,5 @@
 const styles = {
-  mainGridProps: (showChatHistory) => ({
+  mainGridProps: (showChatHistory, showDiscovery) => ({
     container: true,
     item: true,
     flexDirection: 'column',
@@ -8,13 +8,14 @@ const styles = {
     mobileSmall: 12,
     height: '100%',
     overflow: 'hidden',
-    marginRight: showChatHistory ? 41 : 7,
+    marginRight: showChatHistory && !showDiscovery ? 41 : 7,
+    marginLeft: !showChatHistory && showDiscovery ? 41 : 0,
     sx: {
       form: {
         width: '100%',
         height: '100%',
       },
-      transition: 'all 0.5s',
+      transition: showDiscovery ? 'margin-left 0.3s' : 'all 0.5s',
     },
   }),
   moreChat: {
@@ -216,7 +217,7 @@ const styles = {
         borderRadius: '50px',
       },
     }),
-    chatInputProps: (renderSendIcon, error, input) => ({
+    chatInputProps: (renderQuickAction, renderSendIcon, error, input) => ({
       type: 'text',
       placeholder: !error && 'Send a message',
       autoComplete: 'off',
@@ -236,6 +237,7 @@ const styles = {
           lineHeight: '35px',
         }),
         endAdornment: renderSendIcon(),
+        startAdornment: renderQuickAction(),
       },
       FormHelperTextProps: {
         sx: {
@@ -505,6 +507,30 @@ const styles = {
         gap: '1.5rem',
       },
     },
+  },
+
+  actionButtonGridProps: {
+    container: true,
+    item: true,
+    justifyContent: 'center',
+  },
+
+  actionButtonProps: {
+    variant: 'outlined',
+    sx: (theme) => ({
+      borderRadius: '5px',
+      height: 'auto',
+      border: `2px solid ${theme.palette.Background.purple3}`,
+      background: theme.palette.Common.White['100p'],
+      color: theme.palette.Background.purple3,
+      textTransform: 'none',
+      ':hover': {
+        backgroundColor: theme.palette.Background.gradient.basicPurple,
+        borderColor: theme.palette.Background.purple3,
+        color: theme.palette.Common.White['100p'],
+        border: `2px solid ${theme.palette.Background.purple3}`,
+      },
+    }),
   },
 };
 
