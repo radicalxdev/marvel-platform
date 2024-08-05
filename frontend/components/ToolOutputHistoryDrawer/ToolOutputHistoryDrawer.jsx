@@ -6,15 +6,14 @@ import { TOOLS } from '@/constants/tools';
 
 import styles from './styles';
 
-import renderFlashcards from './toolRenderers/Flashcards';
-
-import renderMultipleChoiceQuiz from './toolRenderers/MultipleChoiceQuiz';
+import FlashCardsOutput from './toolRenderers/FlashCardsOutput';
+import MultipleChoiceQuizOutput from './toolRenderers/MultipleChoiceQuizOutput';
 
 import { copyToClipboard, exportToCSV } from '@/utils/ToolHistoryUtils';
 
 const DRAWER_RENDERERS = {
-  [TOOLS.MCQ]: renderMultipleChoiceQuiz,
-  [TOOLS.FLASHCARDS]: renderFlashcards,
+  [TOOLS.MCQ]: MultipleChoiceQuizOutput,
+  [TOOLS.FLASHCARDS]: FlashCardsOutput,
 };
 
 const DEFAULT_DATA = {
@@ -31,11 +30,11 @@ const DEFAULT_DATA = {
 
 const ToolOutputHistoryDrawer = (props) => {
   const { isOpen, onClose, data } = props;
-  if (!data) {
-    return null;
-  }
+
+  if (!data) return null;
 
   const panelData = data?.response || DEFAULT_DATA.questions;
+  const ToolHistoryOutput = DRAWER_RENDERERS[data.toolId];
 
   const handleCopyToClipboard = () => {
     copyToClipboard(data, panelData);
@@ -66,11 +65,9 @@ const ToolOutputHistoryDrawer = (props) => {
   );
 
   const renderContent = () => {
-    const ToolRenderer = DRAWER_RENDERERS[data.toolId];
-
     return (
       <Grid {...styles.containerGridProps}>
-        <ToolRenderer data={data} />
+        <ToolHistoryOutput data={data} />
       </Grid>
     );
   };

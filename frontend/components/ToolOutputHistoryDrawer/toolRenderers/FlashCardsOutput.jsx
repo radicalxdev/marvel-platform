@@ -2,11 +2,11 @@ import { Grid, Typography } from '@mui/material';
 
 import styles from '../styles';
 
-const renderFlashcards = ({ data }) => {
+const FlashCardsOutput = ({ data }) => {
   const panelData = data?.response || [];
 
   return (
-    <Grid container {...styles.flashCardsGridProps}>
+    <Grid {...styles.flashCardsGridProps}>
       {panelData?.map((item, index) => (
         <Grid key={index} {...styles.flashCardGridProps}>
           <Typography {...styles.conceptTitleProps}>{item?.concept}</Typography>
@@ -19,4 +19,4 @@ const renderFlashcards = ({ data }) => {
   );
 };
 
-export default renderFlashcards;
+export default FlashCardsOutput;
