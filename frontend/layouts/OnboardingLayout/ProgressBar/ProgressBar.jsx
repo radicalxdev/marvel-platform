@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
@@ -18,13 +18,6 @@ import { useSelector } from 'react-redux';
 
 import styles from './styles';
 
-const onboardingSteps = [
-  { label: 'Welcome' },
-  { label: 'Profile Setup' },
-  { label: 'System Configurations' },
-  { label: 'Final Steps' },
-];
-
 const CustomStepConnector = () => {
   const { active, completed } = useStepContext();
   return <StepConnector {...styles.stpConnector(active, completed)} />;
@@ -42,7 +35,7 @@ const StepIcon = ({ active, completed }) => (
   </Grid>
 );
 
-const CustomStepper = ({ currentStep }) => (
+const CustomStepper = ({ currentStep, onboardingSteps }) => (
   <Stepper
     activeStep={currentStep}
     connector={<CustomStepConnector />}
@@ -58,7 +51,12 @@ const CustomStepper = ({ currentStep }) => (
   </Stepper>
 );
 
-const CustomAccordion = ({ expanded, handleChange, currentStep }) => (
+const CustomAccordion = ({
+  expanded,
+  handleChange,
+  currentStep,
+  onboardingSteps,
+}) => (
   <Accordion
     expanded={expanded === 'panel'}
     onChange={handleChange('panel')}
@@ -68,7 +66,10 @@ const CustomAccordion = ({ expanded, handleChange, currentStep }) => (
       expandIcon={<ExpandMoreIcon {...styles.expandMoreIconProps} />}
       {...styles.accordionSummaryProps}
     >
-      <CustomStepper currentStep={currentStep} />
+      <CustomStepper
+        currentStep={currentStep}
+        onboardingSteps={onboardingSteps}
+      />
     </AccordionSummary>
     <AccordionDetails {...styles.accordionDetailsProps}>
       {onboardingSteps.map((step, key) => (
@@ -86,7 +87,7 @@ const CustomAccordion = ({ expanded, handleChange, currentStep }) => (
   </Accordion>
 );
 
-const ProgressBar = () => {
+const ProgressBar = ({ onboardingSteps }) => {
   const currentStep = useSelector((state) => state.onboarding.step);
   const [expanded, setExpanded] = useState(false);
   const handleChange = (panel) => (event, isExpanded) => {
@@ -101,6 +102,7 @@ const ProgressBar = () => {
           expanded={expanded}
           handleChange={handleChange}
           currentStep={currentStep}
+          onboardingSteps={onboardingSteps}
         />
       </Grid>
     </>

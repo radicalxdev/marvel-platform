@@ -1,7 +1,9 @@
 import { Button, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import styles from '../styles';
+import CircleCheckFilled from '@/assets/svg/CircleCheckFilled.svg';
+
+import styles from './styles';
 
 const Complete = () => {
   const router = useRouter();
@@ -12,6 +14,7 @@ const Complete = () => {
 
   return (
     <Grid {...styles.mainGrid}>
+      <CircleCheckFilled />
       <Typography {...styles.titleProps}>Onboarding Complete!</Typography>
       <Typography {...styles.descriptionProps}>
         Congrats! the onboarding is complete, continue to go to homepage
