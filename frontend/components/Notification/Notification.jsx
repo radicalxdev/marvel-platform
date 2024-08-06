@@ -1,20 +1,19 @@
-import { Snackbar, Button, Alert } from '@mui/material';
+import { Snackbar, Button, Alert, SnackbarContent } from '@mui/material';
 import styles from './styles';
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Fade from '@mui/material/Fade';
 
-const SuccessNotification = ({ message, open }) => (
-    <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        // onClose={onClose}
-        message={message}
-    />
-);
+const SuccessNotification = (props) => {
 
-const ErrorNotification = ({ message, open, onClose }) => {
+    const {
+        message,
+        open,
+        onClose,
+        ...snackbarProps
+      } = props;
+
+    
     const closeButton = (
         <React.Fragment>
         <IconButton
@@ -32,10 +31,47 @@ const ErrorNotification = ({ message, open, onClose }) => {
     <Snackbar
         open={open}
         autoHideDuration={6000}
-        TransitionComponent={(props) => <Fade {...props} timeout={{ enter: 500, exit: 500 }} />}
+        {...snackbarProps}
+    >
+        <SnackbarContent
+                    action={closeButton}
+                    onClose={onClose}
+            {...styles.successNotification}
+            message={message}
+        ></SnackbarContent>
+    </Snackbar>
+    )
+};
+
+const ErrorNotification = (props) => {
+
+    const {
+        message,
+        open,
+        onClose,
+        ...snackbarProps
+      } = props;
+
+    const closeButton = (
+        <React.Fragment>
+        <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={onClose}
+        >
+            <CloseIcon fontSize="small" />
+        </IconButton>
+        </React.Fragment>
+    );
+
+    return (
+    <Snackbar
+        open={open}
+        autoHideDuration={6000}
         onClose={onClose}
         action={closeButton}
-        {...styles.ErrorNotification}
+        {...snackbarProps}
     >
         <Alert
             onClose={onClose}

@@ -29,7 +29,29 @@ const styles = {
             // maxWidth: '50%', // Adjust the max-width as needed
             // minWidth: '100px', // Adjust the min-width as needed
         }
-    }
+    },
+    successNotification: {
+        sx: {
+            padding: '12px 16px, 12px, 16px',
+            borderRadius: '8px',
+            border: '1px solid #5614F3',
+            background: '#E6DBFF',
+            boxShadow: '0px 10px 22.2px 0px #00000021',
+            fontSize: '16px',
+            fontFamily: 'Satoshi, sans-serif', // Using Satoshi for the main message
+        }
+    },
+    // successNotificationPosition: {
+    //     anchorOrigin: { vertical: 'top', horizontal: 'center' },
+    //     sx: {
+    //         position: 'absolute',
+    //         top: '7%',
+    //         left: '50%',
+    //         height: '24px',
+    //         transform: 'translate(-50%, -50%)',
+    //         width: '40%', // Adjust the max-width as needed
+    //     }
+    // }
 }
   
 export default styles;
