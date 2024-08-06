@@ -2,7 +2,7 @@ const styles = {
   mainGridProps: {
     container: true,
     item: true,
-    width: '360px',
+    width: '300px',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',

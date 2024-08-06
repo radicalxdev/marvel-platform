@@ -31,6 +31,7 @@
     "@mui/material": "^5.13.0",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
     "dotenv": "^16.4.5",
     "firebase": "^9.22.0",
     "firebase-admin": "^11.8.0",

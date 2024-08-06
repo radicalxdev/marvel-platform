@@ -362,8 +362,63 @@ const createChatSession = onCall(async (props) => {
   }
 });
 
+/**
+ * This generates the default prompts for the user given their previous chat history.
+ *
+ * @param {Object} props - properties for the function
+ *  @param {Object} props.data - the data for the function, containing the user, messages, and type
+ *    @param {Object} props.user - the user object
+ *    @param {Array} props.messages - the messages (chat history) between the user and ai
+ *    @param {Object} props.type - the bot type
+ *
+ * @returns {Promise<Object>} promise that resolves into an object containing the default prompts for the AI
+ */
+const generatePrompts = onCall(async (props) => {
+  try {
+    DEBUG && logger.log('Generating prompts started');
+
+    const { id, email, fullName } = props.data;
+
+    if (!id || !email || !fullName) {
+      logger.log('Missing required fields', props.data);
+      throw new HttpsError('invalid-argument', 'Missing required fields');
+    }
+
+    const initalPrompt = {
+      role: 'human',
+      type: 'text',
+      payload: {
+        text: 'Give me 3 questions a user might ask at the beginning of a conversation with you.\n',
+      },
+      timestamp: Timestamp.fromMillis(Date.now()),
+    };
+
+    const response = await kaiCommunicator({
+      data: {
+        messages: [initalPrompt],
+        user: { id, email, fullName },
+        type: 'chat',
+      },
+    });
+
+    DEBUG &&
+      logger.log(
+        'successful response: ',
+        response?.data,
+        'type',
+        typeof response
+      );
+
+    return response;
+  } catch (error) {
+    logger.error(error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
 module.exports = {
   chat,
   tool: https.onRequest(app),
   createChatSession,
+  generatePrompts,
 };
