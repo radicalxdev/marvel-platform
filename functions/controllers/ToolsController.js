@@ -28,11 +28,16 @@ const createToolsHistory = onCall(async (props) => {
       .collection('toolsHistory')
       .add(historyData);
 
+    // Update the document to include its ID
+    await toolsHistoryRef.update({
+      sessionId: toolsHistoryRef.id,
+    });
+
     // Return a success response with the new document's ID
     return {
       success: true,
       message: 'Document successfully written!',
-      toolId: toolsHistoryRef.id,
+      sessionId: toolsHistoryRef.id,
     };
   } catch (error) {
     // Log the error and throw an HTTP error if document creation fails
@@ -45,10 +50,10 @@ const createToolsHistory = onCall(async (props) => {
 const updateToolsHistory = onCall(async (props) => {
   try {
     // Destructure the necessary fields from the incoming data
-    const { toolId, userId, newResponse } = props.data;
+    const { sessionId, toolId, userId, newResponse } = props.data;
 
     // Check if the toolId or userId fields are missing
-    if (!toolId || !userId) {
+    if (!toolId || !userId || !sessionId) {
       throw new HttpsError('invalid-argument', 'Missing value');
     }
 
@@ -56,7 +61,7 @@ const updateToolsHistory = onCall(async (props) => {
     const toolsHistoryDoc = await admin
       .firestore()
       .collection('toolsHistory')
-      .doc(toolId)
+      .doc(sessionId)
       .get();
 
     // Check if the document exists
@@ -75,24 +80,40 @@ const updateToolsHistory = onCall(async (props) => {
       );
     }
 
-    // Prepare the updated data, only including fields that have new values
-    const toolsHistoryData = {
-      ...(newResponse != null && { response: newResponse }),
-      updatedAt: Timestamp.fromMillis(Date.now()), // Update the timestamp
+    // Prepare the data to be stored in Firestore
+    const historyData = {
+      toolId: toolId,
+      userId: userId,
+      createdAt: toolsHistory.createdAt,
+      updatedAt: Timestamp.fromMillis(Date.now()), // Set the update timestamp
+      response: newResponse,
+      sessionId: sessionId
     };
 
-    // Update the document in Firestore with the new data
+    // Add the new document to the 'toolsHistory' collection in Firestore
     await admin
       .firestore()
       .collection('toolsHistory')
-      .doc(toolId)
-      .update(toolsHistoryData);
+      .add(historyData);
+
+    // // Prepare the updated data, only including fields that have new values
+    // const toolsHistoryData = {
+    //   ...(newResponse != null && { response: newResponse }),
+    //   updatedAt: Timestamp.fromMillis(Date.now()), // Update the timestamp
+    // };
+
+    // // Update the document in Firestore with the new data
+    // await admin
+    //   .firestore()
+    //   .collection('toolsHistory')
+    //   .doc(toolId)
+    //   .update(toolsHistoryData);
 
     // Return a success response
     return {
       success: true,
       message: 'Document successfully updated!',
-      data: toolsHistoryData,
+      sessionId: sessionId,
     };
   } catch (error) {
     // Log the error and throw an HTTP error if document update fails
