@@ -1,22 +1,45 @@
 import jsPDF from 'jspdf';
 
+import { handleSort } from '../SortingToolsHistoryUtils';
+
+import ORDER from '@/constants/sortingOrder';
+
 import {
   convertToUnixTimestamp,
   formatToStandardDate,
 } from '@/utils/FirebaseUtils';
 
 function MultipleChoiceResponseUtils(cardData) {
-  async function initializeCard() {
+  async function initializeToolSessionData() {
+    const { updatedAt, createdAt, response, toolId } = cardData;
+    // Sort response if not already sorted
+    const sortedResponse = handleSort(ORDER.ASC, response);
+    const formattedCreatedAt = formatToStandardDate(
+      new Date(convertToUnixTimestamp(createdAt))
+    );
+    const formattedUpdatedAt = formatToStandardDate(
+      new Date(convertToUnixTimestamp(updatedAt))
+    );
+
+    return {
+      createdAt: formattedCreatedAt,
+      updatedAt: formattedUpdatedAt,
+      toolId,
+      response: sortedResponse,
+    };
+  }
+
+  async function initializeResponseForSession(response) {
     let backgroundImgURL = '';
     let logoURL = '';
 
     let title = 'Multiple Choice Quiz';
     let description = 'Multiple Choice questions about a certain topic';
-    const { updatedAt, response, toolId } = cardData;
-    const { inputs, outputs } = response;
+    const { inputs, outputs, updatedAt } = response;
     const formattedUpdatedAt = formatToStandardDate(
       new Date(convertToUnixTimestamp(updatedAt))
     );
+
     try {
       title = inputs[0].value;
       description = `${inputs[1].value} Multiple Choice questions about the topic: ${title}`;
@@ -30,11 +53,10 @@ function MultipleChoiceResponseUtils(cardData) {
     return {
       title,
       description,
-      updatedAt: formattedUpdatedAt,
-      outputs: outputs.data,
       backgroundImgURL,
       logoURL,
-      toolId,
+      updatedAt: formattedUpdatedAt,
+      outputs: outputs.data,
     };
   }
 
@@ -151,7 +173,8 @@ function MultipleChoiceResponseUtils(cardData) {
   }
 
   return {
-    initializeCard,
+    initializeToolSessionData,
+    initializeResponseForSession,
     formatCopyContent,
     formatExportContent,
   };

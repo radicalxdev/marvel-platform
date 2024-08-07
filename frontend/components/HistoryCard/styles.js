@@ -31,7 +31,7 @@ const styles = {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
-      height: '200px',
+      height: '100%',
       width: '25%',
       overflow: 'hidden',
       p: 2,
@@ -99,6 +99,33 @@ const styles = {
       transition: (theme) => theme.transitions.create('all'),
       '&:hover': {
         cursor: 'pointer',
+      },
+    },
+  },
+  stepperProps: {
+    sx: {
+      maxWidth: 500,
+      flexGrow: 1,
+      bgcolor: 'white',
+      color: 'black',
+      padding: '8px 0px 0px 0px',
+    },
+  },
+  stepperButtonProps: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'small',
+    sx: {
+      borderRadius: '100px',
+      transition: (theme) => theme.transitions.create('all'),
+      '&:hover': {
+        cursor: 'pointer',
+      },
+      '&.Mui-disabled': {
+        backgroundColor: 'gray',
+        color: 'white',
+        cursor: 'not-allowed',
+        opacity: 0.5,
       },
     },
   },

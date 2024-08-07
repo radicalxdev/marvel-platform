@@ -33,6 +33,7 @@ const ToolForm = (props) => {
   const { handleOpenSnackBar } = useContext(AuthContext);
 
   const { communicatorLoading } = useSelector((state) => state.tools);
+  const { sessionId, inSession } = useSelector((state) => state.tools);
   const { data: userData } = useSelector((state) => state.user);
 
   const { register, control, handleSubmit, getValues, setValue, errors } =
@@ -61,9 +62,10 @@ const ToolForm = (props) => {
           },
         },
         files,
-        dispatch
+        dispatch,
+        sessionId,
+        inSession
       );
-
       dispatch(setResponse(response?.data));
       dispatch(setFormOpen(false));
       dispatch(setCommunicatorLoading(false));

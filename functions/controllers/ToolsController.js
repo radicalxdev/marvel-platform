@@ -6,20 +6,29 @@ const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const createToolsHistory = onCall(async (props) => {
   try {
     // Destructure the necessary fields from the incoming data
-    const { toolId, userId, response } = props.data;
+    const { toolId, userId, inputs, outputs } = props.data;
 
     // Check if any of the required fields are missing
-    if (!toolId || !userId || !response) {
+    if (!toolId || !userId || !inputs || !outputs) {
       throw new HttpsError('invalid-argument', 'Missing value');
     }
 
+    /*
+      requests as an arrayMap field and have sessions be documents
+    */
     // Prepare the data to be stored in Firestore
     const historyData = {
       toolId: toolId,
       userId: userId,
       createdAt: Timestamp.fromMillis(Date.now()), // Set the creation timestamp
       updatedAt: Timestamp.fromMillis(Date.now()), // Set the update timestamp
-      response: response,
+      response: [
+        {
+          inputs: inputs,
+          outputs: outputs,
+          updatedAt: Timestamp.fromMillis(Date.now()),
+        },
+      ],
     };
 
     // Add the new document to the 'toolsHistory' collection in Firestore
@@ -50,7 +59,7 @@ const createToolsHistory = onCall(async (props) => {
 const updateToolsHistory = onCall(async (props) => {
   try {
     // Destructure the necessary fields from the incoming data
-    const { sessionId, toolId, userId, newResponse } = props.data;
+    const { sessionId, toolId, userId, newInputs, newOutputs } = props.data;
 
     // Check if the toolId or userId fields are missing
     if (!toolId || !userId || !sessionId) {
@@ -80,34 +89,29 @@ const updateToolsHistory = onCall(async (props) => {
       );
     }
 
-    // Prepare the data to be stored in Firestore
+    /*
+      requests as an arrayMap field and have sessions be documents
+    */
+    // Prepare the data to be updated in Firestore
     const historyData = {
-      toolId: toolId,
-      userId: userId,
-      createdAt: toolsHistory.createdAt,
-      updatedAt: Timestamp.fromMillis(Date.now()), // Set the update timestamp
-      response: newResponse,
-      sessionId: sessionId
+      ...toolsHistory,
+      updatedAt: admin.firestore.Timestamp.fromMillis(Date.now()),
+      response: [
+        ...toolsHistory.response,
+        {
+          inputs: newInputs,
+          outputs: newOutputs,
+          updatedAt: admin.firestore.Timestamp.fromMillis(Date.now()),
+        },
+      ],
     };
 
-    // Add the new document to the 'toolsHistory' collection in Firestore
+    // Update the document in Firestore with the new data
     await admin
       .firestore()
       .collection('toolsHistory')
-      .add(historyData);
-
-    // // Prepare the updated data, only including fields that have new values
-    // const toolsHistoryData = {
-    //   ...(newResponse != null && { response: newResponse }),
-    //   updatedAt: Timestamp.fromMillis(Date.now()), // Update the timestamp
-    // };
-
-    // // Update the document in Firestore with the new data
-    // await admin
-    //   .firestore()
-    //   .collection('toolsHistory')
-    //   .doc(toolId)
-    //   .update(toolsHistoryData);
+      .doc(sessionId)
+      .update(historyData);
 
     // Return a success response
     return {

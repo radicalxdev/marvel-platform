@@ -1,5 +1,9 @@
 import jsPDF from 'jspdf';
 
+import { handleSort } from '../SortingToolsHistoryUtils';
+
+import ORDER from '@/constants/sortingOrder';
+
 import {
   convertToUnixTimestamp,
   formatToStandardDate,
@@ -7,18 +11,35 @@ import {
 import fetchYoutubeTitle from '@/utils/YoutubeUtils';
 
 function FlashCardListUtils(cardData) {
-  async function initializeCard() {
+  async function initializeToolSessionData() {
+    const { updatedAt, createdAt, response, toolId } = cardData;
+    // Sort response if not already sorted
+    const sortedResponse = handleSort(ORDER.ASC, response);
+    const formattedCreatedAt = formatToStandardDate(
+      new Date(convertToUnixTimestamp(createdAt))
+    );
+    const formattedUpdatedAt = formatToStandardDate(
+      new Date(convertToUnixTimestamp(updatedAt))
+    );
+
+    return {
+      createdAt: formattedCreatedAt,
+      updatedAt: formattedUpdatedAt,
+      toolId,
+      response: sortedResponse,
+    };
+  }
+
+  async function initializeResponseForSession(response) {
     let backgroundImgURL = '';
     let logoURL = '';
 
     let title = 'FlashCards for Youtube';
     let description = 'Set of Flashcards about a Youtube video';
-    const { updatedAt, response, toolId } = cardData;
-    const { inputs, outputs } = response;
+    const { inputs, outputs, updatedAt } = response;
     const formattedUpdatedAt = formatToStandardDate(
       new Date(convertToUnixTimestamp(updatedAt))
     );
-
     try {
       title = await fetchYoutubeTitle(inputs[0].value);
       description = `Set of Flashcards about the YouTube video: ${title}`;
@@ -29,15 +50,13 @@ function FlashCardListUtils(cardData) {
     } catch (error) {
       console.error('Error fetching YouTube title:', error);
     }
-
     return {
       title,
       description,
-      updatedAt: formattedUpdatedAt,
-      outputs: outputs.data,
       backgroundImgURL,
       logoURL,
-      toolId,
+      updatedAt: formattedUpdatedAt,
+      outputs: outputs.data,
     };
   }
 
@@ -140,7 +159,8 @@ function FlashCardListUtils(cardData) {
   }
 
   return {
-    initializeCard,
+    initializeToolSessionData,
+    initializeResponseForSession,
     formatCopyContent,
     formatExportContent,
   };

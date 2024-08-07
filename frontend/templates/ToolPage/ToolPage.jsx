@@ -20,7 +20,11 @@ import MultipleChoiceResponse from './MultipleChoiceResponse';
 import styles from './styles';
 import ToolForm from './ToolForm';
 
-import { resetCommunicator, setFormOpen } from '@/redux/slices/toolsSlice';
+import {
+  resetCommunicator,
+  resetToolsSessionState,
+  setFormOpen,
+} from '@/redux/slices/toolsSlice';
 
 const ToolPage = (props) => {
   const { toolDoc } = props;
@@ -38,7 +42,10 @@ const ToolPage = (props) => {
     };
   }, []);
 
-  const handleRoute = () => router.push(ROUTES.HOME);
+  const handleRoute = () => {
+    dispatch(resetToolsSessionState());
+    router.push(ROUTES.HOME);
+  };
 
   const renderBackButton = () => {
     return (
