@@ -10,6 +10,8 @@ import ROUTES from '@/constants/routes';
 import styles from './styles';
 
 import { chatRegex, historyRegex, homeRegex } from '@/regex/routes';
+import { useDispatch } from 'react-redux';
+import { resetToolsSessionState } from '@/redux/slices/toolsSlice';
 
 const PAGES = [
   {
@@ -39,6 +41,7 @@ const PAGES = [
  */
 const NavMenu = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { pathname } = router;
 
   const setActive = (id) => {
@@ -57,6 +60,7 @@ const NavMenu = () => {
   const handleRoute = (link, id) => {
     router.push(link);
     setActive(id);
+    dispatch(resetToolsSessionState());
   };
 
   return (

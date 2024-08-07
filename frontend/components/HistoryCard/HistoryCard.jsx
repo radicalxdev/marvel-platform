@@ -50,19 +50,21 @@ const HistoryCard = (props) => {
   };
 
   const handleNext = async () => {
-    setCurrentResponseNumber((prevResponseNumber) => prevResponseNumber + 1);
+    const newResponseNumber = currentResponseNumber + 1;
     const responseData = await cardInstance.initializeResponseForSession(
-      restructuredToolSession.response[currentResponseNumber]
+      restructuredToolSession.response[newResponseNumber]
     );
     setRestructuredResponse(responseData);
+    setCurrentResponseNumber(newResponseNumber);
   };
 
   const handleBack = async () => {
-    setCurrentResponseNumber((prevResponseNumber) => prevResponseNumber - 1);
+    const newResponseNumber = currentResponseNumber - 1;
     const responseData = await cardInstance.initializeResponseForSession(
-      restructuredToolSession.response[currentResponseNumber]
+      restructuredToolSession.response[newResponseNumber]
     );
     setRestructuredResponse(responseData);
+    setCurrentResponseNumber(newResponseNumber);
   };
 
   /**
