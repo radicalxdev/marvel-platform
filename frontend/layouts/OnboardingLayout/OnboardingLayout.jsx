@@ -3,7 +3,6 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 
 import AppDisabled from '@/components/AppDisabled';
 
@@ -15,8 +14,6 @@ const OnboardingLayout = (props) => {
   const isTabletScreen = useMediaQuery((theme) =>
     theme.breakpoints.down('laptop')
   );
-  const router = useRouter();
-  const { onboardingId } = router.query;
 
   const renderHead = () => (
     <Head>
@@ -24,16 +21,12 @@ const OnboardingLayout = (props) => {
     </Head>
   );
 
-  const renderApp = () => (
-    <Grid {...styles.contentGrid}>
-      <Grid>{children}</Grid>
-    </Grid>
-  );
+  const renderApp = () => <Grid {...styles.contentGrid}>{children}</Grid>;
 
   return (
     <Grid {...styles.mainGrid}>
       <Grid {...styles.progressBarContainer}>
-        <ProgressBar currentStep={Number(onboardingId)} />
+        <ProgressBar />{' '}
       </Grid>
       {renderHead()}
       {isTabletScreen && <AppDisabled head={renderHead()} />}
