@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 import Grid from '@mui/material/Grid';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
