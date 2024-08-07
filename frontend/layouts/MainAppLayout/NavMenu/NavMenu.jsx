@@ -2,6 +2,8 @@ import { MenuBook } from '@mui/icons-material';
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import { useDispatch } from 'react-redux';
+
 import Briefcase from '@/assets/svg/Briefcase.svg';
 import ChatBubble from '@/assets/svg/ChatBubble.svg';
 
@@ -9,9 +11,9 @@ import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-import { chatRegex, historyRegex, homeRegex } from '@/regex/routes';
-import { useDispatch } from 'react-redux';
 import { resetToolsSessionState } from '@/redux/slices/toolsSlice';
+
+import { chatRegex, historyRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
   {
