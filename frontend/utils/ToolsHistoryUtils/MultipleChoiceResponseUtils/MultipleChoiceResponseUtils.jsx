@@ -1,8 +1,8 @@
 import jsPDF from 'jspdf';
 
-import { handleSort } from '../SortingToolsHistoryUtils';
-
 import ORDER from '@/constants/sortingOrder';
+
+import { handleSort } from '../SortingToolsHistoryUtils';
 
 import {
   convertToUnixTimestamp,
