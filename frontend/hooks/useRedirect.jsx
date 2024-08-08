@@ -20,7 +20,7 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
 
   const { route, asPath, query } = router;
   const { data: authData, loading } = useSelector((state) => state.auth);
-
+  const { data: userData } = useSelector((state) => state.user);
   const fetchUserRelatedData = async (id) => {
     await dispatch(fetchUserData({ firestore, id }));
   };
@@ -39,8 +39,8 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
 
     const isRedirectRoute = redirectRegex.test(asPath);
     const isAuthRoute = isAuthUrl || isRedirectRoute;
-
-    // If a authUser is authed, set the currentUser in the store and redirect to home if on an auth route
+    const onboardingStatus = userData?.needsBoarding;
+    // If a authUser is authed, set the currentUser in the store and redirect based on onboarding status
     if (auth.currentUser) {
       if (isRedirectRoute) {
         dispatch(setLoading(false));
@@ -53,6 +53,12 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
           router.push(ROUTES.SIGNIN);
           return;
         }
+        return;
+      }
+
+      // If already logged in and onboarding is required, redirect to onboarding
+      if (onboardingStatus) {
+        router.push(ROUTES.ONBOARDING.replace('[onboardingId]', '0'));
         return;
       }
 

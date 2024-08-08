@@ -8,7 +8,7 @@ import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-import { chatRegex, homeRegex, onboardingRegex } from '@/regex/routes';
+import { chatRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
   {
@@ -35,17 +35,10 @@ const NavMenu = () => {
   const { pathname } = router;
 
   const setActive = (id) => {
-    const isNotHomePage = [
-      chatRegex.test(pathname),
-      onboardingRegex.test(pathname),
-    ].includes(true);
+    const isNotHomePage = [chatRegex.test(pathname)].includes(true);
 
     if (id === 'page_1') {
       return isNotHomePage ? false : homeRegex.test(pathname);
-    }
-
-    if (id === 'page_3') {
-      return onboardingRegex.test(pathname);
     }
 
     return chatRegex.test(pathname);

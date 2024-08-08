@@ -28,8 +28,7 @@ const onboardingComponents = {
 const OnboardingPage = ({ onboardingData }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const step = useSelector((state) => state.onboarding.step);
-  const tempData = useSelector((state) => state.onboarding.tempData);
+  const { step, tempData } = useSelector((state) => state.onboarding);
 
   useEffect(() => {
     if (onboardingData.id !== step) {
@@ -42,10 +41,16 @@ const OnboardingPage = ({ onboardingData }) => {
       dispatch(setTempData(formData)); // Store form data in Redux
     }
 
-    if (onboardingComponents[onboardingData.id] === FinalSteps) {
-      dispatch(updateUserData({ firestore, data: tempData }));
+    if (onboardingComponents[onboardingData.id] === Complete) {
+      dispatch(
+        updateUserData({
+          firestore,
+          data: { ...tempData, needsBoarding: false },
+        })
+      );
       dispatch(setCompleted(true));
     }
+
     dispatch(setStep(onboardingData.id + 1)); // Update the step in Redux
     router.push(`/onboarding/${onboardingData.id + 1}`);
   };

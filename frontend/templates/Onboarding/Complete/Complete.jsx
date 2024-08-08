@@ -1,15 +1,12 @@
 import { Button, Grid, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 
 import CircleCheckFilled from '@/assets/svg/CircleCheckFilled.svg';
 
 import styles from './styles';
 
-const Complete = () => {
-  const router = useRouter();
-
+const Complete = ({ onNext }) => {
   const handleGoHome = () => {
-    router.push('/');
+    onNext();
   };
 
   return (

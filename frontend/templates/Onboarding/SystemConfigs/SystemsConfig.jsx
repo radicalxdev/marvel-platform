@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Switch from '@mui/material/Switch';
-import { useRouter } from 'next/router';
 
 import styles from './styles';
 
@@ -36,8 +35,6 @@ const SystemConfigs = ({ onNext }) => {
   const [pushNotifications, setPushNotifications] = useState(false);
   const [reminders, setReminders] = useState(false);
   const [theme, setTheme] = useState(false);
-
-  const router = useRouter();
 
   const handleNext = () => {
     onNext();
