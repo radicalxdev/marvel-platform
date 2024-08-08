@@ -12,20 +12,23 @@ const app = express();
 
 const DEBUG = process.env.DEBUG;
 /**
- * Communicates with a Kai AI endpoint.
+ * Simulates communication with a Kai AI endpoint.
  *
  * @async
  * @function kaiCommunicator
- * @param {Object} payload - The properties of the communication.
- * @param {Object} payload.data - The payload data object used in the communication.
- * @param {Array} [payload.data.messages] - An array of messages for the current user chat session.
- * @param {Object} payload.data.user - The user object.
- * @param {Object} [payload.data.tool_data] - The tool-specific data object.
- * @param {string} payload.data.type - The type of communication (e.g., 'chat', 'tool').
- * @returns {Promise<Object>} A promise that resolves to an object with status and data properties.
- * @returns {string} return.status - The status of the operation ('success').
- * @returns {Object} return.data - The data returned from the AI service.
- * @throws {HttpsError} If there's an error in communication or processing.
+ * @param {object} payload - The properties of the communication.
+ * @param {object} props.data - The payload data object used in the communication.
+ *  @param {Array} props.data.messages - An array of messages for the current user chat session.
+ *  @param {object} props.data.user - The user object.
+ *    @param {string} props.data.user.id - The id of the current user.
+ *    @param {string} props.data.user.fullName - The user's full name.
+ *    @param {string} props.data.user.email - The users email.
+ *  @param {object} props.data.tool_data - The payload data object used in the communication.
+ *    @param {string} props.data.tool_data.tool_id - The payload data object used in the communication.
+ *    @param {Array} props.data.tool_data.inputs - The different form input values sent for a tool.
+ *  @param {string} props.data.type - The payload data object used in the communication.
+ *
+ * @return {object} The response from the AI service.
  */
 const kaiCommunicator = async (payload) => {
   try {
@@ -84,9 +87,8 @@ const kaiCommunicator = async (payload) => {
  * @param {Object} props.data - The data object containing the message and id.
  * @param {string} props.data.id - The id of the chat session.
  * @param {Object} props.data.message - The message object.
- * @returns {Promise<Object>} A promise that resolves to an object with a status property.
- * @returns {string} return.status - The status of the operation ('success').
- * @throws {HttpsError} If the chat session is not found or there's an internal error.
+ *
+ * @return {object} The response object containing the status and data.
  */
 const chat = onCall(async (props) => {
   try {
@@ -173,10 +175,10 @@ const chat = onCall(async (props) => {
  * It supports both JSON and form-data requests to accommodate different client implementations.
  *
  * @function tools
- * @param {express.Request} req - The Express request object, which includes form data and files.
- * @param {express.Response} res - The Express response object used to send back the HTTP response.
- * @returns {void} Does not return a value, but sends a response to the client.
- * @throws {Error} If there's an error processing the request.
+ * @param {Request} req - The Express request object, which includes form data and files.
+ * @param {Response} res - The Express response object used to send back the HTTP response.
+ * @return {void} Sends a response to the client based on the processing results.
+ * @throws {HttpsError} Throws an error if processing fails or data is invalid.
  */
 app.post('/api/tool/', (req, res) => {
   const bb = busboy({ headers: req.headers });
@@ -269,21 +271,20 @@ app.post('/api/tool/', (req, res) => {
 });
 
 /**
- * Creates a chat session for a user.
+* This creates a chat session for a user.
  * If the chat session already exists, it will return the existing chat session.
  * Otherwise, it will create a new chat session and send the first message.
  *
  * @async
  * @function createChatSession
  * @param {Object} props - The properties passed to the function.
- * @param {Object} props.data - The data object containing the user, message, and type.
+ * @param {Object} props.data - The data object containing the user, challenge, message, and botType.
  * @param {Object} props.data.user - The user object.
  * @param {Object} props.data.message - The message object.
- * @param {string} props.data.type - The bot type.
- * @returns {Promise<Object>} A promise that resolves to an object containing the status and data of the chat session.
- * @returns {string} return.status - The status of the operation ('created').
- * @returns {Object} return.data - The created or updated chat session data.
- * @throws {HttpsError} If there's a missing required field or an internal error.
+ * @param {Object} props.data.type - The bot type.
+ *
+ * @return {Promise<Object>} - A promise that resolves to an object containing the status and data of the chat sessions.
+ * @throws {HttpsError} Throws an error if there is an internal error.
  */
 const createChatSession = onCall(async (props) => {
   try {
