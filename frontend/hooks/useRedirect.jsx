@@ -76,7 +76,7 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
     }
 
     if (!isAuthRoute && !loading) router.push(ROUTES.SIGNIN);
-  }, [authData]);
+  }, [authData, userData]);
 
   useEffect(() => {
     const isRedirectRoute = redirectRegex.test(asPath);

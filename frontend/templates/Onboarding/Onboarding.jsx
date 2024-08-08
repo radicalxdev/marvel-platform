@@ -49,6 +49,8 @@ const OnboardingPage = ({ onboardingData }) => {
         })
       );
       dispatch(setCompleted(true));
+      router.push('/');
+      return;
     }
 
     dispatch(setStep(onboardingData.id + 1)); // Update the step in Redux
