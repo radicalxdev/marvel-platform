@@ -1,35 +1,12 @@
 import jsPDF from 'jspdf';
 
-import ORDER from '@/constants/sortingOrder';
-
-import { handleSort } from '../SortingToolsHistoryUtils';
-
 import {
   convertToUnixTimestamp,
   formatToStandardDate,
 } from '@/utils/FirebaseUtils';
 import fetchYoutubeTitle from '@/utils/YoutubeUtils';
 
-function FlashCardListUtils(cardData) {
-  async function initializeToolSessionData() {
-    const { updatedAt, createdAt, response, toolId } = cardData;
-    // Sort response if not already sorted
-    const sortedResponse = handleSort(ORDER.ASC, response);
-    const formattedCreatedAt = formatToStandardDate(
-      new Date(convertToUnixTimestamp(createdAt))
-    );
-    const formattedUpdatedAt = formatToStandardDate(
-      new Date(convertToUnixTimestamp(updatedAt))
-    );
-
-    return {
-      createdAt: formattedCreatedAt,
-      updatedAt: formattedUpdatedAt,
-      toolId,
-      response: sortedResponse,
-    };
-  }
-
+function FlashCardListUtils() {
   async function initializeResponseForSession(response) {
     let backgroundImgURL = '';
     let logoURL = '';
@@ -159,7 +136,6 @@ function FlashCardListUtils(cardData) {
   }
 
   return {
-    initializeToolSessionData,
     initializeResponseForSession,
     formatCopyContent,
     formatExportContent,

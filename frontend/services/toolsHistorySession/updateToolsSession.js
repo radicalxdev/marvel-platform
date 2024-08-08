@@ -4,19 +4,19 @@ import { setError, setStreaming, setTyping } from '@/redux/slices/chatSlice';
 import { functions } from '@/redux/store';
 
 /**
- * Creates a chat session.
+ * Updates a tool session.
  *
  * @param {Object} payload - The payload for creating the chat session.
  * @param {function} dispatch - The dispatch function for managing state.
  * @return {Object} - An object containing a status and data containing the session.
  */
-const createToolsHistory = async (payload, dispatch) => {
+const updateToolsSession = async (payload, dispatch) => {
   try {
-    const createToolsHistorySession = httpsCallable(
+    const updateToolsHistorySession = httpsCallable(
       functions,
-      'createToolsHistory'
+      'updateToolsSession'
     );
-    const response = await createToolsHistorySession(payload);
+    const response = await updateToolsHistorySession(payload);
     return response.data;
   } catch (err) {
     dispatch(setError('Error! Couldn\u0027t send message'));
@@ -29,4 +29,4 @@ const createToolsHistory = async (payload, dispatch) => {
   }
 };
 
-export default createToolsHistory;
+export default updateToolsSession;

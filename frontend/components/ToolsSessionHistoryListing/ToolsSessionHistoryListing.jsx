@@ -3,16 +3,16 @@ import { useState } from 'react';
 import { FormControl, Grid, MenuItem, Select, Typography } from '@mui/material';
 
 import ORDER from '@/constants/sortingOrder';
-import TOOLS_RENDERS from '@/constants/toolsRenders';
 
-import HistoryCard from '../HistoryCard';
+import ToolsSessionHistoryCard from '../ToolsSessionHistoryCard';
 
 import styles from './styles';
 
 import {
   getCategorizedData,
   handleSort,
-} from '@/utils/ToolsHistoryUtils/SortingToolsHistoryUtils';
+  initializeToolSessionData,
+} from '@/utils/ToolsSessionHistoryUtils';
 
 /**
  * Component for rendering a listing of history cards in a grid layout.
@@ -22,7 +22,7 @@ import {
  *
  * @return {JSX.Element} Rendered history listing component
  */
-const HistoryListing = (props) => {
+const ToolsSessionHistoryListing = (props) => {
   const { data } = props;
 
   const { thisWeek, thisMonth, thisYear, beyondThisYear } =
@@ -41,11 +41,14 @@ const HistoryListing = (props) => {
           {title} ({sectionData.length})
         </Typography>
         <Grid container spacing={3}>
-          {sectionData.map((cardData, index) => {
-            const cardInstance = new TOOLS_RENDERS[cardData.toolId](cardData);
+          {sectionData.map((toolSessionCardData, index) => {
+            const toolSessionCardInstance =
+              initializeToolSessionData(toolSessionCardData);
             return (
               <Grid item key={index} xs={12} sm={6} md={4}>
-                <HistoryCard cardInstance={cardInstance} />
+                <ToolsSessionHistoryCard
+                  cardInstance={toolSessionCardInstance}
+                />
               </Grid>
             );
           })}
@@ -97,4 +100,4 @@ const HistoryListing = (props) => {
   );
 };
 
-export default HistoryListing;
+export default ToolsSessionHistoryListing;

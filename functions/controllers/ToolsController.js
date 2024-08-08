@@ -2,8 +2,8 @@ const admin = require('firebase-admin');
 const { Timestamp } = require('firebase-admin/firestore');
 const { onCall, HttpsError } = require('firebase-functions/v2/https');
 
-// Function to create a new tools history document
-const createToolsHistory = onCall(async (props) => {
+// Function to create a new tools session document
+const createToolsSession = onCall(async (props) => {
   try {
     // Destructure the necessary fields from the incoming data
     const { toolId, userId, inputs, outputs } = props.data;
@@ -13,11 +13,8 @@ const createToolsHistory = onCall(async (props) => {
       throw new HttpsError('invalid-argument', 'Missing value');
     }
 
-    /*
-      requests as an arrayMap field and have sessions be documents
-    */
     // Prepare the data to be stored in Firestore
-    const historyData = {
+    const sessionData = {
       toolId: toolId,
       userId: userId,
       createdAt: Timestamp.fromMillis(Date.now()), // Set the creation timestamp
@@ -31,22 +28,22 @@ const createToolsHistory = onCall(async (props) => {
       ],
     };
 
-    // Add the new document to the 'toolsHistory' collection in Firestore
-    const toolsHistoryRef = await admin
+    // Add the new document to the 'toolsSession' collection in Firestore
+    const toolsSessionRef = await admin
       .firestore()
-      .collection('toolsHistory')
-      .add(historyData);
+      .collection('toolsSession')
+      .add(sessionData);
 
     // Update the document to include its ID
-    await toolsHistoryRef.update({
-      sessionId: toolsHistoryRef.id,
+    await toolsSessionRef.update({
+      sessionId: toolsSessionRef.id,
     });
 
     // Return a success response with the new document's ID
     return {
       success: true,
       message: 'Document successfully written!',
-      sessionId: toolsHistoryRef.id,
+      sessionId: toolsSessionRef.id,
     };
   } catch (error) {
     // Log the error and throw an HTTP error if document creation fails
@@ -55,8 +52,8 @@ const createToolsHistory = onCall(async (props) => {
   }
 });
 
-// Function to update an existing tools history document
-const updateToolsHistory = onCall(async (props) => {
+// Function to update an existing tools Session document
+const updateToolsSession = onCall(async (props) => {
   try {
     // Destructure the necessary fields from the incoming data
     const { sessionId, toolId, userId, newInputs, newOutputs } = props.data;
@@ -67,37 +64,34 @@ const updateToolsHistory = onCall(async (props) => {
     }
 
     // Get the document from Firestore using the provided toolId
-    const toolsHistoryDoc = await admin
+    const toolsSessionDoc = await admin
       .firestore()
-      .collection('toolsHistory')
+      .collection('toolsSession')
       .doc(sessionId)
       .get();
 
     // Check if the document exists
-    if (!toolsHistoryDoc.exists) {
+    if (!toolsSessionDoc.exists) {
       throw new HttpsError('not-found', 'Document does not exist');
     }
 
     // Get the document data
-    const toolsHistory = toolsHistoryDoc.data();
+    const toolsSessionData = toolsSessionDoc.data();
 
     // Check if the userId matches the userId of the document owner
-    if (toolsHistory.userId !== userId) {
+    if (toolsSessionData.userId !== userId) {
       throw new HttpsError(
         'permission-denied',
         'User does not have permission to update this document'
       );
     }
 
-    /*
-      requests as an arrayMap field and have sessions be documents
-    */
     // Prepare the data to be updated in Firestore
-    const historyData = {
-      ...toolsHistory,
+    const updatedToolsSessionData = {
+      ...toolsSessionData,
       updatedAt: admin.firestore.Timestamp.fromMillis(Date.now()),
       response: [
-        ...toolsHistory.response,
+        ...toolsSessionData.response,
         {
           inputs: newInputs,
           outputs: newOutputs,
@@ -109,9 +103,9 @@ const updateToolsHistory = onCall(async (props) => {
     // Update the document in Firestore with the new data
     await admin
       .firestore()
-      .collection('toolsHistory')
+      .collection('toolsSession')
       .doc(sessionId)
-      .update(historyData);
+      .update(updatedToolsSessionData);
 
     // Return a success response
     return {
@@ -126,8 +120,8 @@ const updateToolsHistory = onCall(async (props) => {
   }
 });
 
-// Function to delete an existing tools history document
-const deleteToolsHistory = onCall(async (props) => {
+// Function to delete an existing tools Session document
+const deleteToolsSession = onCall(async (props) => {
   try {
     // Destructure the necessary fields from the incoming data
     const { toolId, userId } = props.data;
@@ -137,25 +131,25 @@ const deleteToolsHistory = onCall(async (props) => {
       throw new HttpsError('invalid-argument', 'Missing value');
     }
 
-    // Get the document from the 'toolsHistory' collection in Firestore
-    const toolsHistoryRef = await admin
+    // Get the document from the 'toolsSession' collection in Firestore
+    const toolsSessionRef = await admin
       .firestore()
-      .collection('toolsHistory')
+      .collection('toolsSession')
       .where('toolId', '==', toolId)
       .where('userId', '==', userId)
       .get();
 
     // Check if the document exists
-    if (toolsHistoryRef.empty) {
+    if (toolsSessionRef.empty) {
       throw new HttpsError('not-found', 'Document does not exist');
     }
 
     // Get the document data
-    const docRef = toolsHistoryRef.docs[0];
-    const toolsHistory = docRef.data();
+    const docRef = toolsSessionRef.docs[0];
+    const toolsSession = docRef.data();
 
     // Check if the userId matches the userId of the document owner
-    if (toolsHistory.userId !== userId) {
+    if (toolsSession.userId !== userId) {
       throw new HttpsError(
         'permission-denied',
         'User does not have permission to delete this document'
@@ -177,57 +171,8 @@ const deleteToolsHistory = onCall(async (props) => {
   }
 });
 
-// Function to retrieve an existing tools history document
-const retrieveToolsHistory = onCall(async (props) => {
-  try {
-    // Destructure the necessary fields from the incoming data
-    const { toolId, userId } = props.data;
-
-    // Check if the toolId or userId fields are missing
-    if (!toolId || !userId) {
-      throw new HttpsError('invalid-argument', 'Missing value');
-    }
-
-    // Get the document from the 'toolsHistory' collection in Firestore
-    const toolsHistoryRef = await admin
-      .firestore()
-      .collection('toolsHistory')
-      .where('toolId', '==', toolId)
-      .where('userId', '==', userId)
-      .get();
-
-    // Check if the document exists
-    if (toolsHistoryRef.empty) {
-      throw new HttpsError('not-found', 'Document does not exist');
-    }
-    // Get the document data
-    const docRef = toolsHistoryRef.docs[0];
-    const toolsHistory = docRef.data();
-
-    // Check if the userId matches the userId of the document owner
-    if (toolsHistory.userId !== userId) {
-      throw new HttpsError(
-        'permission-denied',
-        'User does not have permission to update this document'
-      );
-    }
-
-    // Return a success response
-    return {
-      success: true,
-      message: 'Document successfully retrieved!',
-      data: toolsHistory,
-    };
-  } catch (error) {
-    // Log the error and throw an HTTP error if document retrieve fails
-    console.error('Error retrieving document:', error);
-    throw new HttpsError('internal', 'Unable to retrieve document', error);
-  }
-});
-
 module.exports = {
-  createToolsHistory,
-  updateToolsHistory,
-  deleteToolsHistory,
-  retrieveToolsHistory,
+  createToolsSession,
+  updateToolsSession,
+  deleteToolsSession,
 };

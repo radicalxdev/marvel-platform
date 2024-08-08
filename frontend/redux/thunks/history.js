@@ -4,10 +4,10 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 const fetchHistory = createAsyncThunk(
   'history/fetch',
   async ({ firestore, id }) => {
-    // Query to fetch kai tools history
+    // Query to fetch kai tools history sessions
     try {
       const historyQuery = query(
-        collection(firestore, 'toolsHistory'),
+        collection(firestore, 'toolsSession'),
         where('userId', '==', id)
       );
 

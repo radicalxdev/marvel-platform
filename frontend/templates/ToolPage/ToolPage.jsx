@@ -43,8 +43,8 @@ const ToolPage = (props) => {
   }, []);
 
   const handleRoute = () => {
-    dispatch(resetToolsSessionState());
     router.push(ROUTES.HOME);
+    dispatch(resetToolsSessionState());
   };
 
   const renderBackButton = () => {

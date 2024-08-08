@@ -24,11 +24,10 @@ module.exports = {
   tool: kaiAIController.tool,
   createChatSession: kaiAIController.createChatSession,
 
-  /* output tools history */
-  createToolsHistory: ToolsController.createToolsHistory,
-  updateToolsHistory: ToolsController.updateToolsHistory,
-  deleteToolsHistory: ToolsController.deleteToolsHistory,
-  retrieveToolsHistory: ToolsController.retrieveToolsHistory,
+  /* output tools History */
+  createToolsSession: ToolsController.createToolsSession,
+  updateToolsSession: ToolsController.updateToolsSession,
+  deleteToolsSession: ToolsController.deleteToolsSession,
 
   /* Migration Scripts - For running */
   ...migrationScripts,

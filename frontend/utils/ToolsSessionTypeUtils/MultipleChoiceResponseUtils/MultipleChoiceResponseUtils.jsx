@@ -1,34 +1,11 @@
 import jsPDF from 'jspdf';
 
-import ORDER from '@/constants/sortingOrder';
-
-import { handleSort } from '../SortingToolsHistoryUtils';
-
 import {
   convertToUnixTimestamp,
   formatToStandardDate,
 } from '@/utils/FirebaseUtils';
 
-function MultipleChoiceResponseUtils(cardData) {
-  async function initializeToolSessionData() {
-    const { updatedAt, createdAt, response, toolId } = cardData;
-    // Sort response if not already sorted
-    const sortedResponse = handleSort(ORDER.ASC, response);
-    const formattedCreatedAt = formatToStandardDate(
-      new Date(convertToUnixTimestamp(createdAt))
-    );
-    const formattedUpdatedAt = formatToStandardDate(
-      new Date(convertToUnixTimestamp(updatedAt))
-    );
-
-    return {
-      createdAt: formattedCreatedAt,
-      updatedAt: formattedUpdatedAt,
-      toolId,
-      response: sortedResponse,
-    };
-  }
-
+function MultipleChoiceResponseUtils() {
   async function initializeResponseForSession(response) {
     let backgroundImgURL = '';
     let logoURL = '';
@@ -173,7 +150,6 @@ function MultipleChoiceResponseUtils(cardData) {
   }
 
   return {
-    initializeToolSessionData,
     initializeResponseForSession,
     formatCopyContent,
     formatExportContent,

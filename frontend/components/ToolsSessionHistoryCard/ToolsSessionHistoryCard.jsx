@@ -15,32 +15,34 @@ import {
 
 import Image from 'next/image';
 
-import HistoryPreview from '../HistoryPreview';
+import TOOLS_SESSION_UTILS_TYPE from '@/constants/toolsSessionUtilsType';
+
+import ToolsSessionHistoryPreviewDrawer from '../ToolsSessionHistoryPreviewDrawer';
 
 import styles from './styles';
 
-const HistoryCard = (props) => {
-  const { cardInstance } = props;
+const ToolSessionHistoryCard = (props) => {
   const theme = useTheme();
   const [openPreview, setOpenPreview] = useState(false);
-  const [restructuredToolSession, setRestructuredToolSession] = useState(null);
+
+  const { cardInstance } = props;
+  const toolSessionType = new TOOLS_SESSION_UTILS_TYPE[cardInstance.toolId]();
+  const [currentResponseNumber, setCurrentResponseNumber] = useState(
+    cardInstance.response.length - 1
+  );
   const [restructuredResponse, setRestructuredResponse] = useState(null);
-  const [currentResponseNumber, setCurrentResponseNumber] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
-      const sessionData = await cardInstance.initializeToolSessionData();
-      setRestructuredToolSession(sessionData);
-
-      setCurrentResponseNumber(sessionData.response.length - 1);
-      const responseData = await cardInstance.initializeResponseForSession(
-        sessionData.response[currentResponseNumber]
-      );
-      setRestructuredResponse(responseData);
+      if (!restructuredResponse) {
+        const responseData = await toolSessionType.initializeResponseForSession(
+          cardInstance.response[currentResponseNumber]
+        );
+        setRestructuredResponse(responseData);
+      }
     };
-
     fetchData();
-  }, [cardInstance]);
+  }, [currentResponseNumber, toolSessionType, cardInstance.response]);
 
   /**
    * Function to toggle the preview state of the history card.
@@ -51,8 +53,8 @@ const HistoryCard = (props) => {
 
   const handleNext = async () => {
     const newResponseNumber = currentResponseNumber + 1;
-    const responseData = await cardInstance.initializeResponseForSession(
-      restructuredToolSession.response[newResponseNumber]
+    const responseData = await toolSessionType.initializeResponseForSession(
+      cardInstance.response[newResponseNumber]
     );
     setRestructuredResponse(responseData);
     setCurrentResponseNumber(newResponseNumber);
@@ -60,8 +62,8 @@ const HistoryCard = (props) => {
 
   const handleBack = async () => {
     const newResponseNumber = currentResponseNumber - 1;
-    const responseData = await cardInstance.initializeResponseForSession(
-      restructuredToolSession.response[newResponseNumber]
+    const responseData = await toolSessionType.initializeResponseForSession(
+      cardInstance.response[newResponseNumber]
     );
     setRestructuredResponse(responseData);
     setCurrentResponseNumber(newResponseNumber);
@@ -73,7 +75,7 @@ const HistoryCard = (props) => {
    * @return {JSX.Element} Rendered card details component
    */
   const renderCardDetails = () => {
-    if (!restructuredToolSession || !restructuredResponse) {
+    if (!restructuredResponse) {
       return null; // Handle case where data is still loading or not available
     }
 
@@ -93,7 +95,7 @@ const HistoryCard = (props) => {
         </Button>
         <MobileStepper
           variant="text"
-          steps={restructuredToolSession.response.length}
+          steps={cardInstance.response.length}
           position="static"
           activeStep={currentResponseNumber}
           {...styles.stepperProps}
@@ -103,8 +105,7 @@ const HistoryCard = (props) => {
               {...styles.stepperButtonProps}
               onClick={handleNext}
               disabled={
-                currentResponseNumber ===
-                restructuredToolSession.response.length - 1
+                currentResponseNumber === cardInstance.response.length - 1
               }
             >
               Next
@@ -153,18 +154,18 @@ const HistoryCard = (props) => {
           {renderCardDetails()}
         </CardContent>
       </Card>
-      <HistoryPreview
-        cardInstance={cardInstance}
+      <ToolsSessionHistoryPreviewDrawer
+        toolSessionType={toolSessionType}
         open={openPreview}
         togglePreview={togglePreview}
         updatedAt={restructuredResponse?.updatedAt}
         title={restructuredResponse?.title}
         description={restructuredResponse?.description}
-        toolId={restructuredToolSession?.toolId}
+        toolId={cardInstance?.toolId}
         outputs={restructuredResponse?.outputs}
       />
     </Grid>
   );
 };
 
-export default HistoryCard;
+export default ToolSessionHistoryCard;

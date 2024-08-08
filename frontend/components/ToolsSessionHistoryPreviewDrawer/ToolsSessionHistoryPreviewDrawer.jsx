@@ -24,9 +24,9 @@ import styles from './styles';
  *
  * @return {JSX.Element} Rendered history preview component
  */
-const HistoryPreview = (props) => {
+const ToolsSessionHistoryPreviewDrawer = (props) => {
   const {
-    cardInstance,
+    toolSessionType,
     open,
     togglePreview,
     updatedAt,
@@ -50,7 +50,7 @@ const HistoryPreview = (props) => {
   };
 
   const handleCopy = () => {
-    const contentToCopy = cardInstance.formatCopyContent(
+    const contentToCopy = toolSessionType.formatCopyContent(
       title,
       updatedAt,
       description,
@@ -79,7 +79,7 @@ const HistoryPreview = (props) => {
   };
 
   const handleExport = () => {
-    const contentToExport = cardInstance.formatExportContent(
+    const contentToExport = toolSessionType.formatExportContent(
       title,
       updatedAt,
       description,
@@ -172,4 +172,4 @@ const HistoryPreview = (props) => {
   );
 };
 
-export default HistoryPreview;
+export default ToolsSessionHistoryPreviewDrawer;

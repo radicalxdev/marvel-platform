@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import createToolsHistory from '../toolsHistory/createToolsHistory';
-import updateToolsHistory from '../toolsHistory/updateToolsHistory';
+import createToolsSession from '../toolsHistorySession/createToolsSession';
+import updateToolsSession from '../toolsHistorySession/updateToolsSession';
 
 import { setToolsSessionState } from '@/redux/slices/toolsSlice';
 
@@ -26,8 +26,8 @@ const submitPrompt = async (payload, files, dispatch, sessionId, inSession) => {
     });
 
     if (inSession && sessionId) {
-      // Update the existing tools history document
-      const updateToolsPayload = {
+      // Update the existing tools session document
+      const updateToolsSessionPayload = {
         sessionId,
         toolId: payload.tool_data.tool_id,
         userId: payload.user.id,
@@ -35,17 +35,20 @@ const submitPrompt = async (payload, files, dispatch, sessionId, inSession) => {
         newOutputs: response.data?.data,
       };
 
-      await updateToolsHistory(updateToolsPayload, dispatch);
+      await updateToolsSession(updateToolsSessionPayload, dispatch);
     } else {
-      // Create a new tools history document
-      const createToolsPayload = {
+      // Create a new tools session document
+      const createToolsSessionPayload = {
         userId: payload.user.id,
         toolId: payload.tool_data.tool_id,
         inputs: payload.tool_data.inputs,
         outputs: response.data?.data,
       };
 
-      const sessionRef = await createToolsHistory(createToolsPayload, dispatch);
+      const sessionRef = await createToolsSession(
+        createToolsSessionPayload,
+        dispatch
+      );
       dispatch(
         setToolsSessionState({
           sessionId: sessionRef.sessionId,

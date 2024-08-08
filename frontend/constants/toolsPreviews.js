@@ -1,5 +1,5 @@
-import FlashCardPreview from '@/components/HistoryPreview/FlashCardPreview';
-import MultipleChoicePreview from '@/components/HistoryPreview/MultipleChoicePreview';
+import FlashCardPreview from '@/components/ToolsSessionHistoryPreviewDrawer/FlashCardPreview';
+import MultipleChoicePreview from '@/components/ToolsSessionHistoryPreviewDrawer/MultipleChoicePreview';
 
 import TOOLS_ID from './tools';
 

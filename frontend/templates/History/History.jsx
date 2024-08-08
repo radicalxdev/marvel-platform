@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 
-import HistoryListing from '@/components/HistoryListing';
+import ToolSessionHistoryListing from '@/components/ToolsSessionHistoryListing';
 import ToolCardSkeleton from '@/components/ToolCard/Skeleton';
 
 import styles from './styles';
@@ -34,7 +34,7 @@ const History = (props) => {
       );
     }
 
-    return <HistoryListing data={data} />;
+    return <ToolSessionHistoryListing data={data} />;
   };
   return (
     <Grid {...styles.mainGridProps}>
