@@ -14,7 +14,6 @@ const DEBUG = process.env.DEBUG;
 /**
  * Simulates communication with a Kai AI endpoint.
  *
- * @async
  * @function kaiCommunicator
  * @param {object} payload - The properties of the communication.
  * @param {object} props.data - The payload data object used in the communication.
@@ -82,8 +81,8 @@ const kaiCommunicator = async (payload) => {
  * Manages communications for a specific chat session with a chatbot, updating and retrieving messages.
  *
  * @function chat
- * @param {Object} props - The properties of the communication.
- * @param {Object} props.data - The data object containing the message and id.
+ * @param {object} props - The properties of the communication.
+ * @param {object} props.data - The data object containing the message and id.
  * @param {string} props.data.id - The id of the chat session.
  * @param {string} props.data.message - The message object.
  *
