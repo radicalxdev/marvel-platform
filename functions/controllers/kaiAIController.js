@@ -86,7 +86,7 @@ const kaiCommunicator = async (payload) => {
  * @param {Object} props - The properties of the communication.
  * @param {Object} props.data - The data object containing the message and id.
  * @param {string} props.data.id - The id of the chat session.
- * @param {Object} props.data.message - The message object.
+ * @param {string} props.data.message - The message object.
  *
  * @return {object} The response object containing the status and data.
  */
@@ -271,7 +271,7 @@ app.post('/api/tool/', (req, res) => {
 });
 
 /**
-* This creates a chat session for a user.
+ * This creates a chat session for a user.
  * If the chat session already exists, it will return the existing chat session.
  * Otherwise, it will create a new chat session and send the first message.
  *
