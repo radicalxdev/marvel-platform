@@ -64,17 +64,15 @@ const ChatHistoryWindow = () => {
       <Grid {...styles.historySideBar}>
         {/* Header of the sidebar */}
         <Grid {...styles.historySideBarHeader}>
-          <Grid>
-            <Tooltip title="Start a chat with Kai" arrow>
-              <Fab
-                aria-label="Start a chat with Kai"
-                onClick={() => newChat()}
-                {...styles.newChatIcon}
-              >
-                <ChatIcon />
-              </Fab>
-            </Tooltip>
-          </Grid>
+          <Tooltip title="Start a chat with Kai" arrow>
+            <Fab
+              aria-label="Start a chat with Kai"
+              onClick={() => newChat()}
+              {...styles.newChatIcon}
+            >
+              <ChatIcon />
+            </Fab>
+          </Tooltip>
           {/* Title of the chat history sidebar */}
           <Grid {...styles.historySideBarTitle}>
             {/* Display the title of the chat history sidebar */}

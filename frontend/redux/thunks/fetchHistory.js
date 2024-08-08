@@ -44,8 +44,15 @@ const fetchHistory = createAsyncThunk(
         // Convert Firestore timestamps to JavaScript Date objects and format as ISO strings
         createdAt: createdAt.toDate().toISOString(),
         updatedAt: updatedAt.toDate().toISOString(),
-        // Extract the title from the first message in the chat session
-        title: messages[0]?.payload?.text,
+
+        // Extract the title of the chat session. If the first message role is 'system', the title is the text of the second message. Otherwise, the title is the text of the first message.
+        title:
+          // Check if the first message role is 'system'
+          messages[0]?.role === 'system'
+            ? // If so, extract the text of the second message
+              messages[1]?.payload?.text
+            : // Otherwise, extract the text of the first message
+              messages[0]?.payload?.text,
       };
 
       // Add the chat history object to the history array

@@ -8,8 +8,7 @@ const styles = {
       display: 'flex',
       flexDirection: 'row',
       gap: '10px',
-      marginBottom: '10px',
-      marginLeft: '10px',
+      margin: '0px 0px 10px',
     },
   },
   defaultPrompt: {

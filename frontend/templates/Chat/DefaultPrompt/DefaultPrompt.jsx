@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import MenuLogo from '@/assets/svg/PurpleStar.svg'; // Import MenuLogo
 
-import { DEFAULT_PROMPTS } from '@/constants/bots';
-
 import styles from './styles';
 
 import { setInput } from '@/redux/slices/chatSlice';
@@ -24,6 +22,7 @@ const DefaultPrompt = ({ handleSendMessage }) => {
     input: userInput,
     typing,
     sessionLoaded,
+    defaultPrompts,
   } = useSelector((state) => state.chat);
 
   const [readyToSend, setReadyToSend] = useState(false);
@@ -47,9 +46,10 @@ const DefaultPrompt = ({ handleSendMessage }) => {
     }
   }, [readyToSend]);
 
-  const defaultPrompts = DEFAULT_PROMPTS;
-
-  return !sessionLoaded && !typing && userInput.length === 0 ? (
+  return !sessionLoaded &&
+    localStorage.getItem('sessionId') == null &&
+    !typing &&
+    userInput.length === 0 ? (
     <Grid container spacing={2} {...styles.defaultPromptsGridContainer}>
       {defaultPrompts.map((prompt, key) => (
         <Grid

@@ -287,11 +287,23 @@ const createChatSession = onCall(async (props) => {
   try {
     DEBUG && logger.log('Communicator started, data:', props.data);
 
-    const { user, message, type } = props.data;
+    const { user, message, type, discoveryLibraryId, systemMessage } =
+      props.data;
 
-    if (!user || !message || !type) {
+    if (!user || !message || !type || !discoveryLibraryId) {
       logger.log('Missing required fields', props.data);
       throw new HttpsError('invalid-argument', 'Missing required fields');
+    }
+
+    /**
+     * If a system message is provided, sets the timestamp of the system message to the current time.
+     * This is done to ensure that the timestamp of the system message is in the same format as the timestamp of user messages.
+     *
+     * @param {Object} systemMessage - The system message object, or null if no system message is provided.
+     */
+    if (systemMessage != null) {
+      // Set the timestamp of the system message to the current time
+      systemMessage.timestamp = Timestamp.fromMillis(Date.now());
     }
 
     const initialMessage = {
@@ -304,9 +316,13 @@ const createChatSession = onCall(async (props) => {
       .firestore()
       .collection('chatSessions')
       .add({
-        messages: [initialMessage],
+        messages:
+          systemMessage == null
+            ? [initialMessage]
+            : [systemMessage, initialMessage],
         user,
         type,
+        discoveryLibraryId,
         createdAt: Timestamp.fromMillis(Date.now()),
         updatedAt: Timestamp.fromMillis(Date.now()),
       });
@@ -314,9 +330,13 @@ const createChatSession = onCall(async (props) => {
     // Send trigger message to ReX AI
     const response = await kaiCommunicator({
       data: {
-        messages: [initialMessage],
+        messages:
+          systemMessage == null
+            ? [initialMessage]
+            : [systemMessage, initialMessage],
         user,
         type,
+        discoveryLibraryId,
       },
     });
 

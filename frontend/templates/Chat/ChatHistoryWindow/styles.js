@@ -25,10 +25,10 @@ const styles = {
       borderRadius: '15px',
       // Set the background to black.
       backgroundColor: '#000000',
-      // Set the min-width to 20%.
-      minWidth: '20%',
-      // Set the max width to 20%.
-      maxWidth: '20%',
+      // Set the min-width to 250px.
+      minWidth: '250px',
+      // Set the width to 25%.
+      width: '25%',
       // Set the height to 100%.
       height: '100%',
       // Set the color to white.

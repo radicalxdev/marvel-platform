@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
+import { DEFAULT_PROMPTS, MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
 
 import fetchChat from '../thunks/fetchChat';
+import { fetchDiscoveryLibraries } from '../thunks/fetchDiscoveryLibraries';
 
 const initialState = {
   input: '',
@@ -24,6 +25,9 @@ const initialState = {
   streaming: false,
   displayQuickActions: false,
   actionType: null,
+  defaultPrompts: DEFAULT_PROMPTS,
+  discoveryLibraries: [],
+  selectedDiscoveryLibraryId: null,
 };
 
 const chatSlice = createSlice({
@@ -34,6 +38,7 @@ const chatSlice = createSlice({
     resetChat: (state, _) => ({
       ...initialState,
       sessions: state.sessions,
+      discoveryLibraries: state.discoveryLibraries,
     }),
     setInput: (state, action) => {
       state.input = action.payload;
@@ -135,6 +140,23 @@ const chatSlice = createSlice({
     setActionType: (state, action) => {
       state.actionType = action.payload;
     },
+    setDefaultPrompt: (state, action) => {
+      if (action.payload) {
+        state.defaultPrompts = action.payload;
+      } else {
+        state.defaultPrompts = DEFAULT_PROMPTS;
+      }
+    },
+    setSelectedDiscoveryLibraryId: (state, action) => {
+      state.selectedDiscoveryLibraryId = action.payload;
+      const selectedLibrary = state.discoveryLibraries.find(
+        (library) => library.id === action.payload
+      );
+
+      if (selectedLibrary) {
+        state.defaultPrompts = selectedLibrary.defaultPrompts;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -145,6 +167,15 @@ const chatSlice = createSlice({
       .addCase(fetchChat.fulfilled, (state, action) => {
         state.chat = action.payload;
         state.sessionLoaded = true;
+        state.selectedDiscoveryLibraryId = null;
+
+        if (state.discoveryLibraries) {
+          const discoveryLibraryId = action.payload?.discoveryLibraryId;
+          if (discoveryLibraryId !== undefined && discoveryLibraryId !== null) {
+            state.selectedDiscoveryLibraryId = discoveryLibraryId;
+          }
+        }
+
         state.error = null;
       })
       .addCase(fetchChat.rejected, (state, action) => {
@@ -152,6 +183,14 @@ const chatSlice = createSlice({
         state.sessionLoaded = true;
         console.error(action.error);
         state.error = 'Could not fetch chat. Please try again.';
+      })
+      .addCase(fetchDiscoveryLibraries.fulfilled, (state, action) => {
+        state.discoveryLibraries = action.payload;
+      })
+      .addCase(fetchDiscoveryLibraries.rejected, (state, action) => {
+        state.discoveryLibraries = null;
+        console.error(action.error);
+        state.error = 'Could not fetch discovery libraries. Please try again.';
       });
   },
 });
@@ -181,6 +220,7 @@ export const {
   setHistoryLoaded,
   setDisplayQuickActions,
   setActionType,
+  setSelectedDiscoveryLibraryId,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

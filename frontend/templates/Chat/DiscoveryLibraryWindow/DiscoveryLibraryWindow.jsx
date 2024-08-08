@@ -1,27 +1,93 @@
 import { useState } from 'react';
 
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Fab, Grid, Typography } from '@mui/material';
+import { Fab, Grid, Skeleton, Typography } from '@mui/material';
+
+import { useSelector } from 'react-redux';
+
+import DiscoveryLibrary from '../DiscoveryLibrary';
 
 import styles from './styles';
 
 const DiscoveryLibraryWindow = () => {
+  const discoveryLibraries = useSelector(
+    (state) => state.chat.discoveryLibraries
+  );
+
   const [showDiscoveryLibrary, setShowDiscoveryLibraryWindow] = useState(false);
 
+  /**
+   * Returns a greeting message based on the current time of day.
+   *
+   * @return {string} The greeting message.
+   */
   const greeting = () => {
+    // Get the current hour of the day.
     const hours = new Date().getHours();
 
+    // Determine the greeting based on the current hour.
     if (hours < 12) {
+      // If the hour is before 12, return 'Good Morning'.
       return 'Good Morning';
     }
     if (hours < 18) {
+      // If the hour is between 12 and 18 (exclusive), return 'Good Afternoon'.
       return 'Good Afternoon';
     }
+    // If the hour is 18 or later, return 'Good Evening'.
     return 'Good Evening';
   };
 
-  const toggleDiscoveryLibrarySidebar = () =>
+  /**
+   * Toggles the visibility of the discovery library sidebar.
+   *
+   * @return {void} No return value.
+   */
+  const toggleDiscoveryLibrarySidebar = () => {
+    // Toggle the visibility of the discovery library sidebar by updating the state using the previous state.
     setShowDiscoveryLibraryWindow((prev) => !prev);
+  };
+
+  /**
+   * Returns a JSX element representing a skeleton component for the discovery library window. The skeleton component consists of a Grid container with five Skeleton components, each representing a discovery library item. The grid container has a column direction and a height of 100%.
+   *
+   * @return {JSX.Element} The skeleton component for the discovery library window.
+   */
+  const librarySkeleton = () => (
+    // Grid container with 100% height and column direction
+    <Grid container height="100%" flexDirection="column">
+      {/* Map over an array of length 5 */}
+      {Array.from({ length: 5 }).map((_, index) => (
+        // Skeleton component with specified props
+        <Skeleton key={index} animation="wave" width="100%" height="20%" />
+      ))}
+    </Grid>
+  );
+
+  /**
+   * Returns a JSX element representing an error message component.
+   *
+   * @return {JSX.Element} The error message component.
+   */
+  const renderErrorMessage = () => (
+    <Grid {...styles.errorMessageStyle}>
+      <Typography variant="h5">No Discovery Libraries Found</Typography>
+    </Grid>
+  );
+
+  const getLibraryContent = () => {
+    if (discoveryLibraries === null) {
+      return renderErrorMessage();
+    }
+
+    if (discoveryLibraries.length === 0) {
+      return librarySkeleton();
+    }
+
+    return discoveryLibraries.map((library) => (
+      <DiscoveryLibrary key={library.id} library={library} />
+    ));
+  };
 
   return !showDiscoveryLibrary ? (
     <Grid {...styles.openDiscoveryLibraryContainer}>
@@ -30,7 +96,7 @@ const DiscoveryLibraryWindow = () => {
         onClick={toggleDiscoveryLibrarySidebar}
         {...styles.toggleDiscoveryLibraryWindowButton(showDiscoveryLibrary)}
       >
-        <Grid {...styles.discoveryLibraryWindowIcon}>
+        <Grid>
           <svg
             viewBox="0 0 32 32"
             fill="none"
@@ -65,7 +131,7 @@ const DiscoveryLibraryWindow = () => {
           <RemoveIcon />
         </Fab>
       </Grid>
-      <Grid {...styles.discoveryLibraries}>{/* <DiscoveryLibraries> */}</Grid>
+      <Grid {...styles.discoveryLibraries}>{getLibraryContent()}</Grid>
     </Grid>
   );
 };

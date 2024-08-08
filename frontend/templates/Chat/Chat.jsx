@@ -54,6 +54,7 @@ import {
   updateHistoryEntry,
 } from '@/redux/slices/historySlice';
 import { firestore } from '@/redux/store';
+import { fetchDiscoveryLibraries } from '@/redux/thunks/fetchDiscoveryLibraries';
 import createChatSession from '@/services/chatbot/createChatSession';
 import sendMessage from '@/services/chatbot/sendMessage';
 
@@ -75,6 +76,8 @@ const ChatInterface = () => {
     error,
     displayQuickActions,
     actionType,
+    selectedDiscoveryLibraryId,
+    discoveryLibraries,
   } = useSelector((state) => state.chat);
   const { data: userData } = useSelector((state) => state.user);
 
@@ -95,6 +98,31 @@ const ChatInterface = () => {
 
     dispatch(setTyping(true));
 
+    /**
+     * If a selected discovery library ID is specified, create a system message
+     * containing the system message of the selected library.
+     *
+     * @returns {Object|null} The system message object or null if no library is selected.
+     */
+    let systemMessage = null;
+    if (selectedDiscoveryLibraryId != null) {
+      // Find the selected library in the list of discovery libraries
+      const selectedLibrary = discoveryLibraries.find(
+        (library) => library.id === selectedDiscoveryLibraryId
+      );
+
+      // If a library is selected, create a system message object with its system message
+      if (selectedLibrary) {
+        systemMessage = {
+          role: MESSAGE_ROLE.SYSTEM, // The role of the message (system or human)
+          type: MESSAGE_TYPES.TEXT, // The type of the message (text-based)
+          payload: {
+            text: selectedLibrary.systemMessage, // The text of the system message
+          },
+        };
+      }
+    }
+
     // Define the chat payload
     const chatPayload = {
       user: {
@@ -104,6 +132,8 @@ const ChatInterface = () => {
       },
       type: 'chat',
       message,
+      systemMessage,
+      discoveryLibraryId: selectedDiscoveryLibraryId ?? null,
     };
 
     // Send a chat session
@@ -140,6 +170,8 @@ const ChatInterface = () => {
   };
 
   useEffect(() => {
+    // Fetching all the discovery libraries.
+    dispatch(fetchDiscoveryLibraries());
     return () => {
       localStorage.removeItem('sessionId');
       dispatch(resetChat());
