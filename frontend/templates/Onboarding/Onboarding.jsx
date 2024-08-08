@@ -37,11 +37,11 @@ const OnboardingPage = ({ onboardingData }) => {
   }, [dispatch, onboardingData.id, step]);
 
   const handleNext = (formData = {}) => {
-    if (onboardingComponents[onboardingData.id] === ProfileSetupForm) {
+    if (onboardingComponents?.[onboardingData.id] === ProfileSetupForm) {
       dispatch(setTempData(formData)); // Store form data in Redux
     }
 
-    if (onboardingComponents[onboardingData.id] === Complete) {
+    if (onboardingComponents?.[onboardingData.id] === Complete) {
       dispatch(
         updateUserData({
           firestore,
@@ -49,7 +49,6 @@ const OnboardingPage = ({ onboardingData }) => {
         })
       );
       dispatch(setCompleted(true));
-      router.push('/');
       return;
     }
 

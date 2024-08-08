@@ -11,6 +11,7 @@ import ROUTES from '@/constants/routes';
 import { setEmailVerified, setLoading } from '@/redux/slices/authSlice';
 import { auth } from '@/redux/store';
 import fetchUserData from '@/redux/thunks/user';
+import { onboardingRegex } from '@/regex/routes';
 
 const redirectRegex = /\/redirect.*/;
 
@@ -36,6 +37,8 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
       ROUTES.TERMS,
       ROUTES.PASSWORD_RESET,
     ].includes(route);
+    // Check if the current route is an onboarding route
+    const isOnboardingUrl = onboardingRegex.test(asPath);
 
     const isRedirectRoute = redirectRegex.test(asPath);
     const isAuthRoute = isAuthUrl || isRedirectRoute;
@@ -60,6 +63,10 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
       if (onboardingStatus) {
         router.push(ROUTES.ONBOARDING.replace('[onboardingId]', '0'));
         return;
+      }
+      // If users who have already completed onboarding wrongly enter the onboarding page or just completed the last onboarding task.
+      if (isOnboardingUrl && !onboardingStatus) {
+        router.push(ROUTES.HOME);
       }
 
       fetchUserRelatedData(auth.currentUser.uid);
