@@ -8,6 +8,8 @@ import {
   where,
 } from 'firebase/firestore';
 
+import { storage } from '../store';
+
 // Thunk for fetching user data
 export const fetchUserData = createAsyncThunk(
   'userData/fetch',
@@ -49,5 +51,28 @@ export const updateUserData = createAsyncThunk(
     }
   }
 );
+
+// This function assumes that all user Data is stored in an object, that does not have the profileImage property yet.
+export const uploadImage = async(userObj, imageFile) => {
+
+  try {
+
+//   // Create a reference to a location in Firebase Storage where the profile image will be uploaded in the db
+//   // use the fullName to ensure uniqueness
+  const storageRef = ref(storage, `users/${userObj.fullName}/${imageFile.name}`);
+
+   // Upload the profile image file to the specified reference in Firebase Storage
+   await uploadBytes(storageRef, imageFile);
+
+   // download URL for the uploaded image
+   const profileImageUrl = await getDownloadURL(storageRef);
+
+   return profileImageUrl
+
+ } catch (error) {
+   console.log("There was an error: ", error);
+ }
+
+ }
 
 export default fetchUserData;

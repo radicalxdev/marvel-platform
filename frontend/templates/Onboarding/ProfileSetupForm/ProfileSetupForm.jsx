@@ -25,6 +25,8 @@ import { AuthContext } from '@/providers/GlobalProvider.jsx';
 
 import { setTempData } from '@/redux/slices/onboardingSlice.js';
 
+import { uploadImage } from '@/redux/thunks/user.js';
+
 const ProfileSetupForm = ({ onNext, tempData }) => {
   const dispatch = useDispatch();
   const { handleOpenSnackBar } = useContext(AuthContext);
@@ -140,7 +142,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
 
   const watchProfile = watch('profile');
   const renderProfile = () => {
-    const handleImageUpload = (e, onChange) => {
+    const handleImageUpload = async (e, onChange) => {
       e.preventDefault();
       const file =
         e.type === 'change' ? e.target.files[0] : e.dataTransfer.files[0];
@@ -154,6 +156,16 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
           );
         } else {
           onChange(file.name);
+
+          // Add user profile picture to tempData 
+           try {
+             const profileImageUrl = await uploadImage(tempData, file);
+             dispatch(setTempData({ ...tempData, profile: profileImageUrl }));
+             console.log('Added image to profile property.')
+           } catch (error) {
+             handleOpenSnackBar(ALERT_COLORS.ERROR, 'Error uploading image');
+           }
+          
         }
       }
     };

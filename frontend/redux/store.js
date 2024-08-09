@@ -4,6 +4,7 @@ import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
+import { getStorage } from 'firebase/storage';
 
 import authReducer from './slices/authSlice';
 import chatReducer from './slices/chatSlice';
@@ -18,6 +19,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const functions = getFunctions(app);
+const storage = getStorage(app);
 
 // Connect to Firebase Emulators if running locally
 // if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
@@ -36,5 +38,5 @@ const store = configureStore({
   },
 });
 
-export { auth, firestore, functions };
+export { auth, firestore, functions, storage };
 export default store;
