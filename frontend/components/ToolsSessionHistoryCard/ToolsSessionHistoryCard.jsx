@@ -31,19 +31,33 @@ import styles from './styles';
 
 import deleteToolsSession from '@/services/toolsHistorySession/deleteToolsSession';
 
+/**
+ * Function to render the details of a session card, including title, description, and a series of buttons for previewing a specific response,
+ * deleting a session card, and navigating between different responses.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.cardInstance - An object containing session-specific data such as the tool ID, session ID, user ID, and an array of responses.
+ * @param {Function} props.setAlertState - A function to manage the state of alert notifications, enabling the display of success or error messages to the user.
+ *
+ * @return {JSX.Element} Rendered card details component.
+ */
 const ToolSessionHistoryCard = (props) => {
-  const theme = useTheme();
-  const dispatch = useDispatch();
-  const [openPreview, setOpenPreview] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
+  // Destructuring props to extract necessary values
   const { cardInstance, setAlertState } = props;
-  const toolSessionType = new TOOLS_SESSION_UTILS_TYPE[cardInstance.toolId]();
+  const toolSessionType = new TOOLS_SESSION_UTILS_TYPE[cardInstance.toolId](); // Initializing the session utility type based on the toolId
+  // State variables for tracking the current response index and response data respectfully
   const [currentResponseNumber, setCurrentResponseNumber] = useState(
     cardInstance.response.length - 1
   );
   const [restructuredResponse, setRestructuredResponse] = useState(null);
 
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const [openPreview, setOpenPreview] = useState(false); // State for controlling the preview drawer visibility
+  const [loading, setLoading] = useState(false); // State for tracking loading status during deletion
+  const [openDialog, setOpenDialog] = useState(false); // State for controlling the alert dialog visibility
+
+  // useEffect hook to fetch response data when the component mounts or the current response changes
   useEffect(() => {
     const fetchData = async () => {
       if (!restructuredResponse) {
@@ -63,26 +77,37 @@ const ToolSessionHistoryCard = (props) => {
     setOpenPreview(!openPreview);
   };
 
+  /**
+   * Function to handle the click event for deleting a session card.
+   */
   const handleDeleteClick = () => {
     setOpenDialog(true);
   };
 
+  /**
+   * Function to handle the confirmation of deleting a session card.
+   */
   const handleConfirmDelete = async () => {
+    // Open dialog to confirm deletion
     setOpenDialog(false);
     setLoading(true);
+    // Open dialog to confirm deletion
     const deleteSessionPayload = {
       toolId: cardInstance.toolId,
       sessionId: cardInstance.sessionId,
       userId: cardInstance.userId,
     };
     try {
+      // Attempt to delete session
       await deleteToolsSession(deleteSessionPayload, dispatch);
+      // Show success message if deletion is successful
       setAlertState({
         open: true,
         message: 'Session deleted successfully',
         severity: 'success',
       });
     } catch (error) {
+      // Show error message if deletion fails
       setAlertState({
         open: true,
         message: `Error deleting Session: ${error}`,
@@ -93,10 +118,16 @@ const ToolSessionHistoryCard = (props) => {
     }
   };
 
+  /**
+   * Function to close the aler dialog for deleting a session
+   */
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
 
+  /**
+   * Function to handle the click event for navigating to the next response.
+   */
   const handleNext = async () => {
     const newResponseNumber = currentResponseNumber + 1;
     const responseData = await toolSessionType.initializeResponseForSession(
@@ -106,6 +137,9 @@ const ToolSessionHistoryCard = (props) => {
     setCurrentResponseNumber(newResponseNumber);
   };
 
+  /**
+   * Function to handle the click event for navigating to the previous response.
+   */
   const handleBack = async () => {
     const newResponseNumber = currentResponseNumber - 1;
     const responseData = await toolSessionType.initializeResponseForSession(

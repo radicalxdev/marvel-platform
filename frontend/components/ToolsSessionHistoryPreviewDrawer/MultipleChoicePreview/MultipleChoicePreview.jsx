@@ -1,14 +1,18 @@
 import { Box, Grid, Typography } from '@mui/material';
 
 import styles from './styles';
-
+/**
+ * Renders a component for displaying multiple-choice questions based on the provided outputs.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {Array} props.outputs - An array of objects representing the multiple-choice questions to be displayed.
+ * @returns {JSX.Element} A React component with the rendered multiple-choice questions.
+ */
 const MultipleChoicePreview = (props) => {
   const { outputs } = props;
 
   /**
-   * Function to render the question details section of the history preview, including the question, list of questions with possible answers, the actual answer, and explanation.
-   *
-   * @return {JSX.Element} Rendered question details component
+   * Function to render each of the multiple-choice questions like the question itself, the possible choices, the correct answer, and the explanation behind the answer.
    */
   const renderMultipleChoiceQuestions = () => {
     return (

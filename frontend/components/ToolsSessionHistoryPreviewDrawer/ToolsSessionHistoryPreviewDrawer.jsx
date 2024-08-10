@@ -14,6 +14,7 @@ import AlertStateUtils from '@/utils/AlertStateUtils';
  * Component for rendering a preview of history details in a drawer.
  *
  * @param {Object} props - Object containing the following properties:
+ *  @param {Class} props.toolSessionType - Type of the tool session
  *  @param {boolean} props.open - Boolean indicating whether the preview drawer is open
  *  @param {Function} props.togglePreview - Function to toggle the preview drawer
  *  @param {string} props.createdAt - Creation date of the history item
@@ -36,8 +37,11 @@ const ToolsSessionHistoryPreviewDrawer = (props) => {
     outputs,
   } = props;
 
-  const { alertState, setAlertState, handleAlertClose } = AlertStateUtils();
+  const { alertState, setAlertState, handleAlertClose } = AlertStateUtils(); // calling a new instance of the Alert State utility functions for the save and export functionality
 
+  /**
+   * Function to handle copying the card content
+   */
   const handleCopy = () => {
     const contentToCopy = toolSessionType.formatCopyContent(
       title,
@@ -67,6 +71,9 @@ const ToolsSessionHistoryPreviewDrawer = (props) => {
     return null;
   };
 
+  /**
+   * Function to handle exporting the card content to PDF
+   */
   const handleExport = () => {
     const contentToExport = toolSessionType.formatExportContent(
       title,
@@ -75,7 +82,7 @@ const ToolsSessionHistoryPreviewDrawer = (props) => {
       outputs
     );
 
-    // save and export to pdf
+    // Save and export to PDF
     try {
       contentToExport.save(`${title}.pdf`);
       setAlertState({
@@ -107,11 +114,17 @@ const ToolsSessionHistoryPreviewDrawer = (props) => {
     );
   };
 
+  /**
+   * Function to render the preview component based on the toolId
+   */
   const renderPreview = () => {
     const PreviewComponent = TOOLS_PREVIEWS[toolId];
     return PreviewComponent ? <PreviewComponent outputs={outputs} /> : null;
   };
 
+  /**
+   * Function to render the copy and export buttons
+   */
   const renderOutputButtons = () => {
     return (
       <Grid container spacing={2} {...styles.gridButtonProps}>

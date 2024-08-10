@@ -9,19 +9,22 @@ import styles from './styles';
 import AlertStateUtils from '@/utils/AlertStateUtils';
 
 /**
- * Component for rendering the main interface of the history section, including the title and a list of history items.
+ * Renders the history component with title, form, and snack bar.
  *
- * @return {JSX.Element} Rendered history interface component
+ * @param {Object} props - The properties passed to the component.
+ * @param {Array} props.data - The data to be displayed in the history.
+ * @param {boolean} props.loading - Indicates if the data is still loading.
+ *
+ * @returns {JSX.Element} JSX element representing the history component.
  */
 const History = (props) => {
   const { data, loading } = props;
 
-  // Using AlertStateUtils to get the alert state and handlers
+  // Initialize alert state and related functions for the delete functionality
   const { alertState, setAlertState, handleAlertClose } = AlertStateUtils();
+
   /**
-   * Function to render the title section of the history interface.
-   *
-   * @return {JSX.Element} Rendered title component
+   * Function to render the title of the history component
    */
   const renderTitle = () => {
     return (
@@ -30,6 +33,10 @@ const History = (props) => {
       </Grid>
     );
   };
+
+  /**
+   * Function to render the form section of the history component
+   */
   const renderForm = () => {
     if (!data || data.length === 0) {
       return (
@@ -43,10 +50,12 @@ const History = (props) => {
       <ToolSessionHistoryListing data={data} setAlertState={setAlertState} />
     );
   };
+
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
       {loading ? <ToolCardSkeleton /> : renderForm()}
+      {/* This Snackbar is mainly here for the delete functionality for when the user deletes a session */}
       <SnackBar
         open={alertState.open}
         handleClose={handleAlertClose}

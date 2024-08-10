@@ -1,3 +1,8 @@
+/**
+ * Function to fetch the title of a YouTube video given its URL
+ * @param {string} url - string url of youtube video
+ * @returns the title of the youtube video
+ */
 const fetchYoutubeTitle = async (url) => {
   const videoId = url.split('v=')[1];
   const api_key = 'AIzaSyBq1FiaDyqjzAL1S7uXlB9nXISRWD7mXxc';

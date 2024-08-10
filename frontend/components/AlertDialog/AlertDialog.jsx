@@ -9,6 +9,18 @@ import {
 
 import styles from './styles';
 
+/**
+ * Function component for rendering an alert dialog.
+ * @param {Object} props - The properties passed to the component.
+ * @param {boolean} props.open - Controls the visibility of the dialog.
+ * @param {Function} props.handleClose - Function to handle dialog close.
+ * @param {string} props.titleContent - Content to be displayed as the dialog title.
+ * @param {string} props.bodyContent - Content to be displayed in the dialog body.
+ * @param {string} props.buttonOneContent - Content for the first button in the dialog.
+ * @param {string} props.buttonTwoContent - Content for the second button in the dialog.
+ * @param {Function} props.handleConfirmation - Function to handle the confirmation button click.
+ * @returns {JSX.Element} A Dialog component with the specified content and functionality.
+ */
 const AlertDialog = (props) => {
   const {
     open,

@@ -62,7 +62,7 @@ const NavMenu = () => {
   const handleRoute = (link, id) => {
     router.push(link);
     setActive(id);
-    dispatch(resetToolsSessionState());
+    dispatch(resetToolsSessionState()); // resets toolsSessionState when user clicks on any of the navigation options to end a session
   };
 
   return (

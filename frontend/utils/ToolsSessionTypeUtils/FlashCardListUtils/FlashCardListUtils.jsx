@@ -6,7 +6,23 @@ import {
 } from '@/utils/FirebaseUtils';
 import fetchYoutubeTitle from '@/utils/YoutubeUtils';
 
+/**
+ * Class that defines a set of functions to manage the utilities for the FlashCardList
+ * @returns all of the functions assoicated with this utility class.
+ */
 function FlashCardListUtils() {
+  /**
+   * Asynchronously processes and formats the session response data.
+   * @param {Map} response - The session response containing inputs, outputs, and timestamp.
+   *
+   * @returns {Object} - An object with the formatted session details including:
+   *   - `title` (string): The title of the flashcard set.
+   *   - `description` (string): Description of the flashcard set.
+   *   - `backgroundImgURL` (string): URL of the background image.
+   *   - `logoURL` (string): URL of the logo image.
+   *   - `updatedAt` (string): Formatted timestamp of when the session was updated.
+   *   - `outputs` (Array): Array of flashcard data.
+   */
   async function initializeResponseForSession(response) {
     let backgroundImgURL = '';
     let logoURL = '';
@@ -37,6 +53,15 @@ function FlashCardListUtils() {
     };
   }
 
+  /**
+   * Function to format the content for copying to the clipboard or text output
+   * @param {string} title - title of the response
+   * @param {timestamp} updatedAt - timestamp of when the response was made or when the session card was updated with this response
+   * @param {string} description - descrption of the response
+   * @param {Array} outputs - AI output given of the response
+   *
+   * @returns the content mentioned above for copying to the clipboard or text output
+   */
   function formatCopyContent(title, updatedAt, description, outputs) {
     // Combine the header and preview content into a single string
     let formattedContent = `Title: ${title}\nUpdated At: ${updatedAt}\nDescription: ${description}\n`;
@@ -48,6 +73,15 @@ function FlashCardListUtils() {
     return formattedContent;
   }
 
+  /**
+   * Function to format content for export to a PDF document
+   * @param {string} title - title of the response
+   * @param {timestamp} updatedAt - timestamp of when the response was made or when the session card was updated with this response
+   * @param {string} description - descrption of the response
+   * @param {Array} outputs - AI output given of the response
+   *
+   * @returns the content mentioned above for exporting to a PDF document
+   */
   function formatExportContent(title, updatedAt, description, outputs) {
     const JsPDF = jsPDF;
     const doc = new JsPDF();

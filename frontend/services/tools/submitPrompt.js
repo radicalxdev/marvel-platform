@@ -34,7 +34,7 @@ const submitPrompt = async (payload, files, dispatch, sessionId, inSession) => {
         newInputs: payload.tool_data.inputs,
         newOutputs: response.data?.data,
       };
-
+      // calling the service function to update an existing tools session by adding on a new response
       await updateToolsSession(updateToolsSessionPayload, dispatch);
     } else {
       // Create a new tools session document
@@ -44,11 +44,12 @@ const submitPrompt = async (payload, files, dispatch, sessionId, inSession) => {
         inputs: payload.tool_data.inputs,
         outputs: response.data?.data,
       };
-
+      // calling the service function to create a new tools session
       const sessionRef = await createToolsSession(
         createToolsSessionPayload,
         dispatch
       );
+      // updating the tools session state within the toolsSlice to begin a new session
       dispatch(
         setToolsSessionState({
           sessionId: sessionRef.sessionId,
