@@ -123,49 +123,39 @@ const updateToolsSession = onCall(async (props) => {
 // Function to delete an existing tools Session document
 const deleteToolsSession = onCall(async (props) => {
   try {
-    // Destructure the necessary fields from the incoming data
-    const { toolId, userId } = props.data;
+    const { sessionId, toolId, userId } = props.data;
 
-    // Check if any of the required fields are missing
-    if (!toolId || !userId) {
-      throw new HttpsError('invalid-argument', 'Missing value');
+    // Validate required fields
+    if (!toolId || !userId || !sessionId) {
+      throw new HttpsError('invalid-argument', 'Missing required parameters');
     }
 
-    // Get the document from the 'toolsSession' collection in Firestore
-    const toolsSessionRef = await admin
+    // Query for the specific document using all required fields
+    const querySnapshot = await admin
       .firestore()
       .collection('toolsSession')
       .where('toolId', '==', toolId)
       .where('userId', '==', userId)
+      .where('sessionId', '==', sessionId)
+      .limit(1)
       .get();
 
     // Check if the document exists
-    if (toolsSessionRef.empty) {
+    if (querySnapshot.empty) {
       throw new HttpsError('not-found', 'Document does not exist');
     }
 
-    // Get the document data
-    const docRef = toolsSessionRef.docs[0];
-    const toolsSession = docRef.data();
+    // Delete the found document
+    const docRef = querySnapshot.docs[0].ref;
+    await docRef.delete();
 
-    // Check if the userId matches the userId of the document owner
-    if (toolsSession.userId !== userId) {
-      throw new HttpsError(
-        'permission-denied',
-        'User does not have permission to delete this document'
-      );
-    }
-
-    // Delete the document
-    await docRef.ref.delete();
-
-    // Return a success response with the document being removed
+    // Return success response
     return {
       success: true,
       message: 'Document successfully removed!',
     };
   } catch (error) {
-    // Log the error and throw an HTTP error if document update fails
+    // Log the error and throw an HTTP error if deletion fails
     console.error('Error deleting document:', error);
     throw new HttpsError('internal', 'Unable to delete document', error);
   }

@@ -10,7 +10,7 @@ import { auth, firestore } from '@/redux/store';
 import fetchHistory from '@/redux/thunks/history';
 
 const KaiHistory = () => {
-  const { data, loading, error } = useSelector((state) => state.history);
+  const { data, loading } = useSelector((state) => state.history);
 
   const dispatch = useDispatch();
 
@@ -25,7 +25,7 @@ const KaiHistory = () => {
     fetchKaiHistory();
   }, [dispatch, firestore, auth.currentUser]);
 
-  return <HistoryPage data={data} loading={loading} error={error} />;
+  return <HistoryPage data={data} loading={loading} />;
 };
 
 KaiHistory.getLayout = function getLayout(page) {

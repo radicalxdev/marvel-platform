@@ -1,7 +1,8 @@
 import { httpsCallable } from 'firebase/functions';
 
 import { setError, setStreaming, setTyping } from '@/redux/slices/chatSlice';
-import { functions } from '@/redux/store';
+import { firestore, functions } from '@/redux/store';
+import fetchHistory from '@/redux/thunks/history';
 
 /**
  * Deletes a tool session.
@@ -17,6 +18,9 @@ const deleteToolsSession = async (payload, dispatch) => {
       'deleteToolsSession'
     );
     const response = await deleteToolsHistorySession(payload);
+    if (payload.userId) {
+      dispatch(fetchHistory({ firestore, id: payload.userId }));
+    }
     return response.data;
   } catch (err) {
     dispatch(setError('Error! Couldn\u0027t send message'));

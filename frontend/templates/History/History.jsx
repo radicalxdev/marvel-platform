@@ -2,6 +2,9 @@ import { Grid, Typography } from '@mui/material';
 
 import ToolSessionHistoryListing from '@/components/ToolsSessionHistoryListing';
 import ToolCardSkeleton from '@/components/ToolCard/Skeleton';
+import SnackBar from '@/components/SnackBar';
+
+import AlertStateUtils from '@/utils/AlertStateUtils';
 
 import styles from './styles';
 
@@ -13,6 +16,8 @@ import styles from './styles';
 const History = (props) => {
   const { data, loading } = props;
 
+  // Using AlertStateUtils to get the alert state and handlers
+  const { alertState, setAlertState, handleAlertClose } = AlertStateUtils();
   /**
    * Function to render the title section of the history interface.
    *
@@ -34,12 +39,20 @@ const History = (props) => {
       );
     }
 
-    return <ToolSessionHistoryListing data={data} />;
+    return (
+      <ToolSessionHistoryListing data={data} setAlertState={setAlertState} />
+    );
   };
   return (
     <Grid {...styles.mainGridProps}>
       {renderTitle()}
       {loading ? <ToolCardSkeleton /> : renderForm()}
+      <SnackBar
+        open={alertState.open}
+        handleClose={handleAlertClose}
+        message={alertState.message}
+        severity={alertState.severity}
+      />
     </Grid>
   );
 };

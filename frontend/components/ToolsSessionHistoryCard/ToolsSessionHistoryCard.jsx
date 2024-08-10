@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import {
+  DeleteForever,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+} from '@mui/icons-material';
 
 import {
   Button,
   Card,
   CardContent,
   CardMedia,
+  CircularProgress,
   Grid,
   MobileStepper,
   Typography,
@@ -15,17 +20,24 @@ import {
 
 import Image from 'next/image';
 
+import { useDispatch } from 'react-redux';
+
 import TOOLS_SESSION_UTILS_TYPE from '@/constants/toolsSessionUtilsType';
 
+import AlertDialog from '../AlertDialog';
 import ToolsSessionHistoryPreviewDrawer from '../ToolsSessionHistoryPreviewDrawer';
 
 import styles from './styles';
 
+import deleteToolsSession from '@/services/toolsHistorySession/deleteToolsSession';
+
 const ToolSessionHistoryCard = (props) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [openPreview, setOpenPreview] = useState(false);
-
-  const { cardInstance } = props;
+  const [loading, setLoading] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const { cardInstance, setAlertState } = props;
   const toolSessionType = new TOOLS_SESSION_UTILS_TYPE[cardInstance.toolId]();
   const [currentResponseNumber, setCurrentResponseNumber] = useState(
     cardInstance.response.length - 1
@@ -51,6 +63,40 @@ const ToolSessionHistoryCard = (props) => {
     setOpenPreview(!openPreview);
   };
 
+  const handleDeleteClick = () => {
+    setOpenDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setOpenDialog(false);
+    setLoading(true);
+    const deleteSessionPayload = {
+      toolId: cardInstance.toolId,
+      sessionId: cardInstance.sessionId,
+      userId: cardInstance.userId,
+    };
+    try {
+      await deleteToolsSession(deleteSessionPayload, dispatch);
+      setAlertState({
+        open: true,
+        message: 'Session deleted successfully',
+        severity: 'success',
+      });
+    } catch (error) {
+      setAlertState({
+        open: true,
+        message: `Error deleting Session: ${error}`,
+        severity: 'error',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   const handleNext = async () => {
     const newResponseNumber = currentResponseNumber + 1;
     const responseData = await toolSessionType.initializeResponseForSession(
@@ -70,7 +116,8 @@ const ToolSessionHistoryCard = (props) => {
   };
 
   /**
-   * Function to render the details of the history card, including title, description, and a preview button.
+   * Function to render the details of a session card, including title, description, and series of buttons including preview a specific response,
+   * deleting a session card, and navigating between different responses.
    *
    * @return {JSX.Element} Rendered card details component
    */
@@ -90,9 +137,23 @@ const ToolSessionHistoryCard = (props) => {
         <Typography {...styles.descriptionProps}>
           {restructuredResponse.description}
         </Typography>
-        <Button {...styles.previewButtonProps} onClick={togglePreview}>
-          Preview
-        </Button>
+        <Grid {...styles.sessionCardSectionProps}>
+          <Button {...styles.cardButtonProps} onClick={togglePreview}>
+            Preview
+          </Button>
+          <Button
+            {...styles.cardButtonProps}
+            onClick={handleDeleteClick}
+            disabled={loading}
+          >
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              <DeleteForever />
+            )}
+            {loading ? '' : 'Delete'}
+          </Button>
+        </Grid>
         <MobileStepper
           variant="text"
           steps={cardInstance.response.length}
@@ -101,8 +162,7 @@ const ToolSessionHistoryCard = (props) => {
           {...styles.stepperProps}
           nextButton={
             <Button
-              size="small"
-              {...styles.stepperButtonProps}
+              {...styles.cardButtonProps}
               onClick={handleNext}
               disabled={
                 currentResponseNumber === cardInstance.response.length - 1
@@ -118,8 +178,7 @@ const ToolSessionHistoryCard = (props) => {
           }
           backButton={
             <Button
-              size="small"
-              {...styles.stepperButtonProps}
+              {...styles.cardButtonProps}
               onClick={handleBack}
               disabled={currentResponseNumber === 0}
             >
@@ -163,6 +222,15 @@ const ToolSessionHistoryCard = (props) => {
         description={restructuredResponse?.description}
         toolId={cardInstance?.toolId}
         outputs={restructuredResponse?.outputs}
+      />
+      <AlertDialog
+        open={openDialog}
+        handleClose={handleCloseDialog}
+        titleContent="Confirm Deletion"
+        bodyContent="Are you sure you want to delete this session? This action cannot be undone."
+        buttonOneContent="Cancel"
+        buttonTwoContent="Delete"
+        handleConfirmation={handleConfirmDelete}
       />
     </Grid>
   );

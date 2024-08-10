@@ -1,6 +1,13 @@
 import { useState } from 'react';
 
-import { FormControl, Grid, MenuItem, Select, Typography } from '@mui/material';
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material';
 
 import ORDER from '@/constants/sortingOrder';
 
@@ -23,7 +30,7 @@ import {
  * @return {JSX.Element} Rendered history listing component
  */
 const ToolsSessionHistoryListing = (props) => {
-  const { data } = props;
+  const { data, setAlertState } = props;
 
   const { thisWeek, thisMonth, thisYear, beyondThisYear } =
     getCategorizedData(data);
@@ -48,6 +55,7 @@ const ToolsSessionHistoryListing = (props) => {
               <Grid item key={index} xs={12} sm={6} md={4}>
                 <ToolsSessionHistoryCard
                   cardInstance={toolSessionCardInstance}
+                  setAlertState={setAlertState}
                 />
               </Grid>
             );
@@ -59,6 +67,7 @@ const ToolsSessionHistoryListing = (props) => {
   const renderDropDownMenu = () => (
     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
       <FormControl {...styles.formProps}>
+        <InputLabel {...styles.labelProps}>Sort by</InputLabel>
         <Select
           value={order}
           onChange={(e) => setOrder(e.target.value)}

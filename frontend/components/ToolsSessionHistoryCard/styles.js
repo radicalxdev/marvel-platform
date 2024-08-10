@@ -90,39 +90,36 @@ const styles = {
       WebkitBoxOrient: 'vertical',
     },
   },
-  previewButtonProps: {
-    variant: 'contained',
-    color: 'primary',
-    size: 'small',
-    sx: {
-      borderRadius: '100px',
-      transition: (theme) => theme.transitions.create('all'),
-      '&:hover': {
-        cursor: 'pointer',
-      },
-    },
+  sessionCardSectionProps: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   stepperProps: {
     sx: {
-      maxWidth: 500,
+      maxWidth: '100%',
       flexGrow: 1,
       bgcolor: 'white',
       color: 'black',
-      padding: '8px 0px 0px 0px',
+      padding: '12px 0px 0px 0px',
+      fontFamily: 'Satoshi Bold',
     },
   },
-  stepperButtonProps: {
+  cardButtonProps: {
     variant: 'contained',
     color: 'primary',
     size: 'small',
     sx: {
       borderRadius: '100px',
+      padding: '8px 16px',
+      minWidth: '100px',
+      height: '36px',
       transition: (theme) => theme.transitions.create('all'),
       '&:hover': {
         cursor: 'pointer',
       },
       '&.Mui-disabled': {
-        backgroundColor: 'gray',
+        backgroundColor: 'grey',
         color: 'white',
         cursor: 'not-allowed',
         opacity: 0.5,

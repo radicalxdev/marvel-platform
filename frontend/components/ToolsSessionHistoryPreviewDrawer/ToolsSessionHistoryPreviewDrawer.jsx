@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { Close, FileCopyOutlined, GetAppOutlined } from '@mui/icons-material';
 
 import { Button, Drawer, Grid, IconButton, Typography } from '@mui/material';
@@ -9,6 +7,8 @@ import TOOLS_PREVIEWS from '@/constants/toolsPreviews';
 import SnackBar from '../SnackBar';
 
 import styles from './styles';
+
+import AlertStateUtils from '@/utils/AlertStateUtils';
 
 /**
  * Component for rendering a preview of history details in a drawer.
@@ -36,18 +36,7 @@ const ToolsSessionHistoryPreviewDrawer = (props) => {
     outputs,
   } = props;
 
-  const [alertState, setAlertState] = useState({
-    open: false,
-    message: '',
-    severity: '',
-  });
-
-  const handleAlertClose = () => {
-    setAlertState({
-      ...alertState,
-      open: false,
-    });
-  };
+  const { alertState, setAlertState, handleAlertClose } = AlertStateUtils();
 
   const handleCopy = () => {
     const contentToCopy = toolSessionType.formatCopyContent(
