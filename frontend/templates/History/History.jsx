@@ -1,12 +1,12 @@
 import { Grid, Typography } from '@mui/material';
 
-import ToolSessionHistoryListing from '@/components/ToolsSessionHistoryListing';
-import ToolCardSkeleton from '@/components/ToolCard/Skeleton';
 import SnackBar from '@/components/SnackBar';
-
-import AlertStateUtils from '@/utils/AlertStateUtils';
+import ToolCardSkeleton from '@/components/ToolCard/Skeleton';
+import ToolSessionHistoryListing from '@/components/ToolsSessionHistoryListing';
 
 import styles from './styles';
+
+import AlertStateUtils from '@/utils/AlertStateUtils';
 
 /**
  * Component for rendering the main interface of the history section, including the title and a list of history items.
