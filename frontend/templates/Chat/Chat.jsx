@@ -481,55 +481,55 @@ const ChatInterface = () => {
 
   const renderChatHistoryButton = () => {
     return (
-      <div>
-        <Fab
-          aria-label="open chat history"
-          size="medium"
-          {...(!showChatHistory
-            ? styles.chatHistory.chatHistoryButtonFabProps
-            : styles.chatHistory.chatHistoryButtonFabPropsHide)}
-          onClick={handleShowChatHistory}
-        >
-          <ArrowUp {...styles.chatHistory.chatHistoryButtonIconProps} />
-        </Fab>
-      </div>
+      <Fab
+        size="medium"
+        {...(!showChatHistory
+          ? styles.chatHistory.chatHistoryButtonFabProps
+          : styles.chatHistory.chatHistoryButtonFabPropsHide)}
+        onClick={handleShowChatHistory}
+      >
+        <ArrowUp {...styles.chatHistory.chatHistoryButtonIconProps} />
+      </Fab>
     );
   };
 
   const renderChatHistory = () => {
     return (
-      <Paper
-        {...(showChatHistory
-          ? styles.chatHistory.chatHistoryContainerProps
-          : styles.chatHistory.chatHistoryContainerClose)}
-      >
-        {showChatHistory ? (
-          <>
-            <div {...styles.chatHistory.chatHistoryTitleContainerProps}>
-              <Typography {...styles.chatHistory.chatHistoryTitleProps}>
-                Chat History
-              </Typography>
-              <IconButton
-                {...styles.chatHistory.closeButtonProps}
-                onClick={handleShowChatHistory}
-              >
-                <RemoveIcon />
-              </IconButton>
-            </div>
-            <ChatHistory
-              user={{
-                email: userData.email,
-                fullName: userData.fullName,
-                id: userData.id,
-              }}
-            />
-          </>
-        ) : null}
-      </Paper>
+      <>
+        {renderChatHistoryButton()}
+        <Paper
+          {...(showChatHistory
+            ? styles.chatHistory.chatHistoryContainerProps
+            : styles.chatHistory.chatHistoryContainerClose)}
+        >
+          {showChatHistory ? (
+            <>
+              <div {...styles.chatHistory.chatHistoryTitleContainerProps}>
+                <Typography {...styles.chatHistory.chatHistoryTitleProps}>
+                  Chat History
+                </Typography>
+                <IconButton
+                  {...styles.chatHistory.closeButtonProps}
+                  onClick={handleShowChatHistory}
+                >
+                  <RemoveIcon />
+                </IconButton>
+              </div>
+              <ChatHistory
+                user={{
+                  email: userData.email,
+                  fullName: userData.fullName,
+                  id: userData.id,
+                }}
+              />
+            </>
+          ) : null}
+        </Paper>
+      </>
     );
   };
 
-  const testRender = () => {
+  const renderTopBar = () => {
     return (
       <Box {...styles.topBar.barProps}>
         <Button
@@ -569,14 +569,13 @@ const ChatInterface = () => {
 
   return (
     <Grid {...styles.mainGridProps(showChatHistory, showDiscovery)}>
-      {testRender()}
+      {renderTopBar()}
       {renderMoreChat()}
       {renderDiscoveryLibrary()}
       {renderCenterChatContent()}
       {renderCenterChatContentNoMessages()}
       {renderNewMessageIndicator()}
       {renderBottomChatContent()}
-      {renderChatHistoryButton()}
       {renderChatHistory()}
     </Grid>
   );
