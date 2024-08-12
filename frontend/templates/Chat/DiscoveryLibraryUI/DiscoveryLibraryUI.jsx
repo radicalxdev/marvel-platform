@@ -78,11 +78,10 @@ const DiscoveryLibraryUI = ({ show, handleSendMessage }) => {
     fetchPrompts();
   }, []);
 
-  const handlePromptClick = (prompt) => {
+  const handlePromptClick = (description) => {
     // console.log('Prompt clicked:', description);
-    const { title, description } = prompt;
     dispatch(resetChat());
-    dispatch(setInput(title));
+    dispatch(setInput(description));
     handleSendMessage(description);
   };
 
