@@ -76,7 +76,7 @@ const ToolsSessionHistoryListing = (props) => {
   const renderDropDownMenu = () => (
     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
       <FormControl {...styles.formProps}>
-        <InputLabel {...styles.labelProps}>Sort by</InputLabel>
+        <InputLabel {...styles.labelProps}>Order</InputLabel>
         <Select
           value={order}
           onChange={(e) => setOrder(e.target.value)}
