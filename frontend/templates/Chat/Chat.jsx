@@ -101,9 +101,9 @@ const ChatInterface = () => {
         message,
       })
     );
-    
+
     dispatch(setTyping(true));
-  
+
     // Define the chat payload
     const chatPayload = {
       user: {
@@ -114,14 +114,14 @@ const ChatInterface = () => {
       type: 'chat',
       message,
     };
-  
+
     // Send a chat session
     const { status, data } = await createChatSession(chatPayload, dispatch);
-  
+
     // Remove typing bubble
     dispatch(setTyping(false));
     if (status === 'created') dispatch(setStreaming(true));
-  
+
     // Set chat session
     dispatch(setChatSession(data));
     dispatch(setSessionLoaded(true));
@@ -246,7 +246,7 @@ const ChatInterface = () => {
         text: input,
       },
     };
-    
+
     if (!chatMessages) {
       // Start a new conversation if there are no existing messages
       await startConversation(message);
@@ -257,7 +257,7 @@ const ChatInterface = () => {
     dispatch(
       setMessages({
         role: MESSAGE_ROLE.HUMAN,
-        message
+        message,
       })
     );
 
@@ -302,6 +302,7 @@ const ChatInterface = () => {
   };
 
   const handleSelectPrompt = async (prompt) => {
+    dispatch(resetChat());
     dispatch(setInput(prompt));
     dispatch(setTyping(true));
 

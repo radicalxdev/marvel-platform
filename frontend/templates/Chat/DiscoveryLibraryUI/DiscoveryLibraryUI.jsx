@@ -23,7 +23,7 @@ import UnionIcon from '@/assets/svg/Union.svg';
 
 import styles from './styles';
 
-import { setInput } from '@/redux/slices/chatSlice';
+import { resetChat, setInput } from '@/redux/slices/chatSlice';
 
 const DiscoveryLibraryUI = ({ show, handleSendMessage }) => {
   const { data: user } = useSelector((state) => state.user);
@@ -78,9 +78,11 @@ const DiscoveryLibraryUI = ({ show, handleSendMessage }) => {
     fetchPrompts();
   }, []);
 
-  const handlePromptClick = (description) => {
+  const handlePromptClick = (prompt) => {
     // console.log('Prompt clicked:', description);
-    dispatch(setInput(description));
+    const { title, description } = prompt;
+    dispatch(resetChat());
+    dispatch(setInput(title));
     handleSendMessage(description);
   };
 

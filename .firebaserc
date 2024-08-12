@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "kai-40de1"
+    "default": "kai-40de1",
+    "kai-andrew-test-app": "kai-platform-b53aa"
   },
   "targets": {
     "kai-40de1": {
@@ -11,5 +12,6 @@
       }
     }
   },
-  "etags": {}
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }
