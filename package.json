@@ -18,5 +18,10 @@
   },
   "devDependencies": {
     "firebase-tools": "^9.10.0"
+  },
+  "dependencies": {
+    "docx": "^8.5.0",
+    "jspdf": "^2.5.1",
+    "pptxgenjs": "^3.12.0"
   }
 }

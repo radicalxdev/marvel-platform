@@ -7,7 +7,11 @@
         "node_modules",
         ".git",
         "firebase-debug.log",
-        "firebase-debug.*.log"
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
       ]
     }
   ],
@@ -38,7 +42,11 @@
   },
   "hosting": {
     "public": "frontend/out",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "/api/tool/",
@@ -52,5 +60,9 @@
   },
   "storage": {
     "rules": "storage.rules"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
   }
 }

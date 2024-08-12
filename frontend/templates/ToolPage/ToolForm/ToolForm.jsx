@@ -33,6 +33,7 @@ const ToolForm = (props) => {
   const { handleOpenSnackBar } = useContext(AuthContext);
 
   const { communicatorLoading } = useSelector((state) => state.tools);
+  const { sessionId, inSession } = useSelector((state) => state.tools);
   const { data: userData } = useSelector((state) => state.user);
 
   const { register, control, handleSubmit, getValues, setValue, errors } =
@@ -50,7 +51,6 @@ const ToolForm = (props) => {
       }));
       dispatch(setPrompt(values));
       dispatch(setCommunicatorLoading(true));
-
       const response = await submitPrompt(
         {
           tool_data: { tool_id: id, inputs: updateData },
@@ -61,9 +61,11 @@ const ToolForm = (props) => {
             email: userData?.email,
           },
         },
-        files
+        files,
+        dispatch,
+        sessionId,
+        inSession
       );
-
       dispatch(setResponse(response?.data));
       dispatch(setFormOpen(false));
       dispatch(setCommunicatorLoading(false));
