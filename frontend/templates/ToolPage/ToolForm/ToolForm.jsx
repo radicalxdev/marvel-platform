@@ -38,52 +38,129 @@ const ToolForm = (props) => {
   const { register, control, handleSubmit, getValues, setValue, errors } =
     useWatchFields([]);
 
-  const handleSubmitMultiForm = async (values) => {
-    try {
-      const { files, ...toolData } = values;
-      // Ensure all files are PDFs
-      const pdfFiles = files?.filter((file) => file.type === 'application/pdf');
-      if (!pdfFiles.length || pdfFiles.length !== files.length) {
-        handleOpenSnackBar(
-          'error',
-          '<strong>Unable to load files</strong><br>Make sure you select <strong>PDF Files</strong> to continue making the quiz.',
-          true // Indicate that this is an HTML message
+  // Helper function to extract the YouTube video ID from the URL
+  const extractVideoId = (url) => {
+    const urlObj = new URL(url);
+    return urlObj.searchParams.get('v');
+  };
+
+  // Helper function to parse ISO 8601 duration to seconds
+  const parseDuration = (isoDuration) => {
+    const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+    const hours = parseInt(match[1], 10) || 0;
+    const minutes = parseInt(match[2], 10) || 0;
+    const seconds = parseInt(match[3], 10) || 0;
+    return hours * 3600 + minutes * 60 + seconds;
+  };
+
+  const handleSubmitForm = async (values) => {
+    if ('youtube_url' in values) {
+      try {
+        const { files, ...toolData } = values;
+        // Extract the video ID from the YouTube URL
+        const videoId = extractVideoId(values.youtube_url);
+
+        const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_DATA_API_KEY;
+        // Fetch the video details using YouTube Data API
+        const response = await fetch(
+          `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=contentDetails&key=${API_KEY}`
         );
-        return;
-      }
-      dispatch(setResponse(null));
-      const updateData = Object.entries(toolData).map(([name, value]) => ({
-        name,
-        value,
-      }));
-      dispatch(
-        setPrompt({
-          tool_data: { tool_id: id, inputs: updateData },
-          type: 'tool',
-        })
-      );
-      dispatch(setCommunicatorLoading(true));
-      const response = await submitPrompt(
-        {
-          tool_data: { tool_id: id, inputs: updateData },
-          type: 'tool',
-          user: {
-            id: userData?.id,
-            fullName: userData?.fullName,
-            email: userData?.email,
+        const data = await response.json();
+        const { duration } = data.items[0].contentDetails;
+        // Convert the duration to seconds and check if the video is longer than 10 minutes
+        const tenMinutesInSeconds = 10 * 60;
+        const videoDurationInSeconds = parseDuration(duration);
+        if (videoDurationInSeconds > tenMinutesInSeconds) {
+          handleOpenSnackBar(
+            'error',
+            '<strong>Video Too Long!</strong><br>Make sure you provide a video that is less than <strong>600 seconds</strong> long',
+            true // Indicate that this is an HTML message
+          );
+          return;
+        }
+        dispatch(setResponse(null));
+        const updateData = Object.entries(toolData).map(([name, value]) => ({
+          name,
+          value,
+        }));
+        dispatch(
+          setPrompt({
+            tool_data: { tool_id: id, inputs: updateData },
+            type: 'tool',
+          })
+        );
+        dispatch(setCommunicatorLoading(true));
+        const submitResponse = await submitPrompt(
+          {
+            tool_data: { tool_id: id, inputs: updateData },
+            type: 'tool',
+            user: {
+              id: userData?.id,
+              fullName: userData?.fullName,
+              email: userData?.email,
+            },
           },
-        },
-        pdfFiles // Ensure only PDFs are passed here
-      );
-      dispatch(setResponse(response?.data));
-      dispatch(setFormOpen(false));
-      dispatch(setCommunicatorLoading(false));
-    } catch (error) {
-      dispatch(setCommunicatorLoading(false));
-      handleOpenSnackBar(
-        ALERT_COLORS.ERROR,
-        error?.message || 'Couldn\u0027t send prompt'
-      );
+          values.youtube_url // Pass the valid video URL here
+        );
+        dispatch(setResponse(submitResponse?.data));
+        dispatch(setFormOpen(false));
+        dispatch(setCommunicatorLoading(false));
+      } catch (error) {
+        dispatch(setCommunicatorLoading(false));
+        handleOpenSnackBar(
+          ALERT_COLORS.ERROR,
+          error?.message || 'Couldn\u0027t send prompt'
+        );
+      }
+    } else {
+      try {
+        const { files, ...toolData } = values;
+        // Ensure all files are PDFs
+        const pdfFiles = files?.filter(
+          (file) => file.type === 'application/pdf'
+        );
+        if (!pdfFiles.length || pdfFiles.length !== files.length) {
+          handleOpenSnackBar(
+            'error',
+            '<strong>Unable to load files</strong><br>Make sure you select <strong>PDF Files</strong> to continue making the quiz.',
+            true // Indicate that this is an HTML message
+          );
+          return;
+        }
+        dispatch(setResponse(null));
+        const updateData = Object.entries(toolData).map(([name, value]) => ({
+          name,
+          value,
+        }));
+        dispatch(
+          setPrompt({
+            tool_data: { tool_id: id, inputs: updateData },
+            type: 'tool',
+          })
+        );
+        dispatch(setCommunicatorLoading(true));
+        const response = await submitPrompt(
+          {
+            tool_data: { tool_id: id, inputs: updateData },
+            type: 'tool',
+            user: {
+              id: userData?.id,
+              fullName: userData?.fullName,
+              email: userData?.email,
+            },
+          },
+          pdfFiles // Ensure only PDFs are passed here
+        );
+        dispatch(setResponse(response?.data));
+        dispatch(setFormOpen(false));
+        dispatch(setCommunicatorLoading(false));
+      } catch (error) {
+        dispatch(setCommunicatorLoading(false));
+        handleOpenSnackBar(
+          ALERT_COLORS.ERROR,
+          error?.message || 'Couldn\u0027t send prompt'
+        );
+      }
     }
   };
 
@@ -234,7 +311,7 @@ const ToolForm = (props) => {
       FormProps={{
         id: 'tool-form',
       }}
-      onSuccess={handleSubmit(handleSubmitMultiForm)}
+      onSuccess={handleSubmit(handleSubmitForm)}
     >
       <Grid {...styles.formProps}>
         <Grid {...styles.mainContentGridProps}>
