@@ -8,10 +8,14 @@ import { AUTH_MODES } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 import ROUTES from '@/constants/routes';
 
-import { setEmailVerified, setLoading } from '@/redux/slices/authSlice';
+import {
+  setLoading as setAuthLoading,
+  setEmailVerified,
+} from '@/redux/slices/authSlice';
+import { setLoading as setUserLoading } from '@/redux/slices/userSlice';
 import { auth } from '@/redux/store';
 import fetchUserData from '@/redux/thunks/user';
-import { onboardingRegex } from '@/regex/routes';
+import { homeRegex, onboardingRegex } from '@/regex/routes';
 
 const redirectRegex = /\/redirect.*/;
 
@@ -37,16 +41,13 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
       ROUTES.TERMS,
       ROUTES.PASSWORD_RESET,
     ].includes(route);
-    // Check if the current route is an onboarding route
-    const isOnboardingUrl = onboardingRegex.test(asPath);
 
     const isRedirectRoute = redirectRegex.test(asPath);
     const isAuthRoute = isAuthUrl || isRedirectRoute;
-    const onboardingStatus = userData?.needsBoarding;
-    // If a authUser is authed, set the currentUser in the store and redirect based on onboarding status
+    // If a authUser is authed, set the currentUser in the store
     if (auth.currentUser) {
       if (isRedirectRoute) {
-        dispatch(setLoading(false));
+        dispatch(setAuthLoading(false));
         return;
       }
 
@@ -57,16 +58,6 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
           return;
         }
         return;
-      }
-
-      // If already logged in and onboarding is required, redirect to onboarding
-      if (onboardingStatus) {
-        router.push(ROUTES.ONBOARDING.replace('[onboardingId]', '0'));
-        return;
-      }
-      // If users who have already completed onboarding wrongly enter the onboarding page or just completed the last onboarding task.
-      if (isOnboardingUrl && !onboardingStatus) {
-        router.push(ROUTES.HOME);
       }
 
       fetchUserRelatedData(auth.currentUser.uid);
@@ -83,7 +74,37 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
     }
 
     if (!isAuthRoute && !loading) router.push(ROUTES.SIGNIN);
-  }, [authData, userData]);
+  }, [authData]);
+
+  useEffect(() => {
+    // redirect based on onboarding status
+    const isOnboardingUrl = onboardingRegex.test(asPath);
+    const isHomeUrl = homeRegex.test(asPath);
+    const onboardingStatus = userData?.needsBoarding;
+
+    // If already logged in and onboarding is required, redirect to onboarding
+    if (!isOnboardingUrl && onboardingStatus) {
+      dispatch(setUserLoading(true));
+      router.push(ROUTES.ONBOARDING.replace('[onboardingId]', '0'));
+      return;
+    }
+
+    // If users who have already completed onboarding wrongly enter the onboarding page or just completed the last onboarding task.
+    if (isOnboardingUrl) {
+      dispatch(setUserLoading(false));
+      if (onboardingStatus === false) {
+        dispatch(setUserLoading(true));
+        router.push(ROUTES.HOME);
+        return;
+      }
+      return;
+    }
+
+    // If users are coming from the onboarding page
+    if (isHomeUrl && !onboardingStatus) {
+      dispatch(setUserLoading(false));
+    }
+  }, [userData, router]);
 
   useEffect(() => {
     const isRedirectRoute = redirectRegex.test(asPath);

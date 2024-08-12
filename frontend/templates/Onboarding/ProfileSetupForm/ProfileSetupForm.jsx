@@ -11,9 +11,7 @@ import {
 
 import { useDispatch } from 'react-redux';
 
-import ProfileTextField, {
-  InputWrapper,
-} from '@/components/ProfileTextField/index.js';
+import { InputWrapper, ProfileTextField } from '@/components/ProfileTextField';
 
 import ALERT_COLORS from '@/constants/notification.js';
 
