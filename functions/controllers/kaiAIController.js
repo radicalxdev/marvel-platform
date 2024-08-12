@@ -14,6 +14,7 @@ const DEBUG = process.env.DEBUG;
 /**
  * Simulates communication with a Kai AI endpoint.
  *
+ * @function kaiCommunicator
  * @param {object} payload - The properties of the communication.
  * @param {object} props.data - The payload data object used in the communication.
  *  @param {Array} props.data.messages - An array of messages for the current user chat session.
@@ -79,6 +80,7 @@ const kaiCommunicator = async (payload) => {
 /**
  * Manages communications for a specific chat session with a chatbot, updating and retrieving messages.
  *
+ * @function chat
  * @param {object} props - The properties of the communication.
  * @param {object} props.data - The data object containing the message and id.
  * @param {string} props.data.id - The id of the chat session.
@@ -170,6 +172,7 @@ const chat = onCall(async (props) => {
  * Handles tool communications by processing input data and optional file uploads.
  * It supports both JSON and form-data requests to accommodate different client implementations.
  *
+ * @function tools
  * @param {Request} req - The Express request object, which includes form data and files.
  * @param {Response} res - The Express response object used to send back the HTTP response.
  * @return {void} Sends a response to the client based on the processing results.
@@ -270,6 +273,7 @@ app.post('/api/tool/', (req, res) => {
  * If the chat session already exists, it will return the existing chat session.
  * Otherwise, it will create a new chat session and send the first message.
  *
+ * @function createChatSession
  * @param {Object} props - The properties passed to the function.
  * @param {Object} props.data - The data object containing the user, challenge, message, and botType.
  * @param {Object} props.data.user - The user object.
