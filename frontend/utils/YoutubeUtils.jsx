@@ -5,7 +5,7 @@
  */
 const fetchYoutubeTitle = async (url) => {
   const videoId = url.split('v=')[1];
-  const api_key = 'add your api key here';
+  const api_key = process.env.REACT_APP_YOUTUBE_API_KEY;
   const response = await fetch(
     `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${api_key}&part=snippet`
   );
