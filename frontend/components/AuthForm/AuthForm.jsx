@@ -4,8 +4,6 @@ import Link from 'next/link.js';
 
 import styles from './styles.js';
 
-// import { Snackbar, Button } from '@mui/material';
-// import { Box } from '@mui/system';
 /**
  * Renders an authentication form with options for local authentication and third-party authentication services.
  *
@@ -37,36 +35,6 @@ const AuthForm = (props) => {
       </Grid>
     );
   };
-
-  // const renderErrorNotification = () => { 
-  //   return (
-  //     <Grid {...styles.notificationGridProps} style={{ position: 'relative' }}>
-  //       <Box
-  //         display="flex"
-  //         justifyContent="center"
-  //         alignItems="center"
-  //         height="100%"
-  //       >
-  //         {notification}
-  //         {/* <Snackbar
-  //           open={true}
-  //           autoHideDuration={6000}
-  //           message="I love snacks"
-  //           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-  //           style={{
-  //             position: 'absolute',
-  //             top: '50%',
-  //             left: '50%',
-  //             transform: 'translate(-50%, -50%)',
-  //             maxWidth: '80%', // Adjust the max-width as needed
-  //             minWidth: '200px', // Adjust the min-width as needed
-  //           }}
-  //         /> */}
-  //       </Box>
-  //     </Grid>
-
-  //   )
-  // };
 
   const renderForm = () => {
     return <Grid {...styles.formGridProps}>{form}</Grid>;

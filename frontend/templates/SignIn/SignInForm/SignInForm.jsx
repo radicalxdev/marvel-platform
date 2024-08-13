@@ -108,7 +108,6 @@ const SignInForm = (props) => {
       dispatch(setLoading(true));
       router.push(ROUTES.HOME);
     } catch ({ code }) {
-      console.log(code);
 
       if (code === AUTH_ERR_CODES.USER_NOT_FOUND) {
         setOpenError(true);
@@ -180,37 +179,25 @@ const SignInForm = (props) => {
 
   
   const renderErrorNotification = () => {
+    const errorMessage = (
+      <div>
+        <p style={{ fontWeight: 'bold', color: '#ff6f6f', margin: 0, display: 'flex', alignItems: 'center' }}>
+          <i className="icon-info"></i>Login Failed!
+        </p>
+        <p style={{ color: '#ffb3b3', margin: 0 }}>
+          This account is not registered to a Radical account <span style={{ color: '#ff6f6f', fontWeight: 'bold' }}>Create an account</span> to continue.
+        </p>
+      </div>
+    );
+
+
     return (
       <ErrorNotification
         open={openError}
         onClose={handleClose}
-        message={
-          <div>
-          <p style={{ fontWeight: 'bold', color: '#ff6f6f', margin: 0, display: 'flex', alignItems: 'center' }}>
-            <i className="icon-info"></i>Login Failed!
-          </p>
-          <p style={{ color: '#ffb3b3', margin: 0 }}>
-            This account is not registered to a Radical account <span style={{ color: '#ff6f6f', fontWeight: 'bold' }}>Create an account</span> to continue.
-          </p>
-        </div>
-        }
+        message={errorMessage}
         {...styles.errorNotificationProps}
       />
-      // <SuccessNotification
-      //   open={openError}
-      //   onClose={handleClose}
-      //   message={
-      //     <div>
-      //       <p style={{ fontWeight: 'bold', color: '#5614F3', margin: 0, display: 'flex', alignItems: 'center' }}>
-      //         Log In Successful!
-      //       </p>
-      //       <p style={{ color: '#000', margin: 0, display: 'flex', alignItems: 'center' }}>
-      //         👋<span style={{ marginLeft: '5px' }}>Welcome Back! Richard</span>
-      //       </p>
-      //     </div>
-      //   }
-      //   {...styles.successNotificationProps}
-      // />
     );
   }
 
