@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { Facebook, LinkedIn, X as XIcon } from '@mui/icons-material';
 import { Button, Grid, Typography } from '@mui/material';
@@ -27,6 +27,7 @@ import ONBOARDING_REGEX from '@/regex/onboarding.js';
 const ProfileSetupForm = ({ onNext, tempData }) => {
   const dispatch = useDispatch();
   const { handleOpenSnackBar } = useContext(AuthContext);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const formContext = useForm({
     defaultValues: tempData,
@@ -137,13 +138,15 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
           );
         } else {
           try {
-            const storage = getStorage();
-            const storageRef = ref(storage, `profile_images/${file.name}`);
-            await uploadBytes(storageRef, file);
+            setImagePreview(URL.createObjectURL(file));
 
-            const downloadURL = await getDownloadURL(storageRef);
+            // const storage = getStorage();
+            // const storageRef = ref(storage, `profile_images/${file.name}`);
+            // await uploadBytes(storageRef, file);
 
-            onChange(downloadURL);
+            // const downloadURL = await getDownloadURL(storageRef);
+
+            onChange(file);
           } catch (error) {
             handleOpenSnackBar(ALERT_COLORS.ERROR, 'Error uploading the file');
           }
@@ -161,10 +164,10 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
               {...styles.imageUploadContainer}
               onDrop={(e) => handleImageUpload(e, onChange)}
             >
-              {watchProfile ? (
+              {imagePreview ? (
                 <Grid {...styles.imageUploadContainerFlex}>
                   <Image
-                    src={watchProfile}
+                    src={imagePreview}
                     alt="Profile"
                     {...styles.imageProps}
                   />
