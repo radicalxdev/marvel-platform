@@ -6,15 +6,122 @@ on:
   push:
     branches:
       - main
+      - develop
 jobs:
-  build_and_deploy:
+  build_and_deploy_sandbox:
+    name: "Deploy to Kai Develop"
+    if: ${{ github.ref == 'refs/heads/develop' }}
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - run: next build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KAI_AI_F63C8 }}
-          channelId: live
-          projectId: kai-ai-f63c8
+          node-version: "18.16.0"
+      
+      - name: Install Firebase CLI
+        run: |
+            npm install -g firebase-tools
+    
+      - name: Install Functions Dependencies
+        run: |
+            cd functions
+            npm install
+    
+      - name: Deploy Functions
+        run: |
+            firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }} --project kai-platform-sandbox
+
+      - name: Decode and create .env file from secret
+        run: |
+          echo "${{ secrets.SANDBOX_ENV_FILE_BASE64 }}" | base64 --decode > .env
+          ls -la
+          cat .env
+
+      - name: Verify .env content
+        run: cat .env
+
+      - name: Set environment variables
+        run: |
+          set -a
+          source .env
+          set +a
+
+      - name: Print environment variables for debugging
+        run: env
+
+      - name: Install Next.js globally
+        run: npm install -g next
+
+      - name: Build Next.js
+        run: npm run build:next
+
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GIT_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SANDBOX }}
+          projectId: kai-platform-sandbox
+
+  build_and_deploy_production:
+    name: "Deploy to Kai Production"
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18.16.0"
+
+      - name: Install Firebase CLI
+        run: |
+            npm install -g firebase-tools
+  
+      - name: Install Functions Dependencies
+        run: |
+            cd functions
+            npm install
+  
+      - name: Deploy Functions
+        run: |
+            firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }} --project kai-ai-f63c8
+
+      - name: Decode and create .env file from secret
+        run: |
+          echo "${{ secrets.PROD_ENV_FILE_BASE64 }}" | base64 --decode > .env
+          ls -la
+          cat .env
+
+      - name: Verify .env content
+        run: cat .env
+
+      - name: Set environment variables
+        run: |
+          set -a
+          source .env
+          set +a
+
+      - name: Print environment variables for debugging
+        run: env
+
+      - name: Install Next.js globally
+        run: npm install -g next
+
+      - name: Build Next.js
+        run: npm run build:next
+
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+         repoToken: ${{ secrets.GIT_TOKEN }}
+         firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KAI_AI_F63C8 }}
+         projectId: kai-ai-f63c8
+
+
