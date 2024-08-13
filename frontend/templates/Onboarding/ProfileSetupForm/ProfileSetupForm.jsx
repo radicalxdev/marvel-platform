@@ -2,13 +2,13 @@ import { useContext } from 'react';
 
 import { Facebook, LinkedIn, X as XIcon } from '@mui/icons-material';
 import { Button, Grid, Typography } from '@mui/material';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import {
   Controller,
   FormContainer,
   TextareaAutosizeElement,
   useForm,
 } from 'react-hook-form-mui';
-
 import { useDispatch } from 'react-redux';
 
 import { InputWrapper, ProfileTextField } from '@/components/ProfileTextField';
@@ -20,8 +20,9 @@ import stylesOnboarding from '../styles.js';
 import styles from './styles.js';
 
 import { AuthContext } from '@/providers/GlobalProvider.jsx';
-
 import { setTempData } from '@/redux/slices/onboardingSlice.js';
+
+// Firebase Storage imports
 
 const ProfileSetupForm = ({ onNext, tempData }) => {
   const dispatch = useDispatch();
@@ -138,7 +139,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
 
   const watchProfile = watch('profile');
   const renderProfile = () => {
-    const handleImageUpload = (e, onChange) => {
+    const handleImageUpload = async (e, onChange) => {
       e.preventDefault();
       const file =
         e.type === 'change' ? e.target.files[0] : e.dataTransfer.files[0];
@@ -151,10 +152,21 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
             'The profile file size is over 1MB'
           );
         } else {
-          onChange(file.name);
+          try {
+            const storage = getStorage();
+            const storageRef = ref(storage, `profile_images/${file.name}`);
+            await uploadBytes(storageRef, file);
+
+            const downloadURL = await getDownloadURL(storageRef);
+
+            onChange(downloadURL);
+          } catch (error) {
+            handleOpenSnackBar(ALERT_COLORS.ERROR, 'Error uploading the file');
+          }
         }
       }
     };
+
     return (
       <Controller
         name="profile"
