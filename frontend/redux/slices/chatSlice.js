@@ -187,6 +187,9 @@ const chatSlice = createSlice({
       .addCase(fetchDiscoveryLibraries.fulfilled, (state, action) => {
         state.discoveryLibraries = action.payload;
       })
+      .addCase(fetchDiscoveryLibraries.pending, (state) => {
+        state.discoveryLibraries = null;
+      })
       .addCase(fetchDiscoveryLibraries.rejected, (state, action) => {
         state.discoveryLibraries = null;
         console.error(action.error);

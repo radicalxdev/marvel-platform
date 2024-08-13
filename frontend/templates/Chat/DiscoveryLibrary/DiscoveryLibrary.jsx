@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Card, CardHeader, CardMedia, Grid, Typography } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,7 +25,7 @@ const DiscoveryLibrary = ({ library }) => {
   const dispatch = useDispatch();
 
   // Destructure the library object
-  const { id, title, description, imageUrl } = library;
+  const { id, title, imageUrl } = library;
 
   // Determine if the current library is the selected library
   const isSelectedLibrary = id === selectedDiscoveryLibraryId;
@@ -56,16 +56,18 @@ const DiscoveryLibrary = ({ library }) => {
 
   return (
     // Render the DiscoveryLibrary component
+    // {...styles.discoveryLibrary(isSelectedLibrary, imageUrl)}
     <Grid
-      {...styles.discoveryLibrary(isSelectedLibrary, imageUrl)}
       onClick={clickLibrary}
+      {...styles.discoveryLibrary(isSelectedLibrary)}
     >
-      <Grid>
+      <Card>
+        <CardHeader title={title} {...styles.discoveryLibraryTitle} />
+        <CardMedia component="img" image={imageUrl} />
+      </Card>
+      {/* <Grid>
         <Typography {...styles.discoveryLibraryTitle}>{title}</Typography>
-        <Typography {...styles.discoveryLibraryDescription}>
-          {description}
-        </Typography>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };

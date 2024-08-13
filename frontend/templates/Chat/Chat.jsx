@@ -158,7 +158,16 @@ const ChatInterface = () => {
       // The ID of the session.
       id: data?.id,
       // The first message of the session.
-      title: data?.messages[0]?.payload?.text,
+      // title: data?.messages[0]?.payload?.text,
+
+      // Extract the title of the chat session. If the first message role is 'system', the title is the text of the second message. Otherwise, the title is the text of the first message.
+      title:
+        // Check if the first message role is 'system'
+        data?.messages[0]?.role === 'system'
+          ? // If so, extract the text of the second message
+            data?.messages[1]?.payload?.text
+          : // Otherwise, extract the text of the first message
+            data?.messages[0]?.payload?.text,
       // The timestamp of session creation.
       createdAt: data?.createdAt,
       // The timestamp of session last update.

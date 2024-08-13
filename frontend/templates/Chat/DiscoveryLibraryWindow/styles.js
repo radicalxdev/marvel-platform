@@ -41,21 +41,35 @@ const styles = {
   discoveryLibraryWindowTitleText: {
     textAlign: 'center',
   },
-  toggleDiscoveryLibraryWindowButton: (showDiscoveryLibraryWindow) => ({
+  closeDiscoveryLibraryButton: {
     sx: {
-      padding: showDiscoveryLibraryWindow ? 'none' : '5px',
+      padding: 'none',
       backgroundColor: '#000000',
       color: 'rgba(115,80,255,255)',
-      border: showDiscoveryLibraryWindow
-        ? 'none'
-        : '5px solid rgba(115,80,255,255)',
-      borderRadius: showDiscoveryLibraryWindow ? 'none' : '15px',
+      border: 'none',
+      borderRadius: 'none',
       '&:hover': {
         backgroundColor: '#000000',
         color: 'rgba(115,80,255,255)',
       },
     },
-  }),
+  },
+  openDiscoveryLibraryButton: {
+    sx: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '5px',
+      backgroundColor: '#000000',
+      color: 'rgba(115,80,255,255)',
+      border: '5px solid rgba(115,80,255,255)',
+      borderRadius: '15px',
+      '&:hover': {
+        backgroundColor: '#000000',
+        color: 'rgba(115,80,255,255)',
+      },
+    },
+  },
   centerChatMessage: {
     container: true,
     sx: {

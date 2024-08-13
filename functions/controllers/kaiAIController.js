@@ -290,7 +290,7 @@ const createChatSession = onCall(async (props) => {
     const { user, message, type, discoveryLibraryId, systemMessage } =
       props.data;
 
-    if (!user || !message || !type || !discoveryLibraryId) {
+    if (!user || !message || !type) {
       logger.log('Missing required fields', props.data);
       throw new HttpsError('invalid-argument', 'Missing required fields');
     }
