@@ -30,7 +30,7 @@ const styles = {
       gap: '10px',
       borderRadius: '24px',
       color: '#BDBDBD',
-      height: '96px',
+      height: '100px',
       width: '100%',
       border: '1px solid #D7D7D7',
       fontFamily: 'Satoshi Bold',
@@ -60,6 +60,18 @@ const styles = {
         fontSize: '16px',
       },
     }),
+  },
+  imageUploadContainerFlex: {
+    display: 'flex',
+    gap: '20px',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageProps: {
+    width: 80,
+    height: 80,
+    objectFit: 'cover',
+    style: { borderRadius: '10px' },
   },
   textarea: {
     sx: {

@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { Facebook, LinkedIn, X as XIcon } from '@mui/icons-material';
 import { Button, Grid, Typography } from '@mui/material';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import Image from 'next/image.js';
 import {
   Controller,
   FormContainer,
@@ -21,6 +22,7 @@ import styles from './styles.js';
 
 import { AuthContext } from '@/providers/GlobalProvider.jsx';
 import { setTempData } from '@/redux/slices/onboardingSlice.js';
+import ONBOARDING_REGEX from '@/regex/onboarding.js';
 
 const ProfileSetupForm = ({ onNext, tempData }) => {
   const dispatch = useDispatch();
@@ -69,7 +71,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
       <ProfileTextField
         name="fullName"
         control={control}
-        rules={{ required: 'Full Name is required!' }}
+        rules={ONBOARDING_REGEX.fullName}
         placeholder="Enter Name"
         error={errors.fullName}
       />
@@ -81,7 +83,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
       <ProfileTextField
         name="occupation"
         control={control}
-        rules={{ required: 'Occupation is required!' }}
+        rules={ONBOARDING_REGEX.occupation}
         placeholder="Enter Occupation"
         error={errors.occupation}
       />
@@ -94,12 +96,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
         <ProfileTextField
           name="facebook"
           control={control}
-          rules={{
-            pattern: {
-              value: /https?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9._-]+\/?/,
-              message: 'Invalid Facebook URL',
-            },
-          }}
+          rules={ONBOARDING_REGEX.facebook}
           icon={Facebook}
           placeholder="Paste Link"
           error={errors.facebook}
@@ -107,13 +104,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
         <ProfileTextField
           name="linkedin"
           control={control}
-          rules={{
-            pattern: {
-              value:
-                /^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile)/gm,
-              message: 'Invalid LinkedIn URL',
-            },
-          }}
+          rules={ONBOARDING_REGEX.linkedin}
           icon={LinkedIn}
           placeholder="Paste Link"
           error={errors.linkedin}
@@ -121,12 +112,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
         <ProfileTextField
           name="x"
           control={control}
-          rules={{
-            pattern: {
-              value: /https?:\/\/(www\.)?x\.com\/\w+/g,
-              message: 'Invalid X URL',
-            },
-          }}
+          rules={ONBOARDING_REGEX.x}
           icon={XIcon}
           placeholder="Paste Link"
           error={errors.x}
@@ -176,8 +162,12 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
               onDrop={(e) => handleImageUpload(e, onChange)}
             >
               {watchProfile ? (
-                <Grid>
-                  <Typography component="span">{watchProfile}</Typography>
+                <Grid {...styles.imageUploadContainerFlex}>
+                  <Image
+                    src={watchProfile}
+                    alt="Profile"
+                    {...styles.imageProps}
+                  />
                   <Button
                     variant="contained"
                     {...stylesOnboarding.button}
@@ -216,10 +206,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
       <Controller
         name="bio"
         control={control}
-        rules={{
-          validate: (fieldValue) =>
-            fieldValue ? fieldValue.trim().split(/\s+/).length <= 200 : true,
-        }}
+        rules={ONBOARDING_REGEX.bio}
         render={({ field }) => (
           <TextareaAutosizeElement
             placeholder="Introduce yourself in a few words"
