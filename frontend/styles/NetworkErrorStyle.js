@@ -5,8 +5,9 @@ const NetworkErrorStyle = {
     item: true,
     mobileSmall: 'auto',
     position: 'relative',
-    top: '-32px',
-    left: '125%',
+    top: '-60px',
+    left: '0%',
+    padding: '20px 50px 75px 60px',
   },
   LogotitleGridProps: {
     container: true,
@@ -34,7 +35,7 @@ const NetworkErrorStyle = {
     left: '59.5px',
   },
   LogocontentGridProps: {
-    position: 'fixed',
+    position: 'relative',
     container: true,
     item: true,
     justifyContent: 'center',
@@ -44,20 +45,16 @@ const NetworkErrorStyle = {
     left: '-40px',
   },
   mainGridProps: {
-    position: 'relative',
-    top: '35px',
+    position: 'absolute',
+    top: '0px',
     container: true,
     item: true,
-    xs: 12,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: '16px',
     height: '100%',
     bgcolor: '#FFFFFF',
-    overflow: 'hidden',
-    maxWidth: { laptop: '1450px' },
-    sx: {
-      borderRadius: '22px',
-    },
+    overflow: 'scroll',
   },
   mainContentGridProps: {
     position: 'relative',
@@ -77,6 +74,7 @@ const NetworkErrorStyle = {
     alignItems: 'center',
     height: 'auto',
     rowGap: 2,
+    backgroundColor: 'white',
   },
   BottomcontentGridProps: {
     position: 'relative',
@@ -106,6 +104,7 @@ const NetworkErrorStyle = {
       opacity: 0.5,
       borderRadius: '655px',
       transform: 'translate(-25%, 0px)',
+      backgroundColor: 'transparent',
     },
   },
   radialBg2Props: {

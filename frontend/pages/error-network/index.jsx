@@ -14,7 +14,7 @@ import ROUTES from '@/constants/routes';
 import NetworkErrorStyle from '@/styles/NetworkErrorStyle';
 
 /**
- * Renders the page for when the requested route is not found.
+ * Renders the page for when the requested route is not found.å
  *
  * @return {JSX.Element} The JSX element representing the page.
  */
@@ -114,7 +114,7 @@ const NetworkErrorPage = () => {
       <Grid {...NetworkErrorStyle.BottomcontentGridProps}>
         {renderBottomContent()}
       </Grid>
-      <Grid {...NetworkErrorStyle.IconcontentGridprops}>{renderIcons()}</Grid>
+      <Grid {...NetworkErrorStyle}>{renderIcons()}</Grid>
     </Grid>
   );
 };

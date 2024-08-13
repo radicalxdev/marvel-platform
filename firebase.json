@@ -28,13 +28,16 @@
       "port": 9199,
       "rules": "storage.rules"
     },
+    "auth": {
+      "port": 9099
+    },
+    "hosting": {
+      "port": 5002 
+    },
     "ui": {
       "enabled": true
     },
-    "singleProjectMode": true,
-    "auth": {
-      "port": 9099
-    }
+    "singleProjectMode": true
   },
   "hosting": {
     "public": "frontend/out",
