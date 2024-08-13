@@ -22,8 +22,6 @@ import styles from './styles.js';
 import { AuthContext } from '@/providers/GlobalProvider.jsx';
 import { setTempData } from '@/redux/slices/onboardingSlice.js';
 
-// Firebase Storage imports
-
 const ProfileSetupForm = ({ onNext, tempData }) => {
   const dispatch = useDispatch();
   const { handleOpenSnackBar } = useContext(AuthContext);
