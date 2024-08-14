@@ -21,19 +21,29 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "18.16.0"
-      
+
       - name: Install Firebase CLI
         run: |
-            npm install -g firebase-tools
-    
+          npm install -g firebase-tools
+
       - name: Install Functions Dependencies
         run: |
-            cd functions
-            npm install
-    
-      - name: Deploy Functions
+          cd functions
+          npm install
+
+      - name: Decode Base64 Env Vars for Develop
+        if: github.ref == 'refs/heads/develop'
         run: |
-            firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }} --project kai-platform-sandbox
+          cd functions
+          echo "${{ secrets.SANDBOX_ENV_FILE_BASE64 }}" | base64 --decode > .env
+
+      - name: Deploy Functions to Develop
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          set -o allexport
+          source functions/.env
+          set +o allexport
+          firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }} --project kai-platform-sandbox
 
       - name: Decode and create .env file from secret
         run: |
@@ -49,9 +59,6 @@ jobs:
           set -a
           source .env
           set +a
-
-      - name: Print environment variables for debugging
-        run: env
 
       - name: Install Next.js globally
         run: npm install -g next
@@ -82,16 +89,26 @@ jobs:
 
       - name: Install Firebase CLI
         run: |
-            npm install -g firebase-tools
-  
+          npm install -g firebase-tools
+
       - name: Install Functions Dependencies
         run: |
-            cd functions
-            npm install
-  
-      - name: Deploy Functions
+          cd functions
+          npm install
+
+      - name: Decode Base64 Env Vars for Specific Branches
+        if: github.ref == 'refs/heads/main'
         run: |
-            firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }} --project kai-ai-f63c8
+          cd functions
+          echo "${{ secrets.PROD_ENV_FILE_BASE64 }}" | base64 --decode > .env
+
+      - name: Deploy Functions to Production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          set -o allexport
+          source functions/.env
+          set +o allexport
+          firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }} --project kai-ai-f63c8
 
       - name: Decode and create .env file from secret
         run: |
@@ -108,9 +125,6 @@ jobs:
           source .env
           set +a
 
-      - name: Print environment variables for debugging
-        run: env
-
       - name: Install Next.js globally
         run: npm install -g next
 
@@ -120,8 +134,6 @@ jobs:
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-         repoToken: ${{ secrets.GIT_TOKEN }}
-         firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KAI_AI_F63C8 }}
-         projectId: kai-ai-f63c8
-
-
+          repoToken: ${{ secrets.GIT_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KAI_AI_F63C8 }}
+          projectId: kai-ai-f63c8
