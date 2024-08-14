@@ -43,7 +43,7 @@ jobs:
           set -o allexport
           source functions/.env
           set +o allexport
-          firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }} --project kai-platform-sandbox
+          firebase deploy --only functions --force --token ${{ secrets.FIREBASE_TOKEN }} --project kai-platform-sandbox
 
       - name: Decode and create .env file from secret
         run: |
@@ -108,7 +108,7 @@ jobs:
           set -o allexport
           source functions/.env
           set +o allexport
-          firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }} --project kai-ai-f63c8
+          firebase deploy --only functions --force --token ${{ secrets.FIREBASE_TOKEN }} --project kai-ai-f63c8
 
       - name: Decode and create .env file from secret
         run: |
