@@ -21,7 +21,6 @@ const NotificationToggle = ({
         <Switch
           checked={checked}
           onChange={onChange}
-          size="large"
           {...currentStyles.switch}
         />
       </Box>
