@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -36,16 +37,25 @@ const OnboardingPage = ({ onboardingData }) => {
     }
   }, [dispatch, onboardingData.id, step]);
 
-  const handleNext = (formData = {}) => {
+  const handleNext = async (formData = {}) => {
     if (onboardingComponents?.[onboardingData.id] === ProfileSetupForm) {
       dispatch(setTempData(formData)); // Store form data in Redux
     }
 
     if (onboardingComponents?.[onboardingData.id] === Complete) {
+      let downloadURL = null;
+      const file = tempData.profile;
+      if (file) {
+        const storage = getStorage();
+        const storageRef = ref(storage, `profile_images/${file.name}`);
+        await uploadBytes(storageRef, file);
+        downloadURL = await getDownloadURL(storageRef);
+      }
+
       dispatch(
         updateUserData({
           firestore,
-          data: { ...tempData, needsBoarding: false },
+          data: { ...tempData, needsBoarding: false, profile: downloadURL },
         })
       );
       dispatch(setCompleted(true));
