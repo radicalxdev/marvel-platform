@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 
 import { Facebook, LinkedIn, X as XIcon } from '@mui/icons-material';
 import { Button, Grid, Typography } from '@mui/material';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import Image from 'next/image.js';
 import {
   Controller,
@@ -44,13 +43,13 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
 
   const onSubmit = (data) => {
     const template = {
-      fullName: '',
-      occupation: '',
-      facebook: '',
-      linkedin: '',
-      x: '',
-      profile: '',
-      bio: '',
+      fullName: null,
+      occupation: null,
+      facebook: null,
+      linkedin: null,
+      x: null,
+      profile: null,
+      bio: null,
     };
 
     // Merge the template with the user-provided data, overriding defaults
@@ -137,19 +136,8 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
             'The profile file size is over 1MB'
           );
         } else {
-          try {
-            setImagePreview(URL.createObjectURL(file));
-
-            // const storage = getStorage();
-            // const storageRef = ref(storage, `profile_images/${file.name}`);
-            // await uploadBytes(storageRef, file);
-
-            // const downloadURL = await getDownloadURL(storageRef);
-
-            onChange(file);
-          } catch (error) {
-            handleOpenSnackBar(ALERT_COLORS.ERROR, 'Error uploading the file');
-          }
+          setImagePreview(URL.createObjectURL(file));
+          onChange(file);
         }
       }
     };
@@ -174,7 +162,10 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
                   <Button
                     variant="contained"
                     {...stylesOnboarding.button}
-                    onClick={() => setValue('profile', '')}
+                    onClick={() => {
+                      setImagePreview(null);
+                      setValue('profile', '');
+                    }}
                   >
                     Cancel
                   </Button>

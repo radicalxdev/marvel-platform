@@ -57,6 +57,7 @@ const styles = {
     border: '2px double rgba(58,50,98,1)',
   },
   switch: {
+    size: 'large',
     sx: {
       '& .MuiSwitch-switchBase.Mui-checked': {
         color: 'rgba(128,101,266,1)',

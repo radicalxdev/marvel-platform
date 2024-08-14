@@ -43,12 +43,14 @@ const OnboardingPage = ({ onboardingData }) => {
     }
 
     if (onboardingComponents?.[onboardingData.id] === Complete) {
+      let downloadURL = null;
       const file = tempData.profile;
-      const storage = getStorage();
-      const storageRef = ref(storage, `profile_images/${file.name}`);
-      await uploadBytes(storageRef, file);
-
-      const downloadURL = await getDownloadURL(storageRef);
+      if (file) {
+        const storage = getStorage();
+        const storageRef = ref(storage, `profile_images/${file.name}`);
+        await uploadBytes(storageRef, file);
+        downloadURL = await getDownloadURL(storageRef);
+      }
 
       dispatch(
         updateUserData({

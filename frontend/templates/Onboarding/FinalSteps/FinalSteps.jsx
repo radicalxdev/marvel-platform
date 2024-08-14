@@ -10,6 +10,7 @@ const StyledCheckCircleIcon = styled(CheckCircleIcon)(styles.checkbox);
 const StyledRadioButtonUncheckedOutlinedIcon = styled(
   RadioButtonUncheckedOutlinedIcon
 )(styles.uncheckBox);
+
 const FinalSteps = () => {
   const router = useRouter();
   const handleFinish = () => {
@@ -37,7 +38,7 @@ const FinalSteps = () => {
   ) => (
     <>
       <Grid {...gridStyle}>
-        <IconComponent style={iconStyle} />
+        <IconComponent {...iconStyle} />
         <Typography {...styles.labelProps}>{text}</Typography>
       </Grid>
       {showDivider && <Divider {...styles.divider} />}
@@ -49,26 +50,26 @@ const FinalSteps = () => {
       {renderSection(
         StyledCheckCircleIcon,
         'Welcome',
-        styles.topGrid,
-        styles.checkbox
+        { ...styles.topGrid },
+        { ...styles.checkbox }
       )}
       {renderSection(
         StyledCheckCircleIcon,
         'Profile Setup',
-        styles.topGrid,
-        styles.checkbox
+        { ...styles.topGrid },
+        { ...styles.checkbox }
       )}
       {renderSection(
         StyledCheckCircleIcon,
         'System Configurations',
-        styles.topGrid,
-        styles.checkbox
+        { ...styles.topGrid },
+        { ...styles.checkbox }
       )}
       {renderSection(
         StyledRadioButtonUncheckedOutlinedIcon,
         'Final Steps',
-        styles.bottomGrid,
-        styles.uncheckBox,
+        { ...styles.bottomGrid },
+        { ...styles.uncheckBox },
         false
       )}
       {renderButton()}
