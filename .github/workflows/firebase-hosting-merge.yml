@@ -20,7 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "18.16.0"
+          node-version: "18.17.0"
 
       - name: Install Firebase CLI
         run: |
@@ -48,11 +48,6 @@ jobs:
       - name: Decode and create .env file from secret
         run: |
           echo "${{ secrets.SANDBOX_ENV_FILE_BASE64 }}" | base64 --decode > .env
-          ls -la
-          cat .env
-
-      - name: Verify .env content
-        run: cat .env
 
       - name: Set environment variables
         run: |
@@ -85,7 +80,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "18.16.0"
+          node-version: "18.17.0"
 
       - name: Install Firebase CLI
         run: |
@@ -113,11 +108,6 @@ jobs:
       - name: Decode and create .env file from secret
         run: |
           echo "${{ secrets.PROD_ENV_FILE_BASE64 }}" | base64 --decode > .env
-          ls -la
-          cat .env
-
-      - name: Verify .env content
-        run: cat .env
 
       - name: Set environment variables
         run: |
