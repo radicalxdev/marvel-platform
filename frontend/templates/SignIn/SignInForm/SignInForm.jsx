@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import AuthTextField from '@/components/AuthTextField';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import { AUTH_ERROR_MESSAGES } from '@/constants/auth';
+import { AUTH_ERROR_MESSAGES, AUTH_ERR_CODES } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 
 import ROUTES from '@/constants/routes';
@@ -25,6 +25,14 @@ import { setLoading } from '@/redux/slices/authSlice';
 import { auth } from '@/redux/store';
 
 import AUTH_REGEX from '@/regex/auth';
+
+import {ErrorNotification, SuccessNotification} from '@/components/Notification';
+import { Box } from '@mui/system';
+import React from 'react';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { Snackbar, Alert, Button } from '@mui/material';
+import Fade from '@mui/material/Fade';
 
 const DEFAULT_FORM_VALUES = {
   email: '',
@@ -51,6 +59,7 @@ const SignInForm = (props) => {
   const [error, setError] = useState(DEFAULT_ERR_STATE);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [openError, setOpenError] = useState(false);
 
   const { handleOpenSnackBar } = useContext(AuthContext);
 
@@ -99,7 +108,14 @@ const SignInForm = (props) => {
       dispatch(setLoading(true));
       router.push(ROUTES.HOME);
     } catch ({ code }) {
-      setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
+
+      if (code === AUTH_ERR_CODES.USER_NOT_FOUND) {
+        setOpenError(true);
+        
+      }
+      else {
+        setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
+      }
     } finally {
       setSignInLoading(false);
     }
@@ -153,12 +169,45 @@ const SignInForm = (props) => {
     );
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenError(false);
+  };
+
+  
+  const renderErrorNotification = () => {
+    const errorMessage = (
+      <div>
+        <p style={{ fontWeight: 'bold', color: '#ff6f6f', margin: 0, display: 'flex', alignItems: 'center' }}>
+          <i className="icon-info"></i>Login Failed!
+        </p>
+        <p style={{ color: '#ffb3b3', margin: 0 }}>
+          This account is not registered to a Radical account <span style={{ color: '#ff6f6f', fontWeight: 'bold' }}>Create an account</span> to continue.
+        </p>
+      </div>
+    );
+
+
+    return (
+      <ErrorNotification
+        open={openError}
+        onClose={handleClose}
+        message={errorMessage}
+        {...styles.errorNotificationProps}
+      />
+    );
+  }
+
   return (
     <FormContainer
       defaultValues={DEFAULT_FORM_VALUES}
       onSuccess={(data) => handleSubmit(data)}
     >
       <Grid {...sharedStyles.formGridProps}>
+        {renderErrorNotification()}
         {renderEmailInput()}
         {renderPaswordInput()}
         {renderSubmitButton()}

@@ -9,6 +9,7 @@ import styles from './styles.js';
  *
  * @param {object} props - The props object.
  * @param {JSX.Element} props.form - The JSX element for the local authentication form.
+//  * @param {JSX.Element} props.notification - The JSX element for the login error notification.
  * @param {object} props.title - The title object.
  * @param {string} props.title.main - The main title text.
  * @param {string} props.title.subtitle - The subtitle text.
@@ -19,6 +20,7 @@ import styles from './styles.js';
 const AuthForm = (props) => {
   const {
     form,
+    notification,
     goBack,
     title: { main, subtitle, route, linklabel },
   } = props;
@@ -54,6 +56,7 @@ const AuthForm = (props) => {
   return (
     <Grid {...styles.mainGridProps}>
       {goBack}
+      {/* {renderErrorNotification()} */}
       {renderTitle()}
       {renderForm()}
       {renderPolicyInfo()}

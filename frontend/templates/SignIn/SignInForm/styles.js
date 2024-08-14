@@ -53,6 +53,28 @@ const styles = {
       px: 4,
     },
   },
+  errorNotificationProps: {
+    anchorOrigin: { vertical: 'top', horizontal: 'center' },
+    sx: {
+        position: 'absolute',
+        top: '7%',
+        left: '50%',
+        height: '24px',
+        transform: 'translate(-50%, -50%)',
+        width: '60%', // Adjust the max-width as needed
+    }
+  },
+  successNotificationProps: {
+    anchorOrigin: { vertical: 'top', horizontal: 'center' },
+    sx: {
+        position: 'absolute',
+        top: '7%',
+        left: '50%',
+        height: '24px',
+        transform: 'translate(-50%, -50%)',
+        width: '40%', // Adjust the max-width as needed
+    }
+}
 };
 
 export default styles;
