@@ -61,12 +61,22 @@ jobs:
       - name: Build Next.js
         run: npm run build:next
 
+      - name: Set Channel ID
+        id: set_channel_id
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "channel_id=live" >> $GITHUB_ENV
+          else
+            echo "channel_id=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          fi
+
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GIT_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SANDBOX }}
           projectId: kai-platform-sandbox
+          channelId: ${{ env.channel_id }}
 
   build_and_deploy_production:
     name: "Deploy to Kai Production"
@@ -121,9 +131,19 @@ jobs:
       - name: Build Next.js
         run: npm run build:next
 
+      - name: Set Channel ID
+        id: set_channel_id
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "channel_id=live" >> $GITHUB_ENV
+          else
+            echo "channel_id=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          fi
+
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GIT_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KAI_AI_F63C8 }}
           projectId: kai-ai-f63c8
+          channelId: ${{ env.channel_id }}
