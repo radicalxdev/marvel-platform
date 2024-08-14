@@ -16,10 +16,12 @@ const styles = {
       justifyContent: 'space-between',
       width: '100%',
       backgroundColor: '#FFFFFF',
+      borderRadius: '10px',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
       transition: (theme) => theme.transitions.create('all'),
       '&:hover': {
         transform: 'scale(1.02)',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)',
       },
     },
   },
