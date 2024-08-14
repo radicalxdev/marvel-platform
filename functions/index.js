@@ -25,9 +25,8 @@ module.exports = {
   createChatSession: kaiAIController.createChatSession,
 
   /* output tools History */
-  createToolsSession: ToolsController.createToolsSession,
-  updateToolsSession: ToolsController.updateToolsSession,
   deleteToolsSession: ToolsController.deleteToolsSession,
+  determineToolsSessionState: ToolsController.determineToolsSessionState,
 
   /* Migration Scripts - For running */
   ...migrationScripts,
