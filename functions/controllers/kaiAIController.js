@@ -1,12 +1,8 @@
 const admin = require('firebase-admin');
 const storage = admin.storage();
-const {
-  onCall,
-  onRequest,
-  HttpsError,
-} = require('firebase-functions/v2/https');
+const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
-const { logger } = require('firebase-functions/v1');
+const { logger, https } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
 const { BOT_TYPE } = require('../constants');
 const express = require('express');
@@ -179,7 +175,7 @@ const chat = onCall(async (props) => {
  * @return {void} Sends a response to the client based on the processing results.
  * @throws {HttpsError} Throws an error if processing fails or data is invalid.
  */
-app.post('/api/tool', (req, res) => {
+app.post('/api/tool/', (req, res) => {
   const bb = busboy({ headers: req.headers });
 
   if (req.method !== 'POST') {
@@ -368,6 +364,6 @@ const createChatSession = onCall(async (props) => {
 
 module.exports = {
   chat,
-  tool: onRequest({ minInstances: 1 }, app),
+  tool: https.onRequest(app),
   createChatSession,
 };
