@@ -37,6 +37,21 @@ exports.signUpUser = https.onCall(async (data, context) => {
   return { status: 'success', message: 'User document created successfully' };
 });
 
+/**
+ * Retrieves user information from the database, including onboarding status.
+ * 
+ * @function getUser
+ * @async
+ * @param {string} uid - The user ID to retrieve
+ * 
+ * @returns {Promise<void>} - Sends a JSON response with user data or error message
+ * 
+ * @throws {Object} - Returns a JSON object with error details if an error occurs
+ * 
+ * @example
+ * // GET http://<your-firebase-project>.cloudfunctions.net/getUser?uid=<userId>
+
+ */
 exports.getUser = https.onRequest(async (req, res) => {
   DEBUG && logger.log('getUser function started');
 
