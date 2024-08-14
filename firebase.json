@@ -12,9 +12,6 @@
     }
   ],
   "emulators": {
-    "predeploy": {
-      "functions": "node functions/cloud_db_seed.js"
-    },
     "functions": {
       "port": 5001
     },
