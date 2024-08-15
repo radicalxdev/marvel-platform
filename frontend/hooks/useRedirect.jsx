@@ -77,32 +77,38 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
   }, [authData]);
 
   useEffect(() => {
-    // redirect based on onboarding status
-    const isOnboardingUrl = onboardingRegex.test(asPath);
-    const isHomeUrl = homeRegex.test(asPath);
-    const onboardingStatus = userData?.needsBoarding;
+    // redirect based on onboarding status, provided that the user is already authed
+    if (auth.currentUser) {
+      const isOnboardingUrl = onboardingRegex.test(asPath);
+      const isHomeUrl = homeRegex.test(asPath);
+      const onboardingStatus = userData?.needsBoarding;
 
-    // If already logged in and onboarding is required, redirect to onboarding
-    if (!isOnboardingUrl && onboardingStatus) {
-      dispatch(setUserLoading(true));
-      router.push(ROUTES.ONBOARDING.replace('[onboardingId]', '0'));
-      return;
-    }
-
-    // If users who have already completed onboarding wrongly enter the onboarding page or just completed the last onboarding task.
-    if (isOnboardingUrl) {
-      dispatch(setUserLoading(false));
-      if (onboardingStatus === false) {
+      // If already logged in and onboarding is required, redirect to onboarding
+      if (
+        !isOnboardingUrl &&
+        (onboardingStatus ||
+          (onboardingStatus === undefined && userData !== false))
+      ) {
         dispatch(setUserLoading(true));
-        router.push(ROUTES.HOME);
+        router.push(ROUTES.ONBOARDING.replace('[onboardingId]', '0'));
         return;
       }
-      return;
-    }
 
-    // If users are coming from the onboarding page
-    if (isHomeUrl && !onboardingStatus) {
-      dispatch(setUserLoading(false));
+      // If users who have already completed onboarding wrongly enter the onboarding page or just completed the last onboarding task.
+      if (isOnboardingUrl) {
+        dispatch(setUserLoading(false));
+        if (onboardingStatus === false) {
+          dispatch(setUserLoading(true));
+          router.push(ROUTES.HOME);
+          return;
+        }
+        return;
+      }
+
+      // If users are coming from the onboarding page
+      if (isHomeUrl && !onboardingStatus) {
+        dispatch(setUserLoading(false));
+      }
     }
   }, [userData, router]);
 
