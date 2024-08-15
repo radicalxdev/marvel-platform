@@ -142,8 +142,6 @@ exports.uploadProfileImage = functions.https.onRequest(async (req, res) => {
             },
           });
 
-          writeStream.end(fileBuffer);
-
           writeStream.on('finish', async () => {
             const [metadata] = await fileUpload.getMetadata();
             const downloadURL = `https://firebasestorage.googleapis.com/v0/b/${metadata.bucket}/o/${encodeURIComponent(metadata.name)}?alt=media&token=${metadata.metadata.firebaseStorageDownloadTokens}`;
@@ -161,6 +159,8 @@ exports.uploadProfileImage = functions.https.onRequest(async (req, res) => {
           writeStream.on('error', (error) => {
             res.status(500).send({ success: false, error: error.message });
           });
+
+          writeStream.end(fileBuffer);
         } catch (error) {
           res.status(500).send({ success: false, error: error.message });
         }
