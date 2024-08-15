@@ -1,8 +1,12 @@
 const admin = require('firebase-admin');
 const storage = admin.storage();
-const { onCall, HttpsError } = require('firebase-functions/v2/https');
+const {
+  onCall,
+  HttpsError,
+  onRequest,
+} = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
-const { logger, https } = require('firebase-functions/v1');
+const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
 const { BOT_TYPE } = require('../constants');
 const express = require('express');
@@ -207,9 +211,7 @@ app.post('/api/tool/', (req, res) => {
         const publicUrl = `https://storage.googleapis.com/${bucketName}/${filePath}`;
 
         DEBUG &&
-          console.log(
-            `File ${filename} uploaded and available at ${publicUrl}`
-          );
+          logger.log(`File ${filename} uploaded and available at ${publicUrl}`);
 
         resolve({ filePath, url: publicUrl, filename });
       });
@@ -253,6 +255,18 @@ app.post('/api/tool/', (req, res) => {
           },
         },
       });
+      DEBUG && logger.log(response);
+
+      const topicInput = modifiedInputs.find((input) => input.name === 'topic');
+      const topic = topicInput ? topicInput.value : null;
+
+      await saveResponseToFirestore({
+        response: response.data.data,
+        tool_id: otherToolData.tool_id,
+        topic,
+        userID: otherData.user.id,
+      });
+
       res.status(200).json({ success: true, data: response.data });
     } catch (error) {
       logger.error('Error processing request:', error);
@@ -262,6 +276,28 @@ app.post('/api/tool/', (req, res) => {
 
   bb.end(req.rawBody);
 });
+
+/**
+ * Save the tool session response to Firestore
+ * @param {object} sessionData - The data to be saved to Firestore
+ * @param {string} userId - The ID of the user
+ */
+const saveResponseToFirestore = async (sessionData) => {
+  try {
+    const toolSessionRef = await admin
+      .firestore()
+      .collection('toolSessions')
+      .add({
+        ...sessionData,
+        createdAt: Timestamp.fromMillis(Date.now()),
+      });
+    if (DEBUG) {
+      logger.log(`Tool session saved with ID: ${toolSessionRef.id}`);
+    }
+  } catch (error) {
+    logger.error('Error saving tool session to Firestore:', error);
+  }
+};
 
 /**
  * This creates a chat session for a user.
@@ -360,85 +396,8 @@ const createChatSession = onCall(async (props) => {
   }
 });
 
-const createToolSession = onCall(async (props) => {
-  try {
-    const { user, tool_data, type, outputs, sessionId } = props.data;
-    if (!user || !tool_data || !type || !outputs) {
-      logger.log('Missing required fields', props.data);
-      throw new HttpsError('invalid-argument', 'Missing required fields');
-    }
-
-    const initialToolData = {
-      ...tool_data,
-      timestamp: Timestamp.fromMillis(Date.now()),
-    };
-    let toolSessionRef;
-    let toolSessionId;
-
-    if (sessionId) {
-      toolSessionRef = admin
-        .firestore()
-        .collection('toolSessions')
-        .doc(sessionId);
-      const toolSessionDoc = await toolSessionRef.get();
-      if (toolSessionDoc.exists) {
-        // Update the existing session by replacing the data
-        await toolSessionRef.update({
-          tool_data: [initialToolData],
-          user,
-          type,
-          outputs,
-          updatedAt: Timestamp.fromMillis(Date.now()),
-        });
-      } else {
-        throw new HttpsError('not-found', 'Session ID does not exist');
-      }
-    } else {
-      // Create a new session
-      toolSessionRef = await admin
-        .firestore()
-        .collection('toolSessions')
-        .add({
-          tool_data: [initialToolData],
-          user,
-          type,
-          outputs,
-          createdAt: Timestamp.fromMillis(Date.now()),
-          updatedAt: Timestamp.fromMillis(Date.now()),
-        });
-      toolSessionId = toolSessionRef.id;
-
-      // Update the document to include its ID
-      await toolSessionRef.update({
-        id: toolSessionId,
-      });
-
-      logger.log('Created new tool session:', toolSessionId);
-    }
-
-    const updatedToolSession = await toolSessionRef.get();
-    const createdToolSession = {
-      ...updatedToolSession.data(),
-      id: updatedToolSession.id,
-    };
-
-    logger.log(
-      'Successfully created or updated tool session:',
-      createdToolSession
-    );
-    return {
-      status: 'created',
-      data: createdToolSession,
-    };
-  } catch (error) {
-    logger.error(error);
-    throw new HttpsError('internal', error.message);
-  }
-});
-
 module.exports = {
   chat,
-  tool: https.onRequest(app),
+  tool: onRequest({ minInstances: 1 }, app),
   createChatSession,
-  createToolSession,
 };

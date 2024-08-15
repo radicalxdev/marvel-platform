@@ -1,9 +1,9 @@
+import HistoryIcon from '@mui/icons-material/History';
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import Briefcase from '@/assets/svg/Briefcase.svg';
 import ChatBubble from '@/assets/svg/ChatBubble.svg';
-import MenuBook from '@/assets/svg/Menu book.svg';
 
 import ROUTES from '@/constants/routes';
 
@@ -27,7 +27,7 @@ const PAGES = [
   {
     name: 'History',
     link: ROUTES.HISTORY,
-    icon: <MenuBook />,
+    icon: <HistoryIcon />,
     id: 'page_3',
   },
 ];

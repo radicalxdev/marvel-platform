@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-import createToolSession from './createToolSession';
-
-const submitPrompt = async (payload, files, dispatch) => {
+const submitPrompt = async (payload, files) => {
   try {
     const formData = new FormData();
     formData.append('data', JSON.stringify(payload));
@@ -18,19 +16,6 @@ const submitPrompt = async (payload, files, dispatch) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-
-    const toolSessionPayload = {
-      user: payload.user,
-      tool_data: { ...payload.tool_data },
-      type: payload.type,
-      outputs: response.data,
-      sessionId: payload.sessionId,
-    };
-
-    const createdToolSession = await createToolSession(
-      toolSessionPayload,
-      dispatch
-    );
 
     return response.data?.data;
   } catch (err) {
