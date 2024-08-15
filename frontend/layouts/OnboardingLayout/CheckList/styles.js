@@ -13,9 +13,9 @@ const styles = {
   },
 
   stepLabelProps: {
-    marginTop: '8px', // Increased top margin
-    fontSize: '16px', // Increased font size
-    color: '#fff', // White text for contrast
+    marginTop: '8px',
+    fontSize: '16px',
+    color: '#fff',
   },
 
   stpConnector: (active, completed) => ({
@@ -88,25 +88,24 @@ const styles = {
     },
   },
 
-  // Step Circle styling
   stepCircle: {
-    width: '21px', // Increased width
-    height: '21px', // Increased height
+    width: '21px',
+    height: '21px',
     borderRadius: '50%',
     display: 'flex',
   },
 
   stepCircleCompleted: {
-    width: '21px', // Increased width
-    height: '21px', // Increased height
+    width: '21px',
+    height: '21px',
     borderRadius: '50%',
     display: 'flex',
     backgroundColor: '#8653FF',
   },
 
   stepCircleActive: {
-    width: '21px', // Increased width
-    height: '21px', // Increased height
+    width: '21px',
+    height: '21px',
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
@@ -115,11 +114,10 @@ const styles = {
     borderStyle: 'solid',
     borderColor: '#8653FF',
     backgroundColor: '#444154',
-  }, // Active step color
+  },
 
-  stepCircleInactiveColor: '#656277', // Inactive step color
+  stepCircleInactiveColor: '#656277',
 
-  // Dynamic styles based on step state
   getStepCircleStyle: (isActive) => ({
     ...styles.stepCircle,
     backgroundColor: isActive

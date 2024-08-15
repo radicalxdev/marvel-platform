@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { useRouter } from 'next/router';
@@ -26,6 +26,12 @@ const onboardingComponents = {
   4: Complete,
 };
 
+/** .
+ * The onboarding page component that renders specific screends depending on the users current steps.
+ *
+ * @param {object} onboardingData - The data for the current onboarding step
+ * @return {JSX.Element} The JSX element for the current onboarding step
+ */
 const OnboardingPage = ({ onboardingData }) => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -33,13 +39,13 @@ const OnboardingPage = ({ onboardingData }) => {
 
   useEffect(() => {
     if (onboardingData.id !== step) {
-      dispatch(setStep(onboardingData.id)); // Ensure the Redux state is in sync with the URL
+      dispatch(setStep(onboardingData.id));
     }
   }, [dispatch, onboardingData.id, step]);
 
   const handleNext = async (formData = {}) => {
     if (onboardingComponents?.[onboardingData.id] === ProfileSetupForm) {
-      dispatch(setTempData(formData)); // Store form data in Redux
+      dispatch(setTempData(formData));
     }
 
     if (onboardingComponents?.[onboardingData.id] === Complete) {
@@ -62,7 +68,7 @@ const OnboardingPage = ({ onboardingData }) => {
       return;
     }
 
-    dispatch(setStep(onboardingData.id + 1)); // Update the step in Redux
+    dispatch(setStep(onboardingData.id + 1));
     router.push(`/onboarding/${onboardingData.id + 1}`);
   };
 

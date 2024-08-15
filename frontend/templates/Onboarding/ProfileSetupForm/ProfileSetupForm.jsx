@@ -52,14 +52,13 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
       bio: null,
     };
 
-    // Merge the template with the user-provided data, overriding defaults
     const completeData = Object.keys(template).reduce((acc, key) => {
       acc[key] = data[key] !== undefined ? data[key] : template[key];
       return acc;
     }, {});
 
-    dispatch(setTempData(completeData)); // Store complete form data in Redux
-    onNext(completeData); // Pass complete data to OnboardingPage and proceed to the next step
+    dispatch(setTempData(completeData));
+    onNext(completeData);
   };
 
   const onError = () => {

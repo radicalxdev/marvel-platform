@@ -31,7 +31,7 @@ const styles = {
       flex: 1,
       textAlign: 'center',
       px: 2,
-      mt: 10, // Padding-top to make space for the fixed ProgressBar
+      mt: 10,
       position: 'relative',
       overflow: 'auto',
     },

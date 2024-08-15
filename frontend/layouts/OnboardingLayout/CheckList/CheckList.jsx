@@ -84,6 +84,16 @@ const ProgressBarAccordion = ({
   </Accordion>
 );
 
+/**
+ * A functional component that renders a checklist for the onboarding process within the progress bar.
+ *
+ * @param {Object} props - The component props.
+ * @param {Boolean} props.expanded - Whether the checklist is expanded.
+ * @param {Function} props.handleChange - A callback function to handle changes.
+ * @param {Number} props.currentStep - The current step in the onboarding process.
+ * @param {Array} props.onboardingSteps - An array of onboarding steps.
+ * @return {JSX.Element} The rendered checklist component.
+ */
 const CheckList = (props) => {
   const { expanded, handleChange, currentStep, onboardingSteps } = props;
   return (

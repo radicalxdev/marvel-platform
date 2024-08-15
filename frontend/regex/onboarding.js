@@ -3,19 +3,20 @@ const ONBOARDING_REGEX = {
   occupation: { required: 'Occupation is required!' },
   facebook: {
     pattern: {
-      value: /https?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9._-]+\/?/,
+      value: /^(https?:\/\/)?(www\.)?facebook\.com\/[a-zA-Z0-9._-]+\/?$/,
       message: 'Invalid Facebook URL',
     },
   },
   linkedin: {
     pattern: {
-      value: /^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile)/gm,
+      value:
+        /^(https?:\/\/)?(www\.)?linkedin\.com\/(pub|in|profile)\/[a-zA-Z0-9_-]+\/?$/,
       message: 'Invalid LinkedIn URL',
     },
   },
   x: {
     pattern: {
-      value: /https?:\/\/(www\.)?x\.com\/\w+/g,
+      value: /^(https?:\/\/)?(www\.)?x\.com\/\w+\/?$/,
       message: 'Invalid X URL',
     },
   },

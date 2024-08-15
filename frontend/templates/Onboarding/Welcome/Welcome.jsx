@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Button, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -10,7 +8,7 @@ const Welcome = ({ onNext }) => {
 
   const handleStart = () => {
     onNext();
-    router.push('/onboarding/1'); // Proceed to the first step
+    router.push('/onboarding/1');
   };
 
   return (

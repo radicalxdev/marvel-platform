@@ -1,5 +1,7 @@
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
+import {
+  CheckCircle as CheckCircleIcon,
+  RadioButtonUncheckedOutlined as RadioButtonUncheckedOutlinedIcon,
+} from '@mui/icons-material';
 import { Button, Divider, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/router';

@@ -1,21 +1,22 @@
-import Grid from '@mui/material/Grid';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { Grid, useMediaQuery } from '@mui/material';
 import Head from 'next/head';
-
 import { useRouter } from 'next/router';
 
 import AppDisabled from '@/components/AppDisabled';
 
+import { onboardingSteps } from '@/constants/onboarding';
+
 import ProgressBar from './ProgressBar';
 import styles from './styles';
 
-const onboardingSteps = [
-  { label: 'Welcome' },
-  { label: 'Profile Setup' },
-  { label: 'System Configurations' },
-  { label: 'Final Steps' },
-];
-
+/**
+ * OnboardingLayout component that wraps the onboarding flow of the application.
+ *
+ * @param {object} props - The properties passed to the component.
+ * @param {React.ReactNode} props.children - The child components that will be rendered inside the layout.
+ *
+ * @returns {JSX.Element} The OnboardingLayout component.
+ */
 const OnboardingLayout = (props) => {
   const router = useRouter();
   const { children } = props;
