@@ -5,6 +5,7 @@ admin.initializeApp();
 
 const userController = require('./controllers/userController');
 const kaiAIController = require('./controllers/kaiAIController');
+const onboardingController = require('./controllers/onboardingController');
 const { seedDatabase } = require('./cloud_db_seed');
 
 seedDatabase();
@@ -26,4 +27,7 @@ module.exports = {
 
   /* Migration Scripts - For running  */
   ...migrationScripts,
+
+  /* Onboarding */
+  advanceOnboardingStatus: onboardingController.advanceOnboardingStatus,
 };
