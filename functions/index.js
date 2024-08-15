@@ -33,4 +33,5 @@ module.exports = {
   onboardingStep3: OnboardingController.saveStep3,
   onboardingStep4: OnboardingController.saveStep4,
   onboaridngGetLatestSetp: OnboardingController.getLatestStep,
+  uploadProfileImage: OnboardingController.uploadProfileImage,
 };
