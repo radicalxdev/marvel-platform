@@ -1,8 +1,12 @@
 const admin = require('firebase-admin');
 const storage = admin.storage();
-const { onCall, HttpsError } = require('firebase-functions/v2/https');
+const {
+  onCall,
+  HttpsError,
+  onRequest,
+} = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
-const { logger, https } = require('firebase-functions/v1');
+const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
 const { BOT_TYPE } = require('../constants');
 const express = require('express');
@@ -396,6 +400,6 @@ const createChatSession = onCall(async (props) => {
 
 module.exports = {
   chat,
-  tool: https.onRequest(app),
+  tool: onRequest({ minInstances: 1 }, app),
   createChatSession,
 };
