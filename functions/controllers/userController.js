@@ -115,15 +115,7 @@ exports.getUser = https.onRequest(async (req, res) => {
       !user.onboarding[4] ? 4 :
       !user.onboarding[5] ? 5 : 6;
     
-    if (currentStatus === 6) {
-      DEBUG && logger.info('User has completed onboarding');
-      user.onboarding = "completed";
-      res.status(200).json({
-        success: true,
-        user: user
-      });
-    }
-
+    // Update the user object with the current onboarding status
     user.onboarding = currentStatus
 
     // Return the user data
