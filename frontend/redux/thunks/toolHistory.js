@@ -1,9 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
+import { firestore } from '@/redux/store';
+
 export const fetchToolHistory = createAsyncThunk(
   'toolHistory/fetchToolHistory',
-  async ({ firestore }, { getState, rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
       const {
         auth: {
