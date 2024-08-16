@@ -61,7 +61,7 @@ const kaiCommunicator = async (payload) => {
       ...(isToolCommunicator ? { tool_data } : { messages }),
     };
 
-    DEBUG && logger.log('KAI_TOOL_ENDPOINT', KAI_ENDPOINT);
+    DEBUG && logger.log('KAI_ENDPOINT', KAI_ENDPOINT);
     DEBUG && logger.log('kaiPayload', kaiPayload);
 
     const resp = await axios.post(
