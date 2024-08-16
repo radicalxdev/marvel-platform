@@ -41,6 +41,7 @@ const PrimaryFileUpload = forwardRef((props, ref) => {
     error,
     preserveOrder,
     displayEmpty,
+    onErrors,
     ...otherProps
   } = props;
 
@@ -51,16 +52,28 @@ const PrimaryFileUpload = forwardRef((props, ref) => {
   const [files, setFiles] = useState(defaultValues);
 
   const handleCarouselFiles = (e) => {
-    const selectedFiles = e.target.files;
-    if (multiple) {
-      setFiles((prevFiles) => {
-        const arrayFiles = [...prevFiles, ...selectedFiles];
-        setValue(name, Array.from(arrayFiles));
-        return arrayFiles;
-      });
-    } else {
-      setFiles(selectedFiles);
-      setValue(name, Array.from(selectedFiles));
+    const selectedFiles = Array.from(e.target.files);
+    const validFiles = selectedFiles.filter(
+      (file) => file.type === 'application/pdf'
+    );
+    const invalidFiles = selectedFiles.filter(
+      (file) => file.type !== 'application/pdf'
+    );
+
+    if (invalidFiles.length > 0 || validFiles.length === 0 || !selectedFiles) {
+      onErrors(invalidFiles);
+    }
+    if (validFiles.length > 0) {
+      if (multiple) {
+        setFiles((prevFiles) => {
+          const arrayFiles = [...prevFiles, ...validFiles];
+          setValue(name, Array.from(arrayFiles));
+          return arrayFiles;
+        });
+      } else {
+        setFiles(validFiles);
+        setValue(name, Array.from(validFiles));
+      }
     }
   };
 

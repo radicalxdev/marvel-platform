@@ -76,6 +76,19 @@ const ToolForm = (props) => {
     }
   };
 
+  const handleFileUploadError = (invalidFiles) => {
+    handleOpenSnackBar(
+      ALERT_COLORS.ERROR,
+      <>
+        <strong>Unable to load {invalidFiles.length} files.</strong>
+        <br />
+        {'Make sure you select '}
+        <strong>PDF</strong>
+        {' files to continue making the quiz.'}
+      </>
+    );
+  };
+
   const renderTextInput = (inputProps) => {
     const { name: inputName, placeholder, tooltip, label } = inputProps;
     const renderLabel = () => {
@@ -182,6 +195,7 @@ const ToolForm = (props) => {
                 parseInt(v?.length, 10) < 10 || 'Should be less than 3 files',
             },
           }}
+          onErrors={handleFileUploadError}
         />
       </Grid>
     );
