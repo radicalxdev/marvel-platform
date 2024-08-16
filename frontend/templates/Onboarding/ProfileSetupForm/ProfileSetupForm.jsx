@@ -65,6 +65,15 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
     handleOpenSnackBar(ALERT_COLORS.ERROR, 'Oops! Some fields contain errors');
   };
 
+  const renderTitle = () => (
+    <Grid>
+      <Typography {...stylesOnboarding.titleProps}>Profile Setup</Typography>
+      <Typography {...stylesOnboarding.descriptionProps}>
+        Get started by setting up your profile
+      </Typography>
+    </Grid>
+  );
+
   const renderFullName = () => (
     <InputWrapper label="Full Name" required>
       <ProfileTextField
@@ -221,11 +230,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
 
   return (
     <Grid {...stylesOnboarding.mainGrid} {...styles.mainGrid}>
-      <Typography {...stylesOnboarding.titleProps}>Profile Setup</Typography>
-      <Typography {...stylesOnboarding.descriptionProps}>
-        Get started by setting up your profile
-      </Typography>
-
+      {renderTitle()}
       <FormContainer
         formContext={formContext}
         onSuccess={handleSubmit(onSubmit)}

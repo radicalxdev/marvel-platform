@@ -4,8 +4,7 @@ import OnboardingLayout from '@/layouts/OnboardingLayout';
 import OnboardingPage from '@/templates/Onboarding/Onboarding';
 
 /**
- * A functional component that handles individual onboarding pages.
- * It extracts the onboarding ID from the URL query and passes it to the OnboardingPage component.
+ * It extracts the onboarding ID from the URL query and passes it to the OnboardingPage component, returning the specific page required.
  *
  * @return {JSX.Element} The OnboardingPage component with the onboarding data.
  */

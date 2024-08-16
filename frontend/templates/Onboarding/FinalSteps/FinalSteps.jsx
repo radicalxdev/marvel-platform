@@ -4,7 +4,6 @@ import {
 } from '@mui/icons-material';
 import { Button, Divider, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useRouter } from 'next/router';
 
 import styles from './styles';
 
@@ -13,10 +12,9 @@ const StyledRadioButtonUncheckedOutlinedIcon = styled(
   RadioButtonUncheckedOutlinedIcon
 )(styles.uncheckBox);
 
-const FinalSteps = () => {
-  const router = useRouter();
+const FinalSteps = ({ onNext }) => {
   const handleFinish = () => {
-    router.push('/onboarding/4');
+    onNext();
   };
   const renderTitle = () => (
     <Grid {...styles.titleGrid}>

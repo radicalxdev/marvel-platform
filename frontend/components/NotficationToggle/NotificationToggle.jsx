@@ -13,14 +13,15 @@ import styles from './styles';
  * @param {boolean} [showDivider=true] - Whether to display a divider below the component.
  * @return {JSX.Element} The JSX element representing the toggle component.
  */
-const NotificationToggle = ({
-  label,
-  checked,
-  onChange,
-  labelStyle = styles.labelProps,
-  currentStyles = styles,
-  showDivider = true,
-}) => {
+const NotificationToggle = (props) => {
+  const {
+    label,
+    checked,
+    onChange,
+    labelStyle = styles.labelProps,
+    currentStyles = styles,
+    showDivider = true,
+  } = props;
   return (
     <>
       <Grid {...currentStyles.mainGrid}>

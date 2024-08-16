@@ -1,14 +1,10 @@
 import { Button, Grid, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 
 import styles from '../styles.js';
 
 const Welcome = ({ onNext }) => {
-  const router = useRouter();
-
   const handleStart = () => {
     onNext();
-    router.push('/onboarding/1');
   };
 
   return (
