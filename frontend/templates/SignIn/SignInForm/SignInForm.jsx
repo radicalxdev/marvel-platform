@@ -26,6 +26,8 @@ import { auth } from '@/redux/store';
 
 import AUTH_REGEX from '@/regex/auth';
 
+// import { SuccessNotification, ErrorNotification } from './Notifications';
+
 const DEFAULT_FORM_VALUES = {
   email: '',
   password: '',
@@ -95,11 +97,18 @@ const SignInForm = (props) => {
         return;
       }
 
-      // If user is verified, redirect to home
+
       dispatch(setLoading(true));
       router.push(ROUTES.HOME);
     } catch ({ code }) {
       setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
+      
+      // toast notification for failed login attempt
+      handleOpenSnackBar(
+        ALERT_COLORS.ERROR,
+        'Login Failed! Invalid Credentials or account not found',
+        
+      );
     } finally {
       setSignInLoading(false);
     }
