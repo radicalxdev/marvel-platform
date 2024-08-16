@@ -17,19 +17,39 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
+
   titleProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: '36px',
   },
+
   subtitleProps: {
     fontFamily: 'Satoshi Regular',
     fontSize: '18px',
   },
+  
   highlightTextProps: {
     component: 'span',
-    fontFamily: 'inherit',
+    // fontFamily: 'inherit',
+    fontFamily: 'Satoshi Bold',
     fontSize: 'inherit',
     color: (theme) => theme.palette.primary.main,
+  },
+
+  loginGridProps:{
+    container: true,
+    item: true,
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    fontWeight: 'bold',
+    color: '#6960Ec',
+  },
+
+  loginSubtitleProps: {
+    color: 'black',
+    margin: 0,
   },
 };
 
