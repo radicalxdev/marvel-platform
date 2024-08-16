@@ -2,18 +2,19 @@ import { ContentCopy, FileDownload } from '@mui/icons-material';
 import { Button, Drawer, Grid, Typography } from '@mui/material';
 import moment from 'moment';
 
-import { TOOLS } from '@/constants/tools';
+import { TOOLS_ID } from '@/constants/tools';
 
 import styles from './styles';
 
 import FlashCardsOutput from './toolRenderers/FlashCardsOutput';
 import MultipleChoiceQuizOutput from './toolRenderers/MultipleChoiceQuizOutput';
 
+import { convertToUnixTimestamp } from '@/utils/FirebaseUtils';
 import { copyToClipboard, exportToCSV } from '@/utils/ToolHistoryUtils';
 
 const DRAWER_RENDERERS = {
-  [TOOLS.MCQ]: MultipleChoiceQuizOutput,
-  [TOOLS.FLASHCARDS]: FlashCardsOutput,
+  [TOOLS_ID.GEMINI_QUIZIFY]: MultipleChoiceQuizOutput,
+  [TOOLS_ID.GEMINI_DYNAMO]: FlashCardsOutput,
 };
 
 const DEFAULT_DATA = {
@@ -34,7 +35,7 @@ const ToolOutputHistoryDrawer = (props) => {
   if (!data) return null;
 
   const panelData = data?.response || DEFAULT_DATA.questions;
-  const ToolHistoryOutput = DRAWER_RENDERERS[data.toolId];
+  const ToolHistoryOutput = DRAWER_RENDERERS[data.tool_id];
 
   const handleCopyToClipboard = () => {
     copyToClipboard(data, panelData);
@@ -48,7 +49,9 @@ const ToolOutputHistoryDrawer = (props) => {
     <Grid container direction="column" {...styles.headerGridProps}>
       <Grid item>
         <Typography {...styles.dateProps}>
-          {data?.creationDate || moment().toDate().toLocaleDateString()}
+          {moment(convertToUnixTimestamp(data?.createdAt))
+            ?.toDate()
+            ?.toLocaleDateString()}
         </Typography>
       </Grid>
       <Grid item>
@@ -58,7 +61,7 @@ const ToolOutputHistoryDrawer = (props) => {
       </Grid>
       <Grid item>
         <Typography {...styles.categoryContentProps}>
-          {data?.content || 'Default Content'}
+          {data?.description || 'Default Description'}
         </Typography>
       </Grid>
     </Grid>

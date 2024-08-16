@@ -12,14 +12,7 @@ const findIndexToInsert = (array, item, createdAt) => {
 };
 
 const useFilterByTime = (data) => {
-  const [categorizedData, setCategorizedData] = useState({
-    today: [],
-    yesterday: [],
-    previous7Days: [],
-    previous30Days: [],
-    monthsBefore: {},
-  });
-
+  const [categorizedData, setCategorizedData] = useState(null);
   const [isHistoryEmpty, setIsHistoryEmpty] = useState(true);
 
   useEffect(() => {
@@ -43,7 +36,7 @@ const useFilterByTime = (data) => {
         .startOf('day');
       const startOfThisMonth = now.clone().startOf('month');
 
-      data.forEach((item) => {
+      data?.forEach((item) => {
         const createdAt = item.createdAt && moment.unix(item.createdAt.seconds); // Correctly access seconds
         if (!createdAt) return;
 
@@ -90,11 +83,14 @@ const useFilterByTime = (data) => {
       });
 
       setCategorizedData({
-        today,
-        yesterday,
-        previous7Days,
-        previous30Days,
-        monthsBefore: sortedMonthsBeforeData,
+        today: { title: 'Today', items: today },
+        yesterday: { title: 'Yesterday', items: yesterday },
+        previous7Days: { title: 'Previous 7 days', items: previous7Days },
+        previous30Days: {
+          title: 'Previous 30 days',
+          items: previous30Days,
+        },
+        monthsBefore: { items: sortedMonthsBeforeData },
       });
 
       const historyEmpty =

@@ -2,8 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { fetchToolHistory } from '../thunks/toolHistory';
 
-import { categorizeDataByDate } from '@/utils/DateUtils';
-
 const initialState = {
   data: null,
   loading: true,
@@ -23,9 +21,7 @@ const ToolHistorySlice = createSlice({
         state.error = null;
       })
       .addCase(fetchToolHistory.fulfilled, (state, action) => {
-        const categorizedData = categorizeDataByDate(action.payload);
-
-        state.data = categorizedData;
+        state.data = action.payload;
         state.loading = false;
       })
       .addCase(fetchToolHistory.rejected, (state, action) => {

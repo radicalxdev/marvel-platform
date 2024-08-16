@@ -1,4 +1,4 @@
-import { ToolCardHandlers, TOOLS_ID } from '@/constants/tools';
+import { TOOLS_ID } from '@/constants/tools';
 
 /**
  * Renders tool data based on the toolId and item provided from tool constants.
@@ -7,15 +7,16 @@ import { ToolCardHandlers, TOOLS_ID } from '@/constants/tools';
  * @param {object} item - The item containing tool data and outputs.
  * @return {object} An object containing the rendered tool data.
  */
-const renderToolData = (props) => {
+const getToolData = (props) => {
   const { toolId, item } = props;
+
   switch (toolId) {
     case TOOLS_ID.GEMINI_QUIZIFY: {
-      const topicInput = item.tool_data[0].inputs.find(
-        (input) => input.name === 'topic'
-      );
-      const title = topicInput ? topicInput.value : 'N/A';
-      const multipleChoiceList = item.outputs?.data?.data;
+      const title = `Multiple Choice Assessment - ${item.topic}`;
+      const description =
+        item.description ||
+        `Multiple Choice Questions taken from ${item.topic}`;
+      const output = item.response;
       const backgroundImgURL =
         'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Quizify.png?alt=media&token=d1255f27-b1a1-444e-b96a-4a3ac559237d';
       const logo =
@@ -23,27 +24,42 @@ const renderToolData = (props) => {
 
       return {
         title,
+        description,
         backgroundImgURL,
         logo,
-        multipleChoiceList,
+        output,
+        ...item,
       };
     }
     case TOOLS_ID.GEMINI_DYNAMO: {
-      const youtubeUrlInput = item.tool_data[0].inputs.find(
-        (input) => input.name === 'youtube_url'
-      );
-      const dynamoTitle = youtubeUrlInput ? youtubeUrlInput.value : 'N/A';
-      const flashCards = item.outputs?.data?.data;
+      const concepts = item.response?.map((card) => card.concept) || [];
+      const primaryConcept = concepts[0] || 'Various Concepts';
+
+      let notableConcepts = '';
+      if (concepts.length > 1) {
+        notableConcepts =
+          concepts.slice(0, 1).join(', ') +
+          (concepts.length > 2 ? ', and ' : ' and ') +
+          concepts[concepts.length - 1];
+      } else {
+        notableConcepts = primaryConcept;
+      }
+
+      const title = `Flashcards on ${primaryConcept} and More`;
+      const description = `Includes concepts like ${notableConcepts}`;
+      const flashCards = item.response;
       const dynamoBackgroundImgURL =
         'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/Dynamo.png?alt=media&token=db14183f-a294-49b2-a9de-0818b007c080';
       const dynamoLogo =
         'https://firebasestorage.googleapis.com/v0/b/kai-ai-f63c8.appspot.com/o/YoutubeLogo.png?alt=media&token=2809083f-f816-41b6-8f86-80582b3da188';
 
       return {
-        title: dynamoTitle,
+        title,
+        description,
         backgroundImgURL: dynamoBackgroundImgURL,
         logo: dynamoLogo,
-        flashCards,
+        output: flashCards,
+        ...item,
       };
     }
     default:
@@ -51,22 +67,10 @@ const renderToolData = (props) => {
         title: 'Default Title',
         backgroundImgURL: null,
         logo: null,
-        multipleChoiceList: null,
-        flashCards: null,
+        output: null,
+        ...item,
       };
   }
 };
 
-/**
- * Retrieves and processes tool card data based on the provided item using predefined ToolCard Handlers.
- *
- * @param {Object} item - The item containing tool data.
- * @returns {Object} Processed tool card data.
- */
-const getToolCardData = (item) => {
-  const toolId = item.tool_data?.[0]?.tool_id;
-  const handler = ToolCardHandlers[toolId] || ToolCardHandlers.default;
-  return handler(item);
-};
-
-export { renderToolData, getToolCardData };
+export { getToolData };

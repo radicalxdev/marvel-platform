@@ -8,17 +8,21 @@ const styles = {
     alignItems: 'flex-start',
     rowGap: 3,
   },
-  titleProps: {
-    fontFamily: 'Satoshi Bold',
-    fontSize: '36px',
-  },
-  sectionsGridProps: {
+  containerGridProps: {
     container: true,
     item: true,
-    width: '100%',
-    flexDirection: 'column',
+    mobileSmall: true,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  innerListGridProps: {
+    container: true,
+    item: true,
+    mobileSmall: 12,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    columnSpacing: 3,
+    rowSpacing: 5,
   },
   headerGridProps: {
     container: true,
@@ -35,22 +39,6 @@ const styles = {
     fontFamily: 'Satoshi Bold',
     fontSize: '18px',
     color: (theme) => theme.palette.Greyscale[400],
-  },
-  innerListGridProps: {
-    container: true,
-    item: true,
-    mobileSmall: 12,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    columnSpacing: 3,
-    rowSpacing: 5,
-  },
-  containerGridProps: {
-    container: true,
-    item: true,
-    mobileSmall: true,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
   },
 };
 

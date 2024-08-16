@@ -24,7 +24,7 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
 
   const fetchUserRelatedData = async (id) => {
     dispatch(fetchUserData({ firestore, id }));
-    dispatch(fetchToolHistory({ firestore }));
+    dispatch(fetchToolHistory());
   };
 
   useEffect(() => {
