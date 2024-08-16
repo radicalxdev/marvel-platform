@@ -8,7 +8,7 @@ const {
 const { default: axios } = require('axios');
 const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
-const { BOT_TYPE } = require('../constants');
+const { BOT_TYPE, AI_ENDPOINTS } = require('../constants');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const busboy = require('busboy');
@@ -40,6 +40,7 @@ const kaiCommunicator = async (payload) => {
 
     const { messages, user, tool_data, type } = payload.data;
     const isToolCommunicator = type === BOT_TYPE.TOOL;
+
     const KAI_API_KEY = process.env.KAI_API_KEY;
     const KAI_ENDPOINT = process.env.KAI_ENDPOINT;
 
@@ -61,12 +62,16 @@ const kaiCommunicator = async (payload) => {
       ...(isToolCommunicator ? { tool_data } : { messages }),
     };
 
-    DEBUG && logger.log('KAI_ENDPOINT', KAI_ENDPOINT);
+    DEBUG && logger.log('KAI_TOOL_ENDPOINT', KAI_ENDPOINT);
     DEBUG && logger.log('kaiPayload', kaiPayload);
 
-    const resp = await axios.post(KAI_ENDPOINT, kaiPayload, {
-      headers,
-    });
+    const resp = await axios.post(
+      `${KAI_ENDPOINT}${AI_ENDPOINTS[type]}`,
+      kaiPayload,
+      {
+        headers,
+      }
+    );
 
     DEBUG && logger.log('kaiCommunicator response:', resp.data);
 
