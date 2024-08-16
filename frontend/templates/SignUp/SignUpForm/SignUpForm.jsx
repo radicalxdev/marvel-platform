@@ -74,7 +74,9 @@ const SignUpForm = (props) => {
   const { handleOpenSnackBar } = useContext(AuthContext);
 
   const { register, control, fieldStates } = useWatchFields(WATCH_FIELDS);
+ 
   const { email, fullName, password, reEnterPassword } = fieldStates;
+  // export const { email, fullName, password, reEnterPassword } = fieldStates;
 
   const passwordMatch = password.value === reEnterPassword.value;
 
@@ -107,6 +109,10 @@ const SignUpForm = (props) => {
       }
 
       if (!fullName.valid && !email.valid) {
+        handleOpenSnackBar(
+          ALERT_COLORS.ERROR,
+          'Sign Up Failed! \nPlease try again',  
+        );
         setError({
           ...error,
           fullName: { message: 'Full name is required' },
@@ -115,7 +121,19 @@ const SignUpForm = (props) => {
         return;
       }
 
+      if(!fullName.valid || !email.valid){
+        handleOpenSnackBar(
+          ALERT_COLORS.ERROR,
+          'Sign Up Failed! \nPlease try again',
+        );
+      }
+
       if (!fullName.valid) {
+        handleOpenSnackBar(
+          ALERT_COLORS.ERROR,
+          'Sign Up Failed! \nPlease try again',
+        );
+        
         setError({
           ...error,
           fullName: { message: 'Full name is required' },
@@ -124,6 +142,12 @@ const SignUpForm = (props) => {
       }
 
       if (!email.valid) {
+
+        handleOpenSnackBar(
+          ALERT_COLORS.ERROR,
+          'Sign Up Failed! \nPlease try again',
+        );
+
         setError({
           ...error,
           email: { message: 'Email address is required' },
@@ -152,6 +176,7 @@ const SignUpForm = (props) => {
       } catch (err) {
         handleOpenSnackBar(ALERT_COLORS.ERROR, err.message);
       } finally {
+       
         setLoading(false);
       }
     }
