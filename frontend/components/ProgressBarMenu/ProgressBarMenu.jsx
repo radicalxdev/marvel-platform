@@ -1,18 +1,28 @@
 /* eslint-disable */
-import { useState } from 'react';
+import { useState } from "react";
 
-import { Grid, Step, StepLabel, Stepper, Typography } from '@mui/material';
+import {
+  Grid,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography,
+  List,
+  ListItem,
+  Divider,
+  useTheme,
+} from "@mui/material";
 import StepConnector, {
   stepConnectorClasses,
-} from '@mui/material/StepConnector';
+} from "@mui/material/StepConnector";
 
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
-import StatusIcon from '@/templates/WelcomeScreen/StatusIcon';
+import StatusIcon from "@/templates/WelcomeScreen/StatusIcon";
 
-import ArrowDropDown from '@/assets/svg/DropDown.svg';
+import ArrowDropDown from "@/assets/svg/DropDown.svg";
 
-import styles from './styles.js';
+import styles from "./styles.js";
 
 const QontoConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -20,32 +30,32 @@ const QontoConnector = styled(StepConnector)(({ theme }) => ({
     // left: "calc(-50% + 16px)",
     // right: "calc(50% + 16px)",
     width: 140,
-    position: 'static',
+    position: "static",
     marginRight: 8,
     marginLeft: 8,
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      borderColor: '#784af4',
+      borderColor: "#784af4",
     },
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      borderColor: '#784af4',
+      borderColor: "#784af4",
     },
   },
   [`& .${stepConnectorClasses.line}`]: {
-    borderColor: theme.palette.mode === 'dark' ? '#444154' : '#eaeaf0',
+    borderColor: theme.palette.mode === "dark" ? "#444154" : "#eaeaf0",
     borderTopWidth: 8,
     borderRadius: 11,
     // display: 'flex'
   },
 }));
-const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
-  color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
-  display: 'flex',
+const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
+  color: theme.palette.mode === "dark" ? theme.palette.grey[700] : "#eaeaf0",
+  display: "flex",
   height: 22,
-  alignItems: 'center',
+  alignItems: "center",
 }));
 function QontoStepIcon(props) {
   const { active, completed, className } = props;
@@ -70,18 +80,50 @@ function QontoStepIcon(props) {
 const ProgressBarMenu = (props) => {
   const { steps: propsSteps, activeStep } = props;
 
+  const theme = useTheme();
   const [steps, setSteps] = useState(
     propsSteps || [
-      'Welcome',
-      'Profile Setup',
-      'System Configuration',
-      'Final Steps',
+      "Welcome",
+      "Profile Setup",
+      "System Configuration",
+      "Final Steps",
     ]
   );
   const [isExpand, setIsExpand] = useState(false);
 
+  const renderProgressBarExpand = () => {
+    return (
+      <Grid {...styles.progressBarExpandProps(isExpand)}>
+        <List {...styles.expandListProps}>
+          {steps.map((item, index) => (
+            <>
+              <Divider component="li" />
+              <ListItem key={item} {...styles.listItemPros}>
+                <StatusIcon
+                  key={item.key}
+                  item
+                  status={
+                    activeStep > index
+                      ? "done"
+                      : activeStep === index
+                      ? "doing"
+                      : "undo"
+                  }
+                />
+                &emsp;
+                <Typography color={theme.palette.common.white}>
+                  {item}
+                </Typography>
+              </ListItem>
+            </>
+          ))}
+        </List>
+      </Grid>
+    );
+  };
+
   return (
-    <Grid {...styles.mainGridProps}>
+    <Grid {...styles.mainGridProps(isExpand)}>
       <Stepper
         alternativeLabel
         activeStep={activeStep}
@@ -92,14 +134,16 @@ const ProgressBarMenu = (props) => {
             <StepLabel
               StepIconComponent={QontoStepIcon}
               {...styles.stepLabelProps}
-            >
-              {}
-            </StepLabel>
+            />
           </Step>
         ))}
       </Stepper>
       &emsp;
-      <ArrowDropDown cursor="pointer" onClick={() => {}} />
+      <ArrowDropDown
+        {...styles.arrowIconProps(isExpand)}
+        onClick={() => setIsExpand(!isExpand)}
+      />
+      {renderProgressBarExpand()}
     </Grid>
   );
 };
