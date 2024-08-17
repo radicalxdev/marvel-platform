@@ -1,5 +1,12 @@
-import WelcomeScreen from '@/templates/WelcomeScreen';
+import OnboardingLayout from '@/layouts/OnboardingLayout';
+import WelcomeScreenTem from '@/templates/WelcomeScreen';
 
-export default function () {
-  return <WelcomeScreen />;
-}
+const WelcomeScreen = () => {
+  return <WelcomeScreenTem />;
+};
+
+WelcomeScreen.getLayout = function getLayout(page) {
+  return <OnboardingLayout>{page}</OnboardingLayout>;
+};
+
+export default WelcomeScreen;

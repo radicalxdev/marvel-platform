@@ -5,59 +5,13 @@ import { Grid, Typography } from '@mui/material';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import ArrowDropDown from '@/assets/svg/DropDown.svg';
-
-import ExplainCom from './ProcessbarExplain/index';
-import StatusIcon from './StatusIcon/index';
-
 import styles from './styles';
 
 import theme from '@/theme/theme';
 
 const WelcomeScreen = (props) => {
-  const guidList = useRef([
-    {
-      type: 'Dot',
-      status: 'doing',
-    },
-    {
-      type: 'Line',
-      status: 'undo',
-    },
-    {
-      type: 'Dot',
-    },
-    {
-      type: 'Line',
-    },
-    {
-      type: 'Dot',
-    },
-    {
-      type: 'Line',
-    },
-    {
-      type: 'Dot',
-    },
-  ]);
-  const [explainShow, setExplainShow] = useState(false);
 
-  const LineGuideCom = () => {
-    return (
-      <Grid {...styles.lineGuideGridProps}>
-        {guidList.current.map((item, index) => {
-          if (item.type === 'Line') {
-            return <Grid key={index} {...styles.guideLineProps} />;
-          }
-          return <StatusIcon status={item.status} />;
-        })}
-
-        <ArrowDropDown cursor="pointer" onClick={() => setExplainShow(true)} />
-      </Grid>
-    );
-  };
-
-  const MainSection = () => {
+  const renderMessage = () => {
     return (
       <Grid>
         <Typography {...styles.MainSectionProps}>
@@ -88,16 +42,7 @@ const WelcomeScreen = (props) => {
 
   return (
     <Grid {...styles.mainGridProps}>
-      {LineGuideCom()}
-      {MainSection()}
-      {explainShow && (
-        <ExplainCom
-          guidState={guidList.current}
-          onClose={() => {
-            setExplainShow(false);
-          }}
-        />
-      )}
+      {renderMessage()}
     </Grid>
   );
 };

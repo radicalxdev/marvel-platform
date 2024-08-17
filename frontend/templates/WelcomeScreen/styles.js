@@ -3,10 +3,12 @@ const styles = {
     position: 'relative',
     container: true,
     mobileSmall: 12,
-    height: '100vh',
-    maxHeight: '100vh',
+    height: 'auto',
+    // maxHeight: '100vh',
+    width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
+    paddingTop: '50px',
     sx: {
       background: (theme) => {
         return theme.palette.Background.primary;
