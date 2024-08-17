@@ -10,21 +10,19 @@ const OnboardingLayout = (props) => {
   const { children } = props;
   const [activeStep, setActiveStep] = useState(0);
 
-  // const auth = useSelector((state) => state.auth);
-  // const user = useSelector((state) => state.user);
-  const renderHead = () => {
-    return (
-      <Grid {...styles.headGridProps}>
-        <ProgressBarMenu activeStep={activeStep} />
-      </Grid>
-    );
-  };
+  // const renderHead = () => {
+  //   return (
+  //     <Grid {...styles.headGridProps}>
+  //       <ProgressBarMenu activeStep={activeStep} />
+  //     </Grid>
+  //   );
+  // };
   const renderApp = () => {
     return <Grid {...styles.appGridProps}>{children}</Grid>;
   };
   return (
     <Grid {...styles.mainGridProps}>
-      {renderHead()}
+      {/* {renderHead()} */}
       {renderApp()}
     </Grid>
   );
