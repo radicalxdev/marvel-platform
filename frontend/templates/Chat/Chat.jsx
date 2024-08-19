@@ -11,6 +11,9 @@ import {
 import {
   Box,
   Button,
+  Card,
+  CardActionArea,
+  CardContent,
   Fab,
   Fade,
   Grid,
@@ -32,6 +35,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import DiscoveryIcon from '@/assets/svg/add-block2.svg';
+
+import imageCover1 from '@/assets/svg/ImageCover1.svg';
+import imageCover2 from '@/assets/svg/ImageCover2.svg';
+import imageCover3 from '@/assets/svg/ImageCover3.svg';
+import imageCover4 from '@/assets/svg/ImageCover4.svg';
 import NavigationIcon from '@/assets/svg/Navigation.svg';
 
 import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
@@ -92,6 +100,7 @@ const ChatInterface = () => {
   const [defaultPrompts, setDefaultPrompts] = useState([]);
   const [showPrompts, setShowPrompts] = useState(true);
   const [showDiscovery, setShowDiscovery] = useState(false);
+  const [selectedPrompt, setSelectedPrompt] = useState(null);
 
   const startConversation = async (message) => {
     // Optionally dispatch a temporary message for the user's input
@@ -125,6 +134,7 @@ const ChatInterface = () => {
     // Set chat session
     dispatch(setChatSession(data));
     dispatch(setSessionLoaded(true));
+    setSelectedPrompt(null);
   };
 
   const handleDefaultPrompts = async (userId) => {
@@ -301,6 +311,18 @@ const ChatInterface = () => {
     }, 0);
   };
 
+  const getRandomImage = () => {
+    const imageUrls = [
+      imageCover1,
+      imageCover2,
+      imageCover3,
+      imageCover4,
+      // Add more image URLs as needed
+    ];
+
+    const RandomImage = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+    return <RandomImage {...styles.backImageProps} />;
+  };
   const handleSelectPrompt = async (prompt) => {
     dispatch(resetChat());
     dispatch(setInput(prompt));
@@ -373,7 +395,33 @@ const ChatInterface = () => {
     );
   };
 
+  const renderCustomPrompt = () => {
+    if (selectedPrompt) {
+      return (
+        <Grid
+          onClick={() => dispatch(setMore({ role: 'shutdown' }))}
+          {...styles.centerChat.centerChatGridProps}
+        >
+          <Grid {...styles.cardGridProps}>
+            <Grid {...styles.cardContent}>
+              <Typography {...styles.cardTitleProps}>
+                {selectedPrompt.title}
+              </Typography>
+              {getRandomImage()}
+            </Grid>
+          </Grid>
+        </Grid>
+      );
+    }
+    setShowDiscovery(false);
+    return null;
+  };
+
   const renderCenterChatContent = () => {
+    if (selectedPrompt) {
+      return renderCustomPrompt(); // Render custom prompt if selected
+    }
+
     if (
       !openSettingsChat &&
       !infoChatOpened &&
@@ -414,8 +462,13 @@ const ChatInterface = () => {
   };
 
   const renderCenterChatContentNoMessages = () => {
-    if ((chatMessages?.length === 0 || !chatMessages) && !infoChatOpened)
+    if (
+      (chatMessages?.length === 0 || !chatMessages) &&
+      !infoChatOpened &&
+      !selectedPrompt
+    ) {
       return <CenterChatContentNoMessages />;
+    }
     return null;
   };
 
@@ -438,6 +491,7 @@ const ChatInterface = () => {
           <QuickActionButton
             defaultText="Actions"
             setShowPrompts={setShowPrompts}
+            sendMessages={handleSendMessage}
           />
         </Grid>
       </InputAdornment>
@@ -550,6 +604,7 @@ const ChatInterface = () => {
           onClick={() => {
             setShowDiscovery(!showDiscovery);
             setShowChatHistory(false);
+            setSelectedPrompt(null);
           }}
         >
           Discovery
@@ -562,7 +617,8 @@ const ChatInterface = () => {
     return (
       <DiscoveryLibraryUI
         show={showDiscovery}
-        handleSendMessage={handleSelectPrompt}
+        // handleSendMessage={handleSelectPrompt}
+        selectedPrompt={setSelectedPrompt}
       />
     );
   };
@@ -572,6 +628,7 @@ const ChatInterface = () => {
       {renderTopBar()}
       {renderMoreChat()}
       {renderDiscoveryLibrary()}
+      {renderCustomPrompt}
       {renderCenterChatContent()}
       {renderCenterChatContentNoMessages()}
       {renderNewMessageIndicator()}

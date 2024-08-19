@@ -181,7 +181,7 @@ const styles = {
     alignItems: 'center',
     spacing: 1,
     width: { desktop: '320px', mobile: '308px', mobileSmall: '130px' },
-    height: { laptop: '48vh', desktop: '46vh' },
+    height: { laptop: '44vh', desktop: '42vh' },
     overflow: 'scroll',
     sx: {
       position: 'relative',

@@ -25,7 +25,8 @@ import styles from './styles';
 
 import { resetChat, setInput } from '@/redux/slices/chatSlice';
 
-const DiscoveryLibraryUI = ({ show, handleSendMessage }) => {
+const DiscoveryLibraryUI = (props) => {
+  const { show, handleSendMessage, selectedPrompt } = props;
   const { data: user } = useSelector((state) => state.user);
   const [customPrompts, setCustomPrompts] = useState([]);
   const dispatch = useDispatch();
@@ -78,11 +79,9 @@ const DiscoveryLibraryUI = ({ show, handleSendMessage }) => {
     fetchPrompts();
   }, []);
 
-  const handlePromptClick = (description) => {
-    // console.log('Prompt clicked:', description);
+  const handlePromptClick = (prompt) => {
+    selectedPrompt(prompt);
     dispatch(resetChat());
-    dispatch(setInput(description));
-    handleSendMessage(description);
   };
 
   return (
@@ -123,11 +122,7 @@ const DiscoveryLibraryUI = ({ show, handleSendMessage }) => {
 
         <Grid container {...styles.cardGridProps}>
           {customPrompts?.map((prompt, index) => (
-            <Grid
-              item
-              key={index}
-              onClick={() => handlePromptClick(prompt.description)}
-            >
+            <Grid item key={index} onClick={() => handlePromptClick(prompt)}>
               <Card {...styles.cardProps}>
                 <CardActionArea>
                   <CardContent>

@@ -532,6 +532,56 @@ const styles = {
       },
     }),
   },
+
+  cardGridProps: {
+    container: true,
+    item: true,
+    mobileSmall: 12,
+    mt: 6,
+    // ml:15,
+    // mr:15,
+    width: { laptop: '442px', desktop: '448px' },
+    ml: { laptop: 5, desktop: 15 },
+    mr: { laptop: 5, desktop: 15 },
+
+    justifyContent: 'center',
+    alignContent: 'flex-start',
+    sx: {
+      overflowY: 'auto',
+    },
+  },
+  cardContent: {
+    display: 'flex',
+    container: true,
+    mobileSmall: true,
+    alignContent: 'center',
+    justifyContent: 'space-between',
+    px: '20px',
+    py: '20px',
+    ml: 3,
+    mr: 3,
+    sx: (theme) => ({
+      borderRadius: '25px',
+      border: `1px solid ${theme.palette.Greyscale[499]}`,
+      boxShadow: 'none',
+      // transition: '0.3s',
+      '&:hover': {
+        boxShadow: 'none',
+      },
+
+      backgroundColor: 'transparent',
+      color: theme.palette.Common.Black['100p'],
+    }),
+  },
+
+  cardTitleProps: {
+    sx: {
+      mt: 5,
+      mb: 5,
+      fontSize: '24px',
+      fontWeight: 'bold',
+    },
+  },
 };
 
 export default styles;

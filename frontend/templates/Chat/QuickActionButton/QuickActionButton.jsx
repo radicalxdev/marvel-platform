@@ -19,7 +19,7 @@ import styles from './styles';
 import { setInput } from '@/redux/slices/chatSlice';
 
 const QuickActionButton = (props) => {
-  const { onAction, defaultText, setShowPrompts } = props;
+  const { sendMessages, defaultText, setShowPrompts } = props;
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [buttonText, setButtonText] = useState(defaultText);
@@ -36,11 +36,15 @@ const QuickActionButton = (props) => {
   };
 
   const handleActionClick = (text, color) => {
-    dispatch(setInput(onAction));
+    if (text !== 'Actions') {
+      dispatch(setInput(text)); // Only set input if it's not "Actions"
+    }
+    sendMessages(text);
     setButtonText(text);
     setButtonColor(color);
+
     handleClose();
-    setShowPrompts(true);
+    setShowPrompts(false);
   };
 
   return (
