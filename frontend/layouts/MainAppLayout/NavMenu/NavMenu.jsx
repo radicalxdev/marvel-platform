@@ -13,13 +13,13 @@ import { chatRegex, historyRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
   {
-    name: 'Kai Tools',
+    name: 'Marvel Tools',
     link: ROUTES.HOME,
     icon: <Briefcase />,
     id: 'page_1',
   },
   {
-    name: 'Kai Chat',
+    name: 'Marvel Chat',
     link: ROUTES.CHAT,
     icon: <ChatBubble />,
     id: 'page_2',
