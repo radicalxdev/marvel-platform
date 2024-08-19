@@ -30,4 +30,5 @@ module.exports = {
 
   /* Onboarding */
   advanceOnboardingStatus: onboardingController.advanceOnboardingStatus,
+  setupUserProfile: onboardingController.setupUserProfile,
 };
