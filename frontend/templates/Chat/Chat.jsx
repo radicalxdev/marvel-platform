@@ -595,7 +595,7 @@ const ChatInterface = () => {
           }}
           {...styles.actionButtonProps}
         >
-          Chat
+          New Chat
         </Button>
         <Button
           variant="outlined"
