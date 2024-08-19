@@ -1,12 +1,12 @@
 import MainAppLayout from '@/layouts/MainAppLayout';
 import Chat from '@/templates/Chat';
 
-const KaiChat = () => {
+const MarvelChat = () => {
   return <Chat />;
 };
 
-KaiChat.getLayout = function getLayout(page) {
+MarvelChat.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };
 
-export default KaiChat;
+export default MarvelChat;

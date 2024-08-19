@@ -44,7 +44,7 @@ const MainAppLayout = (props) => {
   const renderHead = () => {
     return (
       <Head>
-        <title>Kai AI</title>
+        <title>Marvel AI</title>
       </Head>
     );
   };

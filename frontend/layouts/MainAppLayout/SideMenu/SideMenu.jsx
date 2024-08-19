@@ -33,7 +33,7 @@ const SideMenu = () => {
           <LargeLogo />
         </Grid>
         <Grid {...styles.titleGridProps}>
-          <Typography {...styles.titleProps}>KAI.AI</Typography>
+          <Typography {...styles.titleProps}>Marvel.AI</Typography>
           <Typography {...styles.subtitleProps}>
             AI Teaching Assistant
           </Typography>
