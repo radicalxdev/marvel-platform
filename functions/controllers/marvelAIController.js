@@ -9,15 +9,18 @@ const { default: axios } = require('axios');
 const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
 const { BOT_TYPE, AI_ENDPOINTS } = require('../constants');
+const { BOT_TYPE, AI_ENDPOINTS } = require('../constants');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const busboy = require('busboy');
 const app = express();
 
 const DEBUG = process.env.DEBUG;
+
 /**
  * Simulates communication with the Marvel AI endpoint.
  *
+ * @function kaiCommunicator
  * @param {object} payload - The properties of the communication.
  * @param {object} props.data - The payload data object used in the communication.
  *  @param {Array} props.data.messages - An array of messages for the current user chat session.
@@ -37,7 +40,6 @@ const marvelCommunicator = async (payload) => {
     DEBUG && logger.log('marvelCommunicator started, data:', payload.data);
 
     const { messages, user, tool_data, type } = payload.data;
-
     const isToolCommunicator = type === BOT_TYPE.TOOL;
 
     const MARVEL_API_KEY = process.env.MARVEL_API_KEY;
@@ -88,6 +90,7 @@ const marvelCommunicator = async (payload) => {
 /**
  * Manages communications for a specific chat session with a chatbot, updating and retrieving messages.
  *
+ * @function chat
  * @param {object} props - The properties of the communication.
  * @param {object} props.data - The data object containing the message and id.
  * @param {string} props.data.id - The id of the chat session.
@@ -179,6 +182,7 @@ const chat = onCall(async (props) => {
  * Handles tool communications by processing input data and optional file uploads.
  * It supports both JSON and form-data requests to accommodate different client implementations.
  *
+ * @function tools
  * @param {Request} req - The Express request object, which includes form data and files.
  * @param {Response} res - The Express response object used to send back the HTTP response.
  * @return {void} Sends a response to the client based on the processing results.
@@ -216,9 +220,7 @@ app.post('/api/tool/', (req, res) => {
         const publicUrl = `https://storage.googleapis.com/${bucketName}/${filePath}`;
 
         DEBUG &&
-          console.log(
-            `File ${filename} uploaded and available at ${publicUrl}`
-          );
+          logger.log(`File ${filename} uploaded and available at ${publicUrl}`);
 
         resolve({ filePath, url: publicUrl, filename });
       });
@@ -264,6 +266,16 @@ app.post('/api/tool/', (req, res) => {
       });
       DEBUG && logger.log(response);
 
+      const topicInput = modifiedInputs.find((input) => input.name === 'topic');
+      const topic = topicInput ? topicInput.value : null;
+
+      await saveResponseToFirestore({
+        response: response.data.data,
+        tool_id: otherToolData.tool_id,
+        topic,
+        userID: otherData.user.id,
+      });
+
       res.status(200).json({ success: true, data: response.data });
     } catch (error) {
       logger.error('Error processing request:', error);
@@ -275,10 +287,33 @@ app.post('/api/tool/', (req, res) => {
 });
 
 /**
+ * Save the tool session response to Firestore
+ * @param {object} sessionData - The data to be saved to Firestore
+ * @param {string} userId - The ID of the user
+ */
+const saveResponseToFirestore = async (sessionData) => {
+  try {
+    const toolSessionRef = await admin
+      .firestore()
+      .collection('toolSessions')
+      .add({
+        ...sessionData,
+        createdAt: Timestamp.fromMillis(Date.now()),
+      });
+    if (DEBUG) {
+      logger.log(`Tool session saved with ID: ${toolSessionRef.id}`);
+    }
+  } catch (error) {
+    logger.error('Error saving tool session to Firestore:', error);
+  }
+};
+
+/**
  * This creates a chat session for a user.
  * If the chat session already exists, it will return the existing chat session.
  * Otherwise, it will create a new chat session and send the first message.
  *
+ * @function createChatSession
  * @param {Object} props - The properties passed to the function.
  * @param {Object} props.data - The data object containing the user, challenge, message, and botType.
  * @param {Object} props.data.user - The user object.
