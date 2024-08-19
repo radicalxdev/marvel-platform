@@ -12,7 +12,9 @@ const HomePage = (props) => {
       <Grid {...styles.titleGridProps}>
         <Typography {...styles.titleProps}>
           Welcome to{' '}
-          <Typography {...styles.highlightTextProps}>Marvel Tools</Typography>{' '}
+          <Typography {...styles.highlightTextProps}>
+            Marvel AI Tools
+          </Typography>{' '}
           👋
         </Typography>
         <Typography {...styles.subtitleProps}>
