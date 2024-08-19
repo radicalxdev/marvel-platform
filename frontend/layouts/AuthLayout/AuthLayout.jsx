@@ -58,7 +58,7 @@ const AuthLayout = (props) => {
         <Box {...styles.reXProps}>
           <Image
             {...styles.reXImageProps}
-            src={ImageURLs.KaiAuthImg}
+            src={ImageURLs.MarvelAuthImg}
             alt="rexImage"
           />
         </Box>
@@ -76,7 +76,7 @@ const AuthLayout = (props) => {
   const renderHead = () => {
     return (
       <Head>
-        <title>Kai AI</title>
+        <title>Marvel AI</title>
       </Head>
     );
   };

@@ -24,11 +24,7 @@ const useToolProps = () => {
   const toolDoc = tools?.find((tool) => tool?.maskedToolUrl === toolId);
 
   useEffect(() => {
-    const fetchKaiTools = async () => {
-      await dispatch(fetchTools({ firestore }));
-    };
-
-    if (!tools) fetchKaiTools();
+    if (!tools) dispatch(fetchTools({ firestore }));
   }, []);
 
   return {
