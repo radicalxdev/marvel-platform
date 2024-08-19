@@ -72,7 +72,7 @@ const styles = {
   },
   titleProps: {
     fontFamily: 'Ethnocentric Regular',
-    fontSize: '36px',
+    fontSize: '28px',
     color: 'white',
   },
   subtitleProps: {
