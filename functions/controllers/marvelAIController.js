@@ -9,7 +9,6 @@ const { default: axios } = require('axios');
 const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
 const { BOT_TYPE, AI_ENDPOINTS } = require('../constants');
-const { BOT_TYPE, AI_ENDPOINTS } = require('../constants');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const busboy = require('busboy');
