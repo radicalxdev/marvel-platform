@@ -1,5 +1,5 @@
-# Kai AI Platform
-Kai is an open source project by Radical having chatbot and smart tools for teachers.
+# Marvel AI Platform
+Marvel is an open source project by Radical having chatbot and smart tools for teachers.
 
 ## Table of Contents
 
@@ -12,7 +12,7 @@ Kai is an open source project by Radical having chatbot and smart tools for teac
 - [License](#license)
 
 ## Architecture
-The "Kai" platform is structured into two main components: Firebase and AI. The Firebase side, detailed in this repository, encompasses both the frontend, developed with NextJS and hosted on Firebase Hosting, and the backend, which includes user management and session handling via Firebase Functions like `signUpUser` and `createChatSession`. The `communicator` and `toolCommunicator` functions act as proxies, facilitating interaction between the Firebase infrastructure and the AI services, ensuring seamless data flow and integration. Firestore DB is utilized for data storage. The AI components, housed in a separate repository, include a chatbot and tools like "Quizify" and "YouTube Flashcard Generator." 
+The "Marvel" platform is structured into two main components: Firebase and AI. The Firebase side, detailed in this repository, encompasses both the frontend, developed with NextJS and hosted on Firebase Hosting, and the backend, which includes user management and session handling via Firebase Functions like `signUpUser` and `createChatSession`. The `communicator` and `toolCommunicator` functions act as proxies, facilitating interaction between the Firebase infrastructure and the AI services, ensuring seamless data flow and integration. Firestore DB is utilized for data storage. The AI components, housed in a separate repository, include a chatbot and tools like "Quizify" and "YouTube Flashcard Generator." 
 
 ![Architecture Diagram](architecture.png)
 

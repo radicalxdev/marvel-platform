@@ -9,7 +9,11 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "lint:fix": "eslint --ext .js ./ --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "generate-docs": "jsdoc -c jsdoc.json",
+    "prepare": "npm run generate-docs",
+    "serve-docs": "http-server docs",
+    "docs": "npm run generate-docs && npm run serve-docs"
   },
   "engines": {
     "node": "18"
@@ -34,8 +38,14 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "firebase-functions-test": "^0.2.0",
+    "http-server": "^14.1.1",
     "husky": "^9.0.11",
+    "jsdoc": "^4.0.3",
     "prettier": "^3.2.5"
   },
-  "private": true
+  "private": true,
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

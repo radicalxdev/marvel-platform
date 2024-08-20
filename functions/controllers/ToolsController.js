@@ -28,10 +28,10 @@ const createToolsSession = async (payload) => {
       ],
     };
 
-    // Add the new document to the 'toolsSession' collection in Firestore
+    // Add the new document to the 'toolSessions' collection in Firestore
     const toolsSessionRef = await admin
       .firestore()
-      .collection('toolsSession')
+      .collection('toolSessions')
       .add(sessionData);
 
     // Update the document to include its ID
@@ -66,7 +66,7 @@ const updateToolsSession = async (payload) => {
     // Get the document from Firestore using the provided toolId
     const toolsSessionDoc = await admin
       .firestore()
-      .collection('toolsSession')
+      .collection('toolSessions')
       .doc(sessionId)
       .get();
 
@@ -103,7 +103,7 @@ const updateToolsSession = async (payload) => {
     // Update the document in Firestore with the new data
     await admin
       .firestore()
-      .collection('toolsSession')
+      .collection('toolSessions')
       .doc(sessionId)
       .update(updatedToolsSessionData);
 
@@ -133,7 +133,7 @@ const deleteToolsSession = onCall(async (props) => {
     // Query for the specific document using all required fields
     const querySnapshot = await admin
       .firestore()
-      .collection('toolsSession')
+      .collection('toolSessions')
       .where('toolId', '==', toolId)
       .where('userId', '==', userId)
       .where('sessionId', '==', sessionId)

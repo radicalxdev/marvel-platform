@@ -10,7 +10,7 @@ const seedDatabase = async () => {
     const global = await db.collection('global').doc('config').get();
 
     if (global.exists) {
-      console.log('Kai AI is ready to go!');
+      console.log('Marvel AI is ready to go!');
       return;
     }
 
@@ -23,7 +23,7 @@ const seedDatabase = async () => {
       console.log(`Document with ID ${doc.id} added to the Tools collection`);
     });
     console.log(
-      'Kai AI installed successfully to firebase and is ready to go!'
+      'Marvel AI installed successfully to firebase and is ready to go!'
     );
   } catch (error) {
     console.error('Error seeding database:', error);
