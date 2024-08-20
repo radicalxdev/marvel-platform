@@ -98,7 +98,7 @@ const SignUpForm = (props) => {
 
     return VALIDATION_STATES.ERROR;
   };
-
+  // catch errro
   const renderNetworkError = () => {
     router.push(ROUTES.ERROR);
   };
