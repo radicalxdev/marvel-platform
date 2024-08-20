@@ -237,7 +237,7 @@ app.post('/api/tool/', (req, res) => {
   bb.on('finish', async () => {
     try {
       DEBUG && logger.log('data:', JSON.parse(data?.data));
-      //Destructure data here
+      // Destructure data here
       const {
         tool_data: { inputs, ...otherToolData },
         ...otherData
@@ -267,7 +267,7 @@ app.post('/api/tool/', (req, res) => {
 
       const topicInput = modifiedInputs.find((input) => input.name === 'topic');
       const topic = topicInput ? topicInput.value : null;
-      //Determine state here
+      // Determine state here
       await saveResponseToFirestore({
         response: response.data.data,
         tool_id: otherToolData.tool_id,
