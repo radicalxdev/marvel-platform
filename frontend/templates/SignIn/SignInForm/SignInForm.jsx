@@ -107,7 +107,7 @@ const SignInForm = (props) => {
       handleOpenSnackBar(
         ALERT_COLORS.ERROR,
         'Login Failed! Invalid Credentials or account not found',
-        
+        true
       );
     } finally {
       setSignInLoading(false);
