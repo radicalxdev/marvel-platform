@@ -47,7 +47,7 @@ The "Marvel" platform is structured into two main components: Firebase and AI. T
 To set up the project, follow these steps:
 
 ## Local Development
-1. Clone the repository: `git clone https://github.com/radicalxdev/kai-platform`
+1. Clone the repository: `git clone https://github.com/radicalxdev/marvel-platform`
 2. Create your firebase project on google firebase console
 3. Create a firestore database instance
 4. Get firebase config from firebase project settings in firebase console and save it to .env (create in root of this project, see sample.env for refrence)
@@ -70,7 +70,7 @@ To set up the project, follow these steps:
 2. Open another terminal simultaneously and start the frontend project, run the following command: `npm run frontend:dev`
 
 ## Cloud Deployment
-1. Clone the repository: `git clone https://github.com/radicalxdev/kai-platform`
+1. Clone the repository: `git clone https://github.com/radicalxdev/marvel-platform`
 2. Navigate to back-end project directory: `cd functions`
 3. Install dependencies: `npm install`
 4. Navigate to front-end directory: `cd ../frontend`
