@@ -1,13 +1,20 @@
 import { useContext, useEffect, useState } from 'react';
 
 import { Grid, Typography, useTheme } from '@mui/material';
+
+import { useRouter } from 'next/router';
+
 import { useSelector } from 'react-redux';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
 import RocketIcon from '@/assets/svg/rocket.svg';
 
+import { AUTH_ERR_CODES, AUTH_ERROR_MESSAGES } from '@/constants/auth';
+
 import ALERT_COLORS from '@/constants/notification';
+
+import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
@@ -24,6 +31,8 @@ const VerifyEmailPage = (props) => {
   const { handleOpenSnackBar } = useContext(AuthContext);
   const { data: authData } = useSelector((state) => state.auth);
 
+  const router = useRouter();
+
   useEffect(() => {
     let interval;
 
@@ -37,12 +46,21 @@ const VerifyEmailPage = (props) => {
     return () => clearInterval(interval);
   }, [seconds]);
 
+  const renderNetworkError = () => {
+    router.push(ROUTES.ERROR);
+  };
+
   const handleResend = async () => {
     try {
       setLoading(true);
       await sendVerification(authData);
       handleOpenSnackBar(ALERT_COLORS.SUCCESS, 'Email verification sent');
     } catch (error) {
+      if (
+        error.message === AUTH_ERROR_MESSAGES[AUTH_ERR_CODES.NETWORK_REQ_FAIL]
+      ) {
+        renderNetworkError();
+      }
       handleOpenSnackBar(
         ALERT_COLORS.ERROR,
         'Error sending email verification'

@@ -1,6 +1,9 @@
 import { useContext, useState } from 'react';
 
 import { Grid, useTheme } from '@mui/material';
+
+import { useRouter } from 'next/router';
+
 import { FormContainer } from 'react-hook-form-mui';
 
 import useWatchFields from '@/hooks/useWatchFields';
@@ -9,8 +12,15 @@ import AuthTextField from '@/components/AuthTextField';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import { AUTH_STEPS, VALIDATION_STATES } from '@/constants/auth';
+import {
+  AUTH_ERR_CODES,
+  AUTH_ERROR_MESSAGES,
+  AUTH_STEPS,
+  VALIDATION_STATES,
+} from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
+
+import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
@@ -65,6 +75,7 @@ const WATCH_FIELDS = [
  */
 const SignUpForm = (props) => {
   const { step, setStep, setEmail, handleSwitch } = props;
+  const router = useRouter();
 
   const theme = useTheme();
 
@@ -86,6 +97,10 @@ const SignUpForm = (props) => {
     if (password.value === '') return VALIDATION_STATES.DEFAULT;
 
     return VALIDATION_STATES.ERROR;
+  };
+
+  const renderNetworkError = () => {
+    router.push(ROUTES.ERROR);
   };
 
   const submitButtonText = () => {
@@ -150,6 +165,11 @@ const SignUpForm = (props) => {
         setEmail(email.value);
         handleSwitch();
       } catch (err) {
+        if (
+          err.message === AUTH_ERROR_MESSAGES[AUTH_ERR_CODES.NETWORK_REQ_FAIL]
+        ) {
+          renderNetworkError();
+        }
         handleOpenSnackBar(ALERT_COLORS.ERROR, err.message);
       } finally {
         setLoading(false);
