@@ -41,8 +41,8 @@ const marvelCommunicator = async (payload) => {
     const { messages, user, tool_data, type } = payload.data;
     const isToolCommunicator = type === BOT_TYPE.TOOL;
 
-    const MARVEL_API_KEY = process.env.MARVEL_API_KEY;
-    const MARVEL_ENDPOINT = process.env.MARVEL_ENDPOINT;
+    const MARVEL_API_KEY = 'AIzaSyBT0cxIrvcSUL8Ylfmrt8gra9BYb_K20kE';
+    const MARVEL_ENDPOINT = 'https://kai-ai-f63c8.wl.r.appspot.com';
 
     DEBUG &&
       logger.log(
@@ -240,6 +240,7 @@ app.post('/api/tool/', (req, res) => {
       // Destructure data here
       const {
         tool_data: { inputs, ...otherToolData },
+        sessionId: sessionId,
         ...otherData
       } = JSON.parse(data?.data);
 
@@ -265,17 +266,20 @@ app.post('/api/tool/', (req, res) => {
       });
       DEBUG && logger.log(response);
 
-      const topicInput = modifiedInputs.find((input) => input.name === 'topic');
-      const topic = topicInput ? topicInput.value : null;
       // Determine state here
-      await saveResponseToFirestore({
-        response: response.data.data,
-        tool_id: otherToolData.tool_id,
-        topic,
-        userID: otherData.user.id,
+      const sessionRef = await saveResponseToFirestore({
+        outputs: response.data.data,
+        inputs: modifiedInputs,
+        toolId: otherToolData.tool_id,
+        userId: otherData.user.id,
+        sessionId: sessionId,
       });
 
-      res.status(200).json({ success: true, data: response.data });
+      res.status(200).json({
+        success: true,
+        data: response.data,
+        sessionId: sessionRef.sessionId,
+      });
     } catch (error) {
       logger.error('Error processing request:', error);
       res.status(500).json({ success: false, message: error?.message });
@@ -286,21 +290,92 @@ app.post('/api/tool/', (req, res) => {
 });
 
 /**
- * Save the tool session response to Firestore
+ * Save the tool session response to Firestore by either
+ * creating a new tools session document or updating an exisitng document
  * @param {object} sessionData - The data to be saved to Firestore
  * @param {string} userId - The ID of the user
+ * @param {string} toolId - The ID of the tool
+ * @param {string} sessionId - The ID of the session if it exists
+ * @param {Array} inputs - User request
+ * @param {Array} outputs - Tool response
+ * @return {object} The session ID
  */
 const saveResponseToFirestore = async (sessionData) => {
   try {
-    const toolSessionRef = await admin
-      .firestore()
-      .collection('toolSessions')
-      .add({
-        ...sessionData,
-        createdAt: Timestamp.fromMillis(Date.now()),
+    const { sessionId, outputs, inputs, toolId, userId } = sessionData;
+
+    // add new toolSession document if sessionId exists
+    if (sessionId == null) {
+      const toolSessionRef = await admin
+        .firestore()
+        .collection('toolSessions')
+        .add({
+          toolId: toolId,
+          userId: userId,
+          response: [
+            {
+              inputs: inputs,
+              outputs: outputs,
+              updatedAt: Timestamp.fromMillis(Date.now()),
+            },
+          ],
+          createdAt: Timestamp.fromMillis(Date.now()),
+          updatedAt: Timestamp.fromMillis(Date.now()),
+        });
+      await toolSessionRef.update({
+        sessionId: toolSessionRef.id,
       });
-    if (DEBUG) {
-      logger.log(`Tool session saved with ID: ${toolSessionRef.id}`);
+      logger.log('SessionId: ' + toolSessionRef.id);
+      return {
+        sessionId: toolSessionRef.id,
+      };
+    } else {
+      // update existing toolSession document otherwise if sessionId exists
+
+      // Get the document from Firestore using the provided toolId
+      const toolsSessionDoc = await admin
+        .firestore()
+        .collection('toolSessions')
+        .doc(sessionId)
+        .get();
+
+      // Check if the document exists
+      if (!toolsSessionDoc.exists) {
+        throw new HttpsError('not-found', 'Document does not exist');
+      }
+
+      // Get the document data
+      const toolsSessionData = toolsSessionDoc.data();
+
+      // Check if the userId matches the userId of the document owner
+      if (toolsSessionData.userId !== userId) {
+        throw new HttpsError(
+          'permission-denied',
+          'User does not have permission to update this document'
+        );
+      }
+
+      // Update the document in Firestore with the new data
+      await admin
+        .firestore()
+        .collection('toolSessions')
+        .doc(sessionId)
+        .update({
+          ...toolsSessionData,
+          updatedAt: Timestamp.fromMillis(Date.now()),
+          response: [
+            ...toolsSessionData.response,
+            {
+              inputs: inputs,
+              outputs: outputs,
+              updatedAt: admin.firestore.Timestamp.fromMillis(Date.now()),
+            },
+          ],
+        });
+
+      return {
+        sessionId: sessionId,
+      };
     }
   } catch (error) {
     logger.error('Error saving tool session to Firestore:', error);
@@ -405,8 +480,57 @@ const createChatSession = onCall(async (props) => {
   }
 });
 
+/** Deletes an existing tools Session document
+ * @function deleteToolsSession
+ * @param {string} sessionId - The ID of the session to delete
+ * @param {string} toolId - The ID of the tool to delete
+ * @param {string} userId - The ID of the user who created the session
+ * @return {Promise<Object>} - A promise that resolves to an object containing the status and data of the tools session
+ * @throws {HttpsError} Throws an error if there is an internal error
+ */
+const deleteToolsSession = onCall(async (props) => {
+  try {
+    const { sessionId, toolId, userId } = props.data;
+
+    // Validate required fields
+    if (!toolId || !userId || !sessionId) {
+      throw new HttpsError('invalid-argument', 'Missing required parameters');
+    }
+
+    // Query for the specific document using all required fields
+    const querySnapshot = await admin
+      .firestore()
+      .collection('toolSessions')
+      .where('toolId', '==', toolId)
+      .where('userId', '==', userId)
+      .where('sessionId', '==', sessionId)
+      .limit(1)
+      .get();
+
+    // Check if the document exists
+    if (querySnapshot.empty) {
+      throw new HttpsError('not-found', 'Document does not exist');
+    }
+
+    // Delete the found document
+    const docRef = querySnapshot.docs[0].ref;
+    await docRef.delete();
+
+    // Return success response
+    return {
+      success: true,
+      message: 'Document successfully removed!',
+    };
+  } catch (error) {
+    // Log the error and throw an HTTP error if deletion fails
+    console.error('Error deleting document:', error);
+    throw new HttpsError('internal', 'Unable to delete document', error);
+  }
+});
+
 module.exports = {
   chat,
   tool: onRequest({ minInstances: 1 }, app),
   createChatSession,
+  deleteToolsSession,
 };

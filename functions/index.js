@@ -5,7 +5,6 @@ admin.initializeApp();
 
 const userController = require('./controllers/userController');
 const marvelAIController = require('./controllers/marvelAIController');
-const ToolsController = require('./controllers/ToolsController');
 const { seedDatabase } = require('./cloud_db_seed');
 
 seedDatabase();
@@ -23,10 +22,7 @@ module.exports = {
   chat: marvelAIController.chat,
   tool: marvelAIController.tool,
   createChatSession: marvelAIController.createChatSession,
-
-  /* output tools History */
-  deleteToolsSession: ToolsController.deleteToolsSession,
-  determineToolsSessionState: ToolsController.determineToolsSessionState,
+  deleteToolsSession: marvelAIController.deleteToolsSession,
 
   /* Migration Scripts - For running */
   ...migrationScripts,
