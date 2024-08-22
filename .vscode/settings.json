@@ -2,5 +2,10 @@
   "eslint.workingDirectories": [
     { "pattern": "./functions/*" },
     { "pattern": "./frontend/*" }
-  ]
+  ],
+  "eslint.enable": true,
+  "eslint.run": "onSave",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
 }

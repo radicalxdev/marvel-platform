@@ -1,11 +1,12 @@
-const pageNotFoundStyles = {
+const NetworkErrorStyle = {
+  // Logo for the 404 page
   LogoImageGridProps: {
     container: true,
     item: true,
     mobileSmall: 'auto',
     position: 'relative',
-    top: '-32px',
-    left: '5%',
+    top: '-60px',
+    left: '0%',
     padding: '20px 50px 75px 60px',
   },
   LogotitleGridProps: {
@@ -34,7 +35,7 @@ const pageNotFoundStyles = {
     left: '59.5px',
   },
   LogocontentGridProps: {
-    position: 'fixed',
+    position: 'relative',
     container: true,
     item: true,
     justifyContent: 'center',
@@ -45,19 +46,15 @@ const pageNotFoundStyles = {
   },
   mainGridProps: {
     position: 'absolute',
-    top: '45px',
+    top: '0px',
     container: true,
     item: true,
-    xs: 12,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: '16px',
     height: '100%',
-    overflow: 'hidden',
-    maxWidth: { laptop: '1450px' },
-    transform: 'translate(-50%, -50%)',
-    sx: {
-      borderRadius: '22px',
-    },
+    bgcolor: '#FFFFFF',
+    overflow: 'scroll',
   },
   mainContentGridProps: {
     position: 'relative',
@@ -76,7 +73,8 @@ const pageNotFoundStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     height: 'auto',
-    rowGap: 0,
+    rowGap: 2,
+    backgroundColor: 'white',
   },
   BottomcontentGridProps: {
     position: 'relative',
@@ -102,11 +100,11 @@ const pageNotFoundStyles = {
     left: 0,
     width: '810px',
     height: '810px',
-    background: 'White',
     sx: {
       opacity: 0.5,
       borderRadius: '655px',
       transform: 'translate(-25%, 0px)',
+      backgroundColor: 'transparent',
     },
   },
   radialBg2Props: {
@@ -156,12 +154,8 @@ const pageNotFoundStyles = {
     textAlign: 'center',
     fontFamily: 'Satoshi Bold',
     fontWeight: 700,
-    width: '490px',
-    fontSize: { laptop: '20px', desktop: '30px', desktopMedium: '40px' },
+    fontSize: { laptop: '30px', desktop: '36px', desktopMedium: '40px' },
     lineHeight: '54px',
-    marginTop: '-80px',
-    position: 'absolute',
-    top: '-90px',
   },
   bodyGridProps: {
     container: true,
@@ -172,25 +166,25 @@ const pageNotFoundStyles = {
     mb: 3,
   },
   bodyProps: {
-    position: 'absolute',
-    top: '-45px',
+    position: 'relative',
+    top: '18px',
     color: 'black',
     textAlign: 'center',
     fontFamily: 'Satoshi Regular',
-    Weight: 400,
-    fontSize: { laptop: '14px', desktop: '18px', desktopMedium: '22px' },
+    fontWeight: 400,
+    fontSize: '22px',
     lineHeight: '32.4px',
     width: '612px',
-    Hieght: '96px',
-    letter: '-2%',
+    height: '96px',
+    letterSpacing: '-2%',
   },
   buttonGridProps: {
-    position: 'absolute',
+    position: 'relative',
     container: true,
     item: true,
     xs: 12,
     justifyContent: 'center',
-    top: '70px',
+    top: '10px',
   },
   buttonProps: {
     variant: 'contained',
@@ -208,12 +202,6 @@ const pageNotFoundStyles = {
       },
     },
   },
-  titleContainerProps: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   titleProps: {
     fontSize: { laptop: '105px', desktop: '125px', desktopMedium: '165px' },
     fontFamily: 'Ethnocentric Regular Italics',
@@ -223,9 +211,8 @@ const pageNotFoundStyles = {
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: '#856AFF',
     },
-    position: 'titleProps',
-    top: '0px',
-    marginBottom: '0px',
+    position: 'relative',
+    top: '25px',
   },
   submitButtonProps: {
     color: 'purple',
@@ -242,34 +229,28 @@ const pageNotFoundStyles = {
     },
   },
   star1Props: {
-    position: 'absolute',
-    top: '-500px',
-    left: '400px',
+    position: 'relative',
+    color: '#5522FF',
+    top: '-420px',
+    width: '42px',
+    height: '46px',
+    left: '-210px',
   },
   star2Props: {
-    position: 'absolute',
+    position: 'relative',
     top: '-290px',
-    left: '1020px',
+    left: '310px',
   },
   star3Props: {
-    position: 'absolute',
-    left: '990px',
-    top: '-610px',
-  },
-  Meteor: {
-    position: 'absolute',
-    top: '90px',
-    left: '43.5%',
-    transform: 'translate(-50%, -50%)', // Center it
-    zIndex: 1,
-  },
-  Tail: {
-    position: 'absolute',
-    top: '30px',
+    position: 'relative',
     left: '200px',
-    transform: 'translate(-50%, -50%)', // Center it
-    zIndex: 0,
+    top: '-560px',
+  },
+  NetworkLogo: {
+    position: 'relative',
+    top: '200px',
+    left: '40px',
   },
 };
 
-export default pageNotFoundStyles;
+export default NetworkErrorStyle;

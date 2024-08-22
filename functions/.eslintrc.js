@@ -36,4 +36,9 @@ module.exports = {
     camelcase: 0,
     indent: 0,
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 };
