@@ -18,5 +18,8 @@
   },
   "devDependencies": {
     "firebase-tools": "^9.10.0"
+  },
+  "dependencies": {
+    "formidable-serverless": "^1.1.1"
   }
 }
