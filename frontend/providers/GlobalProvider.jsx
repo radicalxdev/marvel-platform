@@ -26,10 +26,16 @@ const AuthProvider = (props) => {
   const [open, setOpen] = useState(false);
   const [severity, setSeverity] = useState('success');
   const [message, setMessage] = useState('Default Message');
+  const [htmlMessage, setHtmlMessage] = useState(false);
 
-  const handleOpenSnackBar = (newSeverity, newMessage) => {
+  const handleOpenSnackBar = (
+    newSeverity,
+    newMessage,
+    isHtmlMessage = false
+  ) => {
     setSeverity(newSeverity);
     setMessage(newMessage);
+    setHtmlMessage(isHtmlMessage); // Set the state
     setOpen(true);
   };
 
@@ -73,6 +79,7 @@ const AuthProvider = (props) => {
         severity={severity}
         message={message}
         handleClose={handleClose}
+        htmlMessage={htmlMessage}
       />
     </AuthContext.Provider>
   );
