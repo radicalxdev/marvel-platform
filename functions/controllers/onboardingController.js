@@ -319,8 +319,113 @@ const setupUserProfile = functions.https.onCall(async (data, context) => {
   }
 });
 
+/**
+ * Updates user system preferences and advances onboarding status.
+ *
+ * @function updateUserPreferences
+ * 
+ * @param {Object} data - The data object passed from the client.
+ * @param {string} data.userId - The user ID for which to update preferences and advance onboarding.
+ * @param {boolean} data.email - Email preference.
+ * @param {boolean} data.push - Push notifications preference.
+ * @param {boolean} data.reminders - Reminders preference.
+ * @param {boolean} data.theme - Theme preference (true for dark, false for light).
+ * 
+ * @returns {Promise<Object>} A promise that resolves to an object containing:
+ *   @returns {boolean} success - Indicates whether the operation was successful.
+ *   @returns {Object} updatedConfig - The updated system configuration object.
+ *   @returns {string} message - A message describing the result of the operation.
+ * 
+ * @throws {functions.https.HttpsError} Possible error cases:
+ *   @throws {string} code - The error code.
+ *   @throws {string} message - The error message.
+ * 
+ * @example
+ * // Usage as an HTTP endpoint
+ * // POST request to: function link
+ * // Request body:
+ * // {
+ * //   "data": {
+ * //     "userId": "user-id",
+ * //     "email": true,
+ * //     "push": false,
+ * //     "reminders": true,
+ * //     "theme": false
+ * //   }
+ * // }
+ * 
+ * // Example using fetch API:
+ * fetch('function link', {
+ *   method: 'POST',
+ *   headers: {
+ *     'Content-Type': 'application/json',
+ *   },
+ *   body: JSON.stringify({
+ *     data: {
+ *       userId: "user-id",
+ *       email: true,
+ *       push: false,
+ *       reminders: true,
+ *       theme: false
+ *     }
+ *   }),
+ * })
+ * .then(response => response.json())
+ * .then(result => console.log(result))
+ * .catch(error => console.error('Error:', error));
+ */
+const updateUserPreferences = functions.https.onCall(async (data, context) => {
+  const { userId, email, push, reminders, theme } = data;
+
+  DEBUG && logger.log('Update User Preferences function started with data:', data);
+
+  // Validate input data
+  if (!userId || typeof userId !== 'string') {
+      throw new functions.https.HttpsError('invalid-argument', 'Invalid userId');
+  }
+  if (typeof email !== 'boolean' || typeof push !== 'boolean' || typeof reminders !== 'boolean' || typeof theme !== 'boolean') {
+      throw new functions.https.HttpsError('invalid-argument', 'Preferences must be boolean values');
+  }
+
+  try {
+      const db = admin.firestore();
+      const userRef = db.collection('users').doc(userId);
+      const userDoc = await userRef.get();
+
+      if (!userDoc.exists) {
+          throw new functions.https.HttpsError('not-found', 'User not found');
+      }
+
+      //const user = userDoc.data(); // this can be used in future for further validation of data in user document
+      const updatedConfig = {
+          email,
+          push,
+          reminders,
+          theme, // true for dark, false for light
+      };
+
+      // Update the systemconfig object in Firestore
+      await userRef.update({ systemconfig: updatedConfig });
+
+      // Call the Onboarding Status Transition Utility function to advance the status
+      const onboardingResult = await progressOnboardingStatus(userId);
+
+      DEBUG && logger.info('User preferences updated and onboarding status advanced successfully.');
+
+      return {
+          success: true,
+          updatedConfig,
+          newStatus: onboardingResult.message,
+      };
+  } catch (error) {
+      DEBUG && logger.error('Error updating user preferences:', error);
+      throw new functions.https.HttpsError('internal', `An unexpected error occurred: ${error.message}`);
+  }
+});
+
 module.exports = {
   advanceOnboardingStatus,
   progressOnboardingStatus,
   setupUserProfile,
+  updateUserPreferences
 };
