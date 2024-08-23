@@ -1,38 +1,54 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Box, Typography, Button } from '@mui/material';
 import { CloudUpload } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
+import useUploadPhoto from '../../hooks/useUploadPhoto';
 
-const ImageUpload = ({ name, control }) => {
+const ImageUpload = ({ name, control, uid, initialPhotoURL }) => {
   const { field } = useController({ name, control });
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState(initialPhotoURL || null); // Initialize with existing photo URL
   const [errorMessage, setErrorMessage] = useState('');
+  const { uploading, error, uploadPhoto } = useUploadPhoto();
 
-  const onDrop = useCallback((acceptedFiles) => {
+  // Load the existing photo on page load
+  useEffect(() => {
+    if (initialPhotoURL) {
+      setPreview(initialPhotoURL);
+      field.onChange(initialPhotoURL);
+    }
+  }, [initialPhotoURL, field]);
+
+  const onDrop = useCallback(async (acceptedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
       // Check if file size is less than 1 MB
       if (file.size <= 1048576) {
-        field.onChange(file); // Notify react-hook-form about the file
-        const reader = new FileReader();
-        reader.onload = () => {
-          setPreview(reader.result);
+        try {
+          // Upload the file and get the URL
+          const url = await uploadPhoto(file, uid, field.value); // Pass old URL for deletion
+
+          field.onChange(url); // Update the form field with the new URL
+          setPreview(url); // Update the preview
           setErrorMessage(''); // Clear any previous error messages
-        };
-        reader.readAsDataURL(file);
+        } catch (uploadError) {
+          console.error('Error uploading file:', uploadError);
+          setErrorMessage('Failed to upload the image.');
+          field.onChange(''); // Clear the field value on error
+          setPreview(null); // Clear the preview on error
+        }
       } else {
         // File is too large, set an error message
         setPreview(null);
         setErrorMessage('File size must be less than 1 MB.');
       }
     }
-  }, [field]);
+  }, [field, uploadPhoto, uid]);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: 'image/*',
-    multiple: false
+    multiple: false,
   });
 
   return (
@@ -55,12 +71,12 @@ const ImageUpload = ({ name, control }) => {
       <Typography variant="body2" sx={{ mb: 2 }}>
         Formats: JPG, PNG | Upto 1 MB
       </Typography>
-      <Button variant="contained" component="span">
-        SELECT FILE
+      <Button variant="contained" component="span" disabled={uploading}>
+        {uploading ? 'Uploading...' : 'SELECT FILE'}
       </Button>
       {errorMessage && (
         <Typography variant="body2" color="error" sx={{ mt: 2 }}>
-          {errorMessage}
+          {errorMessage || error}
         </Typography>
       )}
       {preview && (

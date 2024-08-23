@@ -1,6 +1,8 @@
-import { useState} from 'react';
+import { useState } from 'react';
 // import { useRouter } from 'next/router';
 import { Container, Box } from '@mui/material';
+
+import { useSelector } from 'react-redux';
 
 import ProfileSetupForm from '@/templates/ProfileSetup/ProfileSetupForm';
 import AuthLayout from '@/layouts/AuthLayout';
@@ -10,6 +12,9 @@ import AuthLayout from '@/layouts/AuthLayout';
 const ProfileSetup = () => {
   // const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Access the auth data from the Redux store
+  const userData = useSelector((state) => state.user.data);
 
   const handleProfileSubmit = async (profileData) => {
     setIsLoading(true);
@@ -27,11 +32,16 @@ const ProfileSetup = () => {
 
   return (
     <Container maxWidth="md">
-      <ProfileSetupForm onSubmit={handleProfileSubmit} isLoading={isLoading} />
+      {userData ? (
+        <ProfileSetupForm onSubmit={handleProfileSubmit} isLoading={isLoading} user={userData} />
+      ) : (
+        <Box>
+          <p>Loading user information...</p>
+        </Box>
+      )}
     </Container>
-    
   );
-}
+};
 
 ProfileSetup.getLayout = function getLayout(page) {
   return <AuthLayout isAuthScreen>{page}</AuthLayout>;

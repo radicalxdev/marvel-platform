@@ -7,7 +7,6 @@ import ImageUpload from '@/components/ImageUpload';
 import useWatchFields from '@/hooks/useWatchFields';
 import ONBOARDING_REGEX from '@/regex/onboarding';
 
-
 const WATCH_FIELDS = [
     { fieldName: 'fullName', regexPattern: ONBOARDING_REGEX.fullName.regex },
     { fieldName: 'occupation', regexPattern: ONBOARDING_REGEX.occupation.regex },
@@ -17,7 +16,7 @@ const WATCH_FIELDS = [
     { fieldName: 'bio', regexPattern: ONBOARDING_REGEX.bio.regex },
 ];
 
-const ProfileSetupForm = ({ onSubmit, isLoading }) => {
+const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
     const { register, control, handleSubmit, fieldStates, watch } = useWatchFields(WATCH_FIELDS);
     
     const onSubmitForm = (data) => {
@@ -49,6 +48,7 @@ const ProfileSetupForm = ({ onSubmit, isLoading }) => {
                 label="Full Name"
                 placeholder="Enter Name"
                 fullWidth
+                defaultValue={user.fullName || ''}
                 error={fieldStates.fullName.status === 'error'}
                 helperText={fieldStates.fullName.status === 'error' ? ONBOARDING_REGEX.fullName.message : ''}
               />
@@ -59,6 +59,7 @@ const ProfileSetupForm = ({ onSubmit, isLoading }) => {
                 label="Occupation"
                 placeholder="Enter Occupation"
                 fullWidth
+                defaultValue={user.occupation || ''}
                 error={fieldStates.occupation.status === 'error'}
                 helperText={fieldStates.occupation.status === 'error' ? ONBOARDING_REGEX.occupation.message : ''}
               />
@@ -71,18 +72,21 @@ const ProfileSetupForm = ({ onSubmit, isLoading }) => {
             <SocialLinkInput
               {...register('facebookLink')}
               icon="facebook"
+              defaultValue={user.socialLink?.facebook || ''}
               error={fieldStates.facebookLink.status === 'error'}
               helperText={fieldStates.facebookLink.status === 'error' ? ONBOARDING_REGEX.url.message : ''}
             />
             <SocialLinkInput
               {...register('linkedinLink')}
               icon="linkedin"
+              defaultValue={user.socialLink?.linkedin || ''}
               error={fieldStates.linkedinLink.status === 'error'}
               helperText={fieldStates.linkedinLink.status === 'error' ? ONBOARDING_REGEX.url.message : ''}
             />
             <SocialLinkInput
               {...register('twitterLink')}
               icon="twitter"
+              defaultValue={user.socialLink?.twitter || ''}
               error={fieldStates.twitterLink.status === 'error'}
               helperText={fieldStates.twitterLink.status === 'error' ? ONBOARDING_REGEX.url.message : ''}
             />
@@ -94,6 +98,8 @@ const ProfileSetupForm = ({ onSubmit, isLoading }) => {
             <ImageUpload
               name="profileImage"
               control={control}
+              uid={user.id}
+              initialPhotoURL={user.profilePhotoUrl || ''}
             />
           </Box>
 
@@ -106,6 +112,7 @@ const ProfileSetupForm = ({ onSubmit, isLoading }) => {
               multiline
               rows={4}
               fullWidth
+              defaultValue={user.bio || ''}
               error={fieldStates.bio.status === 'error'}
               helperText={fieldStates.bio.status === 'error' ? ONBOARDING_REGEX.bio.message : ''}
             />
