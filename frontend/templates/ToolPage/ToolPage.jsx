@@ -26,6 +26,11 @@ import {
   setFormOpen,
 } from '@/redux/slices/toolsSlice';
 
+const RESPONSE_OUTPUTS = {
+  [TOOLS_ID.GEMINI_DYNAMO]: FlashCardList,
+  [TOOLS_ID.GEMINI_QUIZIFY]: MultipleChoiceResponse,
+};
+
 const ToolPage = (props) => {
   const { toolDoc } = props;
   const theme = useTheme();
@@ -81,22 +86,13 @@ const ToolPage = (props) => {
     );
   };
 
-  const renderResponse = () => {
-    switch (id) {
-      case TOOLS_ID.GEMINI_DYNAMO:
-        return <FlashCardList />;
-      case TOOLS_ID.GEMINI_QUIZIFY:
-        return <MultipleChoiceResponse />;
-      default:
-        return null;
-    }
-  };
+  const ToolOutputComponent = RESPONSE_OUTPUTS[id];
 
   return (
     <Grid {...styles.mainGridProps}>
       {renderBackButton()}
       {renderForm()}
-      {!formOpen && response && renderResponse()}
+      {!formOpen && response && <ToolOutputComponent />}
     </Grid>
   );
 };

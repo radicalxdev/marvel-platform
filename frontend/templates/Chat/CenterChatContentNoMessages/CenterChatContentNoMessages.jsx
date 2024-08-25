@@ -12,13 +12,15 @@ const CenterChatContentNoMessages = () => {
       <Grid {...styles.profileGridProps}>
         <Grid {...styles.profileProps}>
           <Image
-            src={ImageURLs.RexCircleAvatar}
-            alt="kai-profile"
+            src={ImageURLs.MarvelCircleAvatar}
+            alt="marvel-profile"
             {...styles.imageProps}
           />
         </Grid>
         <Grid {...styles.introGridProps}>
-          <Typography {...styles.introTextProps}>Hello! I’m Kai. 👋</Typography>
+          <Typography {...styles.introTextProps}>
+            Hello! I’m Marvel. 👋
+          </Typography>
           <Typography {...styles.subIntroTextProps}>
             Made for
             <Typography {...styles.highlightTextProps}>educators.</Typography>
@@ -32,15 +34,16 @@ const CenterChatContentNoMessages = () => {
     return (
       <Grid {...styles.descriptionGridProps}>
         <Typography {...styles.descriptionProps}>
-          Hello! I’m Kai, your AI teaching assistant. You can ask any questions
-          realted to best practices in teaching, or working with your students.
-          Feel free to ask me for ideas for your classroom, and the more
-          specific your questions, the better my responses will be. How can I
-          help you today?
+          Hello! I’m Marvel, your AI teaching assistant. You can ask any
+          questions realted to best practices in teaching, or working with your
+          students. Feel free to ask me for ideas for your classroom, and the
+          more specific your questions, the better my responses will be. How can
+          I help you today?
         </Typography>
       </Grid>
     );
   };
+
   return (
     <Grid {...styles.mainGridProps}>
       <Grid {...styles.noMessagesGridProps}>

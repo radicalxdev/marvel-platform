@@ -66,7 +66,7 @@ const EnterEmailView = (props) => {
         <Grid {...styles.textGridProps}>
           <Typography {...styles.bodyMsgProps}>
             🙌 Oops! Happens to the best of us. Type in the email you use for
-            Kai AI, and we&apos;ll swiftly send over a reset link.
+            Marvel AI, and we&apos;ll swiftly send over a reset link.
           </Typography>
         </Grid>
       </Grid>

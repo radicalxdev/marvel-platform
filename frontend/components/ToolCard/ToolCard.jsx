@@ -25,7 +25,11 @@ const ToolCard = (props) => {
   const renderImage = () => {
     return (
       <Grid {...styles.imageGridProps}>
-        <Image src={logo || ToolImage} alt="kai logo" {...styles.imageProps} />
+        <Image
+          src={logo || ToolImage}
+          alt="marvel logo"
+          {...styles.imageProps}
+        />
       </Grid>
     );
   };

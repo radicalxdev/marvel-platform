@@ -1,4 +1,4 @@
-import { MenuBook } from '@mui/icons-material';
+import HistoryIcon from '@mui/icons-material/History';
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -17,13 +17,13 @@ import { chatRegex, historyRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
   {
-    name: 'Kai Tools',
+    name: 'Marvel Tools',
     link: ROUTES.HOME,
     icon: <Briefcase />,
     id: 'page_1',
   },
   {
-    name: 'Kai Chat',
+    name: 'Marvel Chat',
     link: ROUTES.CHAT,
     icon: <ChatBubble />,
     id: 'page_2',
@@ -31,7 +31,7 @@ const PAGES = [
   {
     name: 'History',
     link: ROUTES.HISTORY,
-    icon: <MenuBook />,
+    icon: <HistoryIcon />,
     id: 'page_3',
   },
 ];

@@ -17,7 +17,6 @@ const communicator = {
 
 const toolsSessionState = {
   sessionId: null,
-  inSession: false,
 };
 
 const initialState = {
@@ -34,9 +33,8 @@ const tools = createSlice({
     resetCommunicator: (state) => ({ ...state, ...communicator }),
     resetToolsSessionState: (state) => ({ ...state, ...toolsSessionState }),
     setToolsSessionState: (state, action) => {
-      const { sessionId, inSession } = action.payload;
+      const { sessionId } = action.payload;
       state.sessionId = sessionId;
-      state.inSession = inSession;
     },
     setCommunicatorLoading: (state, action) => {
       state.communicatorLoading = action.payload;
@@ -49,6 +47,9 @@ const tools = createSlice({
     },
     setResponse: (state, action) => {
       state.response = action.payload;
+    },
+    setError: (state, action) => {
+      state.error = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -75,6 +76,7 @@ export const {
   setPrompt,
   setResponse,
   setFormOpen,
+  setError,
   resetCommunicator,
 } = tools.actions;
 

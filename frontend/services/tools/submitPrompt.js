@@ -1,10 +1,8 @@
 import axios from 'axios';
 
-import determineToolsSessionState from '../toolsHistorySession/determineToolsSessionState';
-
 import { setToolsSessionState } from '@/redux/slices/toolsSlice';
 
-const submitPrompt = async (payload, files, dispatch, sessionId, inSession) => {
+const submitPrompt = async (payload, files, dispatch) => {
   try {
     const formData = new FormData();
 
@@ -24,32 +22,21 @@ const submitPrompt = async (payload, files, dispatch, sessionId, inSession) => {
       },
     });
 
-    // construct tool session payload
-    const toolsSessionPayload = {
-      sessionId: inSession ? sessionId : null,
-      toolId: payload.tool_data.tool_id,
-      userId: payload.user.id,
-      inputs: payload.tool_data.inputs,
-      outputs: response.data?.data,
-    };
+    // Extract sessionId and AI output from the response
+    const { sessionId } = response.data;
 
-    // call the service function to create or update a tools session
-    const sessionRef = await determineToolsSessionState(
-      toolsSessionPayload,
-      dispatch
-    );
-
-    // updating the tools session state within the toolsSlice to begin a new session
+    // Updating the tools session state within the toolsSlice to begin a new session
     dispatch(
       setToolsSessionState({
-        sessionId: sessionRef.sessionId,
-        inSession: true,
+        sessionId,
       })
     );
     return response.data?.data;
   } catch (err) {
     const { response } = err;
-    throw new Error(response?.data?.message || 'Error could not send prompt');
+    throw new Error(
+      response?.data?.message || `Error: could not send prompt, ${err}`
+    );
   }
 };
 
