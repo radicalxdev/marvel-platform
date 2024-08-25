@@ -26,9 +26,6 @@ import styles from "./styles.js";
 
 const QontoConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    // top: 8,
-    // left: "calc(-50% + 16px)",
-    // right: "calc(50% + 16px)",
     width: 140,
     position: "static",
     marginRight: 8,
@@ -48,7 +45,6 @@ const QontoConnector = styled(StepConnector)(({ theme }) => ({
     borderColor: theme.palette.mode === "dark" ? "#444154" : "#eaeaf0",
     borderTopWidth: 8,
     borderRadius: 11,
-    // display: 'flex'
   },
 }));
 const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({

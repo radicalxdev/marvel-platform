@@ -4,69 +4,25 @@ const styles = {
     container: true,
     mobileSmall: 12,
     height: 'auto',
-    // maxHeight: '100vh',
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
     paddingTop: '50px',
     sx: {
       background: (theme) => {
+        console.log('theme', theme);
         return theme.palette.Background.primary;
       },
     },
   },
-  lineGuideGridProps: {
-    width: '614px',
-    height: '50px',
-    item: true,
-    container: true,
-    alignItems: 'center',
-    flexWrap: 'nowrap',
-    marginBottom: '50px',
-    position: 'relative',
-    sx: {
-      border: (theme) => `1px solid ${theme.palette.primary.main}`,
-      borderImageSource:
-        'linear-gradient(327.23deg, #3D3F4E 19.47%, #8653FF 80.53%)',
-      background: '#181A20',
-      'margin-top': '52px',
-      borderRadius: '10px',
-      padding: '0 10px',
-      gap: '10px',
-    },
-  },
-  guideDotProps: {
-    item: true,
-    width: '21px',
-    height: '21px',
-    borderRadius: '50%',
-    sx: {
-      background: '#656277',
-      border: '2px solid #444154',
-    },
-  },
-  guideLineProps: {
-    item: true,
-    width: '140px',
-    height: '8px',
-    borderRadius: '11px',
-    sx: {
-      background: '#444154',
-    },
-  },
-  guideItemFocusProps: {
-    sx: {
-      background: '#444154',
-      border: (theme) => `2px solid ${theme.palette.primary.main}`,
-    },
-  },
+
   MainSectionProps: {
     fontFamily: 'Satoshi',
     fontSize: '40px',
     fontWeight: 700,
     lineHeight: '54px',
     letterSpacing: '-0.02em',
-    color: '#ffffff',
+    color: (theme) => theme.palette.Common.White['100p'],
     textAlign: 'center',
   },
   MainSectionTwoProps: {
@@ -76,7 +32,7 @@ const styles = {
     lineHeight: '32.4px',
     letterSpacing: '-0.02em',
     textAlign: 'center',
-    color: '#ffffff',
+    color: (theme) => theme.palette.Common.White['100p'],
     marginBottom: '20px',
   },
   submitButtonProps: {

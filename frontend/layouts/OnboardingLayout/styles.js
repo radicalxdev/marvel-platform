@@ -7,7 +7,6 @@ const styles = {
     maxHeight: '100vh',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    // alignItems: "flex-start",
     sx: {
       background: (theme) => {
         return theme.palette.Background.primary;

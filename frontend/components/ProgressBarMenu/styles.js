@@ -1,12 +1,13 @@
 const styles = {
   mainGridProps: (isExpand) => {
-    // container:true,
     return {
       display: 'flex',
       alignItems: 'center',
       position: 'relative',
       sx: {
-        background: '#181A20',
+        background: (theme) => {
+          return theme.palette.Background.darkgray;
+        },
         borderRadius: isExpand ? '10px 10px 0 0 ' : '10px',
         padding: '10px',
       },
@@ -26,7 +27,6 @@ const styles = {
     return {
       style: {
         transform: `rotate(${isExpand ? -180 : 0}deg)`,
-        // transition: "all 0.1s linear",
         cursor: 'pointer',
       },
     };
@@ -35,14 +35,13 @@ const styles = {
     return {
       position: 'absolute',
       width: '100%',
-      // top: "100%",
       left: '0',
       bottom: '0',
       zIndex: 1,
       sx: {
         transform: 'translateY(100%)',
         background: (theme) => {
-          return '#181A20';
+          return theme.palette.Background.darkgray;
         },
         borderRadius: '0 0 10px 10px',
         opacity: isExpand ? 1 : 0,
