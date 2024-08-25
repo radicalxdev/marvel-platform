@@ -312,11 +312,11 @@ const saveResponseToFirestore = async (sessionData) => {
         .add({
           toolId: toolId,
           userId: userId,
-          response: [
+          responses: [
             {
               inputs: inputs,
               outputs: outputs,
-              updatedAt: Timestamp.fromMillis(Date.now()),
+              createdAt: Timestamp.fromMillis(Date.now()),
             },
           ],
           createdAt: Timestamp.fromMillis(Date.now()),
@@ -363,12 +363,12 @@ const saveResponseToFirestore = async (sessionData) => {
         .update({
           ...toolsSessionData,
           updatedAt: Timestamp.fromMillis(Date.now()),
-          response: [
-            ...toolsSessionData.response,
+          responses: [
+            ...toolsSessionData.responses,
             {
               inputs: inputs,
               outputs: outputs,
-              updatedAt: admin.firestore.Timestamp.fromMillis(Date.now()),
+              createdAt: Timestamp.fromMillis(Date.now()),
             },
           ],
         });
