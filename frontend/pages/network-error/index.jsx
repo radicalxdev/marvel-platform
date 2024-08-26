@@ -1,6 +1,3 @@
-// pages/networkError/index.jsx
-import React from 'react';
-
 import { Box, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -102,12 +99,6 @@ const NetworkError = () => {
   const renderIcons = () => {
     return (
       <>
-        {/* <Box {...pageNotFoundStyles.yellowStarProps}>
-          <YellowStar />
-        </Box> */}
-        {/* <Box {...pageNotFoundStyles.planetProps}>
-          <Planet />
-        </Box> */}
         <Box {...pageNotFoundStyles.star1Props}>
           <Star />
         </Box>

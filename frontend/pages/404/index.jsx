@@ -11,9 +11,7 @@ import MeteorDetails2 from '@/assets/svg/MeteorDetails2.svg';
 import MeteorTrail1 from '@/assets/svg/MeteorTrail1.svg';
 import MeteorTrail2 from '@/assets/svg/MeteorTrail2.svg';
 import MeteorTrail3 from '@/assets/svg/MeteorTrail3.svg';
-import Planet from '@/assets/svg/planet.svg';
 import Star from '@/assets/svg/Star_3.svg';
-import YellowStar from '@/assets/svg/yellowStar.svg';
 
 import ROUTES from '@/constants/routes';
 

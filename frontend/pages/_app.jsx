@@ -1,10 +1,10 @@
 import { ThemeProvider } from '@emotion/react';
-
 import { useRouter } from 'next/router';
 import { GoogleAnalytics } from 'nextjs-google-analytics';
 
-import firebaseConfig from '@/firebase/config';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
+import firebaseConfig from '@/firebase/config';
 import GlobalProvider from '@/providers/GlobalProvider';
 import theme from '@/theme/theme';
 
@@ -21,7 +21,9 @@ const App = ({ Component, pageProps }) => {
           trackPageViews
           gaMeasurementId={firebaseConfig.measurementId}
         />
-        {getLayout(<Component {...pageProps} />, query)}
+        <ErrorBoundary>
+          {getLayout(<Component {...pageProps} />, query)}
+        </ErrorBoundary>
       </GlobalProvider>
     </ThemeProvider>
   );
