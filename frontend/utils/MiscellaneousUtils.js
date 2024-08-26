@@ -206,12 +206,13 @@ const getRandomBackgroundColor = () => {
  * @param {string} [suffix='...'] - The suffix to append to the truncated string.
  * @return {string} The truncated string with the suffix.
  */
-function truncateString(str, num, suffix = '...') {
+const truncateString = (props) => {
+  const { str, num, suffix = '...' } = props;
   if (str.length <= num) {
     return str;
   }
   return str.slice(0, num - suffix.length) + suffix;
-}
+};
 
 /**
  * Copies content to the clipboard.

@@ -1,12 +1,12 @@
 import { Card, Grid, Typography } from '@mui/material';
-
 import Image from 'next/image';
-
 import { useRouter } from 'next/router';
 
 import ToolImage from '@/assets/images/BookImage.png';
 
 import styles from './styles';
+
+import { truncateString } from '@/utils/MiscellaneousUtils';
 
 /**
  * Returns a Tool Card component with an image and a chip displaying the amount of coins.
@@ -15,7 +15,6 @@ import styles from './styles';
  */
 const ToolCard = (props) => {
   const { maskedToolUrl, backgroundImgURL, name, logo, description } = props;
-
   const router = useRouter();
 
   const handleRoute = () => {
@@ -25,11 +24,7 @@ const ToolCard = (props) => {
   const renderImage = () => {
     return (
       <Grid {...styles.imageGridProps}>
-        <Image
-          src={logo || ToolImage}
-          alt="marvel logo"
-          {...styles.imageProps}
-        />
+        <Image src={logo || ToolImage} alt="tool logo" {...styles.imageProps} />
       </Grid>
     );
   };
@@ -37,8 +32,12 @@ const ToolCard = (props) => {
   const renderTitle = () => {
     return (
       <Grid {...styles.contentGridProps}>
-        <Typography {...styles.titleProps}>{name}</Typography>
-        <Typography {...styles.descriptionProps}>{description}</Typography>
+        <Typography {...styles.titleProps}>
+          {truncateString({ str: name, num: 20 })}
+        </Typography>
+        <Typography {...styles.descriptionProps}>
+          {truncateString({ str: description, num: 100 })}
+        </Typography>
       </Grid>
     );
   };
