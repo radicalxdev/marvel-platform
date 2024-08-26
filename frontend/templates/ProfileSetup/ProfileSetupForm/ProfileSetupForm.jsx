@@ -106,7 +106,7 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
           {/* Bio */}
           <Box sx={{ mb: 3 }}>
             <TextField
-              {...register('bio', { required: 'Occupation is required' })}
+              {...register('bio', { required: 'Bio is required' })}
               label="Bio"
               placeholder="Introduce yourself in a few words"
               multiline

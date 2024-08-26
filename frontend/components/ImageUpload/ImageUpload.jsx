@@ -15,9 +15,8 @@ const ImageUpload = ({ name, control, uid, initialPhotoURL }) => {
   useEffect(() => {
     if (initialPhotoURL) {
       setPreview(initialPhotoURL);
-      field.onChange(initialPhotoURL);
     }
-  }, [initialPhotoURL, field]);
+  }, [initialPhotoURL]);
 
   const onDrop = useCallback(async (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -28,8 +27,9 @@ const ImageUpload = ({ name, control, uid, initialPhotoURL }) => {
           // Upload the file and get the URL
           const url = await uploadPhoto(file, uid, field.value); // Pass old URL for deletion
 
-          field.onChange(url); // Update the form field with the new URL
-          setPreview(url); // Update the preview
+          // Update the form field with the new URL
+          field.onChange(url); 
+          setPreview(url); // Update the preview with the new photo
           setErrorMessage(''); // Clear any previous error messages
         } catch (uploadError) {
           console.error('Error uploading file:', uploadError);
