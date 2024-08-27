@@ -26,10 +26,12 @@ const AuthProvider = (props) => {
   const [open, setOpen] = useState(false);
   const [severity, setSeverity] = useState('success');
   const [message, setMessage] = useState('Default Message');
+  const [loginNotificationStyle, setLoginNotificationStyle] = useState(false);
 
-  const handleOpenSnackBar = (newSeverity, newMessage) => {
+  const handleOpenSnackBar = (newSeverity, newMessage, loginNotificationStyle = false) => {
     setSeverity(newSeverity);
     setMessage(newMessage);
+    setLoginNotificationStyle(loginNotificationStyle);
     setOpen(true);
   };
 
@@ -73,6 +75,7 @@ const AuthProvider = (props) => {
         severity={severity}
         message={message}
         handleClose={handleClose}
+        loginNotificationStyle={loginNotificationStyle}
       />
     </AuthContext.Provider>
   );

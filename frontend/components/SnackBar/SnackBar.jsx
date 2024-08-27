@@ -8,19 +8,29 @@ import ALERT_COLORS from '@/constants/notification';
  * @return {ReactElement} The rendered Snackbar component.
  */
 const SnackBar = (props) => {
-  const { open, handleClose, message, severity } = props;
+  const { open, handleClose, message, severity, loginNotificationStyle = false } = props;
 
   return (
     <Snackbar
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={loginNotificationStyle? 4000: 6000}
       onClose={handleClose}
       color={ALERT_COLORS[severity]}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: 'top', horizontal: loginNotificationStyle ? 'center' : 'right' }}
     >
-      <Alert severity={severity} onClose={handleClose}>
-        {message}
-      </Alert>
+      {loginNotificationStyle ? (
+        <Alert 
+          severity={severity} 
+          onClose={handleClose} 
+          variant="outlined"     
+          sx={{ width: '30%', color: "warning", background:'#300000', borderRadius: '8px'}}
+        >
+          {message}
+        </Alert> ): (
+        <Alert severity={severity} onClose={handleClose}>
+          {message}
+        </Alert>
+      )}
     </Snackbar>
   );
 };
