@@ -2,8 +2,8 @@ import { Grid, List, ListItem, Typography } from '@mui/material';
 
 import styles from '../styles';
 
-const MultipleChoiceQuizOutput = (props) => {
-  const { outputs } = props;
+const MultipleChoiceQuizOutput = ({ data }) => {
+  const panelData = data?.response || [];
 
   const renderExplanation = (explanation) => {
     return (
@@ -37,7 +37,7 @@ const MultipleChoiceQuizOutput = (props) => {
 
   return (
     <Grid container direction="column">
-      {outputs?.map((item, index) => (
+      {panelData.map((item, index) => (
         <Grid key={index} sx={{ marginBottom: '16px' }}>
           <Typography {...styles.questionProps}>
             {index + 1}. {item?.question}

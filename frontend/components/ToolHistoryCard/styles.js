@@ -4,7 +4,6 @@ const styles = {
     item: true,
     desktopLarge: 6,
     laptop: 8,
-    xs: 12,
   },
   cardProps: {
     elevation: 1,
@@ -14,20 +13,11 @@ const styles = {
       alignItems: 'flex-end',
       position: 'relative',
       height: '150px',
-      width: '100%',
-      maxWidth: '600px',
+      width: '600px',
       borderRadius: '15px',
-      overflow: 'hidden', // Ensure content does not overflow card
+      overflow: 'hidden',
       flexDirection: 'column',
-      p: 2,
       background: (theme) => theme.palette.Common.White['100p'],
-      transition: (theme) => theme.transitions.create('all'),
-      '&:hover': {
-        transform: 'scale(1.02)',
-      },
-      '@media (max-width: 600px)': {
-        height: 'auto', // Adjust height for smaller screens
-      },
     },
   },
   toolDetailsGridProps: {
@@ -35,7 +25,7 @@ const styles = {
     container: true,
     item: true,
     mobileSmall: 12,
-    rowGap: 1.5,
+    height: '100%',
     justifyContent: 'center',
     flexDirection: 'column',
   },
@@ -43,36 +33,35 @@ const styles = {
     fontFamily: 'Satoshi Bold',
     fontSize: '18px',
     color: (theme) => theme.palette.Common.Black['100p'],
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
     sx: {
       display: '-webkit-box',
       WebkitLineClamp: 1,
       WebkitBoxOrient: 'vertical',
-    },
-  },
-  descriptionProps: {
-    fontFamily: 'Satoshi Regular',
-    fontSize: '12px',
-    color: (theme) => theme.palette.Common.Black['100p'],
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    sx: {
-      display: '-webkit-box',
-      WebkitLineClamp: 1,
-      WebkitBoxOrient: 'vertical',
+      overflow: 'hidden',
+      width: 'calc(100% - 160px)',
     },
   },
   contentGridProps: {
     container: true,
     item: true,
-    mobileSmall: 12,
+    mobileSmall: true,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'flex-start',
-    margin: '20px',
-    overflow: 'hidden', // Ensure content does not overflow grid container
-    width: '75%',
+    px: 2.5,
+    py: 1.5,
+  },
+  descriptionProps: {
+    fontFamily: 'Satoshi Regular',
+    fontSize: '12px',
+    color: (theme) => theme.palette.Common.Black['100p'],
+    sx: {
+      display: '-webkit-box',
+      WebkitLineClamp: 1,
+      overflow: 'hidden',
+      WebkitBoxOrient: 'vertical',
+      width: 'calc(100% - 160px)',
+    },
   },
   imageProps: {
     width: 60,
@@ -82,21 +71,19 @@ const styles = {
     position: 'relative',
     container: true,
     item: true,
-    marginLeft: '-20px',
+    alignItems: 'center',
+    justifyContent: 'center',
     sx: {
       backgroundColor: '#007BFF',
       backgroundImage: backgroundImageUrl
         ? `url(${backgroundImageUrl})`
         : 'none',
       backgroundSize: 'cover',
-      width: '25%',
+      width: '160px',
       height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
   }),
-  cardButtonProps: {
+  previewButtonProps: {
     sx: {
       fontFamily: 'Satoshi Regular',
       fontSize: '12px',
@@ -108,20 +95,8 @@ const styles = {
       '&:hover': {
         backgroundColor: '#5E3CFF',
         color: 'white',
-        cursor: 'pointer',
-      },
-      '&.Mui-disabled': {
-        backgroundColor: 'grey',
-        color: 'white',
-        cursor: 'not-allowed',
-        opacity: 0.5,
       },
     },
-  },
-  sessionCardSectionProps: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   dateProps: {
     fontFamily: 'Satoshi Regular',

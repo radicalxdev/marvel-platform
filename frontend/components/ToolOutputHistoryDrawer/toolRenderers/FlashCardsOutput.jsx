@@ -2,34 +2,21 @@ import { Grid, Typography } from '@mui/material';
 
 import styles from '../styles';
 
-const FlashCardsOutput = (props) => {
-  const { outputs } = props;
-  /**
-   * Function to render a single flashcard question
-   */
-  const renderQuestion = (concept, definition, cardNo) => {
-    return (
-      <Grid key={`flashCard-${cardNo}`} {...styles.flashCardGridProps}>
-        <Typography {...styles.conceptTitleProps}>{concept}</Typography>
-        <Typography {...styles.definitionProps}>{definition}</Typography>
-      </Grid>
-    );
-  };
+const FlashCardsOutput = ({ data }) => {
+  const panelData = data?.response || [];
 
-  /**
-   * Function to render all flashcard items
-   */
-  const renderCards = () => {
-    return (
-      <Grid {...styles.flashCardsGridProps}>
-        {outputs.map((item, i) => {
-          return renderQuestion(item?.concept, item?.definition, i + 1);
-        })}
-      </Grid>
-    );
-  };
-
-  return <Grid {...styles.mainGridProps}>{renderCards()}</Grid>;
+  return (
+    <Grid {...styles.flashCardsGridProps}>
+      {panelData?.map((item, index) => (
+        <Grid key={index} {...styles.flashCardGridProps}>
+          <Typography {...styles.conceptTitleProps}>{item?.concept}</Typography>
+          <Typography {...styles.definitionProps}>
+            {item?.definition}
+          </Typography>
+        </Grid>
+      ))}
+    </Grid>
+  );
 };
 
 export default FlashCardsOutput;

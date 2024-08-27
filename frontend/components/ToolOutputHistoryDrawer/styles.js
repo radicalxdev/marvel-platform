@@ -80,7 +80,7 @@ const styles = {
     sx: {
       background: (theme) => theme.palette.common.white,
       borderRadius: '10px',
-      border: '2px solid black',
+      border: (theme) => `2px solid ${theme.palette.grey[400]}`,
     },
   },
   conceptTitleProps: {
@@ -154,68 +154,6 @@ const styles = {
     sx: {
       marginRight: '8px',
     },
-  },
-  dropDownMenuProps: {
-    PaperProps: {
-      sx: {
-        padding: 0,
-        width: '150px',
-        margin: 0,
-        overflow: 'hidden',
-      },
-    },
-  },
-  dropUpMenuProps: {
-    PaperProps: {
-      sx: {
-        padding: 0,
-        width: '120px',
-        margin: 0,
-        overflow: 'hidden',
-      },
-    },
-    anchorOrigin: {
-      vertical: 'top',
-      horizontal: 'center',
-    },
-    transformOrigin: {
-      vertical: 'bottom',
-      horizontal: 'center',
-    },
-  },
-  dropdownButtonProps: {
-    sx: {
-      backgroundColor: '#EAE5F3',
-      color: '#742696',
-      borderRadius: '30px',
-      marginBottom: '10px',
-      marginTop: '5px',
-      width: '150px',
-    },
-  },
-  responseSelectorVersionNameProps: {
-    fontFamily: 'Satoshi Bold',
-    fontSize: '16px',
-    color: '#4900E4',
-    padding: '5px 10px',
-    textTransform: 'none',
-    marginBottom: '10px',
-    display: 'inline-block',
-    marginTop: '5px',
-    alignSelf: 'flex-start',
-  },
-  dateAndVersionNameSectionProps: {
-    sx: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      width: '100%',
-    },
-  },
-  footerProps: {
-    justifyContent: 'flex-start',
-    sx: { mt: 3, width: '100%' },
   },
 };
 

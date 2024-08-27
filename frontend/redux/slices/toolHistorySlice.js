@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchToolHistory } from '../thunks/toolHistory';
 
 const initialState = {
-  data: [],
+  data: null,
   loading: true,
   error: null,
 };
@@ -11,7 +11,9 @@ const initialState = {
 const ToolHistorySlice = createSlice({
   name: 'toolHistory',
   initialState,
-  reducers: {},
+  reducers: {
+    // Define any synchronous reducers if needed
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchToolHistory.pending, (state) => {
@@ -19,7 +21,7 @@ const ToolHistorySlice = createSlice({
         state.error = null;
       })
       .addCase(fetchToolHistory.fulfilled, (state, action) => {
-        state.data = action.payload || [];
+        state.data = action.payload;
         state.loading = false;
       })
       .addCase(fetchToolHistory.rejected, (state, action) => {

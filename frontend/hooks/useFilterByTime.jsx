@@ -2,27 +2,15 @@ import { useEffect, useState } from 'react';
 
 import moment from 'moment';
 
-/**
- * places the item in the correct index in the array
- *  @param {Array} array - the array to insert the item into
- *  @param {object} item - the item to insert
- *  @param {string} updatedAt - the timestamp of the item
- *  @returns the index where the item should be inserted
- */
-const findIndexToInsert = (array, item, updatedAt) => {
+const findIndexToInsert = (array, item, createdAt) => {
   for (let i = 0; i < array.length; i += 1) {
-    if (moment(array[i].updatedAt).isBefore(updatedAt)) {
+    if (moment(array[i].createdAt).isBefore(createdAt)) {
       return i;
     }
   }
   return array.length;
 };
 
-/**
- * filters user data of the tool cards by the most recent timestamp of which it was udpated
- * @param {Array} data - user data of all of the tool cards they have created
- * @returns the categorized data as well as the boolean value to determine if they have any tools cards saved within their account.
- */
 const useFilterByTime = (data) => {
   const [categorizedData, setCategorizedData] = useState(null);
   const [isHistoryEmpty, setIsHistoryEmpty] = useState(true);
@@ -49,19 +37,19 @@ const useFilterByTime = (data) => {
       const startOfThisMonth = now.clone().startOf('month');
 
       data?.forEach((item) => {
-        const updatedAt = item.updatedAt && moment.unix(item.updatedAt.seconds); // Correctly access seconds
-        if (!updatedAt) return;
+        const createdAt = item.createdAt && moment.unix(item.createdAt.seconds); // Correctly access seconds
+        if (!createdAt) return;
 
-        if (updatedAt.isSame(startOfToday, 'day')) {
+        if (createdAt.isSame(startOfToday, 'day')) {
           today.push(item);
-        } else if (updatedAt.isSame(startOfYesterday, 'day')) {
+        } else if (createdAt.isSame(startOfYesterday, 'day')) {
           yesterday.push(item);
         } else if (
-          updatedAt.isBetween(startOfPrevious7Days, startOfToday, 'day', '[]')
+          createdAt.isBetween(startOfPrevious7Days, startOfToday, 'day', '[]')
         ) {
           previous7Days.push(item);
         } else if (
-          updatedAt.isBetween(
+          createdAt.isBetween(
             startOfPrevious30Days,
             startOfPrevious7Days,
             'day',
@@ -69,15 +57,15 @@ const useFilterByTime = (data) => {
           )
         ) {
           previous30Days.push(item);
-        } else if (updatedAt.isBefore(startOfThisMonth, 'day')) {
-          const monthKey = updatedAt.format('MMMM YYYY');
+        } else if (createdAt.isBefore(startOfThisMonth, 'day')) {
+          const monthKey = createdAt.format('MMMM YYYY');
           if (!monthsBefore[monthKey]) {
             monthsBefore[monthKey] = [];
           }
           const index = findIndexToInsert(
             monthsBefore[monthKey],
             item,
-            updatedAt
+            createdAt
           );
           monthsBefore[monthKey].splice(index, 0, item);
         }
@@ -97,9 +85,9 @@ const useFilterByTime = (data) => {
       setCategorizedData({
         today: { title: 'Today', items: today },
         yesterday: { title: 'Yesterday', items: yesterday },
-        previous7Days: { title: 'Previous 7 days', items: previous7Days },
+        previous7Days: { title: 'Previous 7 Days', items: previous7Days },
         previous30Days: {
-          title: 'Previous 30 days',
+          title: 'Previous 30 Days',
           items: previous30Days,
         },
         monthsBefore: { items: sortedMonthsBeforeData },

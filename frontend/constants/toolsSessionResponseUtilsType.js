@@ -1,4 +1,4 @@
-import TOOLS_ID from './tools';
+import { TOOLS_ID } from './tools';
 
 import FlashCardListUtils from '@/utils/ToolSessionResponseUtils/FlashCardListUtils';
 import MultipleChoiceResponseUtils from '@/utils/ToolSessionResponseUtils/MultipleChoiceResponseUtils';

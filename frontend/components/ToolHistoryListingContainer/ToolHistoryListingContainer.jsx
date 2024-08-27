@@ -1,7 +1,11 @@
+import { useState } from 'react';
+
 import { Grid, Typography } from '@mui/material';
 
 import { ToolCardSkeleton } from '../ToolCard';
 import ToolHistoryCard from '../ToolHistoryCard';
+
+import ToolOutputHistoryDrawer from '../ToolOutputHistoryDrawer';
 
 import styles from './styles';
 
@@ -21,6 +25,16 @@ const DEFAULT_HISTORY = new Array(4)
 const ToolHistoryListingContainer = (props) => {
   const { data, loading, category, setAlertState } = props;
 
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [selectedCardData, setSelectedCardData] = useState(null);
+
+  const toggleDrawer = () => setOpenDrawer(!openDrawer);
+
+  const handleOpenSidebar = (cardData) => {
+    setSelectedCardData(cardData);
+    toggleDrawer(true);
+  };
+
   if (data?.length === 0) return null;
 
   const renderTitle = () => (
@@ -38,6 +52,7 @@ const ToolHistoryListingContainer = (props) => {
           data?.map((item) => (
             <ToolHistoryCard
               key={item.id}
+              onOpen={handleOpenSidebar}
               data={item}
               setAlertState={setAlertState}
             />
@@ -60,6 +75,11 @@ const ToolHistoryListingContainer = (props) => {
     <Grid {...styles.mainGridProps}>
       {category && renderTitle()}
       {loading ? renderLoader() : renderCards()}
+      <ToolOutputHistoryDrawer
+        isOpen={openDrawer}
+        onClose={toggleDrawer}
+        data={selectedCardData}
+      />
     </Grid>
   );
 };

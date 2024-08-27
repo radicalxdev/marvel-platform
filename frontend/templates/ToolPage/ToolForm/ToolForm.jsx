@@ -24,8 +24,8 @@ import {
   setPrompt,
   setResponse,
 } from '@/redux/slices/toolsSlice';
+import { firestore } from '@/redux/store';
 import { fetchToolHistory } from '@/redux/thunks/toolHistory';
-
 import submitPrompt from '@/services/tools/submitPrompt';
 
 const ToolForm = (props) => {
@@ -48,8 +48,10 @@ const ToolForm = (props) => {
         name,
         value,
       }));
+
       dispatch(setPrompt(values));
       dispatch(setCommunicatorLoading(true));
+
       const response = await submitPrompt(
         {
           tool_data: { tool_id: id, inputs: updateData },
@@ -64,10 +66,11 @@ const ToolForm = (props) => {
         files,
         dispatch
       );
+
       dispatch(setResponse(response?.data));
       dispatch(setFormOpen(false));
       dispatch(setCommunicatorLoading(false));
-      dispatch(fetchToolHistory());
+      dispatch(fetchToolHistory({ firestore }));
     } catch (error) {
       dispatch(setCommunicatorLoading(false));
       handleOpenSnackBar(
@@ -230,4 +233,5 @@ const ToolForm = (props) => {
     </FormContainer>
   );
 };
+
 export default ToolForm;

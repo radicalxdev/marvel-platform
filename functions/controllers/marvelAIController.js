@@ -41,8 +41,8 @@ const marvelCommunicator = async (payload) => {
     const { messages, user, tool_data, type } = payload.data;
     const isToolCommunicator = type === BOT_TYPE.TOOL;
 
-    const MARVEL_API_KEY = 'AIzaSyBT0cxIrvcSUL8Ylfmrt8gra9BYb_K20kE';
-    const MARVEL_ENDPOINT = 'https://kai-ai-f63c8.wl.r.appspot.com';
+    const MARVEL_API_KEY = process.env.MARVEL_API_KEY;
+    const MARVEL_ENDPOINT = process.env.MARVEL_ENDPOINT;
 
     DEBUG &&
       logger.log(
@@ -240,7 +240,7 @@ app.post('/api/tool/', (req, res) => {
       // Destructure data here
       const {
         tool_data: { inputs, ...otherToolData },
-        sessionId: sessionId,
+        sessionId,
         ...otherData
       } = JSON.parse(data?.data);
 
@@ -267,18 +267,18 @@ app.post('/api/tool/', (req, res) => {
       DEBUG && logger.log(response);
 
       // Determine state here
-      const sessionRef = await saveResponseToFirestore({
+      const session = await saveResponseToFirestore({
         outputs: response.data.data,
         inputs: modifiedInputs,
         toolId: otherToolData.tool_id,
         userId: otherData.user.id,
-        sessionId: sessionId,
+        sessionId,
       });
 
       res.status(200).json({
         success: true,
         data: response.data,
-        sessionId: sessionRef.sessionId,
+        sessionId: session.id,
       });
     } catch (error) {
       logger.error('Error processing request:', error);
@@ -310,73 +310,76 @@ const saveResponseToFirestore = async (sessionData) => {
         .firestore()
         .collection('toolSessions')
         .add({
-          toolId: toolId,
-          userId: userId,
+          toolId,
+          userId,
           responses: [
             {
-              inputs: inputs,
-              outputs: outputs,
+              inputs,
+              outputs,
               createdAt: Timestamp.fromMillis(Date.now()),
             },
           ],
           createdAt: Timestamp.fromMillis(Date.now()),
           updatedAt: Timestamp.fromMillis(Date.now()),
         });
+
       await toolSessionRef.update({
         sessionId: toolSessionRef.id,
       });
-      logger.log('SessionId: ' + toolSessionRef.id);
-      return {
-        sessionId: toolSessionRef.id,
-      };
-    } else {
-      // update existing toolSession document otherwise if sessionId exists
 
-      // Get the document from Firestore using the provided toolId
-      const toolsSessionDoc = await admin
-        .firestore()
-        .collection('toolSessions')
-        .doc(sessionId)
-        .get();
-
-      // Check if the document exists
-      if (!toolsSessionDoc.exists) {
-        throw new HttpsError('not-found', 'Document does not exist');
-      }
-
-      // Get the document data
-      const toolsSessionData = toolsSessionDoc.data();
-
-      // Check if the userId matches the userId of the document owner
-      if (toolsSessionData.userId !== userId) {
-        throw new HttpsError(
-          'permission-denied',
-          'User does not have permission to update this document'
-        );
-      }
-
-      // Update the document in Firestore with the new data
-      await admin
-        .firestore()
-        .collection('toolSessions')
-        .doc(sessionId)
-        .update({
-          ...toolsSessionData,
-          updatedAt: Timestamp.fromMillis(Date.now()),
-          responses: [
-            ...toolsSessionData.responses,
-            {
-              inputs: inputs,
-              outputs: outputs,
-              createdAt: Timestamp.fromMillis(Date.now()),
-            },
-          ],
-        });
+      DEBUG && logger.log('SessionId: ' + toolSessionRef.id);
 
       return {
-        sessionId: sessionId,
+        id: toolSessionRef.id,
       };
     }
+
+    // Update existing toolSession document otherwise if sessionId exists
+
+    // Get the document from Firestore using the provided toolId
+    const toolsSessionDoc = await admin
+      .firestore()
+      .collection('toolSessions')
+      .doc(sessionId)
+      .get();
+
+    // Check if the document exists
+    if (!toolsSessionDoc.exists) {
+      throw new HttpsError('not-found', 'Document does not exist');
+    }
+
+    // Get the document data
+    const toolsSessionData = toolsSessionDoc.data();
+
+    // Check if the userId matches the userId of the document owner
+    if (toolsSessionData.userId !== userId) {
+      throw new HttpsError(
+        'permission-denied',
+        'User does not have permission to update this document'
+      );
+    }
+
+    // Update the document in Firestore with the new data
+    await admin
+      .firestore()
+      .collection('toolSessions')
+      .doc(sessionId)
+      .update({
+        ...toolsSessionData,
+        updatedAt: Timestamp.fromMillis(Date.now()),
+        responses: [
+          ...toolsSessionData.responses,
+          {
+            inputs,
+            outputs,
+            createdAt: Timestamp.fromMillis(Date.now()),
+          },
+        ],
+      });
+
+    return {
+      id: sessionId,
+    };
   } catch (error) {
     logger.error('Error saving tool session to Firestore:', error);
   }

@@ -11,8 +11,6 @@ import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-import { resetToolsSessionState } from '@/redux/slices/toolsSlice';
-
 import { chatRegex, historyRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
@@ -48,21 +46,21 @@ const NavMenu = () => {
 
   const setActive = (id) => {
     const isNotHomePage = [
-      chatRegex.test(pathname),
-      historyRegex.test(pathname),
+      chatRegex.test(pathname) || historyRegex.test(pathname),
     ].includes(true);
 
     if (id === 'page_1')
       return isNotHomePage ? false : homeRegex.test(pathname);
+
     if (id === 'page_2') return chatRegex.test(pathname);
+
     if (id === 'page_3') return historyRegex.test(pathname);
+
     return false;
   };
 
-  const handleRoute = (link, id) => {
+  const handleRoute = (link) => {
     router.push(link);
-    setActive(id);
-    dispatch(resetToolsSessionState()); // resets toolsSessionState when user clicks on any of the navigation options to end a session
   };
 
   return (
@@ -70,7 +68,7 @@ const NavMenu = () => {
       {PAGES.map((page) => (
         <MenuItem
           key={page.id}
-          onClick={() => handleRoute(page.link, page.id)}
+          onClick={() => handleRoute(page.link)}
           {...styles.menuItemProps(setActive(page.id))}
         >
           <Grid {...styles.innerMenuGridProps}>

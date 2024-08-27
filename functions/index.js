@@ -23,7 +23,6 @@ module.exports = {
   tool: marvelAIController.tool,
   createChatSession: marvelAIController.createChatSession,
   deleteToolsSession: marvelAIController.deleteToolsSession,
-
-  /* Migration Scripts - For running */
+  /* Migration Scripts - For running  */
   ...migrationScripts,
 };

@@ -1,15 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { DeleteForever } from '@mui/icons-material';
-import {
-  Button,
-  Card,
-  CircularProgress,
-  Grid,
-  Typography,
-  useTheme,
-} from '@mui/material';
-
+import { Button, Card, Grid, Typography } from '@mui/material';
+import moment from 'moment';
 import Image from 'next/image';
 
 import { useDispatch } from 'react-redux';
@@ -17,62 +9,42 @@ import { useDispatch } from 'react-redux';
 import ToolImage from '@/assets/images/BookImage.png';
 
 import AlertDialog from '../AlertDialog';
-import ToolOutputHistoryDrawer from '../ToolOutputHistoryDrawer';
 
 import styles from './styles';
 
 import deleteToolsSession from '@/services/toolsHistorySession/deleteToolsSession';
-
+import { convertToUnixTimestamp } from '@/utils/FirebaseUtils';
 import { initializeToolSessionData } from '@/utils/ToolSessionCardUtils';
+import { getToolData } from '@/utils/ToolUtils';
 
 /**
  * Renders a card component displaying information about a tool session.
  *
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.data - The data object containing the tool information.
- * @param {function} props.setAlertState - Callback function to handle alert state.
+ * @param {function} props.onOpen - Callback function to handle opening the detailed view.
  *
  * @returns {JSX.Element} A React component that renders the tool history card.
  */
 const ToolHistoryCard = (props) => {
-  const { data, setAlertState } = props; // Destructure props to get data and setAlertState
+  const { data, onOpen, setAlertState } = props;
+
+  const dispatch = useDispatch();
 
   // Initialize tool session data from the provided data
   const toolSessionCardInstance = initializeToolSessionData(data);
   const { toolId, sessionId, userId, responses, toolSessionType } =
     toolSessionCardInstance;
 
-  // State hooks for managing component state
-  const [currentResponseNumber, setCurrentResponseNumber] = useState(0); // State for the current response number
-  const [restructuredResponse, setRestructuredResponse] = useState(null); // State for the restructured response data
+  const toolData = getToolData({
+    toolId: data?.tool_id,
+    item: data,
+  });
 
-  useTheme(); // Get theme from Material-UI
-  const dispatch = useDispatch(); // Get dispatch function from Redux
-  const [loading, setLoading] = useState(false); // State for tracking loading status during deletion
+  const { title, backgroundImgURL, logo, createdAt, description } = toolData;
+
   const [openDialog, setOpenDialog] = useState(false); // State for controlling the alert dialog visibility
-  const [openDrawer, setOpenDrawer] = useState(false); // State for controlling the preview drawer visibility
-
-  // Effect hook to fetch and set restructured response data when currentResponseNumber changes
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!restructuredResponse) {
-        // Fetch response data if not already fetched
-        const responseData = await toolSessionType.initializeResponseForSession(
-          responses[currentResponseNumber]
-        );
-        setRestructuredResponse(responseData); // Update state with fetched data
-      }
-    };
-
-    fetchData(); // Call the fetch function
-  }, [currentResponseNumber, restructuredResponse, responses, toolSessionType]);
-
-  /**
-   * Function to toggle the preview state of the history card.
-   */
-  const toggleDrawer = () => {
-    setOpenDrawer(!openDrawer); // Toggle the drawer open/close state
-  };
+  const [loading, setLoading] = useState(false); // State for controlling the alert dialog visibility
 
   /**
    * Function to handle the click event for deleting a session card.
@@ -120,60 +92,28 @@ const ToolHistoryCard = (props) => {
     setOpenDialog(false); // Close the confirmation dialog
   };
 
-  /**
-   * Function to render the tool image section.
-   *
-   * @returns {JSX.Element} - The image grid with tool image
-   */
-  const renderImage = () => (
-    <Grid {...styles.imageGridProps(restructuredResponse?.backgroundImgURL)}>
-      <Image
-        src={restructuredResponse?.logoURL || ToolImage}
-        alt="tool logo"
-        {...styles.imageProps}
-      />
-    </Grid>
-  );
-
-  /**
-   * Function to render the title and action buttons of the card.
-   *
-   * @returns {JSX.Element} - The title grid with content and buttons
-   */
-  const renderTitle = () => (
-    <Grid {...styles.contentGridProps}>
-      <Typography {...styles.dateProps}>
-        {restructuredResponse?.createdAt}
-      </Typography>
-      <Typography {...styles.titleProps}>
-        {restructuredResponse?.title}
-      </Typography>
-      <Typography {...styles.descriptionProps}>
-        {restructuredResponse?.description}
-      </Typography>
-      <Grid container {...styles.sessionCardSectionProps}>
-        <Grid item>
-          <Button {...styles.cardButtonProps} onClick={toggleDrawer}>
-            Preview
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            {...styles.cardButtonProps}
-            onClick={handleDeleteClick}
-            disabled={loading}
-          >
-            {loading ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              <DeleteForever />
-            )}
-            {!loading && 'Delete'}
-          </Button>
-        </Grid>
+  const renderImage = () => {
+    return (
+      <Grid {...styles.imageGridProps(backgroundImgURL)}>
+        <Image src={logo || ToolImage} alt="tool logo" {...styles.imageProps} />
       </Grid>
-    </Grid>
-  );
+    );
+  };
+
+  const renderTitle = () => {
+    return (
+      <Grid {...styles.contentGridProps}>
+        <Typography {...styles.dateProps}>
+          {moment(convertToUnixTimestamp(createdAt)).format('DD MMM YYYY')}
+        </Typography>
+        <Typography {...styles.titleProps}>{title}</Typography>
+        <Typography {...styles.descriptionProps}>{description}</Typography>
+        <Button {...styles.previewButtonProps} onClick={() => onOpen(toolData)}>
+          Preview
+        </Button>
+      </Grid>
+    );
+  };
 
   return (
     <Grid {...styles.mainGridProps}>
@@ -183,7 +123,7 @@ const ToolHistoryCard = (props) => {
           {renderTitle()}
         </Grid>
       </Card>
-      <ToolOutputHistoryDrawer
+      {/* <ToolOutputHistoryDrawer
         toolSessionType={toolSessionType}
         open={openDrawer}
         toggleDrawer={toggleDrawer}
@@ -196,7 +136,7 @@ const ToolHistoryCard = (props) => {
         setRestructuredResponse={setRestructuredResponse}
         currentResponseNumber={currentResponseNumber}
         setCurrentResponseNumber={setCurrentResponseNumber}
-      />
+      /> */}
       <AlertDialog
         open={openDialog}
         handleClose={handleCloseDialog}
