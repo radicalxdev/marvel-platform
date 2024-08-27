@@ -92,11 +92,11 @@ const ProgressBarMenu = (props) => {
       <Grid {...styles.progressBarExpandProps(isExpand)}>
         <List {...styles.expandListProps}>
           {steps.map((item, index) => (
-            <>
+            <div key={`expand-${index}`}>  {/* Unique key for each item */}
               <Divider component="li" />
-              <ListItem key={item} {...styles.listItemPros}>
+              <ListItem key={index} {...styles.listItemPros}>  {/* Unique key for each ListItem */}
                 <StatusIcon
-                  key={item.key}
+                  key={`icon-${index}`}
                   item
                   status={
                     activeStep > index
@@ -111,7 +111,7 @@ const ProgressBarMenu = (props) => {
                   {item}
                 </Typography>
               </ListItem>
-            </>
+            </div>
           ))}
         </List>
       </Grid>
@@ -125,8 +125,8 @@ const ProgressBarMenu = (props) => {
         activeStep={activeStep}
         connector={<QontoConnector />}
       >
-        {steps.map((label) => (
-          <Step key={label} {...styles.stepItemProps}>
+        {steps.map((label, index) => (
+          <Step key={`step-${index}`} {...styles.stepItemProps}>  {/* Unique key for each Step */}
             <StepLabel
               StepIconComponent={QontoStepIcon}
               {...styles.stepLabelProps}
