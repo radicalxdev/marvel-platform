@@ -85,9 +85,9 @@ const useFilterByTime = (data) => {
       setCategorizedData({
         today: { title: 'Today', items: today },
         yesterday: { title: 'Yesterday', items: yesterday },
-        previous7Days: { title: 'Previous 7 days', items: previous7Days },
+        previous7Days: { title: 'Previous 7 Days', items: previous7Days },
         previous30Days: {
-          title: 'Previous 30 days',
+          title: 'Previous 30 Days',
           items: previous30Days,
         },
         monthsBefore: { items: sortedMonthsBeforeData },
