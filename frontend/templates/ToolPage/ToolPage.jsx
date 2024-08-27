@@ -20,7 +20,11 @@ import MultipleChoiceResponse from './MultipleChoiceResponse';
 import styles from './styles';
 import ToolForm from './ToolForm';
 
-import { resetCommunicator, setFormOpen } from '@/redux/slices/toolsSlice';
+import {
+  resetCommunicator,
+  resetToolsSessionState,
+  setFormOpen,
+} from '@/redux/slices/toolsSlice';
 
 const RESPONSE_OUTPUTS = {
   [TOOLS_ID.GEMINI_DYNAMO]: FlashCardList,
@@ -43,7 +47,10 @@ const ToolPage = (props) => {
     };
   }, []);
 
-  const handleRoute = () => router.push(ROUTES.HOME);
+  const handleRoute = () => {
+    router.push(ROUTES.HOME);
+    dispatch(resetToolsSessionState());
+  };
 
   const renderBackButton = () => {
     return (

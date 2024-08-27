@@ -237,9 +237,10 @@ app.post('/api/tool/', (req, res) => {
   bb.on('finish', async () => {
     try {
       DEBUG && logger.log('data:', JSON.parse(data?.data));
-
+      // Destructure data here
       const {
         tool_data: { inputs, ...otherToolData },
+        sessionId,
         ...otherData
       } = JSON.parse(data?.data);
 
@@ -265,17 +266,20 @@ app.post('/api/tool/', (req, res) => {
       });
       DEBUG && logger.log(response);
 
-      const topicInput = modifiedInputs.find((input) => input.name === 'topic');
-      const topic = topicInput ? topicInput.value : null;
-
-      await saveResponseToFirestore({
-        response: response.data.data,
-        tool_id: otherToolData.tool_id,
-        topic,
-        userID: otherData.user.id,
+      // Determine state here
+      const session = await saveResponseToFirestore({
+        outputs: response.data.data,
+        inputs: modifiedInputs,
+        toolId: otherToolData.tool_id,
+        userId: otherData.user.id,
+        sessionId,
       });
 
-      res.status(200).json({ success: true, data: response.data });
+      res.status(200).json({
+        success: true,
+        data: response.data,
+        sessionId: session.id,
+      });
     } catch (error) {
       logger.error('Error processing request:', error);
       res.status(500).json({ success: false, message: error?.message });
@@ -286,22 +290,96 @@ app.post('/api/tool/', (req, res) => {
 });
 
 /**
- * Save the tool session response to Firestore
+ * Save the tool session response to Firestore by either
+ * creating a new tools session document or updating an exisitng document
  * @param {object} sessionData - The data to be saved to Firestore
  * @param {string} userId - The ID of the user
+ * @param {string} toolId - The ID of the tool
+ * @param {string} sessionId - The ID of the session if it exists
+ * @param {Array} inputs - User request
+ * @param {Array} outputs - Tool response
+ * @return {object} The session ID
  */
 const saveResponseToFirestore = async (sessionData) => {
   try {
-    const toolSessionRef = await admin
+    const { sessionId, outputs, inputs, toolId, userId } = sessionData;
+
+    // add new toolSession document if sessionId exists
+    if (!sessionId) {
+      const toolSessionRef = await admin
+        .firestore()
+        .collection('toolSessions')
+        .add({
+          toolId,
+          userId,
+          responses: [
+            {
+              inputs,
+              outputs,
+              createdAt: Timestamp.fromMillis(Date.now()),
+            },
+          ],
+          createdAt: Timestamp.fromMillis(Date.now()),
+          updatedAt: Timestamp.fromMillis(Date.now()),
+        });
+
+      await toolSessionRef.update({
+        id: toolSessionRef.id,
+      });
+
+      DEBUG && logger.log('Tool session doc id: ' + toolSessionRef.id);
+
+      return {
+        id: toolSessionRef.id,
+      };
+    }
+
+    // Update existing toolSession document otherwise if sessionId exists
+
+    // Get the document from Firestore using the provided toolId
+    const toolsSessionDoc = await admin
       .firestore()
       .collection('toolSessions')
-      .add({
-        ...sessionData,
-        createdAt: Timestamp.fromMillis(Date.now()),
-      });
-    if (DEBUG) {
-      logger.log(`Tool session saved with ID: ${toolSessionRef.id}`);
+      .doc(sessionId)
+      .get();
+
+    // Check if the document exists
+    if (!toolsSessionDoc.exists) {
+      throw new HttpsError('not-found', 'Document does not exist');
     }
+
+    // Get the document data
+    const toolsSessionData = toolsSessionDoc.data();
+
+    // Check if the userId matches the userId of the document owner
+    if (toolsSessionData.userId !== userId) {
+      throw new HttpsError(
+        'permission-denied',
+        'User does not have permission to update this document'
+      );
+    }
+
+    // Update the document in Firestore with the new data
+    await admin
+      .firestore()
+      .collection('toolSessions')
+      .doc(sessionId)
+      .update({
+        ...toolsSessionData,
+        updatedAt: Timestamp.fromMillis(Date.now()),
+        responses: [
+          ...toolsSessionData.responses,
+          {
+            inputs,
+            outputs,
+            createdAt: Timestamp.fromMillis(Date.now()),
+          },
+        ],
+      });
+
+    return {
+      id: sessionId,
+    };
   } catch (error) {
     logger.error('Error saving tool session to Firestore:', error);
   }
@@ -405,8 +483,54 @@ const createChatSession = onCall(async (props) => {
   }
 });
 
+/** Deletes an existing tools Session document
+ * @function deleteToolsSession
+ * @param {string} sessionId - The ID of the session to delete
+ * @param {string} toolId - The ID of the tool to delete
+ * @param {string} userId - The ID of the user who created the session
+ * @return {Promise<Object>} - A promise that resolves to an object containing the status and data of the tools session
+ * @throws {HttpsError} Throws an error if there is an internal error
+ */
+const deleteToolsSession = onCall(async (props) => {
+  try {
+    const { sessionId, toolId, userId } = props.data;
+
+    // Validate required fields
+    if (!toolId || !userId || !sessionId) {
+      throw new HttpsError('invalid-argument', 'Missing required parameters');
+    }
+
+    // Query for the specific document using all required fields
+    const sessionDocSnapshot = await admin
+      .firestore()
+      .collection('toolSessions')
+      .doc(sessionId)
+      .get();
+
+    // Check if the document exists
+    if (!sessionDocSnapshot.exists) {
+      throw new HttpsError('not-found', 'Document does not exist');
+    }
+
+    // Delete the found document
+    const docRef = sessionDocSnapshot.ref;
+    await docRef.delete();
+
+    // Return success response
+    return {
+      success: true,
+      message: 'Document successfully removed!',
+    };
+  } catch (error) {
+    // Log the error and throw an HTTP error if deletion fails
+    logger.error('Error deleting document:', error);
+    throw new HttpsError('internal', 'Unable to delete document', error);
+  }
+});
+
 module.exports = {
   chat,
   tool: onRequest({ minInstances: 1 }, app),
   createChatSession,
+  deleteToolsSession,
 };

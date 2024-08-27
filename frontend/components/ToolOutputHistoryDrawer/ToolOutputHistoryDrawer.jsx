@@ -1,4 +1,4 @@
-import { ContentCopy, FileDownload } from '@mui/icons-material';
+import { ContentCopy } from '@mui/icons-material';
 import { Button, Drawer, Grid, Typography } from '@mui/material';
 import moment from 'moment';
 
@@ -45,6 +45,84 @@ const ToolOutputHistoryDrawer = (props) => {
     exportToCSV(data, panelData);
   };
 
+  /**
+   * handler method that sets the next response that the user wants to view in
+   * the drawer based on the version selected in the drop down menu.
+   * @param {int} index - index of the next response that the user wants to view in the drawer
+   */
+  // const handleResponseMenuItemClick = async (index) => {
+  //   setCurrentResponseNumber(index);
+  //   responseMenu.handleMenuClose();
+  //   const responseData = await toolSessionType.initializeResponseForSession(
+  //     responses[index]
+  //   );
+  //   setRestructuredResponse(responseData);
+
+  //   const versionName =
+  //     index === 0 ? 'Latest Version' : `Version ${responses.length - index}`;
+  //   setResponseSelectorVersionName(versionName);
+  // };
+
+  /**
+   * Renders the drop down menu selector for the different responses within a particular tool session.
+   */
+  // const renderResponseSelectorMenu = () =>
+  //   responses.length > 1 && (
+  //     <Grid>
+  //       <Button
+  //         onClick={responseMenu.handleMenuOpen}
+  //         {...styles.dropdownButtonProps}
+  //       >
+  //         {`(${responses.length}) Edits`}
+  //         {responseMenu.isMenuOpen ? (
+  //           <KeyboardArrowDown />
+  //         ) : (
+  //           <KeyboardArrowRight />
+  //         )}
+  //       </Button>
+  //       <Menu
+  //         anchorEl={responseMenu.anchorEl}
+  //         open={responseMenu.isMenuOpen}
+  //         onClose={responseMenu.handleMenuClose}
+  //         {...styles.dropDownMenuProps}
+  //       >
+  //         {responses.map((response, index) => (
+  //           <MenuItem
+  //             key={index}
+  //             onClick={() => handleResponseMenuItemClick(index)}
+  //             selected={index === currentResponseNumber}
+  //           >
+  //             {index === 0
+  //               ? 'Latest Version'
+  //               : `Version ${responses.length - index}`}
+  //           </MenuItem>
+  //         ))}
+  //       </Menu>
+  //     </Grid>
+  //   );
+
+  /**
+   * Renders the menu selector for the different export options that the user can the different responses over to.
+   */
+  // const renderExportSelectorMenu = () => (
+  //   <Grid>
+  //     <Button onClick={exportMenu.handleMenuOpen} {...styles.exportButton}>
+  //       <FileDownload {...styles.downloadIcon} />
+  //       Export
+  //       {exportMenu.isMenuOpen ? <KeyboardArrowUp /> : <KeyboardArrowRight />}
+  //     </Button>
+  //     <Menu
+  //       anchorEl={exportMenu.anchorEl}
+  //       open={exportMenu.isMenuOpen}
+  //       onClose={exportMenu.handleMenuClose}
+  //       {...styles.dropUpMenuProps}
+  //     >
+  //       <MenuItem onClick={() => handleExport('PDF')}>PDF</MenuItem>
+  //       <MenuItem onClick={() => handleExport('CSV')}>CSV</MenuItem>
+  //     </Menu>
+  //   </Grid>
+  // );
+
   const renderHeader = () => (
     <Grid container direction="column" {...styles.headerGridProps}>
       <Grid item>
@@ -75,16 +153,16 @@ const ToolOutputHistoryDrawer = (props) => {
     );
   };
 
+  /**
+   * Renders the footer buttons of the card drawer
+   */
   const renderFooterButtons = () => (
-    <Grid container justifyContent="flex-start" sx={{ mt: 3, width: '100%' }}>
+    <Grid container {...styles.footerProps}>
       <Button onClick={handleCopyToClipboard} {...styles.copyButton}>
         <ContentCopy {...styles.CopyIcon} />
         Copy
       </Button>
-      <Button onClick={handleExportToCSV} {...styles.exportButton}>
-        <FileDownload {...styles.downloadIcon} />
-        Export
-      </Button>
+      {/* {renderExportSelectorMenu()} */}
     </Grid>
   );
 

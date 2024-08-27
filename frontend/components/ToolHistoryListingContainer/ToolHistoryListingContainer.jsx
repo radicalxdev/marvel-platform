@@ -23,7 +23,7 @@ const DEFAULT_HISTORY = new Array(4)
  * @returns {JSX.Element} The rendered ToolHistoryListingContainer component.
  */
 const ToolHistoryListingContainer = (props) => {
-  const { data, loading, category } = props;
+  const { data, loading, category, setAlertState } = props;
 
   const [openDrawer, setOpenDrawer] = useState(false);
   const [selectedCardData, setSelectedCardData] = useState(null);
@@ -54,6 +54,7 @@ const ToolHistoryListingContainer = (props) => {
               key={item.id}
               onOpen={handleOpenSidebar}
               data={item}
+              setAlertState={setAlertState}
             />
           ))}
       </Grid>

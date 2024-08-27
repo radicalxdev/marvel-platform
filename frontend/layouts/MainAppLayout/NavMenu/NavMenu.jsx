@@ -2,6 +2,8 @@ import HistoryIcon from '@mui/icons-material/History';
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import { useDispatch } from 'react-redux';
+
 import Briefcase from '@/assets/svg/Briefcase.svg';
 import ChatBubble from '@/assets/svg/ChatBubble.svg';
 
@@ -39,6 +41,7 @@ const PAGES = [
  */
 const NavMenu = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { pathname } = router;
 
   const setActive = (id) => {

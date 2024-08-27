@@ -34,6 +34,7 @@ const ToolForm = (props) => {
   const dispatch = useDispatch();
   const { handleOpenSnackBar } = useContext(AuthContext);
   const { communicatorLoading } = useSelector((state) => state.tools);
+  const { sessionId } = useSelector((state) => state.tools);
   const { data: userData } = useSelector((state) => state.user);
   const { register, control, handleSubmit, getValues, setValue, errors } =
     useWatchFields([]);
@@ -47,6 +48,7 @@ const ToolForm = (props) => {
         name,
         value,
       }));
+
       dispatch(setPrompt(values));
       dispatch(setCommunicatorLoading(true));
 
@@ -59,6 +61,7 @@ const ToolForm = (props) => {
             fullName: userData?.fullName,
             email: userData?.email,
           },
+          sessionId,
         },
         files,
         dispatch

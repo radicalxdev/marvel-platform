@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const submitPrompt = async (payload, files) => {
+import { setToolsSessionState } from '@/redux/slices/toolsSlice';
+
+const submitPrompt = async (payload, files, dispatch) => {
   try {
     const formData = new FormData();
     formData.append('data', JSON.stringify(payload));
@@ -17,6 +19,15 @@ const submitPrompt = async (payload, files) => {
       },
     });
 
+    // Extract sessionId and AI output from the response
+    const { sessionId } = response.data;
+
+    // Updating the tools session state within the toolsSlice to begin a new session
+    dispatch(
+      setToolsSessionState({
+        sessionId,
+      })
+    );
     return response.data?.data;
   } catch (err) {
     const { response } = err;
