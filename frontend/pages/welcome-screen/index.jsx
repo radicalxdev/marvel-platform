@@ -6,7 +6,7 @@ const WelcomeScreen = () => {
 };
 
 WelcomeScreen.getLayout = function getLayout(page) {
-  return <OnboardingLayout>{page}</OnboardingLayout>;
+  return <OnboardingLayout currentStep={0}>{page}</OnboardingLayout>;
 };
 
 export default WelcomeScreen;
