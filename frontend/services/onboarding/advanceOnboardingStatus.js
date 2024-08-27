@@ -7,9 +7,9 @@ const advanceOnboardingStatus = async (uid) => {
     const advanceStatus = httpsCallable(functions, 'advanceOnboardingStatus');
     const response = await advanceStatus({ uid });
 
-    return response.data; // Assuming the callable function returns a data object
+    return response.data;
   } catch (error) {
-    console.error('advanceOnboardingStatus error:', error); // Log the full error object
+    console.error('advanceOnboardingStatus error:', error);
 
     const errorCode = error.code || error.status || 'internal';
     const errorMessage = error.message || ONBOARDING_ERROR_MESSAGES[errorCode] || 'Failed to advance onboarding status';

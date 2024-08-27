@@ -37,7 +37,7 @@ const styles = {
       width: '100%',
       left: '0',
       bottom: '0',
-      zIndex: 1,
+      zIndex: 2,
       sx: {
         transform: 'translateY(100%)',
         background: (theme) => {

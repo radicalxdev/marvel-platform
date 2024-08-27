@@ -1,11 +1,11 @@
 import { useState } from 'react';
 // import { useRouter } from 'next/router';
-import { Container, Box } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 
 import ProfileSetupForm from '@/templates/ProfileSetup/ProfileSetupForm';
-import AuthLayout from '@/layouts/AuthLayout';
+import OnboardingLayout from '@/layouts/OnboardingLayout';
+import { setupUserProfile } from '@/services/onboarding/setupUserProfile';
 
 // import ROUTES from '@/constants/routes';
 
@@ -16,35 +16,43 @@ const ProfileSetup = () => {
   // Access the auth data from the Redux store
   const userData = useSelector((state) => state.user.data);
 
-  const handleProfileSubmit = async (profileData) => {
+  const handleProfileSubmit = async (formData) => {
     setIsLoading(true);
+
+    // Construct the profileData object dynamically
+    const profileData = {
+      uid: userData.id,
+      ...(formData.fullName && { fullName: formData.fullName }),
+      ...(formData.occupation && { occupation: formData.occupation }),
+      ...(formData.bio && { bio: formData.bio }),
+      socialLinks: {
+        ...(formData.twitterLink && { twitter: formData.twitterLink }),
+        ...(formData.facebookLink && { facebook: formData.facebookLink }),
+        ...(formData.linkedinLink && { linkedin: formData.linkedinLink }),
+      },
+      ...(formData.profileImage && { profileImage: formData.profileImage }),
+    };
+
     try {
-      console.log('Call backed with:', profileData);
+      // Call the backend service to update preferences
+      const response = await setupUserProfile(profileData);
+      console.log('Profile updated successfully:', response);
       console.log('Moved to the next step');
       // router.push(ROUTES.NEXT_ONBOARDING_STEP);
     } catch (error) {
-      console.error('Error updating profile:', error);
+      throw new Error(error.message || 'Failed to setup User Profile');
     } finally {
       setIsLoading(false);
     }
   };
 
-
   return (
-    <Container maxWidth="md">
-      {userData ? (
-        <ProfileSetupForm onSubmit={handleProfileSubmit} isLoading={isLoading} user={userData} />
-      ) : (
-        <Box>
-          <p>Loading user information...</p>
-        </Box>
-      )}
-    </Container>
+    <ProfileSetupForm onSubmit={handleProfileSubmit} isLoading={isLoading} user={userData}/>
   );
 };
 
 ProfileSetup.getLayout = function getLayout(page) {
-  return <AuthLayout isAuthScreen>{page}</AuthLayout>;
+  return <OnboardingLayout currentStep={1}>{page}</OnboardingLayout>;
 };
 
 export default ProfileSetup;

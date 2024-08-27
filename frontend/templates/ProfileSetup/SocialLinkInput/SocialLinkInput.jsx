@@ -29,7 +29,7 @@ const SocialLinkInput = forwardRef(({ icon, error, helperText, ...props }, ref) 
           </InputAdornment>
         ),
       }}
-      sx={{ mb: 1 }} // Add some bottom margin
+      sx={{ mb: 1, color:"text.primary" }} // Add some bottom margin
     />
   );
 });

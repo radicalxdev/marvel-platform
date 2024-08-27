@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { Typography, Button, TextField, Box } from '@mui/material';
 
 import SocialLinkInput from '../SocialLinkInput';
@@ -18,14 +19,20 @@ const WATCH_FIELDS = [
 
 const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
     const { register, control, handleSubmit, fieldStates, watch } = useWatchFields(WATCH_FIELDS);
-    
-    const onSubmitForm = (data) => {
-      // Check if at least one social media link is filled
+    const [error, setError] = useState(null);
+
+    const onSubmitForm = async (data) => {
+      setError(null);
       if (!data.facebookLink && !data.linkedinLink && !data.twitterLink) {
-        alert('Please fill in at least one social media link.');
+        setError('Please, fill in at least one social media link.');
         return;
       }
-      onSubmit(data);
+
+      try {
+        await onSubmit(data);
+      } catch (err) {
+        setError(err.message || 'Failed to setup User Profile');
+      }
     };
 
     // Watch the bio field for changes
@@ -36,12 +43,18 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
         <form onSubmit={handleSubmit(onSubmitForm)}>
           {/* Title */}
           <Box sx={{ width: '100%', mb: 4 }}>
-            <Typography variant="h4" align="center" sx={{ mb: 1 }}>Profile Setup</Typography>
-            <Typography variant="subtitle1" align="center">Get started by setting up your profile</Typography>
+            <Typography variant="h4" align="center" sx={{ mb: 1, color: 'text.primary' }}>
+              Profile Setup
+            </Typography>
+            <Typography variant="subtitle1" align="center" sx={{ color: 'text.primary' }}>
+              Get started by setting up your profile
+            </Typography>
           </Box>
           
           {/* Fullname and occupation */}
           <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+
+            {/* Fullname */}
             <Box sx={{ flex: 1 }}>
               <TextField
                 {...register('fullName', { required: 'Full Name is required' })}
@@ -51,8 +64,21 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
                 defaultValue={user.fullName || ''}
                 error={fieldStates.fullName.status === 'error'}
                 helperText={fieldStates.fullName.status === 'error' ? ONBOARDING_REGEX.fullName.message : ''}
+                sx={{
+                  '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'divider',
+                  },
+                  '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                }}
               />
             </Box>
+
+            {/* Occupation */}
             <Box sx={{ flex: 1 }}>
               <TextField
                 {...register('occupation', { required: 'Occupation is required' })}
@@ -62,13 +88,26 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
                 defaultValue={user.occupation || ''}
                 error={fieldStates.occupation.status === 'error'}
                 helperText={fieldStates.occupation.status === 'error' ? ONBOARDING_REGEX.occupation.message : ''}
+                sx={{
+                  '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'divider',
+                  },
+                  '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                }}
               />
             </Box>
           </Box>
 
           {/* Social Links */}
           <Box sx={{ mb: 3 }}>
-            <Typography variant="subtitle1" sx={{ mb: 2 }}>Social Links</Typography>
+            <Typography variant="subtitle1" align="left" sx={{ mb: 2, color: 'text.primary' }}>
+              Social Links
+            </Typography>
             <SocialLinkInput
               {...register('facebookLink')}
               icon="facebook"
@@ -94,7 +133,9 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
 
           {/* Profile Image */}
           <Box sx={{ mb: 3 }}>
-            <Typography variant="subtitle1" sx={{ mb: 2 }}>Profile</Typography>
+            <Typography variant="subtitle1" align="left" sx={{ mb: 2, color: 'text.primary' }}>
+              Profile
+            </Typography>
             <ImageUpload
               name="profileImage"
               control={control}
@@ -115,11 +156,31 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
               defaultValue={user.bio || ''}
               error={fieldStates.bio.status === 'error'}
               helperText={fieldStates.bio.status === 'error' ? ONBOARDING_REGEX.bio.message : ''}
+              sx={{
+                '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'divider',
+                },
+                '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'primary.main',
+                },
+                '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'primary.main',
+                },
+              }}
             />
-            <Typography variant="caption" sx={{ display: 'block', textAlign: 'right', mt: 1 }}>
+            <Typography variant="caption" sx={{ display: 'block', textAlign: 'right', mt: 1, color: 'text.primary' }}>
               Word Limit: {remainingChars} Words
             </Typography>
           </Box>
+          
+          {/* General Error Message */}
+          {error && (
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="body2" color="error" align="center">
+                {error}
+              </Typography>
+            </Box>
+          )}
 
           {/* Submit Button */}
           <Box>
