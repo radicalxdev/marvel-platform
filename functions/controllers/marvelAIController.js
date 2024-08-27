@@ -305,7 +305,7 @@ const saveResponseToFirestore = async (sessionData) => {
     const { sessionId, outputs, inputs, toolId, userId } = sessionData;
 
     // add new toolSession document if sessionId exists
-    if (sessionId == null) {
+    if (!sessionId) {
       const toolSessionRef = await admin
         .firestore()
         .collection('toolSessions')
@@ -324,10 +324,10 @@ const saveResponseToFirestore = async (sessionData) => {
         });
 
       await toolSessionRef.update({
-        sessionId: toolSessionRef.id,
+        id: toolSessionRef.id,
       });
 
-      DEBUG && logger.log('SessionId: ' + toolSessionRef.id);
+      DEBUG && logger.log('Tool session doc id: ' + toolSessionRef.id);
 
       return {
         id: toolSessionRef.id,
@@ -501,22 +501,19 @@ const deleteToolsSession = onCall(async (props) => {
     }
 
     // Query for the specific document using all required fields
-    const querySnapshot = await admin
+    const sessionDocSnapshot = await admin
       .firestore()
       .collection('toolSessions')
-      .where('toolId', '==', toolId)
-      .where('userId', '==', userId)
-      .where('sessionId', '==', sessionId)
-      .limit(1)
+      .doc(sessionId)
       .get();
 
     // Check if the document exists
-    if (querySnapshot.empty) {
+    if (!sessionDocSnapshot.exists) {
       throw new HttpsError('not-found', 'Document does not exist');
     }
 
     // Delete the found document
-    const docRef = querySnapshot.docs[0].ref;
+    const docRef = sessionDocSnapshot.ref;
     await docRef.delete();
 
     // Return success response
@@ -526,7 +523,7 @@ const deleteToolsSession = onCall(async (props) => {
     };
   } catch (error) {
     // Log the error and throw an HTTP error if deletion fails
-    console.error('Error deleting document:', error);
+    logger.error('Error deleting document:', error);
     throw new HttpsError('internal', 'Unable to delete document', error);
   }
 });
