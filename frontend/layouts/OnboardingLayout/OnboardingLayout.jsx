@@ -1,29 +1,66 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { Grid } from '@mui/material';
+import { Grid, useMediaQuery } from '@mui/material';
+import Head from 'next/head';
+import { useDispatch, useSelector } from 'react-redux';
 
+import AppDisabled from '@/components/AppDisabled';
+import Loader from '@/components/Loader';
 import ProgressBarMenu from '@/components/ProgressBarMenu';
 
 import styles from './styles';
 
-const OnboardingLayout = (props) => {
-  const { children } = props;
-  const [activeStep, setActiveStep] = useState(1);
+import { setLoading } from '@/redux/slices/authSlice';
 
-  const renderHead = () => {
-    return (
-      <Grid {...styles.headGridProps}>
-        <ProgressBarMenu activeStep={activeStep} />
+/**
+ * Renders the onboarding layout.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {ReactNode} props.children - The child components to render.
+ * @param {number} props.currentStep - The current step in the onboarding process.
+ * @return {ReactNode} The rendered onboarding layout.
+ */
+const OnboardingLayout = ({ children, currentStep }) => {
+  const dispatch = useDispatch();
+
+  const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
+
+  const isTabletScreen = useMediaQuery((theme) =>
+    theme.breakpoints.down('laptop')
+  );
+
+  const isLoading = auth.loading || !user.data || !auth.data;
+
+  useEffect(() => {
+    dispatch(setLoading(false));
+  }, []);
+
+  if (isLoading) return <Loader />;
+
+  const renderHead = () => (
+    <Head>
+      <title>Kai Onboarding</title>
+    </Head>
+  );
+
+  const renderOnboardingContent = () => (
+    <>
+      <Grid item xs={12} sx={styles.headerContainer}>
+        <ProgressBarMenu activeStep={currentStep} />
       </Grid>
-    );
-  };
-  const renderApp = () => {
-    return <Grid {...styles.appGridProps}>{children}</Grid>;
-  };
+      <Grid item xs={12} sx={styles.contentContainer}>
+        {children}
+      </Grid>
+    </>
+  );
+
+  if (isTabletScreen) return <AppDisabled head={renderHead()} />;
+
   return (
-    <Grid {...styles.mainGridProps}>
+    <Grid {...styles.mainContainer}>
       {renderHead()}
-      {renderApp()}
+      {!isTabletScreen && renderOnboardingContent()}
     </Grid>
   );
 };
