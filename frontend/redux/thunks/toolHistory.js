@@ -20,9 +20,9 @@ export const fetchToolHistory = createAsyncThunk(
         where('userId', '==', uid)
       );
 
-      if (toolSessionsRef.empty) throw new Error('No tool sessions found');
-
       const querySnapshot = await getDocs(toolSessionsRef);
+
+      if (querySnapshot.empty) throw new Error('No tool sessions found');
 
       const outputData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
