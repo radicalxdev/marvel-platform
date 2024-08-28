@@ -1,6 +1,6 @@
 const styles = {
   mainContainer: {
-    height: '100vh',  // Use full viewport height to control vertical alignment
+    height: '100vh',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -18,7 +18,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: '20px',  // Space between progress bar and main content
+    marginBottom: '20px',
   },
   contentContainer: {
     width: '100%',
@@ -26,10 +26,11 @@ const styles = {
     padding: '0 20px',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start',  // Align content towards the top of the container
+    justifyContent: 'flex-start',
     alignItems: 'center',
     textAlign: 'center',
     background: 'transparent', 
+    paddingBottom: '50px',
   },
 };
 
