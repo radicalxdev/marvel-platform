@@ -12,11 +12,10 @@ const styles = {
     mobileSmall: true,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    sx: (theme) => ({
+    sx: {
       position: 'relative',
-      background: isToolPage
-        ? theme.palette.Background.white2
-        : theme.palette.Common.White['100p'],
+      background:
+        'radial-gradient(circle at center -100px, #4A426A 0%, #201E2B 50%, #000000 100%)',
       py: {
         desktopLarge: 5,
         desktop: 4,
@@ -30,8 +29,25 @@ const styles = {
       overflow: 'scroll',
       maxHeight: '100vh',
       ...extraContentProps,
-    }),
+    },
   }),
+  bgGridProps: {
+    position: 'fixed',
+    inset: '0 auto auto auto',
+    width: '753px',
+    height: '395px',
+    sx: {
+      pointerEvents: 'none',
+    },
+  },
+  bgProps: {
+    layout: 'fill',
+  },
+  childrenWrapProps: {
+    sx: {
+      zIndex: 10,
+    },
+  },
   logoGridProps: {
     item: true,
     container: true,
