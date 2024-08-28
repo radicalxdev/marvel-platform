@@ -52,7 +52,9 @@ const MainAppLayout = (props) => {
   const renderApp = () => {
     return (
       <>
-        <SideMenu />
+        <Grid {...styles.navBarContainer}>
+          <SideMenu />
+        </Grid>
         <Grid {...styles.contentGridProps(extraContentProps, isToolPage)}>
           {children}
         </Grid>

@@ -2,21 +2,17 @@ const styles = {
   mainGridProps: {
     container: true,
     item: true,
-    width: '360px',
-    flexDirection: 'column',
-    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+    flexDirection: 'row',
     alignItems: 'center',
-    py: { laptop: 4, desktop: 5, desktopMedium: 6 },
-    bgcolor: (theme) => theme.palette.Dark_Colors.Dark[6],
+    bgcolor: (theme) => theme.palette.Dark_Colors.Dark[6], // proper color #181A205E; change it later in development
   },
   logoGridProps: {
     container: true,
     item: true,
-    columnGap: 1,
     width: 'auto',
     justifyContent: 'center',
-    alignItems: 'center',
-    mb: 8,
     sx: {
       cursor: 'pointer',
     },
@@ -25,7 +21,7 @@ const styles = {
   logoutGridProps: {
     container: true,
     item: true,
-    width: '100%',
+    width: 'auto',
     px: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
   },
   logoutButtonProps: {
@@ -38,20 +34,17 @@ const styles = {
       px: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
       borderColor: 'transparent',
       transition: (theme) => theme.transitions.create('all'),
-      span: {
-        mr: 4,
-      },
-      color: (theme) => theme.palette.Common.White['100p'],
+      color: '#9E94A5',
       path: {
-        fill: (theme) => theme.palette.Common.White['100p'],
-        stroke: (theme) => theme.palette.Common.White['100p'],
+        fill: '#9E94A5',
+        stroke: '#9E94A5',
       },
       ':hover': {
-        color: (theme) => theme.palette.Common.White['100p'],
+        color: '#9E94A5',
         background: (theme) => `${theme.palette.Background.purple}30`,
         path: {
-          fill: (theme) => theme.palette.Common.White['100p'],
-          stroke: (theme) => theme.palette.Common.White['100p'],
+          fill: '#9E94A5',
+          stroke: '#9E94A5',
         },
       },
     },
@@ -62,12 +55,21 @@ const styles = {
     mobileSmall: 'auto',
     height: 'auto',
   },
+  profileImageGridProps: {
+    container: true,
+    item: true,
+    width: 'auto',
+    justifyContent: 'center',
+    sx: {
+      cursor: 'pointer',
+    },
+    px: { laptop: 2, desktop: 3, desktopMedium: 4 },
+  },
   titleGridProps: {
     container: true,
     item: true,
     mobileSmall: true,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   titleProps: {
@@ -78,7 +80,7 @@ const styles = {
   subtitleProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: '16px',
-    color: '#AD83FF',
+    color: 'white',
     textAlign: 'left',
   },
 };

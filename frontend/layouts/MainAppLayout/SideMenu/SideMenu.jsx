@@ -4,7 +4,7 @@ import { Button, Grid, Typography } from '@mui/material';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/router';
 
-import LargeLogo from '@/assets/svg/MenuLogo.svg';
+import KAIAvatar from '@/assets/svg/KAIAvatar.svg';
 
 import ROUTES from '@/constants/routes';
 
@@ -30,12 +30,26 @@ const SideMenu = () => {
     return (
       <Grid onClick={() => router.push(ROUTES.HOME)} {...styles.logoGridProps}>
         <Grid {...styles.logoImageGridProps}>
-          <LargeLogo />
+          <KAIAvatar />
         </Grid>
         <Grid {...styles.titleGridProps}>
-          <Typography {...styles.titleProps}>KAI.AI</Typography>
           <Typography {...styles.subtitleProps}>
             AI Teaching Assistant
+          </Typography>
+        </Grid>
+      </Grid>
+    );
+  };
+
+  const renderProfileImage = () => {
+    return (
+      <Grid {...styles.profileImageGridProps}>
+        <Grid {...styles.logoImageGridProps}>
+          <KAIAvatar />
+        </Grid>
+        <Grid {...styles.titleGridProps}>
+          <Typography {...styles.subtitleProps} color="#9E94A5">
+            Alysa Myers
           </Typography>
         </Grid>
       </Grid>
@@ -47,11 +61,18 @@ const SideMenu = () => {
       <Grid {...styles.logoutGridProps}>
         <Button
           onClick={handleSignOutUser}
-          startIcon={<LogoutOutlined />}
+          endIcon={
+            <LogoutOutlined
+              sx={{
+                background: '#24272F',
+                borderRadius: '6px',
+                height: '24px',
+                width: '24px',
+              }}
+            />
+          }
           {...styles.logoutButtonProps}
-        >
-          Logout
-        </Button>
+        />
       </Grid>
     );
   };
@@ -60,6 +81,7 @@ const SideMenu = () => {
     <Grid {...styles.mainGridProps}>
       {renderLogo()}
       <NavMenu />
+      {renderProfileImage()}
       {renderLogout()}
     </Grid>
   );

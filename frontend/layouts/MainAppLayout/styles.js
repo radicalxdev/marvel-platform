@@ -1,10 +1,30 @@
 const styles = {
   mainGridProps: {
-    position: 'relative',
     container: true,
     mobileSmall: 12,
     height: '100vh',
     maxHeight: '100vh',
+    width: '100vw',
+    maxWidth: '100vw',
+    justifyContent: 'center',
+    padding: 0,
+  },
+  navBarContainer: {
+    position: 'fixed',
+    display: 'flex',
+    justifyContent: 'center',
+    width: '1380px',
+    maxWidth: '100%',
+    height: '62xp',
+    maxHeight: '100%',
+    py: 2,
+    zIndex: 1,
+    sx: (theme) => ({
+      inset: '0 auto auto auto',
+      [theme.breakpoints.down('laptop')]: {
+        display: 'none',
+      },
+    }),
   },
   contentGridProps: (extraContentProps, isToolPage) => ({
     container: true,
