@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
+import { useSelector } from 'react-redux';
+
 import { ToolCardSkeleton } from '../ToolCard';
 import ToolHistoryCard from '../ToolHistoryCard';
 
@@ -23,7 +25,9 @@ const DEFAULT_HISTORY = new Array(4)
  * @returns {JSX.Element} The rendered ToolHistoryListingContainer component.
  */
 const ToolHistoryListingContainer = (props) => {
-  const { data, loading, category } = props;
+  const { data, category } = props;
+
+  const { loading } = useSelector((state) => state.toolHistory);
 
   const [openDrawer, setOpenDrawer] = useState(false);
   const [selectedCardData, setSelectedCardData] = useState(null);
