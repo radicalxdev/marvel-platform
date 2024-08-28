@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 
-import { Grid, useTheme } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
+import { Grid } from '@mui/material';
 
 import { useRouter } from 'next/router';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import AccordionInputGroupItem from '@/components/AccordionInputGroupItem';
-import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import ArrowBack from '@/assets/svg/purple-arrow-back.svg';
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
 import ROUTES from '@/constants/routes';
 
@@ -21,10 +21,10 @@ import styles from './styles';
 import ToolForm from './ToolForm';
 
 import { resetCommunicator, setFormOpen } from '@/redux/slices/toolsSlice';
+import theme from '@/theme/theme';
 
 const ToolPage = (props) => {
   const { toolDoc } = props;
-  const theme = useTheme();
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -44,9 +44,9 @@ const ToolPage = (props) => {
     return (
       <Grid {...styles.backButtonGridProps}>
         <GradientOutlinedButton
-          bgcolor={theme.palette.Background.white2}
+          bgcolor="#24272F"
           icon={<ArrowBack />}
-          textColor={theme.palette.Greyscale[500]}
+          textColor="#AC92FF"
           iconPlacement="left"
           onHoverTextColor={theme.palette.Background.white2}
           clickHandler={handleRoute}
@@ -63,7 +63,6 @@ const ToolPage = (props) => {
         <AccordionInputGroupItem
           title={toolDoc?.name}
           description={toolDoc?.description}
-          extraAccordionDetailsProps={{ px: 10 }}
           response={response}
           open={formOpen}
           toggleOpen={() => dispatch(setFormOpen(!formOpen))}

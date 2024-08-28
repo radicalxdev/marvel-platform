@@ -1,10 +1,6 @@
-import { Card, Grid, Typography } from '@mui/material';
-
-import Image from 'next/image';
+import { Card, Chip, Grid, Typography } from '@mui/material';
 
 import { useRouter } from 'next/router';
-
-import ToolImage from '@/assets/images/BookImage.png';
 
 import styles from './styles';
 
@@ -14,20 +10,19 @@ import styles from './styles';
  * @return {JSX.Element} The Tool Card component.
  */
 const ToolCard = (props) => {
-  const { maskedToolUrl, backgroundImgURL, name, logo, description } = props;
+  const {
+    maskedToolUrl,
+    backgroundImgURL,
+    name,
+    description,
+    label = 'undefined',
+    variant = 'outlined',
+  } = props;
 
   const router = useRouter();
 
   const handleRoute = () => {
     return router.push(`/${maskedToolUrl}`);
-  };
-
-  const renderImage = () => {
-    return (
-      <Grid {...styles.imageGridProps}>
-        <Image src={logo || ToolImage} alt="kai logo" {...styles.imageProps} />
-      </Grid>
-    );
   };
 
   const renderTitle = () => {
@@ -39,12 +34,17 @@ const ToolCard = (props) => {
     );
   };
 
+  const renderLabel = () => {
+    return <Chip label={label} variant={variant} {...styles.labelProps} />;
+  };
+
   return (
     <Grid onClick={handleRoute} {...styles.mainGridProps}>
-      <Card {...styles.cardProps(backgroundImgURL)}>
+      <Card {...styles.cardProps}>
+        <Grid {...styles.imageProps(backgroundImgURL)} />
         <Grid {...styles.toolDetailsGridProps}>
-          {renderImage()}
           {renderTitle()}
+          {renderLabel()}
         </Grid>
       </Card>
     </Grid>

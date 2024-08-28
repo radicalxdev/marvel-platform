@@ -5,20 +5,32 @@ const styles = {
     container: true,
     item: true,
     desktopLarge: 3,
-    laptop: 4,
+    laptop: 3,
   },
-  cardProps: (backgroundImgURL) => ({
+  cardProps: {
     elevation: 5,
     sx: {
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'flex-end',
       position: 'relative',
-      height: '200px',
       width: '100%',
-      borderRadius: '10px',
+      borderRadius: '12px',
       overflow: 'hidden',
-      p: 2,
+      transition: (theme) => theme.transitions.create('all'),
+      '&:hover': {
+        cursor: 'pointer',
+        transform: 'scale(1.05)',
+      },
+    },
+  },
+  imageProps: (backgroundImgURL) => ({
+    width: '100%',
+    height: '144px',
+    justifyContent: 'end',
+    sx: {
+      flexShrink: 0,
       ...(backgroundImgURL && {
         backgroundImage: `url(${backgroundImgURL})`,
         backgroundSize: 'cover',
@@ -26,21 +38,17 @@ const styles = {
       ...(!backgroundImgURL && {
         background: getRandomBackgroundColor(),
       }),
-      transition: (theme) => theme.transitions.create('all'),
-      '&:hover': {
-        cursor: 'pointer',
-        transform: 'scale(1.05)',
-      },
     },
   }),
   toolDetailsGridProps: {
-    position: 'relative',
+    display: 'position',
     container: true,
     item: true,
     mobileSmall: 12,
     rowGap: 1.5,
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     alignItems: 'center',
+    p: '18px',
   },
   titleProps: {
     fontFamily: 'Satoshi Bold',
@@ -67,17 +75,10 @@ const styles = {
       WebkitBoxOrient: 'vertical',
     },
   },
-  imageProps: {
-    layout: 'fill',
-    objectFit: 'fill',
-  },
-  imageGridProps: {
-    position: 'relative',
-    container: true,
-    item: true,
-    width: 48,
-    height: 48,
-    borderRadius: '50%',
+  labelProps: {
+    sx: {
+      borderColor: '#9D74FF',
+    },
   },
 };
 

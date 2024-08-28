@@ -3,12 +3,14 @@ import { useEffect } from 'react';
 import { Grid, useMediaQuery } from '@mui/material';
 import Head from 'next/head';
 
+import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppDisabled from '@/components/AppDisabled';
 import Loader from '@/components/Loader';
 
-import SideMenu from './SideMenu';
+import ImageURLs from '@/assets/urls';
+
 import styles from './styles';
 
 import { setLoading } from '@/redux/slices/authSlice';
@@ -51,14 +53,12 @@ const MainAppLayout = (props) => {
 
   const renderApp = () => {
     return (
-      <>
-        <Grid {...styles.navBarContainer}>
-          <SideMenu />
+      <Grid {...styles.contentGridProps(extraContentProps, isToolPage)}>
+        <Grid {...styles.bgGridProps}>
+          <Image src={ImageURLs.GridBg} alt="grid_bg" {...styles.bgProps} />
         </Grid>
-        <Grid {...styles.contentGridProps(extraContentProps, isToolPage)}>
-          {children}
-        </Grid>
-      </>
+        <Grid {...styles.childrenWrapProps}>{children}</Grid>
+      </Grid>
     );
   };
 
