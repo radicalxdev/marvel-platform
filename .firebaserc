@@ -1,15 +1,17 @@
 {
   "projects": {
-    "default": "kai-ai-f63c8"
+    "default": "kai-40de1",
+    "kai-andrew-test-app": "kai-platform-b53aa"
   },
   "targets": {
-    "kai-ai-f63c8": {
+    "kai-40de1": {
       "hosting": {
         "next": [
-          "kai-ai-f63c8"
+          "kai-40de1"
         ]
       }
     }
   },
-  "etags": {}
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

@@ -1,5 +1,5 @@
 const styles = {
-  mainGridProps: {
+  mainGridProps: (showChatHistory, showDiscovery) => ({
     container: true,
     item: true,
     flexDirection: 'column',
@@ -8,13 +8,16 @@ const styles = {
     mobileSmall: 12,
     height: '100%',
     overflow: 'hidden',
+    marginRight: showChatHistory && !showDiscovery ? 41 : 7,
+    marginLeft: !showChatHistory && showDiscovery ? 41 : 0,
     sx: {
       form: {
         width: '100%',
         height: '100%',
       },
+      transition: showDiscovery ? 'margin-left 0.3s' : 'all 0.5s',
     },
-  },
+  }),
   moreChat: {
     moreChatProps: {
       container: true,
@@ -214,7 +217,7 @@ const styles = {
         borderRadius: '50px',
       },
     }),
-    chatInputProps: (renderSendIcon, error, input) => ({
+    chatInputProps: (renderQuickAction, renderSendIcon, error, input) => ({
       type: 'text',
       placeholder: !error && 'Send a message',
       autoComplete: 'off',
@@ -234,6 +237,7 @@ const styles = {
           lineHeight: '35px',
         }),
         endAdornment: renderSendIcon(),
+        startAdornment: renderQuickAction(),
       },
       FormHelperTextProps: {
         sx: {
@@ -361,6 +365,222 @@ const styles = {
         color: 'white',
       },
     }),
+  },
+  chatHistory: {
+    chatHistoryButtonFabProps: {
+      sx: {
+        position: 'absolute',
+        bottom: 59,
+        right: 22,
+        backgroundColor: 'transparent',
+        border: '2px solid #7350FF',
+        boxShadow: 'none',
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+        transition: '0.7s',
+        opacity: 1,
+      },
+    },
+    chatHistoryButtonFabPropsHide: {
+      sx: {
+        position: 'absolute',
+        bottom: 59,
+        right: 22,
+        backgroundColor: 'black',
+        '&:hover': {
+          backgroundColor: 'black',
+        },
+        border: '2px solid black',
+        boxShadow: 'none',
+        transition: '0.4s',
+        opacity: 0,
+        pointerEvents: 'none',
+        rotate: '180deg',
+      },
+    },
+    chatHistoryButtonIconProps: {
+      sx: {
+        fill: '#7350FF',
+        stroke: '#7350FF',
+      },
+    },
+    chatHistoryContainerProps: {
+      style: {
+        position: 'absolute',
+        bottom: 60,
+        right: 10,
+        width: '320px',
+        height: '90%',
+        backgroundColor: '#181A20',
+        border: '1px solid',
+        borderColor: 'purple',
+        borderRadius: '15px',
+        zIndex: 1000,
+        overflowY: 'auto',
+        transition: '0.7s',
+        opacity: 1,
+      },
+    },
+    chatHistoryContainerClose: {
+      style: {
+        position: 'absolute',
+        bottom: 60,
+        right: 10,
+        transition: '0.4s',
+        width: 0,
+        height: 0,
+        opacity: 0,
+      },
+    },
+    chatHistoryTitleContainerProps: {
+      style: {
+        position: 'sticky',
+        top: 0,
+        zIndex: 2,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '5px 15px',
+        borderBottom: '1px solid #2F2F2F',
+        backgroundColor: '#121317',
+        borderTopLeftRadius: '13px',
+        borderTopRightRadius: '13px',
+      },
+    },
+    chatHistoryTitleProps: {
+      style: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        letterSpacing: '0.5px',
+      },
+    },
+    closeButtonProps: {
+      style: {
+        color: '#7350FF',
+      },
+    },
+    chatHistoryContentContainerProps: {
+      style: {
+        padding: '10px 15px',
+      },
+    },
+    chatHistoryContentProps: {
+      style: {
+        color: '#9E94A5',
+        marginTop: '10px',
+      },
+    },
+    chatHistoryItemProps: {
+      style: {
+        paddingTop: '8px',
+        paddingBottom: '8px',
+        borderRadius: '8px',
+        color: '#FFFFFF',
+      },
+    },
+  },
+  topBar: {
+    newChatProps: {
+      sx: {
+        textTransform: 'none',
+        color: 'gray',
+        border: '2px solid transparent',
+        background: 'transparent',
+        '&:hover': {
+          background:
+            'linear-gradient(white, white) padding-box, linear-gradient(to right, #8e2de2, #4a00e0) border-box transparent',
+          color: '#8e2de2',
+          border: '2px solid transparent',
+        },
+        transition: 'all 0.3s',
+      },
+    },
+    barProps: {
+      sx: {
+        width: '100%',
+        backgroundColor: 'white',
+        borderRadius: '15px 15px',
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '5px',
+        gap: '1.5rem',
+      },
+    },
+  },
+
+  actionButtonGridProps: {
+    container: true,
+    item: true,
+    justifyContent: 'center',
+  },
+
+  actionButtonProps: {
+    variant: 'outlined',
+    sx: (theme) => ({
+      borderRadius: '5px',
+      height: 'auto',
+      border: `2px solid ${theme.palette.Background.purple3}`,
+      background: theme.palette.Common.White['100p'],
+      color: theme.palette.Background.purple3,
+      textTransform: 'none',
+      ':hover': {
+        backgroundColor: theme.palette.Background.gradient.basicPurple,
+        borderColor: theme.palette.Background.purple3,
+        color: theme.palette.Common.White['100p'],
+        border: `2px solid ${theme.palette.Background.purple3}`,
+      },
+    }),
+  },
+
+  cardGridProps: {
+    container: true,
+    item: true,
+    mobileSmall: 12,
+    mt: 6,
+    // ml:15,
+    // mr:15,
+    width: { laptop: '442px', desktop: '448px' },
+    ml: { laptop: 5, desktop: 15 },
+    mr: { laptop: 5, desktop: 15 },
+
+    justifyContent: 'center',
+    alignContent: 'flex-start',
+    sx: {
+      overflowY: 'auto',
+    },
+  },
+  cardContent: {
+    display: 'flex',
+    container: true,
+    mobileSmall: true,
+    alignContent: 'center',
+    justifyContent: 'space-between',
+    px: '20px',
+    py: '20px',
+    ml: 3,
+    mr: 3,
+    sx: (theme) => ({
+      borderRadius: '25px',
+      border: `1px solid ${theme.palette.Greyscale[499]}`,
+      boxShadow: 'none',
+      // transition: '0.3s',
+      '&:hover': {
+        boxShadow: 'none',
+      },
+
+      backgroundColor: 'transparent',
+      color: theme.palette.Common.Black['100p'],
+    }),
+  },
+
+  cardTitleProps: {
+    sx: {
+      mt: 5,
+      mb: 5,
+      fontSize: '24px',
+      fontWeight: 'bold',
+    },
   },
 };
 

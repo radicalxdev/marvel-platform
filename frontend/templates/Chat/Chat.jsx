@@ -1,30 +1,56 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   ArrowDownwardOutlined,
+  ArrowDropUp as ArrowUp,
+  SmsRounded as ChatIcon,
   InfoOutlined,
+  Remove as RemoveIcon,
   Settings,
 } from '@mui/icons-material';
 import {
+  Box,
   Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  Fab,
   Fade,
   Grid,
   IconButton,
   InputAdornment,
+  Paper,
   TextField,
   Typography,
 } from '@mui/material';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import DiscoveryIcon from '@/assets/svg/add-block2.svg';
+
+import imageCover1 from '@/assets/svg/ImageCover1.svg';
+import imageCover2 from '@/assets/svg/ImageCover2.svg';
+import imageCover3 from '@/assets/svg/ImageCover3.svg';
+import imageCover4 from '@/assets/svg/ImageCover4.svg';
 import NavigationIcon from '@/assets/svg/Navigation.svg';
 
 import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
 
 import CenterChatContentNoMessages from './CenterChatContentNoMessages';
+import ChatHistory from './ChatHistory';
 import ChatSpinner from './ChatSpinner';
+import DefaultPrompts from './DefaultPrompts';
+import DiscoveryLibraryUI from './DiscoveryLibraryUI';
 import Message from './Message';
+import QuickActionButton from './QuickActionButton';
 import styles from './styles';
 
 import {
@@ -43,6 +69,7 @@ import {
 } from '@/redux/slices/chatSlice';
 import { firestore } from '@/redux/store';
 import createChatSession from '@/services/chatbot/createChatSession';
+import generatePrompts from '@/services/chatbot/generatePrompts';
 import sendMessage from '@/services/chatbot/sendMessage';
 
 const ChatInterface = () => {
@@ -69,6 +96,11 @@ const ChatInterface = () => {
   const currentSession = chat;
   const chatMessages = currentSession?.messages;
   const showNewMessageIndicator = !fullyScrolled && streamingDone;
+  const [showChatHistory, setShowChatHistory] = useState(false);
+  const [defaultPrompts, setDefaultPrompts] = useState([]);
+  const [showPrompts, setShowPrompts] = useState(true);
+  const [showDiscovery, setShowDiscovery] = useState(false);
+  const [selectedPrompt, setSelectedPrompt] = useState(null);
 
   const startConversation = async (message) => {
     // Optionally dispatch a temporary message for the user's input
@@ -102,9 +134,33 @@ const ChatInterface = () => {
     // Set chat session
     dispatch(setChatSession(data));
     dispatch(setSessionLoaded(true));
+    setSelectedPrompt(null);
+  };
+
+  const handleDefaultPrompts = async (userId) => {
+    const document = doc(firestore, 'users', userId);
+    const userInfo = await getDoc(document);
+    const data = userInfo.data();
+
+    const prompts = await generatePrompts(data);
+    const suggestions = prompts.data.data[0].payload.text;
+
+    const suggestionsList = suggestions.split('\n');
+    suggestionsList.forEach((suggestion, index) => {
+      suggestionsList[index] = suggestion
+        .substring(3)
+        .replace(
+          /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
+          ''
+        ); // remove emojis
+    });
+
+    setDefaultPrompts(suggestionsList);
   };
 
   useEffect(() => {
+    if (chatMessages?.length === 0 || !chatMessages)
+      handleDefaultPrompts(userData.id);
     return () => {
       localStorage.removeItem('sessionId');
       dispatch(resetChat());
@@ -135,7 +191,11 @@ const ChatInterface = () => {
             const updatedMessages = updatedData.messages;
 
             const lastMessage = updatedMessages[updatedMessages.length - 1];
-
+            const { timestamp } = lastMessage;
+            lastMessage.timestamp = {
+              seconds: timestamp.seconds,
+              nanoseconds: timestamp.nanoseconds,
+            };
             if (lastMessage?.role === MESSAGE_ROLE.AI) {
               dispatch(
                 setMessages({
@@ -153,7 +213,7 @@ const ChatInterface = () => {
     return () => {
       if (sessionLoaded || currentSession) unsubscribe();
     };
-  }, [sessionLoaded]);
+  }, [currentSession, sessionLoaded]);
 
   const handleOnScroll = () => {
     const scrolled =
@@ -231,14 +291,63 @@ const ChatInterface = () => {
       },
     };
 
+    if (!chatMessages) {
+      // Start a new conversation if there are no existing messages
+      await startConversation(message);
+      return;
+    }
+
     dispatch(
       setMessages({
         role: MESSAGE_ROLE.HUMAN,
+        message,
       })
     );
     dispatch(setTyping(true));
 
-    await sendMessage({ message, id: currentSession?.id }, dispatch);
+    // Ensure the user’s message is displayed before sending the message
+    setTimeout(async () => {
+      await sendMessage({ message, id: sessionId }, dispatch);
+    }, 0);
+  };
+
+  const getRandomImage = () => {
+    const imageUrls = [
+      imageCover1,
+      imageCover2,
+      imageCover3,
+      imageCover4,
+      // Add more image URLs as needed
+    ];
+
+    const RandomImage = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+    return <RandomImage {...styles.backImageProps} />;
+  };
+  const handleSelectPrompt = async (prompt) => {
+    dispatch(resetChat());
+    dispatch(setInput(prompt));
+    dispatch(setTyping(true));
+
+    setTimeout(async () => {
+      const message = {
+        role: MESSAGE_ROLE.HUMAN,
+        type: MESSAGE_TYPES.TEXT,
+        payload: {
+          text: prompt,
+        },
+      };
+      if (!chatMessages) {
+        await startConversation(message);
+      } else {
+        dispatch(
+          setMessages({
+            role: MESSAGE_ROLE.HUMAN,
+          })
+        );
+        await sendMessage({ message, id: sessionId }, dispatch);
+      }
+      dispatch(setTyping(false));
+    }, 500);
   };
 
   /* Push Enter */
@@ -262,6 +371,11 @@ const ChatInterface = () => {
     );
   };
 
+  const handleShowChatHistory = () => {
+    setShowChatHistory(!showChatHistory);
+    setShowDiscovery(false);
+  };
+
   const renderMoreChat = () => {
     if (!more) return null;
     return (
@@ -281,7 +395,33 @@ const ChatInterface = () => {
     );
   };
 
+  const renderCustomPrompt = () => {
+    if (selectedPrompt) {
+      return (
+        <Grid
+          onClick={() => dispatch(setMore({ role: 'shutdown' }))}
+          {...styles.centerChat.centerChatGridProps}
+        >
+          <Grid {...styles.cardGridProps}>
+            <Grid {...styles.cardContent}>
+              <Typography {...styles.cardTitleProps}>
+                {selectedPrompt.title}
+              </Typography>
+              {getRandomImage()}
+            </Grid>
+          </Grid>
+        </Grid>
+      );
+    }
+    setShowDiscovery(false);
+    return null;
+  };
+
   const renderCenterChatContent = () => {
+    if (selectedPrompt) {
+      return renderCustomPrompt(); // Render custom prompt if selected
+    }
+
     if (
       !openSettingsChat &&
       !infoChatOpened &&
@@ -322,8 +462,13 @@ const ChatInterface = () => {
   };
 
   const renderCenterChatContentNoMessages = () => {
-    if ((chatMessages?.length === 0 || !chatMessages) && !infoChatOpened)
+    if (
+      (chatMessages?.length === 0 || !chatMessages) &&
+      !infoChatOpened &&
+      !selectedPrompt
+    ) {
       return <CenterChatContentNoMessages />;
+    }
     return null;
   };
 
@@ -339,10 +484,32 @@ const ChatInterface = () => {
     );
   };
 
+  const renderQuickAction = () => {
+    return (
+      <InputAdornment position="start">
+        <Grid {...styles.bottomChatContent.bottomChatContentGridProps}>
+          <QuickActionButton
+            defaultText="Actions"
+            setShowPrompts={setShowPrompts}
+            sendMessages={handleSendMessage}
+          />
+        </Grid>
+      </InputAdornment>
+    );
+  };
+
   const renderBottomChatContent = () => {
-    if (!openSettingsChat && !infoChatOpened)
+    if (!openSettingsChat && !infoChatOpened) {
       return (
         <Grid {...styles.bottomChatContent.bottomChatContentGridProps}>
+          {(chatMessages?.length === 0 || !chatMessages) && showPrompts ? (
+            <DefaultPrompts
+              onSelect={(prompt) => {
+                handleSelectPrompt(prompt);
+              }}
+              prompts={defaultPrompts}
+            />
+          ) : null}
           <Grid {...styles.bottomChatContent.chatInputGridProps(!!error)}>
             <TextField
               value={input}
@@ -353,6 +520,7 @@ const ChatInterface = () => {
               disabled={!!error}
               focused={false}
               {...styles.bottomChatContent.chatInputProps(
+                renderQuickAction,
                 renderSendIcon,
                 !!error,
                 input
@@ -361,17 +529,111 @@ const ChatInterface = () => {
           </Grid>
         </Grid>
       );
-
+    }
     return null;
   };
 
+  const renderChatHistoryButton = () => {
+    return (
+      <Fab
+        size="medium"
+        {...(!showChatHistory
+          ? styles.chatHistory.chatHistoryButtonFabProps
+          : styles.chatHistory.chatHistoryButtonFabPropsHide)}
+        onClick={handleShowChatHistory}
+      >
+        <ArrowUp {...styles.chatHistory.chatHistoryButtonIconProps} />
+      </Fab>
+    );
+  };
+
+  const renderChatHistory = () => {
+    return (
+      <>
+        {renderChatHistoryButton()}
+        <Paper
+          {...(showChatHistory
+            ? styles.chatHistory.chatHistoryContainerProps
+            : styles.chatHistory.chatHistoryContainerClose)}
+        >
+          {showChatHistory ? (
+            <>
+              <div {...styles.chatHistory.chatHistoryTitleContainerProps}>
+                <Typography {...styles.chatHistory.chatHistoryTitleProps}>
+                  Chat History
+                </Typography>
+                <IconButton
+                  {...styles.chatHistory.closeButtonProps}
+                  onClick={handleShowChatHistory}
+                >
+                  <RemoveIcon />
+                </IconButton>
+              </div>
+              <ChatHistory
+                user={{
+                  email: userData.email,
+                  fullName: userData.fullName,
+                  id: userData.id,
+                }}
+              />
+            </>
+          ) : null}
+        </Paper>
+      </>
+    );
+  };
+
+  const renderTopBar = () => {
+    return (
+      <Box {...styles.topBar.barProps}>
+        <Button
+          variant="outlined"
+          startIcon={<ChatIcon />}
+          onClick={() => {
+            localStorage.removeItem('sessionId');
+            dispatch(resetChat());
+          }}
+          {...styles.actionButtonProps}
+        >
+          New Chat
+        </Button>
+        <Button
+          variant="outlined"
+          startIcon={<DiscoveryIcon />}
+          {...styles.actionButtonProps}
+          onClick={() => {
+            setShowDiscovery(!showDiscovery);
+            setShowChatHistory(false);
+            setSelectedPrompt(null);
+          }}
+        >
+          Discovery
+        </Button>
+      </Box>
+    );
+  };
+
+  const renderDiscoveryLibrary = () => {
+    return (
+      <DiscoveryLibraryUI
+        show={showDiscovery}
+        // handleSendMessage={handleSelectPrompt}
+        selectedPrompt={setSelectedPrompt}
+      />
+    );
+  };
+
   return (
-    <Grid {...styles.mainGridProps}>
+    <Grid {...styles.mainGridProps(showChatHistory, showDiscovery)}>
+      {renderTopBar()}
       {renderMoreChat()}
+      {renderDiscoveryLibrary()}
+      {renderCustomPrompt}
       {renderCenterChatContent()}
       {renderCenterChatContentNoMessages()}
       {renderNewMessageIndicator()}
       {renderBottomChatContent()}
+      {renderChatHistory()}
     </Grid>
   );
 };
