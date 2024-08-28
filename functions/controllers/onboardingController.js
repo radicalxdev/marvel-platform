@@ -277,18 +277,10 @@ const advanceOnboardingStatus = functions.https.onCall(
 
 const setupUserProfile = functions.https.onCall(async (data, context) => {
   try {
-    const { uid, fullName, occupation, socialLinks, bio, profilePhotoUrl } =
-      data;
+    const { uid, fullName, occupation, socialLinks, bio } = data;
 
     // Validate fields
-    if (
-      !uid ||
-      !fullName ||
-      !occupation ||
-      !socialLinks ||
-      !bio ||
-      !profilePhotoUrl
-    ) {
+    if (!uid || !fullName || !occupation || !socialLinks || !bio) {
       throw new functions.https.HttpsError(
         'invalid-argument',
         'Missing required fields.'
@@ -334,7 +326,6 @@ const setupUserProfile = functions.https.onCall(async (data, context) => {
       occupation: occupation,
       socialLink: socialLinks,
       bio: bio,
-      profilePhotoUrl: profilePhotoUrl,
     };
 
     logger.log('Updating user document in Firestore', userDoc);
