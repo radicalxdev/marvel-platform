@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppDisabled from '@/components/AppDisabled';
 import Loader from '@/components/Loader';
 
-import SideMenu from './SideMenu';
+import NavBar from './NavBar';
 import styles from './styles';
 
 import { setLoading } from '@/redux/slices/authSlice';
@@ -44,7 +44,7 @@ const MainAppLayout = (props) => {
   const renderHead = () => {
     return (
       <Head>
-        <title>Kai AI</title>
+        <title>Marvel AI</title>
       </Head>
     );
   };
@@ -52,7 +52,7 @@ const MainAppLayout = (props) => {
   const renderApp = () => {
     return (
       <>
-        <SideMenu />
+        <NavBar />
         <Grid {...styles.contentGridProps(extraContentProps, isToolPage)}>
           {children}
         </Grid>

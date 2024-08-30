@@ -1,64 +1,63 @@
-/**
- * Styles for the DefaultPrompt component
- */
 const styles = {
   defaultPromptsGridContainer: {
-    container: true,
     sx: {
+      margin: '0px 0px 10px',
       display: 'flex',
       flexDirection: 'row',
-      gap: '10px',
-      margin: '0px 0px 10px',
+      alignItems: 'flex-start',
+      padding: '0px',
+      gap: '16px',
     },
   },
   defaultPrompt: {
-    container: true,
-    item: true,
     sx: {
-      position: 'relative',
-      padding: '10px', // Changed padding to be equal
+      color: '#9E94A5',
       display: 'flex',
-      alignItems: 'center',
-      flex: '1',
-      backgroundColor: 'transparent',
-      color: '#5e20f4',
-      border: 'none',
-      borderRadius: '10px',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      padding: '16px 24px',
+      gap: '16px',
+      background: '#181A20',
+      boxShadow: '0px 4px 8.9px rgba(0, 0, 0, 0.25)',
+      border: '2px solid rgba(172, 146, 255, 0.55)',
+      borderRadius: '20px',
       cursor: 'pointer',
-      transition: 'background-color 0.3s ease, color 0.3s ease',
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        inset: 0,
-        borderRadius: '10px',
-        padding: '2px',
-        background: 'linear-gradient(45deg, #8c6d9a, #5e20f3)', // Darker gradient color
-        WebkitMask:
-          'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-        WebkitMaskComposite: 'xor',
-        maskComposite: 'exclude',
-      },
+      flex: '1',
+      alignSelf: 'stretch',
+      transition: 'all 0.5s ease',
+      transformOrigin: 'center center',
+      wordWrap: 'break-word',
       '&:hover': {
-        backgroundColor: '#5e20f4',
-        color: 'white',
-        '&::after': {
-          background: 'white',
-          transition: 'background-color 0.3s ease, color 0.3s ease',
-        },
+        color: '#9E86FF',
+        borderColor: '#9E86FF',
+        transform: 'scale(1.05)',
       },
     },
   },
-  menuLogo: {
-    marginRight: '10px',
-  },
-  promptContent: {
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
+  defaultPromptStarLogo: {
+    sx: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
+      padding: '0px',
+      gap: '10px',
+    },
   },
   promptText: {
-    flex: 1,
-    overflow: 'hidden',
+    fontStyle: 'normal',
+    fontWeight: '500',
+    fontSize: '18px',
+    lineHeight: '24px',
+    display: 'flex',
+    alignItems: 'center',
+    letterSpacing: '-0.02em',
+    flex: 'none',
+    order: '0',
+    alignSelf: 'stretch',
+    flexGrow: '0',
   },
 };
 

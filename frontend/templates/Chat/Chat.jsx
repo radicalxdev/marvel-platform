@@ -24,14 +24,14 @@ import NavigationIcon from '@/assets/svg/Navigation.svg';
 
 import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
 
-import CenterChatContentNoMessages from './CenterChatContentNoMessages';
 import ChatHistoryWindow from './ChatHistoryWindow';
 import ChatSpinner from './ChatSpinner';
 import DefaultPrompt from './DefaultPrompt';
-import DiscoveryLibraryWindow from './DiscoveryLibraryWindow';
 import Message from './Message';
 import QuickActions from './QuickActions';
 import styles from './styles';
+
+import TextMessage from './TextMessage';
 
 import {
   openInfoChat,
@@ -49,12 +49,9 @@ import {
   setStreamingDone,
   setTyping,
 } from '@/redux/slices/chatSlice';
-import {
-  addHistoryEntry,
-  updateHistoryEntry,
-} from '@/redux/slices/historySlice';
+import { updateHistoryEntry } from '@/redux/slices/historySlice';
 import { firestore } from '@/redux/store';
-import { fetchDiscoveryLibraries } from '@/redux/thunks/fetchDiscoveryLibraries';
+import fetchHistory from '@/redux/thunks/fetchHistory';
 import createChatSession from '@/services/chatbot/createChatSession';
 import sendMessage from '@/services/chatbot/sendMessage';
 
@@ -76,8 +73,6 @@ const ChatInterface = () => {
     error,
     displayQuickActions,
     actionType,
-    selectedDiscoveryLibraryId,
-    discoveryLibraries,
   } = useSelector((state) => state.chat);
   const { data: userData } = useSelector((state) => state.user);
 
@@ -98,31 +93,6 @@ const ChatInterface = () => {
 
     dispatch(setTyping(true));
 
-    /**
-     * If a selected discovery library ID is specified, create a system message
-     * containing the system message of the selected library.
-     *
-     * @returns {Object|null} The system message object or null if no library is selected.
-     */
-    let systemMessage = null;
-    if (selectedDiscoveryLibraryId != null) {
-      // Find the selected library in the list of discovery libraries
-      const selectedLibrary = discoveryLibraries.find(
-        (library) => library.id === selectedDiscoveryLibraryId
-      );
-
-      // If a library is selected, create a system message object with its system message
-      if (selectedLibrary) {
-        systemMessage = {
-          role: MESSAGE_ROLE.SYSTEM, // The role of the message (system or human)
-          type: MESSAGE_TYPES.TEXT, // The type of the message (text-based)
-          payload: {
-            text: selectedLibrary.systemMessage, // The text of the system message
-          },
-        };
-      }
-    }
-
     // Define the chat payload
     const chatPayload = {
       user: {
@@ -132,8 +102,6 @@ const ChatInterface = () => {
       },
       type: 'chat',
       message,
-      systemMessage,
-      discoveryLibraryId: selectedDiscoveryLibraryId ?? null,
     };
 
     // Send a chat session
@@ -147,40 +115,10 @@ const ChatInterface = () => {
     dispatch(setChatSession(data));
     dispatch(setSessionLoaded(true));
 
-    /**
-     * Creates a new entry in the history store.
-     * The entry contains the session ID, the first message of the session,
-     * the creation and update timestamps of the session.
-     *
-     * @param {Object} data The session data object.
-     */
-    const newEntry = {
-      // The ID of the session.
-      id: data?.id,
-      // The first message of the session.
-      // title: data?.messages[0]?.payload?.text,
-
-      // Extract the title of the chat session. If the first message role is 'system', the title is the text of the second message. Otherwise, the title is the text of the first message.
-      title:
-        // Check if the first message role is 'system'
-        data?.messages[0]?.role === 'system'
-          ? // If so, extract the text of the second message
-            data?.messages[1]?.payload?.text
-          : // Otherwise, extract the text of the first message
-            data?.messages[0]?.payload?.text,
-      // The timestamp of session creation.
-      createdAt: data?.createdAt,
-      // The timestamp of session last update.
-      updatedAt: data?.updatedAt,
-    };
-
-    // Add the new history entry to the Redux store.
-    dispatch(addHistoryEntry(newEntry));
+    dispatch(fetchHistory(userData.id));
   };
 
   useEffect(() => {
-    // Fetching all the discovery libraries.
-    dispatch(fetchDiscoveryLibraries());
     return () => {
       localStorage.removeItem('sessionId');
       dispatch(resetChat());
@@ -211,17 +149,14 @@ const ChatInterface = () => {
             const updatedMessages = updatedData.messages;
 
             const lastMessage = updatedMessages[updatedMessages.length - 1];
-            // Convert Firestore timestamp to JavaScript Date object and format it as an ISO string.
-            lastMessage.timestamp = lastMessage.timestamp
-              .toDate()
-              .toISOString();
+            // Convert Firestore timestamp to JavaScript Date object.
+            lastMessage.timestamp = lastMessage.timestamp.toDate();
 
             // Update the history entry with the latest timestamp.
             dispatch(
               updateHistoryEntry({
                 id: sessionId,
                 updatedAt: updatedData.updatedAt.toDate().toISOString(),
-                // updatedAt: lastMessage.timestamp,
               })
             );
 
@@ -268,8 +203,6 @@ const ChatInterface = () => {
   };
 
   const handleSendMessage = async () => {
-    dispatch(setStreaming(true));
-
     if (!input) {
       dispatch(setError('Please enter a message'));
       setTimeout(() => {
@@ -277,6 +210,9 @@ const ChatInterface = () => {
       }, 3000);
       return;
     }
+
+    // BUG FIX: First checking whether the user has entered any text before setting streaming true amd then sending the message.
+    dispatch(setStreaming(true));
 
     const message = {
       role: MESSAGE_ROLE.HUMAN,
@@ -375,50 +311,49 @@ const ChatInterface = () => {
     );
   };
 
-  const renderCenterChatContent = () => {
-    if (
-      !openSettingsChat &&
-      !infoChatOpened &&
-      chatMessages?.length !== 0 &&
-      !!chatMessages
-    )
-      return (
-        <Grid
-          onClick={() => dispatch(setMore({ role: 'shutdown' }))}
-          {...styles.centerChat.centerChatGridProps}
-        >
-          <Grid
-            ref={messagesContainerRef}
-            onScroll={handleOnScroll}
-            {...styles.centerChat.messagesGridProps}
-          >
-            {chatMessages?.map(
-              (message, index) =>
-                message?.role !== MESSAGE_ROLE.SYSTEM && (
-                  <Message
-                    ref={messagesContainerRef}
-                    {...message}
-                    messagesLength={chatMessages?.length}
-                    messageNo={index + 1}
-                    onQuickReply={handleQuickReply}
-                    streaming={streaming}
-                    fullyScrolled={fullyScrolled}
-                    key={index}
-                  />
-                )
-            )}
-            {typing && <ChatSpinner />}
-          </Grid>
-        </Grid>
-      );
-
-    return null;
+  const renderStartChatMessage = () => {
+    return (
+      <TextMessage
+        isMyMessage={false}
+        message="Hello! I’m Marvel, your AI teaching assistant. You can ask any questions realted to best practices in teaching, or working with your students. Feel free to ask me for ideas for your classroom, and the more specific your questions, the better my responses will be. **How can I help you today?**"
+      />
+    );
   };
 
-  const renderCenterChatContentNoMessages = () => {
-    if ((chatMessages?.length === 0 || !chatMessages) && !infoChatOpened)
-      return <CenterChatContentNoMessages />;
-    return null;
+  const renderCenterChatContent = () => {
+    return (
+      <Grid
+        onClick={() => dispatch(setMore({ role: 'shutdown' }))}
+        {...styles.centerChat.centerChatGridProps}
+      >
+        <Grid
+          ref={messagesContainerRef}
+          onScroll={handleOnScroll}
+          {...styles.centerChat.messagesGridProps}
+        >
+          {/* Render the start chat message if there are no chat messages or if the info chat is not open. */}
+          {(chatMessages?.length === 0 || !chatMessages) && !infoChatOpened
+            ? renderStartChatMessage()
+            : null}
+          {chatMessages?.map(
+            (message, index) =>
+              message?.role !== MESSAGE_ROLE.SYSTEM && (
+                <Message
+                  ref={messagesContainerRef}
+                  {...message}
+                  messagesLength={chatMessages?.length}
+                  messageNo={index + 1}
+                  onQuickReply={handleQuickReply}
+                  streaming={streaming}
+                  fullyScrolled={fullyScrolled}
+                  key={index}
+                />
+              )
+          )}
+          {typing && <ChatSpinner />}
+        </Grid>
+      </Grid>
+    );
   };
 
   const renderNewMessageIndicator = () => {
@@ -478,8 +413,7 @@ const ChatInterface = () => {
               {...styles.bottomChatContent.chatInputProps(
                 renderQuickAction,
                 renderSendIcon,
-                !!error,
-                input
+                !!error
               )}
             />
           </Grid>
@@ -491,11 +425,9 @@ const ChatInterface = () => {
 
   return (
     <Grid {...styles.chatInterface}>
-      <DiscoveryLibraryWindow />
       <Grid {...styles.mainGridProps}>
         {renderMoreChat()}
         {renderCenterChatContent()}
-        {renderCenterChatContentNoMessages()}
         {renderNewMessageIndicator()}
         {renderBottomChatContent()}
       </Grid>

@@ -8,6 +8,9 @@ const styles = {
     rowGap: 5,
     px: { laptop: 4, desktop: 5, desktopMedium: 6 },
     py: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
+    sx: (theme) => ({
+      color: theme.palette.text.primary,
+    }),
   },
   titleGridProps: {
     container: true,

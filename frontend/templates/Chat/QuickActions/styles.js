@@ -1,38 +1,61 @@
-/**
- * Styles for the QuickActions component
- */
 const styles = {
-  /**
-   * Styles for the container of the quick actions
-   */
-  quickActionsGridContainer: {
-    item: true,
+  quickActionsMain: {
     sx: {
-      padding: '5px',
+      marginBottom: '10px',
       display: 'flex',
       flexDirection: 'row',
-      gap: '10px',
-      marginBottom: '10px',
-      border: '3px solid #9f86fe',
+      alignItems: 'center',
+      padding: '8px',
+      gap: '12px',
+      background: 'rgba(24, 26, 32, 0.87)',
+      boxShadow: '0px 4px 144px rgba(172, 146, 255, 0.24)',
       borderRadius: '10px',
     },
   },
-  /**
-   * Styles for a single quick action
-   */
+  quickActionsGridContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    padding: '0px',
+    gap: '8px',
+  },
   quickAction: {
     item: true,
     sx: {
-      padding: '10px',
-      backgroundColor: '#25262f',
-      color: '#9e94a5',
-      border: 'none',
-      borderRadius: '10px',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: '8px 12px',
+      gap: '12px',
+      background: '#24272F',
+      border: '1px solid #24272F',
+      borderRadius: '8px',
+      flex: 'none',
+      order: '0',
+      flexGrow: '0',
+      color: '#9E94A5',
       cursor: 'pointer',
-      transition: 'background-color 0.3s ease, color 0.3s ease',
+      transition: 'all 0.2s ease-in',
       '&:hover': {
-        color: '#ffffff',
+        color: '#9E86FF',
+        borderColor: '#9E86FF',
+        transform: 'scale(1.05)',
       },
+    },
+  },
+  quickActionText: {
+    sx: {
+      fontFamily: 'Satoshi Medium',
+      fontStyle: 'normal',
+      fontWeight: '500',
+      fontSize: '16px',
+      lineHeight: '150%',
+      display: 'flex',
+      alignItems: 'center',
+      flex: 'none',
+      order: '0',
+      flexGrow: '0',
     },
   },
 };

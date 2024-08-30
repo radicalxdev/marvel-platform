@@ -1,46 +1,122 @@
-/**
- * Styles for the chat history list item text.
- */
 const styles = {
-  /**
-   * Styles for the chat history text.
-   */
   chatHistoryText: {
     sx: {
-      width: '100%', // Set the width of the chat history list item text to 100%.
-      whiteSpace: 'nowrap', // Prevent wrapping of the text to the next line.
-      overflow: 'hidden', // Hide any overflowing content.
-      textOverflow: 'ellipsis', // If the text overflows, hide the part that does and add ellipsis at the end to indicate that the text has been truncated.
-      padding: '5px 0', // Set the padding to 5px 0.
-      cursor: 'pointer', // Set the cursor to pointer.
+      width: '100%',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      padding: '5px 0',
+      cursor: 'pointer',
     },
   },
-  /**
-   * Style for the chat history text that is currently selected.
-   */
   chatHistoryTextCurrent: {
     sx: {
-      color: 'rgba(115,80,255,255)', // Set the font color to rgba(115,80,255,255).
-      width: '100%', // Set the width of the chat history list item text to 100%.
-      whiteSpace: 'nowrap', // Prevent wrapping of the text to the next line.
-      overflow: 'hidden', // Hide any overflowing content.
-      textOverflow: 'ellipsis', // If the text overflows, hide the part that does and add ellipsis at the end to indicate that the text has been truncated.
-      padding: '5px 0', // Set the padding to 5px 0.
-      cursor: 'pointer', // Set the cursor to pointer.
+      color: 'rgba(115,80,255,255)',
+      width: '100%',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      padding: '5px 0',
+      cursor: 'pointer',
     },
   },
-
-  /**
-   * Style for centering a chat message.
-   */
   centerChatMessage: {
     container: true,
-    justifyContent: 'center', // Center the container vertically.
-    alignItems: 'center', // Center the container horizontally.
+    justifyContent: 'center',
+    alignItems: 'center',
     sx: {
-      width: '100%', // Set the width of the container to 100%.
-      height: '100%', // Set the height of the container to 100%.
-      textAlign: 'center', // Center the text within the container.
+      width: '100%',
+      height: '100%',
+      textAlign: 'center',
+      color: '#FFFFFF',
+    },
+  },
+  chatHistoriesGrid: {
+    sx: {
+      width: '100%',
+      marginTop: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      padding: '0px',
+      gap: '12px',
+      flex: 'none',
+      order: '1',
+      alignSelf: 'stretch',
+      flexGrow: '0',
+    },
+  },
+  chatHistoryCategorizedContainer: {
+    sx: {
+      padding: '0 20px',
+      width: '100%',
+    },
+  },
+  categoryTitle: {
+    sx: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: '4px',
+      gap: '12px',
+      flex: 'none',
+      order: '0',
+      alignSelf: 'stretch',
+      flexGrow: '0',
+    },
+  },
+  categoryTitleText: {
+    sx: {
+      fontFamily: 'Satoshi Medium',
+      fontStyle: 'normal',
+      fontWeight: '400',
+      fontSize: '12px',
+      lineHeight: '140%',
+      letterSpacing: '0.2px',
+      color: '#9E94A5',
+      flex: 'none',
+      order: '0',
+      flexGrow: '0',
+    },
+  },
+  chatHistoryTitle: {
+    sx: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: '4px',
+      gap: '12px',
+      flex: 'none',
+      order: '1',
+      alignSelf: 'stretch',
+      flexGrow: '0',
+    },
+  },
+  chatHistoryTitleText: (selected) => ({
+    sx: {
+      width: '100%',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      cursor: 'pointer',
+      fontFamily: 'Satoshi Medium',
+      fontStyle: 'normal',
+      fontSize: '14px',
+      lineHeight: '140%',
+      letterSpacing: '0.2px',
+      color: selected ? '#AC92FF' : '#FFFFFF',
+      flex: 'none',
+      order: '0',
+      flexGrow: '0',
+    },
+  }),
+  underline: {
+    sx: {
+      width: '100%',
+      border: '1px solid #2C3039',
+      flex: 'none',
+      alignSelf: 'stretch',
+      flexGrow: '0',
     },
   },
 };

@@ -14,13 +14,6 @@ const historySlice = createSlice({
   },
   reducers: {
     /**
-     * Adds a new chat history entry to the beginning of the state's history array.
-     */
-    addHistoryEntry: (state, action) => {
-      // Add the new chat history entry to the beginning of the history array.
-      state.history.unshift(action.payload);
-    },
-    /**
      * Updates a chat history entry in the state's history array.
      */
     updateHistoryEntry: (state, action) => {
@@ -54,14 +47,13 @@ const historySlice = createSlice({
         state.history = action.payload;
         state.error = null;
       })
-      .addCase(fetchHistory.rejected, (state, action) => {
+      .addCase(fetchHistory.rejected, (state) => {
         state.historyLoaded = true;
-        console.error(action.error);
         state.error = 'Could not fetch history. Please try again.';
       });
   },
 });
 
-export const { addHistoryEntry, updateHistoryEntry } = historySlice.actions;
+export const { updateHistoryEntry } = historySlice.actions;
 
 export default historySlice.reducer;

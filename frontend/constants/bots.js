@@ -27,9 +27,9 @@ const BOT_TYPE = {
 };
 
 const DEFAULT_PROMPTS = [
+  'Strategies to encourage student participation.',
   'Design an engaging class activity.',
   'Recommend resources for effective teaching.',
-  'Strategies to encourage student participation.',
 ];
 
 const MESSAGE_ROLE = {

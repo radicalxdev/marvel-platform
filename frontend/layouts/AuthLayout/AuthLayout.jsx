@@ -55,11 +55,11 @@ const AuthLayout = (props) => {
   const renderArtifacts = () => {
     return (
       <>
-        <Box {...styles.reXProps}>
+        <Box {...styles.marvelProps}>
           <Image
-            {...styles.reXImageProps}
-            src={ImageURLs.KaiAuthImg}
-            alt="rexImage"
+            {...styles.marvelImageProps}
+            src={ImageURLs.MarvelAuthImg}
+            alt="Marvel Image"
           />
         </Box>
         <Box {...styles.greenBlobProps}>
@@ -76,7 +76,7 @@ const AuthLayout = (props) => {
   const renderHead = () => {
     return (
       <Head>
-        <title>Kai AI</title>
+        <title>Marvel AI</title>
       </Head>
     );
   };

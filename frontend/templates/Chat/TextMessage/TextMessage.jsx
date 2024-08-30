@@ -1,8 +1,11 @@
-import { Fade, Grid, Typography } from '@mui/material';
+import { Box, Fade, Grid, Typography } from '@mui/material';
+import Image from 'next/image';
 import emoji from 'remark-emoji';
 import remarkGfm from 'remark-gfm';
 
 import MemoizedReactMarkdown from '@/components/MemoizedMarkdown';
+
+import ImageURLs from '@/assets/urls';
 
 import CodeComponent from '../CodeComponent';
 
@@ -15,8 +18,17 @@ const TextMessage = (props) => {
     <Fade in direction="up">
       <Grid id="message" {...styles.mainGridProps(isMyMessage)}>
         <Grid {...styles.messageWrapperProps(isMyMessage)}>
-          {!isMyMessage && <Typography {...styles.aiNameProps}>Kai</Typography>}
-          <Typography {...styles.messageProps(isMyMessage)}>
+          {!isMyMessage && (
+            <Box>
+              <Image
+                width="38.74px"
+                height="38.74px"
+                src={ImageURLs.MarvelCircleAvatar}
+                alt="Marvel AI"
+              />
+            </Box>
+          )}
+          <Typography {...styles.messageProps()}>
             <MemoizedReactMarkdown
               remarkPlugins={[remarkGfm, emoji]}
               components={{ code: CodeComponent }}

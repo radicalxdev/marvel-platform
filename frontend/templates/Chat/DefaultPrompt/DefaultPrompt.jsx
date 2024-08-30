@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import MenuLogo from '@/assets/svg/PurpleStar.svg'; // Import MenuLogo
+import DefaultPromptStar from '@/assets/svg/DefaultPromptStar.svg'; // Import MenuLogo
 
 import styles from './styles';
 
@@ -50,23 +50,18 @@ const DefaultPrompt = ({ handleSendMessage }) => {
     localStorage.getItem('sessionId') == null &&
     !typing &&
     userInput.length === 0 ? (
-    <Grid container spacing={2} {...styles.defaultPromptsGridContainer}>
+    <Grid container {...styles.defaultPromptsGridContainer}>
       {defaultPrompts.map((prompt, key) => (
         <Grid
           key={key}
           item
-          xs={12}
-          sm={6}
-          md={4}
           onClick={() => handleClick(prompt)}
           {...styles.defaultPrompt}
         >
-          <div style={styles.promptContent}>
-            {/* Render the MenuLogo SVG */}
-            <MenuLogo style={styles.menuLogo} />
-            {/* Render the prompt text */}
-            <Typography style={styles.promptText}>{prompt}</Typography>
-          </div>
+          <Typography {...styles.promptText}>{prompt}</Typography>
+          <Grid {...styles.defaultPromptStarLogo}>
+            <DefaultPromptStar />
+          </Grid>
         </Grid>
       ))}
     </Grid>

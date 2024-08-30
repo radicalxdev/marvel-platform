@@ -12,7 +12,7 @@ const app = express();
 
 const DEBUG = process.env.DEBUG;
 /**
- * Simulates communication with a Kai AI endpoint.
+ * Simulates communication with a Marvel AI endpoint.
  *
  * @param {object} payload - The properties of the communication.
  * @param {object} props.data - The payload data object used in the communication.
@@ -28,42 +28,42 @@ const DEBUG = process.env.DEBUG;
  *
  * @return {object} The response from the AI service.
  */
-const kaiCommunicator = async (payload) => {
+const marvelCommunicator = async (payload) => {
   try {
-    DEBUG && logger.log('kaiCommunicator started, data:', payload.data);
+    DEBUG && logger.log('marvelCommunicator started, data:', payload.data);
 
     const { messages, user, tool_data, type } = payload.data;
 
     const isToolCommunicator = type === BOT_TYPE.TOOL;
-    const KAI_API_KEY = process.env.KAI_API_KEY;
-    const KAI_ENDPOINT = process.env.KAI_ENDPOINT;
+    const MARVEL_API_KEY = process.env.MARVEL_API_KEY;
+    const MARVEL_ENDPOINT = process.env.MARVEL_ENDPOINT;
 
     DEBUG &&
       logger.log(
         'Communicator variables:',
-        `API_KEY: ${KAI_API_KEY}`,
-        `ENDPOINT: ${KAI_ENDPOINT}`
+        `API_KEY: ${MARVEL_API_KEY}`,
+        `ENDPOINT: ${MARVEL_ENDPOINT}`
       );
 
     const headers = {
-      'API-Key': KAI_API_KEY,
+      'API-Key': MARVEL_API_KEY,
       'Content-Type': 'application/json',
     };
 
-    const kaiPayload = {
+    const marvelPayload = {
       user,
       type,
       ...(isToolCommunicator ? { tool_data } : { messages }),
     };
 
-    DEBUG && logger.log('KAI_ENDPOINT', KAI_ENDPOINT);
-    DEBUG && logger.log('kaiPayload', kaiPayload);
+    DEBUG && logger.log('MARVEL_ENDPOINT', MARVEL_ENDPOINT);
+    DEBUG && logger.log('marvelPayload', marvelPayload);
 
-    const resp = await axios.post(KAI_ENDPOINT, kaiPayload, {
+    const resp = await axios.post(MARVEL_ENDPOINT, marvelPayload, {
       headers,
     });
 
-    DEBUG && logger.log('kaiCommunicator response:', resp.data);
+    DEBUG && logger.log('marvelCommunicator response:', resp.data);
 
     return { status: 'success', data: resp.data };
   } catch (error) {
@@ -71,7 +71,7 @@ const kaiCommunicator = async (payload) => {
       response: { data },
     } = error;
     const { message } = data;
-    DEBUG && logger.error('kaiCommunicator error:', data);
+    DEBUG && logger.error('marvelCommunicator error:', data);
     throw new HttpsError('internal', message);
   }
 };
@@ -95,8 +95,8 @@ const chat = onCall(async (props) => {
     DEBUG &&
       logger.log(
         'Communicator variables:',
-        `API_KEY: ${process.env.KAI_API_KEY}`,
-        `ENDPOINT: ${process.env.KAI_ENDPOINT}`
+        `API_KEY: ${process.env.MARVEL_API_KEY}`,
+        `ENDPOINT: ${process.env.MARVEL_ENDPOINT}`
       );
 
     const chatSession = await admin
@@ -129,18 +129,18 @@ const chat = onCall(async (props) => {
 
     await chatSession.ref.update({ messages: updatedMessages });
 
-    // Construct payload for the kaiCommunicator
-    const KaiPayload = {
+    // Construct payload for the marvelCommunicator
+    const marvelPayload = {
       messages: updatedMessages,
       type,
       user,
     };
 
-    const response = await kaiCommunicator({
-      data: KaiPayload,
+    const response = await marvelCommunicator({
+      data: marvelPayload,
     });
 
-    DEBUG && logger.log('kaiCommunicator response:', response.data);
+    DEBUG && logger.log('marvelCommunicator response:', response.data);
 
     // Process response and update Firestore
     const updatedResponseMessages = updatedMessages.concat(
@@ -248,7 +248,7 @@ app.post('/api/tool/', (req, res) => {
           ? [...inputs, { name: 'files', value: results }]
           : inputs;
 
-      const response = await kaiCommunicator({
+      const response = await marvelCommunicator({
         data: {
           ...otherData,
           tool_data: {
@@ -287,8 +287,7 @@ const createChatSession = onCall(async (props) => {
   try {
     DEBUG && logger.log('Communicator started, data:', props.data);
 
-    const { user, message, type, discoveryLibraryId, systemMessage } =
-      props.data;
+    const { user, message, type, systemMessage } = props.data;
 
     if (!user || !message || !type) {
       logger.log('Missing required fields', props.data);
@@ -322,13 +321,12 @@ const createChatSession = onCall(async (props) => {
             : [systemMessage, initialMessage],
         user,
         type,
-        discoveryLibraryId,
         createdAt: Timestamp.fromMillis(Date.now()),
         updatedAt: Timestamp.fromMillis(Date.now()),
       });
 
-    // Send trigger message to ReX AI
-    const response = await kaiCommunicator({
+    // Send trigger message to Marvel AI
+    const response = await marvelCommunicator({
       data: {
         messages:
           systemMessage == null
@@ -336,7 +334,6 @@ const createChatSession = onCall(async (props) => {
             : [systemMessage, initialMessage],
         user,
         type,
-        discoveryLibraryId,
       },
     });
 

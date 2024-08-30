@@ -9,6 +9,7 @@ const ROUTES = {
   REDIRECT: '/redirect',
   CHAT: '/chat',
   HISTORY: '/history',
+  DISCOVERY: '/discovery',
 };
 
 export default ROUTES;

@@ -4,6 +4,7 @@ const styles = {
     height: '100%',
     width: '100%',
     direction: 'row',
+    alignItems: 'flex-end',
     sx: {
       flexWrap: 'nowrap',
       position: 'relative',
@@ -198,7 +199,7 @@ const styles = {
       width: '100%',
       justifyContent: 'space-between',
       alignItems: 'center',
-      py: { laptop: 2, desktop: 2.5, desktopMedium: 3 },
+      pt: { laptop: 2, desktop: 2.5, desktopMedium: 3 },
       px: { laptop: 2, desktop: 2.5, desktopMedium: 3 },
     },
     bottomBarChatProps: {
@@ -214,28 +215,33 @@ const styles = {
       mobileSmall: 12,
       justifyContent: 'center',
       alignItems: 'center',
-      height: '54px',
+      height: '65px',
       padding: '2px',
       sx: {
         fieldSet: {
           display: 'none',
         },
         background: (theme) =>
-          error ? theme.palette.error.main : theme.palette.Background.grey1,
+          error ? theme.palette.error.main : 'transparent',
         borderRadius: '50px',
       },
     }),
-    chatInputProps: (renderQuicKAction, renderSendIcon, error, input) => ({
+    chatInputProps: (renderQuicKAction, renderSendIcon, error) => ({
       type: 'text',
       placeholder: !error && 'Send a message',
       autoComplete: 'off',
       sx: { width: '100%', height: '100%' },
       InputProps: {
         notched: false,
-        sx: (theme) => ({
-          bgcolor: '#D9D9D9',
+        sx: () => ({
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: '0px',
+          gap: '20px',
+          bgcolor: '#181A20',
           borderRadius: '50px',
-          color: input ? '#333333' : theme.palette.Greyscale[499],
+          color: '#9E94A5',
           pl: { laptop: '6px', desktop: '10px' },
           pr: { laptop: '8px', desktop: '10px' },
           height: '100%',
@@ -250,7 +256,7 @@ const styles = {
       FormHelperTextProps: {
         sx: {
           position: 'absolute',
-          transform: 'translate(120px, 30%)',
+          transform: 'translate(150px, 30%)',
           fontFamily: 'Satoshi Medium',
           fontSize: { mobileSmall: '16px', desktopMedium: '20px' },
           lineHeight: '35px',
@@ -377,19 +383,19 @@ const styles = {
 
   quickActionButton: {
     sx: {
-      padding: '10px',
-      marginLeft: '-5px',
-      display: 'flex',
-      alignItems: 'center',
+      padding: '12px 20px',
       cursor: 'pointer',
-      backgroundColor: 'rgb(88,20,244)',
-      color: 'white',
-      borderRadius: '30px',
-      flexWrap: 'nowrap',
-      gap: '10px',
-      transition: 'background-color 0.1s ease, color 0.1s ease',
+      background: '#AC92FF',
+      borderRadius: '40px',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: '6px',
+      flex: 'none',
+      order: '0',
+      flexGrow: '0',
       '&:hover': {
-        backgroundColor: 'rgb(123, 55, 255)',
+        backgroundColor: 'rgb(88,20,244)',
       },
     },
   },

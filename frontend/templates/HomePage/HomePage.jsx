@@ -11,8 +11,7 @@ const HomePage = (props) => {
     return (
       <Grid {...styles.titleGridProps}>
         <Typography {...styles.titleProps}>
-          Welcome to{' '}
-          <Typography {...styles.highlightTextProps}>Kai Tools</Typography> 👋
+          Welcome to Marvel Tools 👋
         </Typography>
         <Typography {...styles.subtitleProps}>
           Made for{' '}

@@ -1,13 +1,6 @@
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 
-import {
-  Grid,
-  List,
-  ListItem,
-  ListSubheader,
-  Skeleton,
-  Typography,
-} from '@mui/material';
+import { Grid, Skeleton, Typography } from '@mui/material';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -139,9 +132,8 @@ const ChatHistory = () => {
       older: 'Older',
     };
 
-    // Map over the categorized history and render a ListItem component for each entry
     return (
-      <Grid>
+      <Grid {...styles.chatHistoriesGrid}>
         {
           /* Iterate over the categorized history */
           Object.entries(categorizedHistory).map(
@@ -149,36 +141,34 @@ const ChatHistory = () => {
             ([categoryKey, categorySessions]) =>
               // If the category has items
               categorySessions.length !== 0 ? (
-                <List
-                  // Set a unique key for each category
-                  key={categoryKey}
-                  // Set the subheader for the category
-                  subheader={
-                    <ListSubheader>{categoryName[categoryKey]}</ListSubheader>
-                  }
-                  // Use dense style for the List
-                  dense
-                >
-                  {
-                    /* Map over the items in the category */
-                    categorySessions.map((session) => (
-                      <ListItem
+                <Fragment key={categoryKey}>
+                  <Grid {...styles.underline} />
+                  <Grid {...styles.chatHistoryCategorizedContainer}>
+                    {/* Set the subheader for the category */}
+                    <Grid {...styles.categoryTitle}>
+                      <Typography {...styles.categoryTitleText}>
+                        {categoryName[categoryKey]}
+                      </Typography>
+                    </Grid>
+
+                    {/* Map over the items in the category */}
+                    {categorySessions.map((session) => (
+                      <Grid
                         key={session.id}
+                        {...styles.chatHistoryTitle}
                         onClick={() => selectChat(session.id)}
                       >
-                        {/* Render the text of the first message in the item */}
                         <Typography
-                          // Apply different styles based on whether the entry is the current chat session
-                          {...(currentChatSessionId === session.id
-                            ? styles.chatHistoryTextCurrent
-                            : styles.chatHistoryText)}
+                          {...styles.chatHistoryTitleText(
+                            currentChatSessionId === session.id
+                          )}
                         >
                           {session.title}
                         </Typography>
-                      </ListItem>
-                    ))
-                  }
-                </List>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Fragment>
               ) : null
           )
         }
@@ -221,8 +211,8 @@ const ChatHistory = () => {
   const skeleton = () => (
     // Grid container with 100% height
     <Grid container height="100%" flexDirection="column">
-      {/* Map over an array of length 3 */}
-      {Array.from({ length: 3 }).map((_, index) => (
+      {/* Map over an array of length 5 */}
+      {Array.from({ length: 5 }).map((_, index) => (
         // Skeleton component with specified props
         <Skeleton key={index} animation="wave" width="100%" height="10%" />
       ))}

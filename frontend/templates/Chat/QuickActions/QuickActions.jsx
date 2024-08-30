@@ -88,23 +88,27 @@ const QuickActions = ({ handleSendMessage }) => {
     // Wrap the QuickActions component with ClickAwayListener to handle clicks outside the component
     // ClickAwayListener triggers the handleClose function when a click occurs outside the component
     <ClickAwayListener onClickAway={handleClose}>
-      {/* Render the Grid container for the QuickActions component */}
-      <Grid {...styles.quickActionsGridContainer}>
-        {/* Render each quick action as a Grid item */}
-        {Object.values(quickActions).map((action, key) => {
-          // Generate a quick action component for each action
-          // The quick action component is a Grid item that triggers the handleActionClick function when clicked
-          return (
-            <Grid
-              key={key}
-              onClick={() => handleActionClick(action)}
-              {...styles.quickAction}
-            >
-              {/* Render the name of the quick action */}
-              <Typography>{action.actionType}</Typography>
-            </Grid>
-          );
-        })}
+      <Grid {...styles.quickActionsMain}>
+        {/* Render the Grid container for the QuickActions component */}
+        <Grid {...styles.quickActionsGridContainer}>
+          {/* Render each quick action as a Grid item */}
+          {Object.values(quickActions).map((action, key) => {
+            // Generate a quick action component for each action
+            // The quick action component is a Grid item that triggers the handleActionClick function when clicked
+            return (
+              <Grid
+                key={key}
+                onClick={() => handleActionClick(action)}
+                {...styles.quickAction}
+              >
+                {/* Render the name of the quick action */}
+                <Typography {...styles.quickActionText}>
+                  {action.actionType}
+                </Typography>
+              </Grid>
+            );
+          })}
+        </Grid>
       </Grid>
     </ClickAwayListener>
   ) : null;
