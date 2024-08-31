@@ -8,7 +8,7 @@ const styles = {
     paddingTop: '80px',
     sx: {
       background: (theme) => {
-        return theme.palette.Background.primary;
+        return theme.palette.Background.gradient.radialDark;
       },
     },
   },
@@ -29,7 +29,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     textAlign: 'center',
-    background: 'transparent', 
+    background: 'transparent',
     paddingBottom: '50px',
   },
 };

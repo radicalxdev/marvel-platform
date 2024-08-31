@@ -270,6 +270,8 @@ const globalTheme = createTheme({
         headerBgGradient:
           'linear-gradient(256.97deg, #1AD6A1 21.42%, #1AFFAF 95.6%)',
         headerShadow: '0px 4px 18.700000762939453px 0px #1AD6A185',
+        radialDark:
+          'radial-gradient(104.8% 104.8% at 50% -15.5%, #4A426A 0%, #201E2B 40.33%, #000000 100%)',
       },
     },
     Dark_Colors: {
