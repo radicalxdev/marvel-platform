@@ -2,21 +2,23 @@ const styles = {
   mainGridProps: {
     position: 'relative',
     container: true,
+    flexDirection: 'column',
     mobileSmall: 12,
     height: '100vh',
     maxHeight: '100vh',
+    sx: (theme) => ({
+      padding: '32px 32px 0px',
+      background: theme.palette.Background.darkGradientBackground,
+    }),
   },
-  contentGridProps: (extraContentProps, isToolPage) => ({
+  contentGridProps: (extraContentProps) => ({
     container: true,
     item: true,
     mobileSmall: true,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    sx: (theme) => ({
+    sx: {
       position: 'relative',
-      background: isToolPage
-        ? theme.palette.Background.white2
-        : theme.palette.Common.White['100p'],
       py: {
         desktopLarge: 5,
         desktop: 4,
@@ -30,7 +32,7 @@ const styles = {
       overflow: 'scroll',
       maxHeight: '100vh',
       ...extraContentProps,
-    }),
+    },
   }),
   logoGridProps: {
     item: true,
