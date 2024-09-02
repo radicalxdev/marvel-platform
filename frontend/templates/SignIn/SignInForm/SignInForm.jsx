@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import AuthTextField from '@/components/AuthTextField';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import { AUTH_ERROR_MESSAGES } from '@/constants/auth';
+import { AUTH_ERR_CODES, AUTH_ERROR_MESSAGES } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 
 import ROUTES from '@/constants/routes';
@@ -53,6 +53,10 @@ const SignInForm = (props) => {
   const router = useRouter();
 
   const { handleOpenSnackBar } = useContext(AuthContext);
+
+  const renderNetworkError = () => {
+    router.push(ROUTES.ERROR);
+  };
 
   const handleSubmit = async (data) => {
     try {
@@ -99,6 +103,11 @@ const SignInForm = (props) => {
       dispatch(setLoading(true));
       router.push(ROUTES.HOME);
     } catch ({ code }) {
+      if (
+        code.message === AUTH_ERROR_MESSAGES[AUTH_ERR_CODES.NETWORK_REQ_FAIL]
+      ) {
+        renderNetworkError();
+      }
       setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
     } finally {
       setSignInLoading(false);

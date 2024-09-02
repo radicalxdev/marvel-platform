@@ -2,6 +2,9 @@ import { useContext } from 'react';
 
 import { Help } from '@mui/icons-material';
 import { Grid, Tooltip, Typography, useTheme } from '@mui/material';
+
+import { useRouter } from 'next/router';
+
 import { FormContainer } from 'react-hook-form-mui';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,8 +15,12 @@ import PrimaryFileUpload from '@/components/PrimaryFileUpload';
 import PrimarySelectorInput from '@/components/PrimarySelectorInput';
 import PrimaryTextFieldInput from '@/components/PrimaryTextFieldInput';
 
+import { AUTH_ERR_CODES, AUTH_ERROR_MESSAGES } from '@/constants/auth';
+
 import { INPUT_TYPES } from '@/constants/inputs';
 import ALERT_COLORS from '@/constants/notification';
+
+import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
@@ -35,8 +42,13 @@ const ToolForm = (props) => {
   const { handleOpenSnackBar } = useContext(AuthContext);
   const { communicatorLoading } = useSelector((state) => state.tools);
   const { data: userData } = useSelector((state) => state.user);
+  const router = useRouter();
   const { register, control, handleSubmit, getValues, setValue, errors } =
     useWatchFields([]);
+
+  const renderNetworkError = () => {
+    router.push(ROUTES.ERROR);
+  };
 
   const handleSubmitMultiForm = async (values) => {
     try {
@@ -69,6 +81,11 @@ const ToolForm = (props) => {
       dispatch(setCommunicatorLoading(false));
       dispatch(fetchToolHistory({ firestore }));
     } catch (error) {
+      if (
+        error.message === AUTH_ERROR_MESSAGES[AUTH_ERR_CODES.NETWORK_REQ_FAIL]
+      ) {
+        renderNetworkError();
+      }
       dispatch(setCommunicatorLoading(false));
       handleOpenSnackBar(
         ALERT_COLORS.ERROR,
