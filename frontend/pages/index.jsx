@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MainAppLayout from '@/layouts/MainAppLayout';
 import HomePage from '@/templates/HomePage';
 
+import withOnboardingRedirect from '@/hoc/onboarding/withOnboardingRedirect';
 import { firestore } from '@/redux/store';
 import fetchTools from '@/redux/thunks/tools';
 
@@ -28,4 +29,5 @@ Home.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };
 
+// export default withOnboardingRedirect(Home);
 export default Home;

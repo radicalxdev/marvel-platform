@@ -1,8 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { Box, Typography, Button, LinearProgress } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
+
 import { CloudUpload } from '@mui/icons-material';
+import { Box, Button, LinearProgress, Typography } from '@mui/material';
+import { useDropzone } from 'react-dropzone';
+
 import { useController } from 'react-hook-form';
+
 import useUploadFile from '../../hooks/useUploadFile';
 
 const ImageUpload = ({ name, control, uid, initialPhotoURL }) => {
@@ -18,38 +21,40 @@ const ImageUpload = ({ name, control, uid, initialPhotoURL }) => {
     }
   }, [initialPhotoURL]);
 
-  const onDrop = useCallback(async (acceptedFiles) => {
-    const file = acceptedFiles[0];
-    if (file) {
-      // Check if file size is less than 1 MB
-      if (file.size <= 1048576) {
-        try {
-          // Upload the file and get the URL
-          const url = await uploadFile(file, uid, 'photos', field.value);
+  const onDrop = useCallback(
+    async (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      if (file) {
+        // Check if file size is less than 1 MB
+        if (file.size <= 1048576) {
+          try {
+            // Upload the file and get the URL
+            const url = await uploadFile(file, uid, 'photos', field.value);
 
-          // Update the form field with the new URL
-          field.onChange(url); 
-          setPreview(url);
-          setErrorMessage('');
-        } catch (uploadError) {
-          console.error('Error uploading file:', uploadError);
-          setErrorMessage('Failed to upload the image.');
-          field.onChange('');
+            // Update the form field with the new URL
+            field.onChange(url);
+            setPreview(url);
+            setErrorMessage('');
+          } catch (uploadError) {
+            setErrorMessage('Failed to upload the image.');
+            field.onChange('');
+            setPreview(null);
+          }
+        } else {
+          // File is too large, set an error message
           setPreview(null);
+          setErrorMessage('File size must be less than 1 MB.');
         }
-      } else {
-        // File is too large, set an error message
-        setPreview(null);
-        setErrorMessage('File size must be less than 1 MB.');
       }
-    }
-  }, [field, uploadFile, uid]);
+    },
+    [field, uploadFile, uid]
+  );
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-        'image/jpeg': ['.jpeg', '.jpg'],
-        'image/png': ['.png'],
+      'image/jpeg': ['.jpeg', '.jpg'],
+      'image/png': ['.png'],
     },
     multiple: false,
   });
@@ -64,8 +69,6 @@ const ImageUpload = ({ name, control, uid, initialPhotoURL }) => {
         border: '2px dashed',
         borderColor: 'divider',
         borderRadius: 2,
-        p: 3,
-        textAlign: 'center',
         position: 'relative',
       }}
     >
@@ -83,7 +86,9 @@ const ImageUpload = ({ name, control, uid, initialPhotoURL }) => {
       {uploading && (
         <Box sx={{ mt: 2, width: '100%' }}>
           <LinearProgress variant="determinate" value={progress} />
-          <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
+          <Typography variant="body2" color="text.secondary">{`${Math.round(
+            progress
+          )}%`}</Typography>
         </Box>
       )}
       {errorMessage && (
@@ -93,7 +98,11 @@ const ImageUpload = ({ name, control, uid, initialPhotoURL }) => {
       )}
       {preview && (
         <Box mt={2}>
-          <img src={preview} alt="Preview" style={{ maxWidth: '100%', maxHeight: 200 }} />
+          <img
+            src={preview}
+            alt="Preview"
+            style={{ maxWidth: '100%', maxHeight: 200 }}
+          />
         </Box>
       )}
     </Box>
