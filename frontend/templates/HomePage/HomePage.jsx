@@ -88,13 +88,7 @@ const HomePage = (props) => {
       <ToolsListingContainer
         data={data}
         loading={loading}
-        category="All Courses"
-      />
-
-      <ToolsListingContainer
-        data={data}
-        loading={loading}
-        category="Planning"
+        category="Marvel Tools"
       />
     </Grid>
   );
