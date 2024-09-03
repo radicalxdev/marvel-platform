@@ -63,6 +63,7 @@ const globalTheme = createTheme({
       primary: 'rgba(255, 255, 255, 1)',
       secondary: 'rgba(255, 255, 255, 0.7)',
       disabled: 'rgba(255, 255, 255, 0.5)',
+      light: 'rgba(0, 0, 0, 1)',
     },
     action: {
       disabledBackground: 'rgba(255, 255, 255, 0.12)',

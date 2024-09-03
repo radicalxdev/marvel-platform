@@ -31,6 +31,7 @@ const OnboardingLayout = ({ children, currentStep }) => {
 
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
+  const themeState = useSelector((state) => state.theme);
   const progressBar = useSelector((state) => state.progressBar);
 
   const isTabletScreen = useMediaQuery((theme) =>
@@ -68,7 +69,13 @@ const OnboardingLayout = ({ children, currentStep }) => {
   if (isTabletScreen) return <AppDisabled head={renderHead()} />;
 
   return (
-    <Grid {...styles.mainContainer}>
+    <Grid
+      {...styles.mainContainer}
+      sx={{
+        background: (theme) =>
+          theme.palette.Background[themeState.data.background],
+      }}
+    >
       {renderHead()}
       {!isTabletScreen && renderOnboardingContent()}
     </Grid>

@@ -9,6 +9,8 @@ const ROUTES = {
   REDIRECT: '/redirect',
   CHAT: '/chat',
   HISTORY: '/history',
+  SYSTEM_CONFIGURATION: '/system-config',
+  FINAL_STEPS: '/finalsteps',
 };
 
 export default ROUTES;
