@@ -1,24 +1,35 @@
 const styles = {
   mainGridProps: {
+    position: 'relative',
     container: true,
     mobileSmall: 12,
     height: '100vh',
     maxHeight: '100vh',
+  },
+  mainGrid: {
+    position: 'relative',
+    container: true,
+    flexDirection: 'column',
+    height: '100vh',
     width: '100vw',
-    maxWidth: '100vw',
-    justifyContent: 'center',
-    padding: 0,
+    alignItems: 'center',
+    color: 'white',
+    overflow: 'hidden',
+    sx: {
+      background:
+        'radial-gradient(circle at center -100px, #4A426A 0%, #201E2B 50%, #000000 100%)',
+    },
   },
   navBarContainer: {
     position: 'fixed',
-    display: 'flex',
     justifyContent: 'center',
-    width: '1380px',
+    width: '1400px',
     maxWidth: '100%',
     height: '62xp',
     maxHeight: '100%',
     py: 2,
-    zIndex: 1,
+    zIndex: 10,
+    backgroundColor: 'transparent',
     sx: (theme) => ({
       inset: '0 auto auto auto',
       [theme.breakpoints.down('laptop')]: {
@@ -32,10 +43,9 @@ const styles = {
     mobileSmall: true,
     justifyContent: 'center',
     alignItems: 'flex-start',
+    marginTop: '80px',
     sx: {
       position: 'relative',
-      background:
-        'radial-gradient(circle at center -100px, #4A426A 0%, #201E2B 50%, #000000 100%)',
       py: {
         desktopLarge: 5,
         desktop: 4,
@@ -53,6 +63,7 @@ const styles = {
   }),
   bgGridProps: {
     position: 'fixed',
+    overflow: 'hidden',
     inset: '0 auto auto auto',
     width: '753px',
     height: '395px',
@@ -80,6 +91,7 @@ const styles = {
       },
     },
   },
+
   accountDetailsGridProps: {
     item: true,
     container: true,

@@ -6,6 +6,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    height: '100%',
     px: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
   },
   menuItemProps: (isActive) => ({

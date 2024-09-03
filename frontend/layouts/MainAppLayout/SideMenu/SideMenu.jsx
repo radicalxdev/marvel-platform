@@ -19,7 +19,7 @@ import { auth } from '@/redux/store';
  *
  * @return {ReactNode} The rendered Side Menu.
  */
-const SideMenu = () => {
+const SideMenu = ({ user }) => {
   const router = useRouter();
 
   const handleSignOutUser = () => {
@@ -48,9 +48,7 @@ const SideMenu = () => {
           <KAIAvatar />
         </Grid>
         <Grid {...styles.titleGridProps}>
-          <Typography {...styles.subtitleProps} color="#9E94A5">
-            Alysa Myers
-          </Typography>
+          <Typography {...styles.subtitleProps}>{user?.fullName}</Typography>
         </Grid>
       </Grid>
     );
@@ -61,16 +59,7 @@ const SideMenu = () => {
       <Grid {...styles.logoutGridProps}>
         <Button
           onClick={handleSignOutUser}
-          endIcon={
-            <LogoutOutlined
-              sx={{
-                background: '#24272F',
-                borderRadius: '6px',
-                height: '24px',
-                width: '24px',
-              }}
-            />
-          }
+          endIcon={<LogoutOutlined {...styles.logOutOutlineProps} />}
           {...styles.logoutButtonProps}
         />
       </Grid>

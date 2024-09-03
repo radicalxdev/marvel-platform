@@ -2,17 +2,21 @@ const styles = {
   mainGridProps: {
     container: true,
     item: true,
+    display: 'flex',
     height: '100%',
     width: '100%',
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    bgcolor: (theme) => theme.palette.Dark_Colors.Dark[6], // proper color #181A205E; change it later in development
+    bgcolor: 'rgba(24, 26, 32, 0.37)',
   },
   logoGridProps: {
     container: true,
     item: true,
     width: 'auto',
-    justifyContent: 'center',
+    height: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     sx: {
       cursor: 'pointer',
     },
@@ -49,17 +53,31 @@ const styles = {
       },
     },
   },
+
+  logOutOutlineProps: {
+    sx: {
+      background: '#24272F',
+      borderRadius: '6px',
+      height: '24px',
+      width: '24px',
+    },
+  },
+
   logoImageGridProps: {
     container: true,
     item: true,
     mobileSmall: 'auto',
-    height: 'auto',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
   },
   profileImageGridProps: {
     container: true,
     item: true,
+    height: '100%',
     width: 'auto',
     justifyContent: 'center',
+    alignItems: 'center',
     sx: {
       cursor: 'pointer',
     },
@@ -70,6 +88,8 @@ const styles = {
     item: true,
     mobileSmall: true,
     justifyContent: 'flex-end',
+    height: '100%',
+    width: 'auto',
     alignItems: 'center',
   },
   titleProps: {
@@ -80,7 +100,7 @@ const styles = {
   subtitleProps: {
     fontFamily: 'Satoshi Bold',
     fontSize: '16px',
-    color: 'white',
+    color: '#9E94A5',
     textAlign: 'left',
   },
 };
