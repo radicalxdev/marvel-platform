@@ -11,6 +11,8 @@ const ROUTES = {
   HISTORY: '/history',
   WELCOME_ONBOARDING: '/welcome-screen',
   PROFILE_SETUP: '/profile-setup',
+  SYSTEM_CONFIGURATION: '/system-config',
+  FINAL_STEPS: '/finalsteps',
 };
 
 export default ROUTES;

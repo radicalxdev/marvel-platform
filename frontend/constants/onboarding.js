@@ -14,3 +14,16 @@ const ONBOARDING_ERROR_MESSAGES = {
   ONBOARDING_COMPLETED: 'Onboarding is already completed.',
   SAVE_FORM_FIRST: 'Please complete the required steps before progressing.',
 };
+
+const THEME_CONFIGS = {
+  dark: {
+    background: 'primary',
+    text: 'primary',
+  },
+  light: {
+    background: 'white2',
+    text: 'light',
+  },
+};
+
+export { THEME_CONFIGS };
