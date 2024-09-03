@@ -29,4 +29,5 @@ Home.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };
 
-export default withOnboardingRedirect(Home);
+// export default withOnboardingRedirect(Home);
+export default Home;
