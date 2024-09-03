@@ -10,7 +10,6 @@ const styles = {
     paddingTop: '50px',
     sx: {
       background: (theme) => {
-        console.log('theme', theme);
         return theme.palette.Background.primary;
       },
     },

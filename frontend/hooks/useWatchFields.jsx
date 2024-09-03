@@ -24,8 +24,10 @@ const useWatchFields = (fieldConfigs) => {
     const isValidField = regexPattern.test(fieldValue);
 
     // Additional checks for `fullName`
-    const isNotOnlyWhitespace = fieldName === 'fullName' ? fieldValue.trim() !== '' : true; // checks if fullName is not empty or contains only white spaces
-    const isLengthValid = fieldName === 'fullName' ? fieldValue.length <= 100 : true; // checks if fullName doesn't have more than 100 characters
+    const isNotOnlyWhitespace =
+      fieldName === 'fullName' ? fieldValue.trim() !== '' : true; // checks if fullName is not empty or contains only white spaces
+    const isLengthValid =
+      fieldName === 'fullName' ? fieldValue.length <= 100 : true; // checks if fullName doesn't have more than 100 characters
 
     const setFieldStatus = () => {
       if (fieldValue === '') return DEFAULT;

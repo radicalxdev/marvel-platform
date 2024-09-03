@@ -9,6 +9,8 @@ const ROUTES = {
   REDIRECT: '/redirect',
   CHAT: '/chat',
   HISTORY: '/history',
+  WELCOME_ONBOARDING: '/welcome-screen',
+  PROFILE_SETUP: '/profile-setup',
 };
 
 export default ROUTES;

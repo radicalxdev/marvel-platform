@@ -1,6 +1,8 @@
 import { httpsCallable } from 'firebase/functions';
-import { functions } from '@/redux/store';
+
 import { ONBOARDING_ERROR_MESSAGES } from '@/constants/onboarding';
+
+import { functions } from '@/redux/store';
 
 const advanceOnboardingStatus = async (uid) => {
   try {
@@ -9,12 +11,12 @@ const advanceOnboardingStatus = async (uid) => {
 
     return response.data;
   } catch (error) {
-    console.error('advanceOnboardingStatus error:', error);
-
     const errorCode = error.code || error.status || 'internal';
-    const errorMessage = error.message || ONBOARDING_ERROR_MESSAGES[errorCode] || 'Failed to advance onboarding status';
-
-    throw { code: errorCode, message: errorMessage };
+    const errorMessage =
+      error.message ||
+      ONBOARDING_ERROR_MESSAGES[errorCode] ||
+      'Failed to advance onboarding status';
+    throw new Error(`Error Code: ${errorCode}, Message: ${errorMessage}`);
   }
 };
 
