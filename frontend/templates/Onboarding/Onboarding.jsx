@@ -50,7 +50,7 @@ const OnboardingPage = ({ onboardingData }) => {
 
     if (onboardingComponents?.[onboardingData.id] === Complete) {
       let downloadURL = null;
-      const file = tempData.profile;
+      const file = tempData.profileImg;
       if (file) {
         const storage = getStorage();
         const storageRef = ref(storage, `profile_images/${file.name}`);
@@ -61,7 +61,7 @@ const OnboardingPage = ({ onboardingData }) => {
       dispatch(
         updateUserData({
           firestore,
-          data: { ...tempData, needsBoarding: false, profile: downloadURL },
+          data: { ...tempData, needsBoarding: false, profileImg: downloadURL },
         })
       );
       dispatch(setCompleted(true));

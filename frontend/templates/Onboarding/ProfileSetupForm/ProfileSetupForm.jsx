@@ -29,7 +29,14 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const formContext = useForm({
-    defaultValues: tempData,
+    defaultValues: {
+      ...tempData,
+      socialMedia: tempData?.socialMedia || {
+        facebook: null,
+        linkedin: null,
+        Xhandel: null,
+      },
+    },
     mode: 'onChange',
   });
 
@@ -42,20 +49,17 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
   } = formContext;
 
   const onSubmit = (data) => {
-    const template = {
-      fullName: null,
-      occupation: null,
-      facebook: null,
-      linkedin: null,
-      x: null,
-      profile: null,
-      bio: null,
+    const completeData = {
+      fullName: data.fullName || null,
+      occupation: data.occupation || null,
+      socialMedia: {
+        facebook: data.socialMedia?.facebook || null,
+        linkedin: data.socialMedia?.linkedin || null,
+        Xhandel: data.socialMedia?.Xhandel || null,
+      },
+      profileImg: data.profileImg || null,
+      bio: data.bio || null,
     };
-
-    const completeData = Object.keys(template).reduce((acc, key) => {
-      acc[key] = data[key] !== undefined ? data[key] : template[key];
-      return acc;
-    }, {});
 
     dispatch(setTempData(completeData));
     onNext(completeData);
@@ -102,34 +106,34 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
     <InputWrapper label="Social Links">
       <Grid {...styles.socialLinksContainer}>
         <ProfileTextField
-          name="facebook"
+          name="socialMedia.facebook"
           control={control}
           rules={ONBOARDING_REGEX.facebook}
           icon={Facebook}
           placeholder="Paste Link"
-          error={errors.facebook}
+          error={errors.socialMedia?.facebook}
         />
         <ProfileTextField
-          name="linkedin"
+          name="socialMedia.linkedin"
           control={control}
           rules={ONBOARDING_REGEX.linkedin}
           icon={LinkedIn}
           placeholder="Paste Link"
-          error={errors.linkedin}
+          error={errors.socialMedia?.linkedin}
         />
         <ProfileTextField
-          name="x"
+          name="socialMedia.Xhandel"
           control={control}
           rules={ONBOARDING_REGEX.x}
           icon={XIcon}
           placeholder="Paste Link"
-          error={errors.x}
+          error={errors.socialMedia?.Xhandel}
         />
       </Grid>
     </InputWrapper>
   );
 
-  const watchProfile = watch('profile');
+  const watchProfile = watch('profileImg');
   const renderProfile = () => {
     const handleImageUpload = async (e, onChange) => {
       e.preventDefault();
@@ -152,7 +156,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
 
     return (
       <Controller
-        name="profile"
+        name="profileImg"
         control={control}
         render={({ field: { onChange, onBlur, name } }) => (
           <InputWrapper label="Profile">
@@ -172,7 +176,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
                     {...stylesOnboarding.button}
                     onClick={() => {
                       setImagePreview(null);
-                      setValue('profile', '');
+                      setValue('profileImg', '');
                     }}
                   >
                     Cancel

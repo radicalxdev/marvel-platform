@@ -22,11 +22,15 @@ const SystemConfigs = ({ onNext }) => {
   const [theme, setTheme] = useState(false);
 
   const handleNext = () => {
-    const systemConfigData = {
+    const notificationSettings = {
       emailNotifications,
       pushNotifications,
       reminders,
+    };
+
+    const systemConfigData = {
       theme,
+      notificationSettings,
     };
 
     try {
