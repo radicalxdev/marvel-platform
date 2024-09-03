@@ -29,7 +29,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     textAlign: 'center',
-    background: 'transparent', 
+    background: 'transparent',
     paddingBottom: '50px',
   },
 };
