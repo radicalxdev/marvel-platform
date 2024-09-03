@@ -11,6 +11,7 @@ import Loader from '@/components/Loader';
 
 import ImageURLs from '@/assets/urls';
 
+import SideMenu from './SideMenu';
 import styles from './styles';
 
 import { setLoading } from '@/redux/slices/authSlice';
@@ -53,12 +54,16 @@ const MainAppLayout = (props) => {
 
   const renderApp = () => {
     return (
-      <Grid {...styles.contentGridProps(extraContentProps, isToolPage)}>
+      <Grid {...styles.mainGrid}>
         <Grid {...styles.bgGridProps}>
           <Image src={ImageURLs.GridBg} alt="grid_bg" {...styles.bgProps} />
         </Grid>
-
-        <Grid {...styles.childrenWrapProps}>{children}</Grid>
+        <Grid {...styles.navBarContainer}>
+          <SideMenu user={user.data} />
+        </Grid>
+        <Grid {...styles.contentGridProps(extraContentProps, isToolPage)}>
+          <Grid {...styles.childrenWrapProps}>{children}</Grid>
+        </Grid>
       </Grid>
     );
   };
