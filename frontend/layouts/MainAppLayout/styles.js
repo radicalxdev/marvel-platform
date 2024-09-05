@@ -27,7 +27,10 @@ const styles = {
     maxWidth: '100%',
     height: '62xp',
     maxHeight: '100%',
-    py: 2,
+    paddingTop: '8px',
+    paddingRight: '24px',
+    paddingBottom: '8px',
+    paddingLeft: '24px',
     zIndex: 10,
     backgroundColor: 'transparent',
     sx: (theme) => ({
@@ -43,7 +46,7 @@ const styles = {
     mobileSmall: true,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    marginTop: '80px',
+    marginTop: '70px',
     sx: {
       position: 'relative',
       py: {
