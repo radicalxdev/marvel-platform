@@ -34,7 +34,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
       socialMedia: tempData?.socialMedia || {
         facebook: null,
         linkedin: null,
-        Xhandel: null,
+        xHandle: null,
       },
     },
     mode: 'onChange',
@@ -55,9 +55,9 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
       socialMedia: {
         facebook: data.socialMedia?.facebook || null,
         linkedin: data.socialMedia?.linkedin || null,
-        Xhandel: data.socialMedia?.Xhandel || null,
+        xHandle: data.socialMedia?.xHandle || null,
       },
-      profileImg: data.profileImg || null,
+      profileImage: data.profileImage || null,
       bio: data.bio || null,
     };
 
@@ -122,18 +122,18 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
           error={errors.socialMedia?.linkedin}
         />
         <ProfileTextField
-          name="socialMedia.Xhandel"
+          name="socialMedia.xHandle"
           control={control}
           rules={ONBOARDING_REGEX.x}
           icon={XIcon}
           placeholder="Paste Link"
-          error={errors.socialMedia?.Xhandel}
+          error={errors.socialMedia?.xHandle}
         />
       </Grid>
     </InputWrapper>
   );
 
-  const watchProfile = watch('profileImg');
+  const watchProfile = watch('profileImage');
   const renderProfile = () => {
     const handleImageUpload = async (e, onChange) => {
       e.preventDefault();
@@ -156,7 +156,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
 
     return (
       <Controller
-        name="profileImg"
+        name="profileImage"
         control={control}
         render={({ field: { onChange, onBlur, name } }) => (
           <InputWrapper label="Profile">
@@ -176,7 +176,7 @@ const ProfileSetupForm = ({ onNext, tempData }) => {
                     {...stylesOnboarding.button}
                     onClick={() => {
                       setImagePreview(null);
-                      setValue('profileImg', '');
+                      setValue('profileImage', '');
                     }}
                   >
                     Cancel
