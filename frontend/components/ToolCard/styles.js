@@ -7,7 +7,7 @@ const styles = {
     desktopLarge: 3,
     laptop: 3,
   },
-  cardProps: {
+  cardProps: (isPublished) => ({
     elevation: 5,
     sx: {
       display: 'flex',
@@ -18,13 +18,14 @@ const styles = {
       width: '100%',
       borderRadius: '12px',
       overflow: 'hidden',
+      cursor: isPublished ? 'pointer' : 'default !important',
       transition: (theme) => theme.transitions.create('all'),
       '&:hover': {
         cursor: 'pointer',
         transform: 'scale(1.05)',
       },
     },
-  },
+  }),
   imageProps: (backgroundImgURL) => ({
     width: '100%',
     height: '144px',
@@ -65,21 +66,30 @@ const styles = {
   },
   descriptionProps: {
     fontFamily: 'Satoshi Regular',
-    fontSize: '14px',
+    fontSize: '12px',
     color: (theme) => theme.palette.Common.White['100p'],
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     sx: {
       display: '-webkit-box',
-      WebkitLineClamp: 1,
+      WebkitLineClamp: 2,
       WebkitBoxOrient: 'vertical',
+      height: '3em',
     },
   },
-  labelProps: {
+  labelProps: (isPublished) => ({
+    size: 'small',
+    variant: 'outlined',
+    label: isPublished ? 'Start Building Now' : 'Coming Soon',
     sx: {
-      borderColor: '#9D74FF',
+      borderColor: isPublished ? '#AC92FF' : '#9D74FF',
+      background: isPublished ? '#AC92FF' : '',
+      '.MuiChip-icon': {
+        color: 'white',
+        ml: '6px',
+      },
     },
-  },
+  }),
 };
 
 export default styles;

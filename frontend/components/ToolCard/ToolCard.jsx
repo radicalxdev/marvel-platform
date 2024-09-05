@@ -1,6 +1,9 @@
+import { AutoAwesome } from '@mui/icons-material';
 import { Card, Chip, Grid, Typography } from '@mui/material';
 
 import { useRouter } from 'next/router';
+
+import TOOLS_ID from '@/constants/tools';
 
 import styles from './styles';
 
@@ -10,19 +13,16 @@ import styles from './styles';
  * @return {JSX.Element} The Tool Card component.
  */
 const ToolCard = (props) => {
-  const {
-    maskedToolUrl,
-    backgroundImgURL,
-    name,
-    description,
-    label = 'undefined',
-    variant = 'outlined',
-  } = props;
+  const { id, maskedToolUrl, backgroundImgURL, name, description } = props;
+
+  const isPublished = Object.values(TOOLS_ID).includes(id);
 
   const router = useRouter();
 
   const handleRoute = () => {
-    return router.push(`/${maskedToolUrl}`);
+    if (isPublished) {
+      router.push(`/${maskedToolUrl}`);
+    }
   };
 
   const renderTitle = () => {
@@ -35,12 +35,17 @@ const ToolCard = (props) => {
   };
 
   const renderLabel = () => {
-    return <Chip label={label} variant={variant} {...styles.labelProps} />;
+    return (
+      <Chip
+        icon={isPublished ? <AutoAwesome /> : ''}
+        {...styles.labelProps(isPublished)}
+      />
+    );
   };
 
   return (
     <Grid onClick={handleRoute} {...styles.mainGridProps}>
-      <Card {...styles.cardProps}>
+      <Card {...styles.cardProps(isPublished)}>
         <Grid {...styles.imageProps(backgroundImgURL)} />
         <Grid {...styles.toolDetailsGridProps}>
           {renderTitle()}
