@@ -21,7 +21,7 @@ const PAGES = [
   },
   {
     name: 'Discovery',
-    link: 'change this to actual discovery route', // TODO
+    link: ROUTES.CHAT, // TODO change this to actual discovery route
     icon: <DiscoveryIcon />,
     id: 'page_2',
   },
