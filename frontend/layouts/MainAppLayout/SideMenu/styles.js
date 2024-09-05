@@ -13,20 +13,23 @@ const styles = {
   logoGridProps: {
     container: true,
     item: true,
+    columnGap: 1.5,
+    display: 'flex',
+    maxWidth: '235px',
     width: 'auto',
-    height: '100%',
+    maxHeight: '89px',
+    height: 'auto',
     justifyContent: 'flex-start',
     alignItems: 'center',
     sx: {
       cursor: 'pointer',
     },
-    px: { laptop: 2, desktop: 3, desktopMedium: 4 },
   },
   logoutGridProps: {
     container: true,
     item: true,
     width: 'auto',
-    px: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
+    px: { laptop: 0.5, desktop: 1.5, desktopMedium: 2 },
   },
   logoutButtonProps: {
     variant: 'outlined',
@@ -34,9 +37,11 @@ const styles = {
     sx: {
       justifyContent: 'flex-start',
       borderRadius: '24px',
-      py: 3,
-      px: { laptop: 1, desktop: 1.5, desktopMedium: 2 },
       borderColor: 'transparent',
+      paddingTop: '6px',
+      paddingRight: '7px',
+      paddingBottom: '8px',
+      paddingLeft: '12px',
       transition: (theme) => theme.transitions.create('all'),
       color: '#9E94A5',
       path: {
@@ -45,7 +50,8 @@ const styles = {
       },
       ':hover': {
         color: '#9E94A5',
-        background: (theme) => `${theme.palette.Background.purple}30`,
+        borderColor: 'transparent',
+        background: 'transparent',
         path: {
           fill: '#9E94A5',
           stroke: '#9E94A5',
@@ -58,8 +64,14 @@ const styles = {
     sx: {
       background: '#24272F',
       borderRadius: '6px',
-      height: '24px',
-      width: '24px',
+      maxWidth: '30px',
+      maxHeight: '30px',
+      height: '100%',
+      width: '100%',
+      paddingTop: '6px',
+      paddingRight: '7px',
+      paddingBottom: '6px',
+      paddingLeft: '7px',
     },
   },
 
@@ -67,13 +79,13 @@ const styles = {
     container: true,
     item: true,
     mobileSmall: 'auto',
-    width: '100%',
     height: '100%',
-    justifyContent: 'center',
+    width: '100%',
   },
   profileImageGridProps: {
     container: true,
     item: true,
+    columnGap: 2,
     height: '100%',
     width: 'auto',
     justifyContent: 'center',
@@ -81,16 +93,27 @@ const styles = {
     sx: {
       cursor: 'pointer',
     },
-    px: { laptop: 2, desktop: 3, desktopMedium: 4 },
+    px: { laptop: 0.5, desktop: 1.5, desktopMedium: 2 },
   },
+
+  profileNameProps: {
+    maxWidth: '86px',
+    width: 'auto',
+    height: '24px',
+    fontFamily: 'Satoshi Bold',
+    fontSize: '16px',
+    color: '#9E94A5',
+    textAlign: 'left',
+    lineHeight: '16px',
+  },
+
   titleGridProps: {
     container: true,
     item: true,
     mobileSmall: true,
-    justifyContent: 'flex-end',
-    height: '100%',
+    display: 'flex',
     width: 'auto',
-    alignItems: 'center',
+    height: '19px',
   },
   titleProps: {
     fontFamily: 'Ethnocentric Regular',
@@ -98,10 +121,13 @@ const styles = {
     color: 'white',
   },
   subtitleProps: {
+    width: 'auto',
+    height: 'auto',
     fontFamily: 'Satoshi Bold',
     fontSize: '16px',
     color: '#9E94A5',
     textAlign: 'left',
+    lineHeight: '14px',
   },
 };
 

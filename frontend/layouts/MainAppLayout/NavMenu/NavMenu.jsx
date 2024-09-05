@@ -10,7 +10,7 @@ import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-import { chatRegex, homeRegex } from '@/regex/routes';
+import { chatRegex, discoveryRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
   {
@@ -21,7 +21,7 @@ const PAGES = [
   },
   {
     name: 'Discovery',
-    link: ROUTES.CHAT, // TODO change the link to the new discovery page
+    link: ROUTES.DISCOVERY, // TODO change the link to the new discovery page
     icon: <DiscoveryIcon />,
     id: 'page_2',
   },
@@ -43,10 +43,21 @@ const NavMenu = () => {
   const { pathname } = router;
 
   const setActive = (id) => {
-    const isNotHomePage = [chatRegex.test(pathname)].includes(true);
+    const isNotHomePage = [
+      chatRegex.test(pathname),
+      discoveryRegex.test(pathname),
+    ].includes(true);
+
+    const isNotDiscoveryPage = [
+      chatRegex.test(pathname),
+      homeRegex.test(pathname),
+    ].includes(true);
 
     if (id === 'page_1')
       return isNotHomePage ? false : homeRegex.test(pathname);
+
+    if (id === 'page_2')
+      return isNotDiscoveryPage ? false : discoveryRegex.test(pathname);
 
     return chatRegex.test(pathname);
   };

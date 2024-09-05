@@ -48,7 +48,7 @@ const SideMenu = ({ user }) => {
           <KAIAvatar />
         </Grid>
         <Grid {...styles.titleGridProps}>
-          <Typography {...styles.subtitleProps}>{user?.fullName}</Typography>
+          <Typography {...styles.profileNameProps}>{user?.fullName}</Typography>
         </Grid>
       </Grid>
     );
