@@ -14,11 +14,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchKaiTools = async () => {
-      await dispatch(fetchTools({ firestore }));
-    };
-
-    if (!data) fetchKaiTools();
+    if (!data) dispatch(fetchTools({ firestore }));
   }, []);
 
   return <HomePage data={data} loading={loading} error={error} />;

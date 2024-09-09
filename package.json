@@ -1,5 +1,5 @@
 {
-  "name": "kai-ai",
+  "name": "marvel-ai",
   "version": "1.0.0",
   "description": "This is an AI teaching assistant project that combines a front-end and back-end application. The front-end is located in the `platform-frontend` directory, and the back-end is located in the `platform-backend` directory.",
   "main": "index.js",
