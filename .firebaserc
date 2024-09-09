@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "kai-ai-f63c8"
+    "default": "ui-revamp"
   },
   "targets": {
-    "kai-ai-f63c8": {
+    "ui-revamp": {
       "hosting": {
         "next": [
-          "kai-ai-f63c8"
+          "ui-revamp"
         ]
       }
     }
