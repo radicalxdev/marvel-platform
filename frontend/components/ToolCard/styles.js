@@ -80,7 +80,7 @@ const styles = {
   labelProps: (isPublished) => ({
     size: 'small',
     variant: 'outlined',
-    label: isPublished ? 'Start Building Now' : 'Coming Soon',
+    label: isPublished ? 'Build Now' : 'Coming Soon',
     sx: {
       borderColor: isPublished ? '#AC92FF' : '#9D74FF',
       background: isPublished ? '#AC92FF' : '',
