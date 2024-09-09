@@ -60,30 +60,30 @@ const HomePage = (props) => {
     );
   };
 
-  const renderFilters = () => {
-    return (
-      <Grid {...styles.filtersProps}>
-        <Grid {...styles.tabsGrid}>
-          {TABS.map((tab) => (
-            <TabButton
-              text={tab}
-              isActive={currentTab === tab}
-              setActive={setCurrentTab}
-              key={tab}
-            />
-          ))}
-        </Grid>
+  // const renderFilters = () => {
+  //   return (
+  //     <Grid {...styles.filtersProps}>
+  //       <Grid {...styles.tabsGrid}>
+  //         {TABS.map((tab) => (
+  //           <TabButton
+  //             text={tab}
+  //             isActive={currentTab === tab}
+  //             setActive={setCurrentTab}
+  //             key={tab}
+  //           />
+  //         ))}
+  //       </Grid>
 
-        <TextField {...styles.inputProps(<Search />)} />
-      </Grid>
-    );
-  };
+  //       <TextField {...styles.inputProps(<Search />)} />
+  //     </Grid>
+  //   );
+  // };
 
   return (
     <Grid {...styles.mainGridProps}>
       {renderWelcomeBanner()}
 
-      {renderFilters()}
+      {/* {renderFilters()} */}
 
       <ToolsListingContainer
         data={data}
