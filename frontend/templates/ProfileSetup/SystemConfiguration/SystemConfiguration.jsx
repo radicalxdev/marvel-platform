@@ -11,8 +11,6 @@ import {
 
 import { useDispatch } from 'react-redux';
 
-import ConfigSwitch from '@/components/ConfigSwitch';
-
 import { updateTheme } from '@/redux/slices/themeSlice';
 import { ColorModeContext } from '@/theme/theme';
 
