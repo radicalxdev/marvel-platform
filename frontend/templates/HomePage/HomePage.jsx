@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 import { Search } from '@mui/icons-material';
 import { Box, Grid, TextField, Typography } from '@mui/material';
-
 import Image from 'next/image';
 
 import TabButton from '@/components/TabButton';
@@ -10,6 +9,8 @@ import ToolsListingContainer from '@/components/ToolsListingContainer';
 
 import Star from '@/assets/svg/Star_3.svg';
 import ImageURLs from '@/assets/urls';
+
+import disableFilters from '@/constants/disableFilters';
 
 import styles from './styles';
 
@@ -60,31 +61,29 @@ const HomePage = (props) => {
     );
   };
 
-  // const renderFilters = () => {
-  //   return (
-  //     <Grid {...styles.filtersProps}>
-  //       <Grid {...styles.tabsGrid}>
-  //         {TABS.map((tab) => (
-  //           <TabButton
-  //             text={tab}
-  //             isActive={currentTab === tab}
-  //             setActive={setCurrentTab}
-  //             key={tab}
-  //           />
-  //         ))}
-  //       </Grid>
+  const renderFilters = () => {
+    return (
+      <Grid {...styles.filtersProps}>
+        <Grid {...styles.tabsGrid}>
+          {TABS.map((tab) => (
+            <TabButton
+              text={tab}
+              isActive={currentTab === tab}
+              setActive={setCurrentTab}
+              key={tab}
+            />
+          ))}
+        </Grid>
 
-  //       <TextField {...styles.inputProps(<Search />)} />
-  //     </Grid>
-  //   );
-  // };
+        <TextField {...styles.inputProps(<Search />)} />
+      </Grid>
+    );
+  };
 
   return (
     <Grid {...styles.mainGridProps}>
       {renderWelcomeBanner()}
-
-      {/* {renderFilters()} */}
-
+      {!disableFilters && renderFilters()}{' '}
       <ToolsListingContainer
         data={data}
         loading={loading}
@@ -93,4 +92,5 @@ const HomePage = (props) => {
     </Grid>
   );
 };
+
 export default HomePage;
