@@ -1,0 +1,112 @@
+{
+  "name": "hast-util-sanitize",
+  "version": "5.0.1",
+  "description": "hast utility to sanitize nodes",
+  "license": "MIT",
+  "keywords": [
+    "unist",
+    "hast",
+    "hast-util",
+    "util",
+    "utility",
+    "html",
+    "clean",
+    "xss",
+    "safe",
+    "sanitize"
+  ],
+  "repository": "syntax-tree/hast-util-sanitize",
+  "bugs": "https://github.com/syntax-tree/hast-util-sanitize/issues",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/unified"
+  },
+  "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "contributors": [
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+    "Jason Switzer <jswitzer@gmail.com>"
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "exports": "./index.js",
+  "files": [
+    "lib/",
+    "index.d.ts",
+    "index.js"
+  ],
+  "dependencies": {
+    "@types/hast": "^3.0.0",
+    "@ungap/structured-clone": "^1.2.0",
+    "unist-util-position": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/ungap__structured-clone": "^0.3.0",
+    "aria-attributes": "^2.0.0",
+    "c8": "^8.0.0",
+    "deepmerge": "^4.0.0",
+    "hast-util-from-html": "^2.0.0",
+    "hast-util-to-html": "^9.0.0",
+    "hastscript": "^8.0.0",
+    "html-element-attributes": "^3.0.0",
+    "html-tag-names": "^2.0.0",
+    "prettier": "^3.0.0",
+    "remark-cli": "^11.0.0",
+    "remark-preset-wooorm": "^9.0.0",
+    "type-coverage": "^2.0.0",
+    "typescript": "^5.0.0",
+    "unist-builder": "^4.0.0",
+    "unist-util-visit": "^5.0.0",
+    "xo": "^0.56.0"
+  },
+  "scripts": {
+    "prepack": "npm run build && npm run format",
+    "build": "tsc --build --clean && tsc --build && type-coverage",
+    "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
+    "test-api": "node --conditions development test/index.js",
+    "test-coverage": "c8 --100 --reporter lcov npm run test-api",
+    "test": "npm run build && npm run format && npm run test-coverage"
+  },
+  "prettier": {
+    "bracketSpacing": false,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
+  },
+  "remarkConfig": {
+    "plugins": [
+      "remark-preset-wooorm"
+    ]
+  },
+  "typeCoverage": {
+    "atLeast": 100,
+    "detail": true,
+    "ignoreCatch": true,
+    "#": "Couple of needed `any`s",
+    "ignoreFiles": [
+      "lib/index.d.ts"
+    ],
+    "strict": true
+  },
+  "xo": {
+    "overrides": [
+      {
+        "files": [
+          "test/**/*.js"
+        ],
+        "rules": {
+          "max-nested-callbacks": "off",
+          "no-await-in-loop": "off",
+          "no-script-url": "off"
+        }
+      }
+    ],
+    "prettier": true,
+    "rules": {
+      "complexity": "off",
+      "unicorn/prefer-at": "off"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "name": "next-transpile-modules",
+  "version": "10.0.1",
+  "license": "MIT",
+  "author": "Pierre de la Martinière <pierre.de.la.martiniere@gmail.com>",
+  "description": "Next.js plugin to transpile code from node_modules",
+  "main": "src/next-transpile-modules.js",
+  "files": [
+    "src/next-transpile-modules.js",
+    "src/next-transpile-modules.d.ts"
+  ],
+  "scripts": {
+    "setup": "node --trace-uncaught src/__tests__/setup.js",
+    "update:next": "npm run setup && bash scripts/next-update.sh",
+    "typings": "tsc",
+    "prepublishOnly": "npm run typings",
+    "pretest": "npm run setup",
+    "quickie": "node --trace-uncaught src/__tests__/setup.js && yarn --cwd src/__tests__/__apps__/swc/app run dev",
+    "test": "jest --forceExit",
+    "test:debug": "jest --detectOpenHandles --forceExit",
+    "test:lint": "eslint .",
+    "test:formatting": "prettier --check \"**/*.js\"",
+    "test:formatting:fix": "prettier --check \"**/*.js\" --write",
+    "test:prepare:npm-basic": "npm run build --prefix=src/__tests__/__apps__/npm-basic",
+    "test:prepare:yarn-workspaces": "yarn --cwd src/__tests__/__apps__/yarn-workspaces/app run build",
+    "test:prepare:yarn-workspaces-symlinks": "yarn --cwd src/__tests__/__apps__/yarn-workspaces-symlinks/app run build",
+    "test:prepare:pnpm": "npm run build --prefix=src/__tests__/__apps__/pnpm",
+    "test:prepare:swc": "yarn --cwd src/__tests__/__apps__/swc/app run build",
+    "test:prepare:with-app-dir": "yarn --cwd src/__tests__/__apps__/with-app-dir/app run build",
+    "test:prepare": "npm run test:prepare:npm-basic && npm run test:prepare:yarn-workspaces && npm run test:prepare:yarn-workspaces-symlinks && npm run test:prepare:pnpm && npm run test:prepare:swc && npm run test:prepare:with-app-dir"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martpie/next-transpile-modules.git"
+  },
+  "bugs": {
+    "url": "https://github.com/martpie/next-transpile-modules/issues"
+  },
+  "homepage": "https://github.com/martpie/next-transpile-modules#readme",
+  "keywords": [
+    "next",
+    "next.js",
+    "plugin",
+    "transpile",
+    "modules",
+    "babel",
+    "webpack"
+  ],
+  "dependencies": {
+    "enhanced-resolve": "^5.10.0"
+  },
+  "devDependencies": {
+    "@types/jest-environment-puppeteer": "5.0.3",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-semistandard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "fs-extra": "^11.1.1",
+    "jest": "^29.6.1",
+    "jest-environment-node": "^29.6.1",
+    "jest-environment-puppeteer": "^9.0.0",
+    "jest-puppeteer": "^9.0.0",
+    "prettier": "^3.0.0",
+    "prettier-eslint": "^15.0.1",
+    "puppeteer": "20.9.0",
+    "rewire": "^6.0.0",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2"
+  }
+}

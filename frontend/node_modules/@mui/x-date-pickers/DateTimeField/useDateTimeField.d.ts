@@ -1,0 +1,2 @@
+import { UseDateTimeFieldProps, UseDateTimeFieldParams } from './DateTimeField.types';
+export declare const useDateTimeField: <TDate, TChildProps extends {}>({ props: inProps, inputRef, }: UseDateTimeFieldParams<TDate, TChildProps>) => import("../internals/hooks/useField").UseFieldResponse<Omit<TChildProps & Omit<UseDateTimeFieldProps<TDate>, "format" | "disableFuture" | "disablePast" | "maxDate" | "minDate"> & Required<Pick<UseDateTimeFieldProps<TDate>, "format" | "disableFuture" | "disablePast" | "maxDate" | "minDate">>, keyof UseDateTimeFieldProps<any>>>;

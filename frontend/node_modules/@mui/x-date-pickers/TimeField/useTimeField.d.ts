@@ -1,0 +1,2 @@
+import { UseTimeFieldProps, UseTimeFieldParams } from './TimeField.types';
+export declare const useTimeField: <TDate, TChildProps extends {}>({ props: inProps, inputRef, }: UseTimeFieldParams<TDate, TChildProps>) => import("../internals/hooks/useField").UseFieldResponse<Omit<TChildProps & Omit<UseTimeFieldProps<TDate>, "format" | keyof import("../internals").BaseTimeValidationProps> & Required<Pick<UseTimeFieldProps<TDate>, "format" | keyof import("../internals").BaseTimeValidationProps>>, keyof UseTimeFieldProps<any>>>;

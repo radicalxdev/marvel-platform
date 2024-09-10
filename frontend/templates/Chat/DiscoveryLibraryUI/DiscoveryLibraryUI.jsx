@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Card,
@@ -20,6 +20,8 @@ import imageCover4 from '@/assets/svg/ImageCover4.svg';
 import AvatarImage from '@/assets/svg/ReadyPlayerMeAvatar.svg';
 import StarGroupIcon from '@/assets/svg/starGroupIcon.svg';
 import UnionIcon from '@/assets/svg/Union.svg';
+
+import { categorizePrompts } from '@/constants/prompts';
 
 import styles from './styles';
 
@@ -46,34 +48,9 @@ const DiscoveryLibraryUI = (props) => {
 
   useEffect(() => {
     // Define your custom prompts here
-    const categorizePrompts = () => [
-      {
-        title: 'Math Tutor',
-        description:
-          'From now on, I want you to act as a math tutor. I will be asking you questions related to various mathematical concepts, including algebra, geometry, calculus, and statistics. Please provide detailed explanations, step-by-step solutions, and relevant examples for each topic we discuss.',
-      },
-      {
-        title: 'Biology Tutor',
-        description:
-          'Please act as my biology tutor. I will ask you about topics such as cell biology, genetics, evolution, ecology, and human anatomy. Provide comprehensive explanations, diagrams, and examples to help me understand these biological concepts.',
-      },
-      {
-        title: 'Programming Tutor',
-        description:
-          'I want you to be my programming tutor. I will ask you about various programming languages, coding concepts, algorithms, and debugging techniques. Provide clear explanations, code examples, and step-by-step guidance for writing and understanding code.',
-      },
-      {
-        title: 'Music Tutor',
-        description:
-          'Act as a music tutor for our conversation. I will ask you about music theory, instruments, composition, and performance techniques. Provide detailed explanations, sheet music examples, and exercises to help me understand and improve my musical abilities.',
-      },
-      // { title: 'Programming Tutor', description: 'I want you to be my programming tutor. I will ask you about various programming languages, coding concepts, algorithms, and debugging techniques. Provide clear explanations, code examples, and step-by-step guidance for writing and understanding code.' },
 
-      // Add more prompts as needed
-    ];
     const fetchPrompts = async () => {
-      const prompts = categorizePrompts(); // This could be an API call or local data
-      setCustomPrompts(prompts);
+      setCustomPrompts(categorizePrompts);
     };
 
     fetchPrompts();
