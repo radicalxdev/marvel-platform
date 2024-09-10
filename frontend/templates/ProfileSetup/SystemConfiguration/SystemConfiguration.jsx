@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import {
   Box,
@@ -9,13 +9,10 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useDispatch, useSelector } from 'react-redux';
-
-// import ConfigSwitch from '@/components/ConfigSwitch';
-
-import { THEME_CONFIGS } from '@/constants/onboarding';
+import { useDispatch } from 'react-redux';
 
 import { updateTheme } from '@/redux/slices/themeSlice';
+import { ColorModeContext } from '@/theme/theme';
 
 const SystemConfiguration = ({ onSubmit }) => {
   const [preferenceData, setPreferenceData] = useState({
@@ -26,7 +23,7 @@ const SystemConfiguration = ({ onSubmit }) => {
   });
 
   const dispatch = useDispatch();
-  const themeState = useSelector((state) => state.theme);
+  const { toggleColorMode } = useContext(ColorModeContext);
 
   const handleToggle = (event) => {
     const { name, checked } = event.target;
@@ -34,14 +31,17 @@ const SystemConfiguration = ({ onSubmit }) => {
       ...prevState,
       [name]: checked,
     }));
+    if (name === 'theme') {
+      toggleColorMode();
+    }
   };
 
   // useEffect to handle theme changes based on preferenceData.theme
   useEffect(() => {
     if (preferenceData.theme) {
-      dispatch(updateTheme(THEME_CONFIGS.light));
+      dispatch(updateTheme('dark'));
     } else {
-      dispatch(updateTheme(THEME_CONFIGS.dark));
+      dispatch(updateTheme('light'));
     }
   }, [preferenceData.theme, dispatch]);
 
@@ -57,15 +57,15 @@ const SystemConfiguration = ({ onSubmit }) => {
     <Container maxWidth="xs" sx={{ textAlign: 'center', paddingTop: '40px' }}>
       <Typography
         variant="h4"
-        sx={{ mb: 1, color: `text.${themeState.data.text}` }}
         gutterBottom
+        sx={{ mb: 1, color: 'text.primary' }}
       >
         System Configurations
       </Typography>
       <Typography
         variant="subtitle1"
-        sx={{ mb: 1, color: `text.${themeState.data.text}` }}
         gutterBottom
+        sx={{ mb: 1, color: 'text.primary' }}
       >
         We need some permissions to get you started
       </Typography>
@@ -91,9 +91,6 @@ const SystemConfiguration = ({ onSubmit }) => {
           sx={{
             marginBottom: '15px',
             justifyContent: 'space-between',
-            '& .MuiFormControlLabel-label': {
-              color: `text.${themeState.data.text}`,
-            },
           }}
         />
         <FormControlLabel
@@ -109,9 +106,6 @@ const SystemConfiguration = ({ onSubmit }) => {
           sx={{
             marginBottom: '15px',
             justifyContent: 'space-between',
-            '& .MuiFormControlLabel-label': {
-              color: `text.${themeState.data.text}`,
-            },
           }}
         />
         <FormControlLabel
@@ -127,9 +121,6 @@ const SystemConfiguration = ({ onSubmit }) => {
           sx={{
             marginBottom: '15px',
             justifyContent: 'space-between',
-            '& .MuiFormControlLabel-label': {
-              color: `text.${themeState.data.text}`,
-            },
           }}
         />
         <FormControlLabel
@@ -146,9 +137,6 @@ const SystemConfiguration = ({ onSubmit }) => {
           sx={{
             marginBottom: '15px',
             justifyContent: 'space-between',
-            '& .MuiFormControlLabel-label': {
-              color: `text.${themeState.data.text}`,
-            },
           }}
         />
       </Box>
