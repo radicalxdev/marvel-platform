@@ -1,33 +1,51 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
-import useWatchFields from '@/hooks/useWatchFields';
+import { Controller, FormContainer, useForm } from 'react-hook-form-mui';
 
+import FormTextField from '@/components/FormTextField';
 import ImageUpload from '@/components/ImageUpload';
 
 import SocialLinkInput from '../SocialLinkInput';
 
+import styles from './styles';
+
 import ONBOARDING_REGEX from '@/regex/onboarding';
 
-const WATCH_FIELDS = [
-  { fieldName: 'fullName', regexPattern: ONBOARDING_REGEX.fullName.regex },
-  { fieldName: 'occupation', regexPattern: ONBOARDING_REGEX.occupation.regex },
-  { fieldName: 'facebookLink', regexPattern: ONBOARDING_REGEX.url.regex },
-  { fieldName: 'linkedinLink', regexPattern: ONBOARDING_REGEX.url.regex },
-  { fieldName: 'twitterLink', regexPattern: ONBOARDING_REGEX.url.regex },
-  { fieldName: 'bio', regexPattern: ONBOARDING_REGEX.bio.regex },
-];
-
 const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
-  const { register, control, handleSubmit, fieldStates, watch } =
-    useWatchFields(WATCH_FIELDS);
+  const formContext = useForm({
+    defaultValues: {
+      fullName: user?.fullName || '',
+      occupation: user?.occupation || '',
+      bio: user?.bio || '',
+      twitterLink: user?.socialLink?.twitter || '',
+      facebookLink: user?.socialLink?.facebook || '',
+      linkedinLink: user?.socialLink?.linkedin || '',
+      profileImage: user?.profilePhotoUrl || '',
+    },
+  });
+
   const [error, setError] = useState(null);
+  const [socialLinkError, setSocialLinkError] = useState(null);
+  const socialLinkErrorRef = useRef(null);
 
   const onSubmitForm = async (data) => {
     setError(null);
+    setSocialLinkError(null);
+
     if (!data.facebookLink && !data.linkedinLink && !data.twitterLink) {
-      setError('Please, fill in at least one social media link.');
+      setSocialLinkError('Please, fill in at least one social media link.');
+      // Scroll to error message
+      setTimeout(() => {
+        console.log(socialLinkErrorRef.current);
+        if (socialLinkErrorRef.current) {
+          socialLinkErrorRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }, 100); // Small delay to ensure DOM has updated
       return;
     }
 
@@ -39,198 +57,209 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
   };
 
   // Watch the bio field for changes
-  const bioValue = watch('bio', '');
+  const bioValue = formContext.watch('bio', user?.bio || '');
   const remainingChars = 200 - bioValue.length;
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)}>
+    <FormContainer formContext={formContext} onSuccess={onSubmitForm}>
       {/* Title */}
-      <Box sx={{ width: '100%', mb: 4 }}>
-        <Typography
-          variant="h4"
-          align="center"
-          sx={{ mb: 1, color: 'text.primary' }}
-        >
+      <Box sx={styles.mainContainer}>
+        <Typography variant="h4" align="center" sx={styles.title}>
           Profile Setup
         </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          sx={{ color: 'text.primary' }}
-        >
+        <Typography variant="subtitle1" align="center" sx={styles.subtitle}>
           Get started by setting up your profile
         </Typography>
       </Box>
 
-      {/* Fullname and occupation */}
-      <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-        {/* Fullname */}
-        <Box sx={{ flex: 1 }}>
-          <TextField
-            {...register('fullName', { required: 'Full Name is required' })}
-            label="Full Name"
-            placeholder="Enter Name"
-            fullWidth
+      {/* Fullname and Occupation */}
+      <Box sx={styles.formSection}>
+        {/* Full Name */}
+        <Box sx={styles.fieldContainer}>
+          <Controller
+            name="fullName"
+            control={formContext.control}
             defaultValue={user.fullName || ''}
-            error={fieldStates.fullName.status === 'error'}
-            helperText={
-              fieldStates.fullName.status === 'error'
-                ? ONBOARDING_REGEX.fullName.message
-                : ''
-            }
-            sx={{
-              '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'divider',
+            rules={{
+              required: 'Full Name is required',
+              pattern: {
+                value: ONBOARDING_REGEX.fullName.regex,
+                message: ONBOARDING_REGEX.fullName.message,
               },
-              '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
-                {
-                  borderColor: 'primary.main',
-                },
-              '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
-                {
-                  borderColor: 'primary.main',
-                },
             }}
+            render={({ field, fieldState }) => (
+              <FormTextField
+                {...field}
+                id="fullName"
+                label="Full Name"
+                placeholderText="Enter Name"
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
+              />
+            )}
           />
         </Box>
 
         {/* Occupation */}
-        <Box sx={{ flex: 1 }}>
-          <TextField
-            {...register('occupation', { required: 'Occupation is required' })}
-            label="Occupation"
-            placeholder="Enter Occupation"
-            fullWidth
+        <Box sx={styles.fieldContainer}>
+          <Controller
+            name="occupation"
+            control={formContext.control}
             defaultValue={user.occupation || ''}
-            error={fieldStates.occupation.status === 'error'}
-            helperText={
-              fieldStates.occupation.status === 'error'
-                ? ONBOARDING_REGEX.occupation.message
-                : ''
-            }
-            sx={{
-              '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'divider',
+            rules={{
+              required: 'Occupation is required',
+              pattern: {
+                value: ONBOARDING_REGEX.occupation.regex,
+                message: ONBOARDING_REGEX.occupation.message,
               },
-              '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
-                {
-                  borderColor: 'primary.main',
-                },
-              '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
-                {
-                  borderColor: 'primary.main',
-                },
             }}
+            render={({ field, fieldState }) => (
+              <FormTextField
+                {...field}
+                id="occupation"
+                label="Occupation"
+                placeholderText="Enter Occupation"
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
+              />
+            )}
           />
         </Box>
       </Box>
 
       {/* Social Links */}
-      <Box sx={{ mb: 3 }}>
+      <Box sx={styles.socialLinksSection}>
         <Typography
           variant="subtitle1"
           align="left"
-          sx={{ mb: 2, color: 'text.primary' }}
+          sx={styles.typographyLabel}
         >
           Social Links
         </Typography>
+
+        {/* Social Link Error Message */}
+        {socialLinkError && (
+          <Box ref={socialLinkErrorRef} sx={styles.socialLinkErrorMessage}>
+            <Typography variant="body2" color="error" align="center">
+              {socialLinkError}
+            </Typography>
+          </Box>
+        )}
+
+        {/* Facebook Link */}
         <SocialLinkInput
-          {...register('facebookLink')}
+          name="facebookLink"
+          control={formContext.control}
           icon="facebook"
-          defaultValue={user.socialLink?.facebook || ''}
-          error={fieldStates.facebookLink.status === 'error'}
-          helperText={
-            fieldStates.facebookLink.status === 'error'
-              ? ONBOARDING_REGEX.url.message
-              : ''
-          }
+          validation={{
+            pattern: {
+              value: ONBOARDING_REGEX.url.regex,
+              message: ONBOARDING_REGEX.url.message,
+            },
+          }}
         />
+        {/* Linkedin Link */}
         <SocialLinkInput
-          {...register('linkedinLink')}
+          name="linkedinLink"
+          control={formContext.control}
           icon="linkedin"
-          defaultValue={user.socialLink?.linkedin || ''}
-          error={fieldStates.linkedinLink.status === 'error'}
-          helperText={
-            fieldStates.linkedinLink.status === 'error'
-              ? ONBOARDING_REGEX.url.message
-              : ''
-          }
+          validation={{
+            pattern: {
+              value: ONBOARDING_REGEX.url.regex,
+              message: ONBOARDING_REGEX.url.message,
+            },
+          }}
         />
+        {/* Twitter Link */}
         <SocialLinkInput
-          {...register('twitterLink')}
+          name="twitterLink"
+          control={formContext.control}
           icon="twitter"
-          defaultValue={user.socialLink?.twitter || ''}
-          error={fieldStates.twitterLink.status === 'error'}
-          helperText={
-            fieldStates.twitterLink.status === 'error'
-              ? ONBOARDING_REGEX.url.message
-              : ''
-          }
+          validation={{
+            pattern: {
+              value: ONBOARDING_REGEX.url.regex,
+              message: ONBOARDING_REGEX.url.message,
+            },
+          }}
         />
       </Box>
 
       {/* Profile Image */}
-      <Box sx={{ mb: 3 }}>
+      <Box sx={styles.bioContainer}>
         <Typography
           variant="subtitle1"
           align="left"
-          sx={{ mb: 2, color: 'text.primary' }}
+          sx={styles.typographyLabel}
         >
-          Profile
+          Profile Image
         </Typography>
+
         <ImageUpload
           name="profileImage"
-          control={control}
+          control={formContext.control}
           uid={user.id}
           initialPhotoURL={user.profilePhotoUrl || ''}
         />
       </Box>
 
       {/* Bio */}
-      <Box sx={{ mb: 3 }}>
-        <TextField
-          {...register('bio', { required: 'Bio is required' })}
-          label="Bio"
-          placeholder="Introduce yourself in a few words"
-          multiline
-          rows={4}
-          fullWidth
+      <Box sx={styles.bioContainer}>
+        <Controller
+          name="bio"
+          control={formContext.control}
           defaultValue={user.bio || ''}
-          error={fieldStates.bio.status === 'error'}
-          helperText={
-            fieldStates.bio.status === 'error'
-              ? ONBOARDING_REGEX.bio.message
-              : ''
-          }
-          sx={{
-            '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'divider',
+          rules={{
+            required: 'Bio is required',
+            pattern: {
+              value: ONBOARDING_REGEX.bio.regex,
+              message: ONBOARDING_REGEX.bio.message,
             },
-            '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'primary.main',
+            maxLength: {
+              value: 200,
+              message: 'Bio cannot exceed 200 characters.',
             },
-            '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
-              {
-                borderColor: 'primary.main',
-              },
           }}
+          render={({ field, fieldState }) => (
+            <Box>
+              <FormTextField
+                {...field}
+                id="bio"
+                label="Bio"
+                placeholderText="Introduce yourself in a few words"
+                multiline
+                rows={5}
+                error={false}
+                helperText=""
+                FormHelperTextProps={{ style: { display: 'none' } }}
+                sx={styles.bioTextField}
+              />
+              {/* Error Message and Character Count Display */}
+              <Box sx={styles.errorMessageBox}>
+                {/* Error Messages */}
+                {fieldState.error && (
+                  <Typography
+                    variant="caption"
+                    color="error"
+                    sx={styles.errorMessage}
+                  >
+                    {fieldState.error.message}
+                  </Typography>
+                )}
+                {/* Character Count */}
+                <Typography variant="caption" sx={styles.charCount}>
+                  {`Character Limit: ${
+                    remainingChars < 0 ? 0 : remainingChars
+                  } characters`}
+                </Typography>
+              </Box>
+            </Box>
+          )}
         />
-        <Typography
-          variant="caption"
-          sx={{
-            display: 'block',
-            textAlign: 'right',
-            mt: 1,
-            color: 'text.primary',
-          }}
-        >
-          Word Limit: {remainingChars} Words
-        </Typography>
       </Box>
 
       {/* General Error Message */}
       {error && (
-        <Box sx={{ mb: 2 }}>
+        <Box sx={styles.generalErrorMessage}>
           <Typography variant="body2" color="error" align="center">
             {error}
           </Typography>
@@ -245,12 +274,12 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
           type="submit"
           disabled={isLoading}
           fullWidth
-          sx={{ py: 1.5 }}
+          sx={styles.submitButton}
         >
           {isLoading ? 'Submitting...' : 'Next'}
         </Button>
       </Box>
-    </form>
+    </FormContainer>
   );
 };
 

@@ -277,7 +277,8 @@ const advanceOnboardingStatus = functions.https.onCall(
 
 const setupUserProfile = functions.https.onCall(async (data, context) => {
   try {
-    const { uid, fullName, occupation, socialLinks, bio } = data;
+    const { uid, fullName, occupation, socialLinks, bio, profilePhotoUrl } =
+      data;
 
     // Validate fields
     if (!uid || !fullName || !occupation || !socialLinks || !bio) {
@@ -326,6 +327,7 @@ const setupUserProfile = functions.https.onCall(async (data, context) => {
       occupation: occupation,
       socialLink: socialLinks,
       bio: bio,
+      profilePhotoUrl: profilePhotoUrl || '',
     };
 
     logger.log('Updating user document in Firestore', userDoc);

@@ -11,7 +11,6 @@ import ROUTES from '@/constants/routes';
 import styles from './styles';
 
 import { advanceOnboardingStatus } from '@/services/onboarding/advanceOnboardingStatus';
-import theme from '@/theme/theme';
 
 const DEFAULT_ERR_STATE = {
   general: null,
@@ -50,7 +49,7 @@ const WelcomeScreen = () => {
         Welcome to{' '}
         <span
           style={{
-            color: theme.palette.primary.main,
+            color: 'primary.main',
           }}
         >
           Kai
@@ -68,7 +67,7 @@ const WelcomeScreen = () => {
       )}
 
       <GradientOutlinedButton
-        bgcolor={theme.palette.primary.main}
+        bgcolor="primary.main"
         clickHandler={handleAdvanceOnboarding}
         text="Start Here!"
         textColor="white"
