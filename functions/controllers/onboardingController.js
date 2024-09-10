@@ -277,7 +277,8 @@ const advanceOnboardingStatus = functions.https.onCall(
 
 const setupUserProfile = functions.https.onCall(async (data, context) => {
   try {
-    const { uid, fullName, occupation, socialLinks, bio, profilePhotoUrl } = data;
+    const { uid, fullName, occupation, socialLinks, bio, profilePhotoUrl } =
+      data;
 
     // Validate fields
     if (!uid || !fullName || !occupation || !socialLinks || !bio) {

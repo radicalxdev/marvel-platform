@@ -93,11 +93,7 @@ const ImageUpload = ({ name, control, uid, initialPhotoURL }) => {
           </Box>
         ) : (
           preview && (
-            <img
-              src={preview}
-              alt="Preview"
-              style={styles.previewImage}
-            />
+            <img src={preview} alt="Preview" style={styles.previewImage} />
           )
         )}
       </Box>
