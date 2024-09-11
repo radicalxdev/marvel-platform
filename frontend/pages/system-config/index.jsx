@@ -1,21 +1,26 @@
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import OnboardingLayout from '@/layouts/OnboardingLayout';
 
-import SystemConfiguration from '@/templates/ProfileSetup/SystemConfiguration';
+import SystemConfiguration from '@/templates/SystemConfig';
 
-import { updateUserPreferences } from '@/services/onboarding/updateUserPrefences';
+import ROUTES from '@/constants/routes';
+
+import { setupUserSystemConfig } from '@/services/onboarding/setupUserSystemConfig';
 
 const SystemConfig = () => {
+  const router = useRouter();
   const userData = useSelector((state) => state.user.data);
   const handleConfigSubmit = async (preferenceData) => {
     const userPreference = {
-      userId: userData.id,
+      uid: userData.id,
       ...preferenceData,
     };
     try {
-      const response = await updateUserPreferences(userPreference);
+      const response = await setupUserSystemConfig(userPreference);
       console.log(response.message);
+      router.push(ROUTES.HOME);
     } catch (error) {
       throw new Error(error.message);
     }
