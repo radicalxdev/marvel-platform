@@ -1,16 +1,18 @@
 import { useState } from 'react';
-// import { useRouter } from 'next/router';
+
+import { useRouter } from 'next/router';
 
 import { useSelector } from 'react-redux';
 
-import ProfileSetupForm from '@/templates/ProfileSetup/ProfileSetupForm';
 import OnboardingLayout from '@/layouts/OnboardingLayout';
+import ProfileSetupForm from '@/templates/ProfileSetup/ProfileSetupForm';
+
+import ROUTES from '@/constants/routes';
+
 import { setupUserProfile } from '@/services/onboarding/setupUserProfile';
 
-// import ROUTES from '@/constants/routes';
-
 const ProfileSetup = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   // Access the auth data from the Redux store
@@ -30,15 +32,13 @@ const ProfileSetup = () => {
         ...(formData.facebookLink && { facebook: formData.facebookLink }),
         ...(formData.linkedinLink && { linkedin: formData.linkedinLink }),
       },
-      ...(formData.profileImage && { profileImage: formData.profileImage }),
+      ...(formData.profileImage && { profilePhotoUrl: formData.profileImage }),
     };
 
     try {
       // Call the backend service to update preferences
-      const response = await setupUserProfile(profileData);
-      console.log('Profile updated successfully:', response);
-      console.log('Moved to the next step');
-      // router.push(ROUTES.NEXT_ONBOARDING_STEP);
+      await setupUserProfile(profileData);
+      router.push(ROUTES.SYSTEM_CONFIGURATION);
     } catch (error) {
       throw new Error(error.message || 'Failed to setup User Profile');
     } finally {
@@ -47,7 +47,11 @@ const ProfileSetup = () => {
   };
 
   return (
-    <ProfileSetupForm onSubmit={handleProfileSubmit} isLoading={isLoading} user={userData}/>
+    <ProfileSetupForm
+      onSubmit={handleProfileSubmit}
+      isLoading={isLoading}
+      user={userData}
+    />
   );
 };
 

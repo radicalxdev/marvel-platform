@@ -16,9 +16,8 @@ seedDatabase();
 const migrationScripts = {};
 
 module.exports = {
-  /* Authenticaition */
+  /* Authentication */
   signUpUser: userController.signUpUser,
-  getUser: userController.getUser,
 
   /* Kai AI */
   chat: kaiAIController.chat,
@@ -31,5 +30,5 @@ module.exports = {
   /* Onboarding */
   advanceOnboardingStatus: onboardingController.advanceOnboardingStatus,
   setupUserProfile: onboardingController.setupUserProfile,
-  updateUserPreferences: onboardingController.updateUserPreferences
+  setupUserSystemConfig: onboardingController.setupUserSystemConfig,
 };

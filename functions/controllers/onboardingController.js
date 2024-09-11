@@ -5,14 +5,30 @@ const admin = require('firebase-admin');
 const { logger } = functions;
 const DEBUG = process.env.DEBUG;
 
-async function progressOnboardingStatus(id, progressOnly = false) {
+async function progressOnboardingStatus(id, targetStep) {
   DEBUG && logger.log('Advance Onboarding Status method started');
 
-  // Validate if userId is not empty string or null
+  // Validate if Id is not empty string or null
   if (!id || typeof id !== 'string') {
     DEBUG && logger.error('Invalid user ID:', id);
-    // eslint-disable-next-line no-throw-literal
-    throw { code: 400, message: 'Invalid user ID' };
+    throw new functions.https.HttpsError(
+      'invalid-argument',
+      'Invalid user ID.'
+    );
+  }
+
+  // Validate if targetStep is a valid number between 1 and 5
+  if (
+    !targetStep ||
+    typeof targetStep !== 'number' ||
+    targetStep < 1 ||
+    targetStep > 5
+  ) {
+    DEBUG && logger.error('Invalid target step:', targetStep);
+    throw new functions.https.HttpsError(
+      'invalid-argument',
+      'Invalid target step'
+    );
   }
 
   try {
@@ -28,128 +44,36 @@ async function progressOnboardingStatus(id, progressOnly = false) {
           'Error in progressing Onboarding Status:',
           'User not found'
         );
-      // eslint-disable-next-line no-throw-literal
-      throw { code: 403, message: 'User not found' };
+      throw new functions.https.HttpsError('not-found', 'Invalid target step');
     }
     DEBUG && logger.info('User found in database');
 
     // Get the onboarding object from the user
-    // if not onboarding object, return an empty object
     const user = userDoc.data();
-    let onboarding = user.onboarding || {};
+    const onboarding = user.onboarding || {};
 
-    // Destructure the onboarding object with default values
-    let {
-      1: step1 = false,
-      2: step2 = false,
-      3: step3 = false,
-      4: step4 = false,
-      5: step5 = false,
-    } = onboarding;
-
-    // Checking error on onboarding status structure
-    // Check if any step is missing
-    const needsUpdate = !(
-      1 in onboarding &&
-      2 in onboarding &&
-      3 in onboarding &&
-      4 in onboarding &&
-      5 in onboarding
-    );
-
-    // Check if there's an error in the sequence
-    // eg. 1= false, 2 = true ...
-    const hasError =
-      (!step1 && (step2 || step3 || step4 || step5)) ||
-      (!step2 && (step3 || step4 || step5)) ||
-      (!step3 && (step4 || step5)) ||
-      (!step4 && step5);
-
-    // Validate if there's an error or needs update
-    if (needsUpdate || hasError) {
-      DEBUG && logger.info('Onboarding status will be updated');
-      onboarding = {
-        1: step1,
-        2: step2,
-        3: step3,
-        4: step4,
-        5: step5,
-      };
-
-      // if there's an error, reset the onboarding status
-      if (hasError) {
-        onboarding = {
-          1: false,
-          2: false,
-          3: false,
-          4: false,
-          5: false,
-        };
-
-        // Reset the steps variables I am using as reference to my onboarding status
-        step1 = false;
-        step2 = false;
-        step3 = false;
-        step4 = false;
-        step5 = false;
+    // Set all steps to false if they are not defined
+    for (let i = 1; i <= 5; i++) {
+      if (!(i in onboarding)) {
+        onboarding[i] = false;
       }
-      // Update the user's onboarding status
-      await userRef.update({ onboarding });
-      DEBUG && logger.info('Onboarding status updated successfully');
     }
 
-    // Get the current status (first false step)
-    // If all steps are false, return 1
-    // If all steps are true, return 6
-    // 6 means that onboarding is completed
-    const currentOnboardingStatus = !step1
-      ? 1
-      : !step2
-        ? 2
-        : !step3
-          ? 3
-          : !step4
-            ? 4
-            : !step5
-              ? 5
-              : 6;
-
-    DEBUG && logger.info('Current Onboarding Status:', currentOnboardingStatus);
-
-    // Verify if onboaring is completed
-    if (currentOnboardingStatus >= 6) {
-      DEBUG && logger.info('Onboarding is completed');
-      // eslint-disable-next-line no-throw-literal
-      throw { code: 403, message: 'Onboarding is completed already!' };
+    // Update steps up to the target step to true
+    for (let step = 1; step <= targetStep; step++) {
+      onboarding[step] = true;
     }
-
-    // Do not progress if progressOnly and
-    // current onboarding status is 2 or 3
-    if (
-      progressOnly &&
-      (currentOnboardingStatus === 2 || currentOnboardingStatus === 3)
-    ) {
-      DEBUG &&
-        logger.info('Progress by other function on onboarding status 2 or 3');
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        success: false,
-        code: 403,
-        message: 'Save form first to progress onboaring status',
-        currentOnboardingStatus,
-      };
-    }
-
-    // Update the current status to true
-    onboarding[currentOnboardingStatus] = true;
 
     // Update the user's onboarding status in Firestore
     await userRef.update({ onboarding });
-    DEBUG && logger.info('Onboarding status progressed successfully');
+    DEBUG &&
+      logger.info(
+        `Onboarding status progressed up to step ${targetStep} successfully`
+      );
 
     return {
       success: true,
-      message: 'Onboarding status progressed',
+      message: `Onboarding status advanced up to step ${targetStep}`,
     };
   } catch (error) {
     DEBUG && logger.error('Error in progressing Onboarding Status:', error);
@@ -164,6 +88,7 @@ async function progressOnboardingStatus(id, progressOnly = false) {
  *
  * @param {Object} data - The data object passed from the client.
  * @param {string} data.uid - The user ID for which to advance the onboarding status.
+ * @param {number} data.step - The target onboarding step to advance up to (1-5).
  * @param {functions.https.CallableContext} context - The Firebase callable context.
  *
  * @returns {Promise<Object>} A promise that resolves to an object containing:
@@ -171,8 +96,8 @@ async function progressOnboardingStatus(id, progressOnly = false) {
  *   @returns {string} message - A message describing the result of the operation.
  *
  * @throws {functions.https.HttpsError} Possible error cases:
- * @throws {string} code - The error code.
- * @throws {string} message - The error message.
+ *   @throws {string} code - The error code.
+ *   @throws {string} message - The error message.
  *
  * @example
  * // Usage as an HTTP endpoint
@@ -180,19 +105,21 @@ async function progressOnboardingStatus(id, progressOnly = false) {
  * // Request body:
  * // {
  * //   "data": {
- * //     "uid": "user-id"
+ * //     "uid": "user-id",
+ * //     "step": 3
  * //   }
  * // }
  *
  * // Example using fetch API:
- * fetch('function link, {
+ * fetch('function link', {
  *   method: 'POST',
  *   headers: {
  *     'Content-Type': 'application/json',
  *   },
  *   body: JSON.stringify({
  *     data: {
- *       uid: "user-id"
+ *       uid: "user-id",
+ *       step: 3
  *     }
  *   }),
  * })
@@ -202,17 +129,23 @@ async function progressOnboardingStatus(id, progressOnly = false) {
  */
 const advanceOnboardingStatus = functions.https.onCall(
   async (data, context) => {
-    // Getting the userId from data
-    const { uid } = data;
-    DEBUG && logger.log('advance Onboarding Status started, data:', uid);
+    // Getting the uid and target step from data
+    const { uid, step } = data;
+    DEBUG && logger.log('advance Onboarding Status started, data:', uid, step);
 
-    // Validate if userId is not null or not a string
+    // Validate if uid is not null or not a string
     if (!uid || typeof uid !== 'string') {
       throw new functions.https.HttpsError('invalid-argument', 'Invalid uid');
     }
+
+    // Validate the step parameter
+    if (!step || typeof step !== 'number' || step < 1 || step > 5) {
+      throw new functions.https.HttpsError('invalid-argument', 'Invalid step');
+    }
+
     try {
-      // Progress the onboarding status of the user
-      const result = await progressOnboardingStatus(uid, true);
+      // Progress the onboarding status of the user up to the target step
+      const result = await progressOnboardingStatus(uid, step, true);
 
       return {
         success: result.success,
@@ -224,9 +157,6 @@ const advanceOnboardingStatus = functions.https.onCall(
         throw new functions.https.HttpsError('invalid-argument', error.message);
       }
       if (error.code === 403) {
-        throw new functions.https.HttpsError('internal', error.message);
-      }
-      if (error.code === 404) {
         throw new functions.https.HttpsError('internal', error.message);
       }
       throw new functions.https.HttpsError(
@@ -277,7 +207,8 @@ const advanceOnboardingStatus = functions.https.onCall(
 
 const setupUserProfile = functions.https.onCall(async (data, context) => {
   try {
-    const { uid, fullName, occupation, socialLinks, bio } = data;
+    const { uid, fullName, occupation, socialLinks, bio, profilePhotoUrl } =
+      data;
 
     // Validate fields
     if (!uid || !fullName || !occupation || !socialLinks || !bio) {
@@ -326,13 +257,14 @@ const setupUserProfile = functions.https.onCall(async (data, context) => {
       occupation: occupation,
       socialLink: socialLinks,
       bio: bio,
+      profilePhotoUrl: profilePhotoUrl || '',
     };
 
     logger.log('Updating user document in Firestore', userDoc);
 
     await userRef.set(userDoc, { merge: true });
     // Call the Onboarding Status Transition Utility function to advance the status
-    const onboardingResult = await progressOnboardingStatus(uid);
+    const onboardingResult = await progressOnboardingStatus(uid, 2);
     logger.log('User profile updated successfully');
     return {
       success: true,
@@ -348,10 +280,10 @@ const setupUserProfile = functions.https.onCall(async (data, context) => {
 /**
  * Updates user system preferences and advances onboarding status.
  *
- * @function updateUserPreferences
+ * @function setupUserSystemConfig
  *
  * @param {Object} data - The data object passed from the client.
- * @param {string} data.userId - The user ID for which to update preferences and advance onboarding.
+ * @param {string} data.uid - The user ID for which to update preferences and advance onboarding.
  * @param {boolean} data.email - Email preference.
  * @param {boolean} data.push - Push notifications preference.
  * @param {boolean} data.reminders - Reminders preference.
@@ -372,7 +304,7 @@ const setupUserProfile = functions.https.onCall(async (data, context) => {
  * // Request body:
  * // {
  * //   "data": {
- * //     "userId": "user-id",
+ * //     "uid": "user-id",
  * //     "email": true,
  * //     "push": false,
  * //     "reminders": true,
@@ -388,7 +320,7 @@ const setupUserProfile = functions.https.onCall(async (data, context) => {
  *   },
  *   body: JSON.stringify({
  *     data: {
- *       userId: "user-id",
+ *       uid: "user-id",
  *       email: true,
  *       push: false,
  *       reminders: true,
@@ -400,15 +332,15 @@ const setupUserProfile = functions.https.onCall(async (data, context) => {
  * .then(result => console.log(result))
  * .catch(error => console.error('Error:', error));
  */
-const updateUserPreferences = functions.https.onCall(async (data, context) => {
-  const { userId, email, push, reminders, theme } = data;
+const setupUserSystemConfig = functions.https.onCall(async (data, context) => {
+  const { uid, email, push, reminders, theme } = data;
 
   DEBUG &&
     logger.log('Update User Preferences function started with data:', data);
 
   // Validate input data
-  if (!userId || typeof userId !== 'string') {
-    throw new functions.https.HttpsError('invalid-argument', 'Invalid userId');
+  if (!uid || typeof uid !== 'string') {
+    throw new functions.https.HttpsError('invalid-argument', 'Invalid uid');
   }
   if (
     typeof email !== 'boolean' ||
@@ -424,7 +356,7 @@ const updateUserPreferences = functions.https.onCall(async (data, context) => {
 
   try {
     const db = admin.firestore();
-    const userRef = db.collection('users').doc(userId);
+    const userRef = db.collection('users').doc(uid);
     const userDoc = await userRef.get();
 
     if (!userDoc.exists) {
@@ -443,7 +375,7 @@ const updateUserPreferences = functions.https.onCall(async (data, context) => {
     await userRef.update({ systemconfig: updatedConfig });
 
     // Call the Onboarding Status Transition Utility function to advance the status
-    const onboardingResult = await progressOnboardingStatus(userId);
+    const onboardingResult = await progressOnboardingStatus(uid, 3);
 
     DEBUG &&
       logger.info(
@@ -466,7 +398,6 @@ const updateUserPreferences = functions.https.onCall(async (data, context) => {
 
 module.exports = {
   advanceOnboardingStatus,
-  progressOnboardingStatus,
   setupUserProfile,
-  updateUserPreferences,
+  setupUserSystemConfig,
 };

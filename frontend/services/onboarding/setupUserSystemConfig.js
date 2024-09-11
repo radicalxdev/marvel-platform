@@ -4,20 +4,19 @@ import { ONBOARDING_ERROR_MESSAGES } from '@/constants/onboarding';
 
 import { functions } from '@/redux/store';
 
-const advanceOnboardingStatus = async (uid, step) => {
+const setupUserSystemConfig = async (systemConfig) => {
   try {
-    const advanceStatus = httpsCallable(functions, 'advanceOnboardingStatus');
-    const response = await advanceStatus({ uid, step });
-
+    const sysConfig = httpsCallable(functions, 'setupUserSystemConfig');
+    const response = await sysConfig(systemConfig);
     return response.data;
   } catch (error) {
     const errorCode = error.code || error.status || 'internal';
     const errorMessage =
       error.message ||
       ONBOARDING_ERROR_MESSAGES[errorCode] ||
-      'Failed to advance onboarding status';
-    throw new Error(`Error Code: ${errorCode}, Message: ${errorMessage}`);
+      'Failed to setup User System Configuration';
+    throw new Error(errorMessage);
   }
 };
 
-export { advanceOnboardingStatus };
+export { setupUserSystemConfig };

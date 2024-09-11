@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
+
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
 
 const useUploadFile = () => {
   const [uploading, setUploading] = useState(false);
@@ -7,7 +14,7 @@ const useUploadFile = () => {
   const [fileURL, setFileURL] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const uploadFile = (file, uid, path, oldFileURL) => {
+  const uploadFile = (file, uid, path, oldFileURL = null) => {
     return new Promise((resolve, reject) => {
       setUploading(true);
       setError(null);
@@ -22,14 +29,14 @@ const useUploadFile = () => {
         uploadTask.on(
           'state_changed',
           (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setProgress(progress);
+            const prog =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setProgress(prog);
           },
-          (error) => {
-            console.error('Error uploading file:', error);
+          (err) => {
             setError('Failed to upload the file. Please try again.');
             setUploading(false);
-            reject(error);
+            reject(err);
           },
           async () => {
             try {
@@ -51,7 +58,6 @@ const useUploadFile = () => {
           }
         );
       } catch (err) {
-        console.error('Error uploading file:', err);
         setError('Failed to upload the file. Please try again.');
         setUploading(false);
         reject(err);
