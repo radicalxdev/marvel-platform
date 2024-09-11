@@ -20,7 +20,7 @@ const SystemConfig = () => {
     try {
       const response = await setupUserSystemConfig(userPreference);
       console.log(response.message);
-      router.push(ROUTES.HOME);
+      router.push(ROUTES.RESULT);
     } catch (error) {
       throw new Error(error.message);
     }
