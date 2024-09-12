@@ -16,6 +16,9 @@ const userData = createSlice({
     setUserData: (state, action) => {
       state.data = action.payload;
     },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -33,6 +36,6 @@ const userData = createSlice({
   },
 });
 
-export const { reset, setUserData } = userData.actions;
+export const { reset, setUserData, setLoading } = userData.actions;
 
 export default userData.reducer;
