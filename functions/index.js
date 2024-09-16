@@ -23,7 +23,7 @@ module.exports = {
   chat: kaiAIController.chat,
   tool: kaiAIController.tool,
   createChatSession: kaiAIController.createChatSession,
-
+  createToolSession: kaiAIController.createToolSession,
   /* Migration Scripts - For running  */
   ...migrationScripts,
 

@@ -3,4 +3,4 @@ const TOOLS_ID = {
   GEMINI_QUIZIFY: '0',
 };
 
-export default TOOLS_ID;
+export { TOOLS_ID };
