@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React from "react";
 import {
   Grid,
   Typography,
@@ -11,12 +11,10 @@ import {
 import StatusIcon from "@/templates/WelcomeScreen/StatusIcon";
 import GradientOutlinedButton from "@/components/GradientOutlinedButton";
 
-import { useDispatch, useSelector } from "react-redux";
-
 import styles from "./styles";
 
 const FinalSteps = () => {
-  const { currentStep } = useSelector((state) => state.progressBar);
+  const currentStep = 3;
   const defaultSteps = [
     "Welcome",
     "Profile Setup",
