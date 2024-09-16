@@ -10,10 +10,13 @@ import {
 } from "@mui/material";
 import StatusIcon from "@/templates/WelcomeScreen/StatusIcon";
 import GradientOutlinedButton from "@/components/GradientOutlinedButton";
+import { useRouter } from 'next/router';
+import ROUTES from '@/constants/routes';
 
 import styles from "./styles";
 
 const FinalSteps = () => {
+  const router = useRouter();
   const currentStep = 3;
   const defaultSteps = [
     "Welcome",
@@ -22,6 +25,10 @@ const FinalSteps = () => {
     "Final Steps",
   ];
   const theme = useTheme();
+
+  const handleAdvanceOnboarding = async () => {
+    router.push(ROUTES.RESULT);
+  };
 
   return (
     <Grid {...styles.mainGridProps}>
@@ -58,6 +65,7 @@ const FinalSteps = () => {
       </List>
       <GradientOutlinedButton
         bgcolor={theme.palette.primary.main}
+        clickHandler={handleAdvanceOnboarding}
         text="Continue"
         textColor="white"
         {...styles.submitButtonProps}

@@ -12,7 +12,7 @@ const ROUTES = {
   WELCOME_ONBOARDING: '/welcome-screen',
   PROFILE_SETUP: '/profile-setup',
   SYSTEM_CONFIGURATION: '/system-config',
-  FINAL_STEPS: '/finalsteps',
+  FINAL_STEPS: '/final-steps',
   RESULT: '/result-page',
 };
 
