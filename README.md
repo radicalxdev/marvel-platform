@@ -1,5 +1,5 @@
-# Kai AI Platform
-Kai is an open source project by Radical having chatbot and smart tools for teachers.
+# Marvel AI Platform
+Marvel is an open source project by Radical having chatbot and smart tools for teachers.
 
 ## Table of Contents
 
@@ -12,7 +12,7 @@ Kai is an open source project by Radical having chatbot and smart tools for teac
 - [License](#license)
 
 ## Architecture
-The "Kai" platform is structured into two main components: Firebase and AI. The Firebase side, detailed in this repository, encompasses both the frontend, developed with NextJS and hosted on Firebase Hosting, and the backend, which includes user management and session handling via Firebase Functions like `signUpUser` and `createChatSession`. The `communicator` and `toolCommunicator` functions act as proxies, facilitating interaction between the Firebase infrastructure and the AI services, ensuring seamless data flow and integration. Firestore DB is utilized for data storage. The AI components, housed in a separate repository, include a chatbot and tools like "Quizify" and "YouTube Flashcard Generator." 
+The "Marvel" platform is structured into two main components: Firebase and AI. The Firebase side, detailed in this repository, encompasses both the frontend, developed with NextJS and hosted on Firebase Hosting, and the backend, which includes user management and session handling via Firebase Functions like `signUpUser` and `createChatSession`. The `communicator` and `toolCommunicator` functions act as proxies, facilitating interaction between the Firebase infrastructure and the AI services, ensuring seamless data flow and integration. Firestore DB is utilized for data storage. The AI components, housed in a separate repository, include a chatbot and tools like "Quizify" and "YouTube Flashcard Generator." 
 
 ![Architecture Diagram](architecture.png)
 
@@ -47,7 +47,7 @@ The "Kai" platform is structured into two main components: Firebase and AI. The 
 To set up the project, follow these steps:
 
 ## Local Development
-1. Clone the repository: `git clone https://github.com/radicalxdev/kai-platform`
+1. Clone the repository: `git clone https://github.com/radicalxdev/marvel-platform`
 2. Create your firebase project on google firebase console
 3. Create a firestore database instance
 4. Get firebase config from firebase project settings in firebase console and save it to .env (create in root of this project, see sample.env for refrence)
@@ -70,7 +70,7 @@ To set up the project, follow these steps:
 2. Open another terminal simultaneously and start the frontend project, run the following command: `npm run frontend:dev`
 
 ## Cloud Deployment
-1. Clone the repository: `git clone https://github.com/radicalxdev/kai-platform`
+1. Clone the repository: `git clone https://github.com/radicalxdev/marvel-platform`
 2. Navigate to back-end project directory: `cd functions`
 3. Install dependencies: `npm install`
 4. Navigate to front-end directory: `cd ../frontend`

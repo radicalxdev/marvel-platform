@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 const userController = require('./controllers/userController');
-const kaiAIController = require('./controllers/kaiAIController');
+const marvelAIController = require('./controllers/marvelAIController');
 const onboardingController = require('./controllers/onboardingController');
 const { seedDatabase } = require('./cloud_db_seed');
 
@@ -19,11 +19,11 @@ module.exports = {
   /* Authentication */
   signUpUser: userController.signUpUser,
 
-  /* Kai AI */
-  chat: kaiAIController.chat,
-  tool: kaiAIController.tool,
-  createChatSession: kaiAIController.createChatSession,
-  createToolSession: kaiAIController.createToolSession,
+  /* Marvel AI */
+  chat: marvelAIController.chat,
+  tool: marvelAIController.tool,
+  createChatSession: marvelAIController.createChatSession,
+
   /* Migration Scripts - For running  */
   ...migrationScripts,
 
