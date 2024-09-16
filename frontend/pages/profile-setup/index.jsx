@@ -32,18 +32,17 @@ const ProfileSetup = () => {
         ...(formData.facebookLink && { facebook: formData.facebookLink }),
         ...(formData.linkedinLink && { linkedin: formData.linkedinLink }),
       },
-      ...(formData.profileImage && { profileImage: formData.profileImage }),
+      ...(formData.profileImage && { profilePhotoUrl: formData.profileImage }),
     };
 
     try {
       // Call the backend service to update preferences
-      const response = await setupUserProfile(profileData);
-      // router.push(ROUTES.NEXT_ONBOARDING_STEP);
+      await setupUserProfile(profileData);
+      router.push(ROUTES.SYSTEM_CONFIGURATION);
     } catch (error) {
       throw new Error(error.message || 'Failed to setup User Profile');
     } finally {
       setIsLoading(false);
-      router.push(ROUTES.HOME);
     }
   };
 

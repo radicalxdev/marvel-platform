@@ -13,6 +13,7 @@ const ROUTES = {
   PROFILE_SETUP: '/profile-setup',
   SYSTEM_CONFIGURATION: '/system-config',
   FINAL_STEPS: '/finalsteps',
+  RESULT: '/result-page',
 };
 
 export default ROUTES;

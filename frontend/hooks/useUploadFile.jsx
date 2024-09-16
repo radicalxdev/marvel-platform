@@ -14,7 +14,7 @@ const useUploadFile = () => {
   const [fileURL, setFileURL] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const uploadFile = (file, uid, path, oldFileURL) => {
+  const uploadFile = (file, uid, path, oldFileURL = null) => {
     return new Promise((resolve, reject) => {
       setUploading(true);
       setError(null);

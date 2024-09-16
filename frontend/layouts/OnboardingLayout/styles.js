@@ -1,3 +1,5 @@
+// styles.js
+
 const styles = {
   mainContainer: {
     height: '100vh',
@@ -21,9 +23,11 @@ const styles = {
     marginBottom: '20px',
   },
   contentContainer: {
-    width: '100%',
-    maxWidth: '600px',
-    padding: '0 20px',
+    // width: '70%',
+    // maxWidth: '1000px',
+    margin: '0 auto',
+    paddingLeft: '15%',
+    paddingRight: '15%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -31,6 +35,7 @@ const styles = {
     textAlign: 'center',
     background: 'transparent',
     paddingBottom: '50px',
+    boxSizing: 'border-box',
   },
 };
 

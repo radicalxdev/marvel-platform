@@ -60,13 +60,7 @@ const OnboardingLayout = ({ children, currentStep }) => {
   if (isTabletScreen) return <AppDisabled head={renderHead()} />;
 
   return (
-    <Grid
-      {...styles.mainContainer}
-      sx={{
-        background: (theme) =>
-          theme.palette.Background[themeState.data.background],
-      }}
-    >
+    <Grid {...styles.mainContainer}>
       {renderHead()}
       {!isTabletScreen && renderOnboardingContent()}
     </Grid>
