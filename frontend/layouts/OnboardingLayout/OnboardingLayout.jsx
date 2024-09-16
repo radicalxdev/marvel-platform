@@ -12,12 +12,6 @@ import styles from './styles';
 
 import { setLoading } from '@/redux/slices/authSlice';
 
-const defaultSteps = [
-  'Welcome',
-  'Profile Setup',
-  'System Configuration',
-  'Final Steps',
-];
 /**
  * Renders the onboarding layout.
  *
@@ -55,10 +49,7 @@ const OnboardingLayout = ({ children, currentStep }) => {
   const renderOnboardingContent = () => (
     <>
       <Grid item xs={12} sx={styles.headerContainer}>
-        <ProgressBarMenu
-          activeStep={progressBar.currentStep}
-          steps={defaultSteps}
-        />
+        <ProgressBarMenu activeStep={currentStep} />
       </Grid>
       <Grid item xs={12} sx={styles.contentContainer}>
         {children}
@@ -81,5 +72,4 @@ const OnboardingLayout = ({ children, currentStep }) => {
     </Grid>
   );
 };
-export { defaultSteps };
 export default OnboardingLayout;

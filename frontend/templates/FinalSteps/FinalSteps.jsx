@@ -11,13 +11,18 @@ import {
 import StatusIcon from "@/templates/WelcomeScreen/StatusIcon";
 import GradientOutlinedButton from "@/components/GradientOutlinedButton";
 
-import { defaultSteps } from "@/layouts/OnboardingLayout/OnboardingLayout";
 import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./styles";
 
 const FinalSteps = () => {
   const { currentStep } = useSelector((state) => state.progressBar);
+  const defaultSteps = [
+    "Welcome",
+    "Profile Setup",
+    "System Configuration",
+    "Final Steps",
+  ];
   const theme = useTheme();
 
   return (
