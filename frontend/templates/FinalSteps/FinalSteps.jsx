@@ -1,33 +1,43 @@
-/* eslint-disable */
-import React from "react";
+import React from 'react';
+
 import {
-  Grid,
-  Typography,
   Divider,
+  Grid,
   List,
   ListItem,
+  Typography,
   useTheme,
-} from "@mui/material";
-import StatusIcon from "@/templates/WelcomeScreen/StatusIcon";
-import GradientOutlinedButton from "@/components/GradientOutlinedButton";
+} from '@mui/material';
+
 import { useRouter } from 'next/router';
+
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
+import StatusIcon from '@/templates/WelcomeScreen/StatusIcon';
+
 import ROUTES from '@/constants/routes';
 
-import styles from "./styles";
+import styles from './styles';
 
 const FinalSteps = () => {
   const router = useRouter();
   const currentStep = 3;
   const defaultSteps = [
-    "Welcome",
-    "Profile Setup",
-    "System Configuration",
-    "Final Steps",
+    'Welcome',
+    'Profile Setup',
+    'System Configuration',
+    'Final Steps',
   ];
   const theme = useTheme();
 
   const handleAdvanceOnboarding = async () => {
     router.push(ROUTES.RESULT);
+  };
+
+  // Helper function to determine the status of the step
+  const getStatus = (index) => {
+    if (currentStep > index) return 'done';
+    if (currentStep === index) return 'doing';
+    return 'undo';
   };
 
   return (
@@ -39,21 +49,11 @@ const FinalSteps = () => {
       <List {...styles.mainListProps}>
         {defaultSteps.map((item, index) => (
           <div key={`expand-${index}`}>
-            {" "}
-            {/* Unique key for each item */}
-            {index != 0 && <Divider component="li" />}
+            {index !== 0 && <Divider component="li" />}
             <ListItem key={index} {...styles.listItemPros}>
-              {" "}
-              {/* Unique key for each ListItem */}
               <StatusIcon
                 key={`icon-${index}`}
-                status={
-                  currentStep > index
-                    ? "done"
-                    : currentStep === index
-                    ? "doing"
-                    : "undo"
-                }
+                status={getStatus(index)}
                 width="30"
                 height="30"
               />

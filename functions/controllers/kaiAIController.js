@@ -1,8 +1,12 @@
 const admin = require('firebase-admin');
 const storage = admin.storage();
-const { onCall, HttpsError } = require('firebase-functions/v2/https');
+const {
+  onCall,
+  HttpsError,
+  onRequest,
+} = require('firebase-functions/v2/https');
 const { default: axios } = require('axios');
-const { logger, https } = require('firebase-functions/v1');
+const { logger } = require('firebase-functions/v1');
 const { Timestamp } = require('firebase-admin/firestore');
 const { BOT_TYPE } = require('../constants');
 const express = require('express');
@@ -11,6 +15,7 @@ const busboy = require('busboy');
 const app = express();
 
 const DEBUG = process.env.DEBUG;
+
 /**
  * Simulates communication with a Kai AI endpoint.
  *
@@ -34,7 +39,6 @@ const kaiCommunicator = async (payload) => {
     DEBUG && logger.log('kaiCommunicator started, data:', payload.data);
 
     const { messages, user, tool_data, type } = payload.data;
-
     const isToolCommunicator = type === BOT_TYPE.TOOL;
     const KAI_API_KEY = process.env.KAI_API_KEY;
     const KAI_ENDPOINT = process.env.KAI_ENDPOINT;
@@ -210,9 +214,7 @@ app.post('/api/tool/', (req, res) => {
         const publicUrl = `https://storage.googleapis.com/${bucketName}/${filePath}`;
 
         DEBUG &&
-          console.log(
-            `File ${filename} uploaded and available at ${publicUrl}`
-          );
+          logger.log(`File ${filename} uploaded and available at ${publicUrl}`);
 
         resolve({ filePath, url: publicUrl, filename });
       });
@@ -258,6 +260,16 @@ app.post('/api/tool/', (req, res) => {
       });
       DEBUG && logger.log(response);
 
+      const topicInput = modifiedInputs.find((input) => input.name === 'topic');
+      const topic = topicInput ? topicInput.value : null;
+
+      await saveResponseToFirestore({
+        response: response.data.data,
+        tool_id: otherToolData.tool_id,
+        topic,
+        userID: otherData.user.id,
+      });
+
       res.status(200).json({ success: true, data: response.data });
     } catch (error) {
       logger.error('Error processing request:', error);
@@ -267,6 +279,28 @@ app.post('/api/tool/', (req, res) => {
 
   bb.end(req.rawBody);
 });
+
+/**
+ * Save the tool session response to Firestore
+ * @param {object} sessionData - The data to be saved to Firestore
+ * @param {string} userId - The ID of the user
+ */
+const saveResponseToFirestore = async (sessionData) => {
+  try {
+    const toolSessionRef = await admin
+      .firestore()
+      .collection('toolSessions')
+      .add({
+        ...sessionData,
+        createdAt: Timestamp.fromMillis(Date.now()),
+      });
+    if (DEBUG) {
+      logger.log(`Tool session saved with ID: ${toolSessionRef.id}`);
+    }
+  } catch (error) {
+    logger.error('Error saving tool session to Firestore:', error);
+  }
+};
 
 /**
  * This creates a chat session for a user.
@@ -368,6 +402,6 @@ const createChatSession = onCall(async (props) => {
 
 module.exports = {
   chat,
-  tool: https.onRequest(app),
+  tool: onRequest({ minInstances: 1 }, app),
   createChatSession,
 };
