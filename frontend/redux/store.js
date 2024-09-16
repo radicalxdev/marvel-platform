@@ -6,8 +6,8 @@ import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 
 import authReducer from './slices/authSlice';
 import chatReducer from './slices/chatSlice';
-import toolHistoryReducer from './slices/toolHistorySlice';
 import themeReducer from './slices/themeSlice';
+import toolHistoryReducer from './slices/toolHistorySlice';
 import toolsReducer from './slices/toolsSlice';
 import userReducer from './slices/userSlice';
 
