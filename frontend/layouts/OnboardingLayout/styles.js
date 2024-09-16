@@ -10,7 +10,7 @@ const styles = {
     paddingTop: '80px',
     sx: {
       background: (theme) => {
-        return theme.palette.Background.gradient.radialDark;
+        return theme.palette.Background.primary;
       },
     },
   },

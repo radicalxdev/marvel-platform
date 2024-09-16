@@ -25,8 +25,6 @@ const OnboardingLayout = ({ children, currentStep }) => {
 
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
-  const themeState = useSelector((state) => state.theme);
-  const progressBar = useSelector((state) => state.progressBar);
 
   const isTabletScreen = useMediaQuery((theme) =>
     theme.breakpoints.down('laptop')

@@ -6,7 +6,7 @@ const FinalSteps = () => {
 };
 
 FinalSteps.getLayout = function getLayout(page) {
-  return <OnboardingLayout>{page}</OnboardingLayout>;
+  return <OnboardingLayout currentStep={3}>{page}</OnboardingLayout>;
 };
 
 export default FinalSteps;
