@@ -35,8 +35,8 @@ const withLayoutRedirect = (PageComponent) => {
             1: ROUTES.WELCOME_ONBOARDING,
             2: ROUTES.PROFILE_SETUP,
             3: ROUTES.SYSTEM_CONFIGURATION,
-            4: ROUTES.SYSTEM_CONFIGURATION,
-            5: ROUTES.SYSTEM_CONFIGURATION,
+            4: ROUTES.FINAL_STEPS,
+            5: ROUTES.RESULT,
           };
 
           if (redirectRoutes[onboardingStep.nextStep]) {

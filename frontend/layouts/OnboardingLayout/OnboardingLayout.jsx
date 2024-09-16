@@ -64,5 +64,4 @@ const OnboardingLayout = ({ children, currentStep }) => {
     </Grid>
   );
 };
-
 export default OnboardingLayout;

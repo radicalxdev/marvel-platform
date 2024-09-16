@@ -1,15 +1,16 @@
-import IconDoing from '@/assets/svg/IconProcessDoing.svg';
-import IconDone from '@/assets/svg/IconProcessDone.svg';
-import IconUndo from '@/assets/svg/IconProcessUndo.svg';
+import IconDoing from '@/assets/svg/IconProcessDoing';
+import IconDone from '@/assets/svg/IconProcessDone';
+import IconUndo from '@/assets/svg/IconProcessUndo';
 
-const statusComMap = ({ status }) => {
+const statusComMap = (props) => {
+  const { status } = props;
   if (status === 'done') {
-    return <IconDone />;
+    return <IconDone {...props} />;
   }
   if (status === 'doing') {
-    return <IconDoing />;
+    return <IconDoing {...props} />;
   }
-  return <IconUndo />;
+  return <IconUndo {...props} />;
 };
 
 export default statusComMap;
