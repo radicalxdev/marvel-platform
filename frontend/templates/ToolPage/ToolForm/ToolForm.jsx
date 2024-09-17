@@ -52,7 +52,7 @@ const ToolForm = (props) => {
 
       const response = await submitPrompt(
         {
-          tool_data: { tool_id: id, inputs: updateData },
+          toolData: { toolId: id, inputs: updateData },
           type: 'tool',
           user: {
             id: userData?.id,
