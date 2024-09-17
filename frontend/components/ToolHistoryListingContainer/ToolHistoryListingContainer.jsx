@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import { ToolCardSkeleton } from '../ToolCard';
 import ToolHistoryCard from '../ToolHistoryCard';
+import ToolHistoryCardSkeleton from '../ToolHistoryCard/Skeleton';
 
 import ToolOutputHistoryDrawer from '../ToolOutputHistoryDrawer';
 
@@ -64,7 +64,7 @@ const ToolHistoryListingContainer = (props) => {
     <Grid {...styles.containerGridProps}>
       <Grid {...styles.innerListGridProps}>
         {DEFAULT_HISTORY.map((tool) => (
-          <ToolCardSkeleton key={tool.id} />
+          <ToolHistoryCardSkeleton key={tool.id} />
         ))}
       </Grid>
     </Grid>
