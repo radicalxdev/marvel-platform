@@ -5,7 +5,7 @@ export const exportToCSV = (data, panelData) => {
   let headers;
   let rows;
 
-  if (data?.tool_id === '0') {
+  if (data?.toolId === '0') {
     headers = [
       'Question',
       'Option A',
@@ -48,9 +48,7 @@ export const exportToCSV = (data, panelData) => {
 
 export const copyToClipboard = (data, panelData) => {
   const label =
-    data?.tool_id === '0'
-      ? 'Questions and Options'
-      : 'Concepts and Definitions';
+    data?.toolId === '0' ? 'Questions and Options' : 'Concepts and Definitions';
   const textToCopy = `
     Title: ${data?.title || 'Default Title'}
 
@@ -59,7 +57,7 @@ export const copyToClipboard = (data, panelData) => {
     ${label}:
     ${panelData
       .map((item, i) =>
-        data?.tool_id === '0'
+        data?.toolId === '0'
           ? `${i + 1}. ${item.question}\n${item.choices
               ?.map((choice) => `   ${choice.key}. ${choice.value}`)
               .join('\n')}`

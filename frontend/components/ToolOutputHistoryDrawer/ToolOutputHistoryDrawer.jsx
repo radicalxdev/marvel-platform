@@ -35,7 +35,7 @@ const ToolOutputHistoryDrawer = (props) => {
   if (!data) return null;
 
   const panelData = data?.response || DEFAULT_DATA.questions;
-  const ToolHistoryOutput = DRAWER_RENDERERS[data.tool_id];
+  const ToolHistoryOutput = DRAWER_RENDERERS[data.toolId];
 
   const handleCopyToClipboard = () => {
     copyToClipboard(data, panelData);

@@ -22,7 +22,7 @@ const ToolHistoryCard = (props) => {
   const { data, onOpen } = props;
 
   const toolData = getToolData({
-    toolId: data?.tool_id,
+    toolId: data?.toolId,
     item: data,
   });
 
