@@ -259,6 +259,7 @@ app.post('/api/tool/', (req, res) => {
           ...otherData,
           toolData: {
             ...otherToolData,
+            tool_id: otherToolData.toolId,
             inputs: modifiedInputs,
           },
         },
