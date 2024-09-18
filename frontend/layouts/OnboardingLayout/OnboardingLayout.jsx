@@ -40,7 +40,7 @@ const OnboardingLayout = ({ children, currentStep }) => {
 
   const renderHead = () => (
     <Head>
-      <title>Kai Onboarding</title>
+      <title>Marvel AI Onboarding</title>
     </Head>
   );
 

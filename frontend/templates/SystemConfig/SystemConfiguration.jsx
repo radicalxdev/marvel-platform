@@ -2,19 +2,24 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import {
   Box,
-  Button,
   Container,
   FormControlLabel,
   Switch,
   Typography,
+  useTheme,
 } from '@mui/material';
 
 import { useDispatch } from 'react-redux';
+
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
+
+import styles from './styles';
 
 import { updateTheme } from '@/redux/slices/themeSlice';
 import { ColorModeContext } from '@/theme/theme';
 
 const SystemConfiguration = ({ onSubmit }) => {
+  const theme = useTheme();
   const [preferenceData, setPreferenceData] = useState({
     email: false,
     push: false,
@@ -54,7 +59,7 @@ const SystemConfiguration = ({ onSubmit }) => {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ textAlign: 'center', paddingTop: '40px' }}>
+    <Container maxWidth="xs" sx={{ textAlign: 'center' }}>
       <Typography
         variant="h4"
         gutterBottom
@@ -140,22 +145,15 @@ const SystemConfiguration = ({ onSubmit }) => {
           }}
         />
       </Box>
-
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{
-          marginTop: '30px',
-          backgroundColor: '#946EFF',
-          borderRadius: '30px',
-        }}
-        onClick={() => {
+      <GradientOutlinedButton
+        bgcolor={theme.palette.Dark_Colors.Dark[1]}
+        textColor={theme.palette.Common.White['100p']}
+        clickHandler={() => {
           onSubmitForm(preferenceData);
         }}
-      >
-        Finish
-      </Button>
+        text="Finish"
+        {...styles.submitButtonProps}
+      />
     </Container>
   );
 };

@@ -42,7 +42,7 @@ const QontoConnector = styled(StepConnector)(({ theme }) => ({
     },
   },
   [`& .${stepConnectorClasses.line}`]: {
-    borderColor: theme.palette.mode === "dark" ? "#444154" : "#eaeaf0",
+    borderColor: theme.palette.mode === "dark" ? "#444154" : "#D4D4D7",
     borderTopWidth: 8,
     borderRadius: 11,
   },
@@ -107,7 +107,7 @@ const ProgressBarMenu = (props) => {
                   }
                 />
                 &emsp;
-                <Typography color={theme.palette.common.white}>
+                <Typography sx={{ color: 'text.primary' }}>
                   {item}
                 </Typography>
               </ListItem>

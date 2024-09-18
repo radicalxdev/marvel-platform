@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 
-import { Button, Grid, Typography, useTheme } from '@mui/material';
+import { Grid, Typography, useTheme } from '@mui/material';
 import Head from 'next/head';
 
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import CustomCheckCircle from '@/components/CustomCheckCircle';
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
 import ROUTES from '@/constants/routes';
+
+import styles from './styles';
 
 import { advanceOnboardingStatus } from '@/services/onboarding/advanceOnboardingStatus';
 
@@ -59,7 +62,7 @@ const ResultPageTemplate = () => {
       sx={{
         display: 'flex',
         height: '100vh',
-        backgroundColor: theme.palette.background.primary,
+        backgroundColor: theme.palette.Background.primary,
       }}
     >
       {renderHead()}
@@ -94,21 +97,13 @@ const ResultPageTemplate = () => {
           {error.general}
         </Typography>
       )}
-
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleContinue}
-        disabled={loading}
-        sx={{
-          marginTop: '30px',
-          backgroundColor: theme.palette.primary.light,
-          borderRadius: '30px',
-          width: 594,
-        }}
-      >
-        {loading ? 'Submitting...' : 'Finish'}
-      </Button>
+      <GradientOutlinedButton
+        bgcolor={theme.palette.Dark_Colors.Dark[1]}
+        textColor={theme.palette.Common.White['100p']}
+        clickHandler={handleContinue}
+        text={loading ? 'Submitting...' : 'Finish'}
+        {...styles.submitButtonProps}
+      />
     </Grid>
   );
 };

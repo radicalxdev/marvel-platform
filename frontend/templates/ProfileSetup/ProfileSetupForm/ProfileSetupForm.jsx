@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
 
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 
 import { Controller, FormContainer, useForm } from 'react-hook-form-mui';
 
 import FormTextField from '@/components/FormTextField';
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import ImageUpload from '@/components/ImageUpload';
 
 import SocialLinkInput from '../SocialLinkInput';
@@ -14,6 +15,7 @@ import styles from './styles';
 import ONBOARDING_REGEX from '@/regex/onboarding';
 
 const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
+  const theme = useTheme();
   const formContext = useForm({
     defaultValues: {
       fullName: user?.fullName || '',
@@ -268,16 +270,13 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
 
       {/* Submit Button */}
       <Box>
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          disabled={isLoading}
-          fullWidth
-          sx={styles.submitButton}
-        >
-          {isLoading ? 'Submitting...' : 'Next'}
-        </Button>
+        <GradientOutlinedButton
+          bgcolor={theme.palette.Dark_Colors.Dark[1]}
+          textColor={theme.palette.Common.White['100p']}
+          text={isLoading ? 'Submitting...' : 'Next'}
+          loading={isLoading}
+          {...styles.submitButtonProps}
+        />
       </Box>
     </FormContainer>
   );

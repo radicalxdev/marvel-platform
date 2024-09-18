@@ -8,6 +8,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: '80px',
+    paddingBottom: '80px',
     sx: {
       background: (theme) => {
         return theme.palette.Background.primary;
@@ -23,8 +24,8 @@ const styles = {
     marginBottom: '20px',
   },
   contentContainer: {
-    // width: '70%',
-    // maxWidth: '1000px',
+    paddingTop: '50px',
+    paddingBottom: '80px',
     margin: '0 auto',
     paddingLeft: '15%',
     paddingRight: '15%',
@@ -34,7 +35,6 @@ const styles = {
     alignItems: 'center',
     textAlign: 'center',
     background: 'transparent',
-    paddingBottom: '50px',
     boxSizing: 'border-box',
   },
 };

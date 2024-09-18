@@ -42,7 +42,9 @@ const FinalSteps = () => {
 
   return (
     <Grid {...styles.mainGridProps}>
-      <Typography {...styles.titleProps}>Final Steps</Typography>
+      <Typography variant="subtitle1" {...styles.titleProps}>
+        Final Steps
+      </Typography>
       <Typography {...styles.secondTitleProps}>
         We need some permissions to get you started
       </Typography>
@@ -64,10 +66,10 @@ const FinalSteps = () => {
         ))}
       </List>
       <GradientOutlinedButton
-        bgcolor={theme.palette.primary.main}
+        bgcolor={theme.palette.Dark_Colors.Dark[1]}
         clickHandler={handleAdvanceOnboarding}
         text="Continue"
-        textColor="white"
+        textColor={theme.palette.Common.White['100p']}
         {...styles.submitButtonProps}
       />
     </Grid>
