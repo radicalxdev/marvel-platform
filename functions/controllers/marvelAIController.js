@@ -19,7 +19,7 @@ const DEBUG = process.env.DEBUG;
 /**
  * Simulates communication with the Marvel AI endpoint.
  *
- * @function kaiCommunicator
+ * @function marvelCommunicator
  * @param {object} payload - The properties of the communication.
  * @param {object} props.data - The payload data object used in the communication.
  *  @param {Array} props.data.messages - An array of messages for the current user chat session.
