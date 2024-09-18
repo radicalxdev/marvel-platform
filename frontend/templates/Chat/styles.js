@@ -336,36 +336,7 @@ const styles = {
       maxHeight: 'none',
     },
   },
-  newMessageButtonProps: {
-    sx: (theme) => ({
-      position: 'absolute',
-      bottom: {
-        laptop: theme.spacing(15),
-        desktop: theme.spacing(17),
-        desktopMedium: theme.spacing(18),
-      },
-      right: {
-        laptop: theme.spacing(4),
-        desktop: theme.spacing(6),
-        desktopMedium: theme.spacing(8),
-      },
-      textTransform: 'capitalize',
-      borderRadius: '50px',
-      minWidth: '0px',
-      color: 'white',
-      border: '1px solid white',
-      boxShadow: theme.customShadows.Elevation[4].boxShadow,
-      background: theme.palette.primary.main,
-      span: {
-        marginRight: '0px',
-        marginLeft: '0px',
-      },
-      ':hover': {
-        boxShadow: 'none',
-        color: 'white',
-      },
-    }),
-  },
+
   chatHistory: {
     chatHistoryButtonFabProps: {
       sx: {
@@ -480,58 +451,6 @@ const styles = {
       },
     },
   },
-  topBar: {
-    newChatProps: {
-      sx: {
-        textTransform: 'none',
-        color: 'gray',
-        border: '2px solid transparent',
-        background: 'transparent',
-        '&:hover': {
-          background:
-            'linear-gradient(white, white) padding-box, linear-gradient(to right, #8e2de2, #4a00e0) border-box transparent',
-          color: '#8e2de2',
-          border: '2px solid transparent',
-        },
-        transition: 'all 0.3s',
-      },
-    },
-    barProps: {
-      sx: {
-        width: '100%',
-        backgroundColor: 'white',
-        borderRadius: '15px 15px',
-        display: 'flex',
-        justifyContent: 'center',
-        padding: '5px',
-        gap: '1.5rem',
-      },
-    },
-  },
-
-  actionButtonGridProps: {
-    container: true,
-    item: true,
-    justifyContent: 'center',
-  },
-
-  actionButtonProps: {
-    variant: 'outlined',
-    sx: (theme) => ({
-      borderRadius: '5px',
-      height: 'auto',
-      border: `2px solid ${theme.palette.Background.purple3}`,
-      background: theme.palette.Common.White['100p'],
-      color: theme.palette.Background.purple3,
-      textTransform: 'none',
-      ':hover': {
-        backgroundColor: theme.palette.Background.gradient.basicPurple,
-        borderColor: theme.palette.Background.purple3,
-        color: theme.palette.Common.White['100p'],
-        border: `2px solid ${theme.palette.Background.purple3}`,
-      },
-    }),
-  },
 
   cardGridProps: {
     container: true,
@@ -541,6 +460,7 @@ const styles = {
     // ml:15,
     // mr:15,
     width: { laptop: '442px', desktop: '448px' },
+    // height: { laptop: '42px', desktop: '48px' },
     ml: { laptop: 5, desktop: 15 },
     mr: { laptop: 5, desktop: 15 },
 
@@ -556,13 +476,14 @@ const styles = {
     mobileSmall: true,
     alignContent: 'center',
     justifyContent: 'space-between',
+    height: { laptop: '75px', desktop: '80px' },
     px: '20px',
     py: '20px',
     ml: 3,
     mr: 3,
     sx: (theme) => ({
       borderRadius: '25px',
-      border: `1px solid ${theme.palette.Greyscale[499]}`,
+      border: `2px solid ${theme.palette.Background.purple3}`,
       boxShadow: 'none',
       // transition: '0.3s',
       '&:hover': {
@@ -580,6 +501,14 @@ const styles = {
       mb: 5,
       fontSize: '24px',
       fontWeight: 'bold',
+    },
+  },
+  unionPurpleIcon: {
+    item: true,
+    sx: {
+      position: 'relative',
+      top: { laptop: 44, desktop: 44 },
+      left: { laptop: -20, desktop: -10 },
     },
   },
 };

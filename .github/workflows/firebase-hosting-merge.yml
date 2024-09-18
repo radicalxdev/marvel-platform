@@ -145,10 +145,5 @@ jobs:
         with:
           repoToken: ${{ secrets.GIT_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KAI_AI_F63C8 }}
-<<<<<<< HEAD
           projectId: kai-ai-f63c8
           channelId: ${{ env.channel_id }}
-=======
-          channelId: live
-          projectId: kai-40de1
->>>>>>> Task-3-Updates

@@ -192,6 +192,9 @@ const styles = {
   },
   cardProps: {
     sx: {
+      backgroundColor: 'transparent',
+      color: (theme) => `${theme.palette.Background.purple3}`,
+      border: (theme) => `2px solid ${theme.palette.Background.purple3}`,
       borderRadius: '8px',
       boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
       cursor: 'pointer',
@@ -200,13 +203,13 @@ const styles = {
         boxShadow: '0px 6px 12px rgba(0, 0, 0, 0.2)',
       },
       width: { laptop: '142px', desktop: '148px' },
-      height: { laptop: '200px', desktop: '200px' },
+      height: { laptop: '150px', desktop: '150px' },
     },
   },
   cardTitleProps: {
     sx: {
       alignItems: 'center',
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 'bold',
     },
   },
@@ -251,6 +254,14 @@ const styles = {
         desktopLarge: '72%',
       },
       left: { laptop: 200, desktop: 200 },
+    },
+  },
+  starIconProps: {
+    item: true,
+    sx: {
+      position: 'relative',
+      top: { laptop: 62, desktop: 64 },
+      left: { laptop: 95, desktop: 105 },
     },
   },
 };

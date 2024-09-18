@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
 import {
-  ArrowDownwardOutlined,
   ArrowDropUp as ArrowUp,
   SmsRounded as ChatIcon,
   InfoOutlined,
@@ -9,13 +8,6 @@ import {
   Settings,
 } from '@mui/icons-material';
 import {
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardContent,
-  Fab,
-  Fade,
   Grid,
   IconButton,
   InputAdornment,
@@ -34,24 +26,22 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import DiscoveryIcon from '@/assets/svg/add-block2.svg';
-
-import imageCover1 from '@/assets/svg/ImageCover1.svg';
-import imageCover2 from '@/assets/svg/ImageCover2.svg';
-import imageCover3 from '@/assets/svg/ImageCover3.svg';
-import imageCover4 from '@/assets/svg/ImageCover4.svg';
+import UnionPurpleIcon from '@/assets/svg//UnionPurple.svg';
 import NavigationIcon from '@/assets/svg/Navigation.svg';
 
 import { MESSAGE_ROLE, MESSAGE_TYPES } from '@/constants/bots';
 
 import CenterChatContentNoMessages from './CenterChatContentNoMessages';
 import ChatHistory from './ChatHistory';
+import ChatHistoryButton from './ChatHistoryButton';
 import ChatSpinner from './ChatSpinner';
 import DefaultPrompts from './DefaultPrompts';
 import DiscoveryLibraryUI from './DiscoveryLibraryUI';
 import Message from './Message';
+import NewMessageIndicator from './NewMessageIndicator';
 import QuickActionButton from './QuickActionButton';
 import styles from './styles';
+import TopBar from './TopBar';
 
 import {
   openInfoChat,
@@ -311,18 +301,6 @@ const ChatInterface = () => {
     }, 0);
   };
 
-  const getRandomImage = () => {
-    const imageUrls = [
-      imageCover1,
-      imageCover2,
-      imageCover3,
-      imageCover4,
-      // Add more image URLs as needed
-    ];
-
-    const RandomImage = imageUrls[Math.floor(Math.random() * imageUrls.length)];
-    return <RandomImage {...styles.backImageProps} />;
-  };
   const handleSelectPrompt = async (prompt) => {
     dispatch(resetChat());
     dispatch(setInput(prompt));
@@ -407,7 +385,9 @@ const ChatInterface = () => {
               <Typography {...styles.cardTitleProps}>
                 {selectedPrompt.title}
               </Typography>
-              {getRandomImage()}
+              <Grid item {...styles.unionPurpleIcon}>
+                <UnionPurpleIcon />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -474,13 +454,10 @@ const ChatInterface = () => {
 
   const renderNewMessageIndicator = () => {
     return (
-      <Fade in={showNewMessageIndicator}>
-        <Button
-          startIcon={<ArrowDownwardOutlined />}
-          onClick={handleScrollToBottom}
-          {...styles.newMessageButtonProps}
-        />
-      </Fade>
+      <NewMessageIndicator
+        showNewMessageIndicator={showNewMessageIndicator}
+        onScrollToBottom={handleScrollToBottom}
+      />
     );
   };
 
@@ -534,17 +511,7 @@ const ChatInterface = () => {
   };
 
   const renderChatHistoryButton = () => {
-    return (
-      <Fab
-        size="medium"
-        {...(!showChatHistory
-          ? styles.chatHistory.chatHistoryButtonFabProps
-          : styles.chatHistory.chatHistoryButtonFabPropsHide)}
-        onClick={handleShowChatHistory}
-      >
-        <ArrowUp {...styles.chatHistory.chatHistoryButtonIconProps} />
-      </Fab>
-    );
+    return <ChatHistoryButton onClick={handleShowChatHistory} />;
   };
 
   const renderChatHistory = () => {
@@ -585,31 +552,17 @@ const ChatInterface = () => {
 
   const renderTopBar = () => {
     return (
-      <Box {...styles.topBar.barProps}>
-        <Button
-          variant="outlined"
-          startIcon={<ChatIcon />}
-          onClick={() => {
-            localStorage.removeItem('sessionId');
-            dispatch(resetChat());
-          }}
-          {...styles.actionButtonProps}
-        >
-          New Chat
-        </Button>
-        <Button
-          variant="outlined"
-          startIcon={<DiscoveryIcon />}
-          {...styles.actionButtonProps}
-          onClick={() => {
-            setShowDiscovery(!showDiscovery);
-            setShowChatHistory(false);
-            setSelectedPrompt(null);
-          }}
-        >
-          Discovery
-        </Button>
-      </Box>
+      <TopBar
+        onNewChat={() => {
+          localStorage.removeItem('sessionId');
+          dispatch(resetChat());
+        }}
+        onDiscoveryToggle={() => {
+          setShowDiscovery(!showDiscovery);
+          setShowChatHistory(false);
+          setSelectedPrompt(null);
+        }}
+      />
     );
   };
 
