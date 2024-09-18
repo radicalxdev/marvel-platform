@@ -59,7 +59,7 @@ const marvelCommunicator = async (payload) => {
     const marvelPayload = {
       user,
       type,
-      ...(isToolCommunicator ? { toolData } : { messages }),
+      ...(isToolCommunicator ? { tool_data: toolData } : { messages }),
     };
 
     DEBUG && logger.log('MARVEL_ENDPOINT', MARVEL_ENDPOINT);
