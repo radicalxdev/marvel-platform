@@ -6,13 +6,14 @@
   },
   "targets": {
     "kai-ai-f63c8": {
+    "kai-ai-f63c8": {
       "hosting": {
         "next": [
+          "kai-ai-f63c8"
           "kai-ai-f63c8"
         ]
       }
     }
   },
-  "etags": {},
-  "dataconnectEmulatorConfig": {}
+  "etags": {}
 }

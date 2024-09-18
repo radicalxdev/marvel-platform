@@ -109,6 +109,7 @@ const ChatHistory = ({ user }) => {
                 <Typography {...styles.timestampProps}>
                   {' '}
                   {moment(entry.timestamp.toDate()).format('h:mm A')}{' '}
+                  {moment(entry.timestamp.toDate()).format('h:mm A')}{' '}
                 </Typography>
               </Button>
             </ListItem>
