@@ -12,6 +12,7 @@
     "deploy": "npm run build:next && firebase deploy",
     "serve": "npm run build:next && firebase serve",
     "emulators": "firebase emulators:start",
+    "backend:docs": "cd functions && npm run docs",
     "frontend:dev": "cd frontend && npm run dev",
     "lint": "cd frontend && npm run lint && cd ../functions && npm run lint",
     "lint:fix": "cd frontend && npm run lint:fix && cd ../functions && npm run lint:fix"
