@@ -21,9 +21,9 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
       fullName: user?.fullName || '',
       occupation: user?.occupation || '',
       bio: user?.bio || '',
-      twitterLink: user?.socialLink?.twitter || '',
-      facebookLink: user?.socialLink?.facebook || '',
-      linkedinLink: user?.socialLink?.linkedin || '',
+      twitterLink: user?.socialLinks?.twitter || '',
+      facebookLink: user?.socialLinks?.facebook || '',
+      linkedinLink: user?.socialLinks?.linkedin || '',
       profileImage: user?.profilePhotoUrl || '',
     },
   });
@@ -150,6 +150,7 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
               message: ONBOARDING_REGEX.url.message,
             },
           }}
+          error={socialLinkError}
         />
         {/* Linkedin Link */}
         <SocialLinkInput
@@ -162,6 +163,7 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
               message: ONBOARDING_REGEX.url.message,
             },
           }}
+          error={socialLinkError}
         />
         {/* Twitter Link */}
         <SocialLinkInput
@@ -174,6 +176,7 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
               message: ONBOARDING_REGEX.url.message,
             },
           }}
+          error={socialLinkError}
         />
 
         {/* Social Link Error Message */}

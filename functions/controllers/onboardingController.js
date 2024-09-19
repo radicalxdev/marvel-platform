@@ -255,7 +255,7 @@ const setupUserProfile = functions.https.onCall(async (data, context) => {
       id: uid,
       fullName: fullName,
       occupation: occupation,
-      socialLink: socialLinks,
+      socialLinks: socialLinks,
       bio: bio,
       profilePhotoUrl: profilePhotoUrl || '',
     };
@@ -372,7 +372,7 @@ const setupUserSystemConfig = functions.https.onCall(async (data, context) => {
     };
 
     // Update the systemconfig object in Firestore
-    await userRef.update({ systemconfig: updatedConfig });
+    await userRef.update({ systemConfig: updatedConfig });
 
     // Call the Onboarding Status Transition Utility function to advance the status
     const onboardingResult = await progressOnboardingStatus(uid, 3);
