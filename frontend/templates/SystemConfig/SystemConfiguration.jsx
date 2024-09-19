@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import { Brightness4, Brightness7 } from '@mui/icons-material';
 import {
   Box,
   Container,
   FormControlLabel,
+  IconButton,
   Switch,
   Typography,
   useTheme,
@@ -41,7 +43,6 @@ const SystemConfiguration = ({ onSubmit }) => {
     }
   };
 
-  // useEffect to handle theme changes based on preferenceData.theme
   useEffect(() => {
     if (preferenceData.theme) {
       dispatch(updateTheme('dark'));
@@ -135,7 +136,8 @@ const SystemConfiguration = ({ onSubmit }) => {
               name="theme"
               checked={preferenceData.theme}
               onChange={handleToggle}
-              text={'"dark"'}
+              icon={<Brightness4 />} // Dark icon
+              checkedIcon={<Brightness7 />} // Light icon
             />
           }
           label="Theme Selection"
@@ -148,9 +150,7 @@ const SystemConfiguration = ({ onSubmit }) => {
       <GradientOutlinedButton
         bgcolor={theme.palette.Dark_Colors.Dark[1]}
         textColor={theme.palette.Common.White['100p']}
-        clickHandler={() => {
-          onSubmitForm(preferenceData);
-        }}
+        clickHandler={onSubmitForm}
         text="Finish"
         {...styles.submitButtonProps}
       />
