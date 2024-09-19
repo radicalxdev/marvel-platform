@@ -139,15 +139,6 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
           Social Links
         </Typography>
 
-        {/* Social Link Error Message */}
-        {socialLinkError && (
-          <Box ref={socialLinkErrorRef} sx={styles.socialLinkErrorMessage}>
-            <Typography variant="body2" color="error" align="center">
-              {socialLinkError}
-            </Typography>
-          </Box>
-        )}
-
         {/* Facebook Link */}
         <SocialLinkInput
           name="facebookLink"
@@ -184,6 +175,15 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
             },
           }}
         />
+
+        {/* Social Link Error Message */}
+        {socialLinkError && (
+          <Box ref={socialLinkErrorRef} sx={styles.socialLinkErrorMessage}>
+            <Typography variant="body2" color="error" align="center">
+              {socialLinkError}
+            </Typography>
+          </Box>
+        )}
       </Box>
 
       {/* Profile Image */}

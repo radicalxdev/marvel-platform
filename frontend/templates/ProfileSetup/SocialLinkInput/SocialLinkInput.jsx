@@ -25,7 +25,11 @@ const SocialLinkInput = forwardRef(({ icon, control, name, ...props }, ref) => {
       fullWidth
       control={control}
       icon={Icon}
-      sx={{ mb: 1, color: 'text.primary' }}
+      sx={{
+        mb: 1,
+        color: 'text.primary',
+        paddingBottom: '5px',
+      }}
       {...props}
     />
   );
