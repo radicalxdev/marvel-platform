@@ -40,7 +40,6 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
       setSocialLinkError('Please, fill in at least one social media link.');
       // Scroll to error message
       setTimeout(() => {
-        console.log(socialLinkErrorRef.current);
         if (socialLinkErrorRef.current) {
           socialLinkErrorRef.current.scrollIntoView({
             behavior: 'smooth',

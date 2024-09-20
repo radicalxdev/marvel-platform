@@ -19,7 +19,6 @@ const SystemConfig = () => {
     };
     try {
       const response = await setupUserSystemConfig(userPreference);
-      console.log(response.message);
       router.push(ROUTES.FINAL_STEPS);
     } catch (error) {
       throw new Error(error.message);

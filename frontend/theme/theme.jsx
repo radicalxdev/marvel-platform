@@ -1,8 +1,11 @@
 /* eslint-disable no-dupe-keys */
-import { createContext, useMemo, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SvgIcon from '@mui/material/SvgIcon';
+import { useSelector } from 'react-redux';
+
+import { useThemeSync } from '@/hooks/useThemeSync';
 
 import CheckBoxFilled from '@/assets/svg/_CheckBoxFilled.svg';
 import CheckBoxOutlineBlank from '@/assets/svg/_CheckBoxOutlineBlankOutlined.svg';
@@ -326,23 +329,17 @@ const defaultPalette = {
   A700: 'rgba(41, 98, 255, 1)',
 };
 
-// Create the ColorModeContext
-export const ColorModeContext = createContext({
-  toggleColorMode: () => {},
-});
-
-// Hook to toggle color mode
-export const useMode = () => {
-  const [mode, setMode] = useState('dark');
+export const useMode = (initialMode = 'dark') => {
+  const [mode, setMode] = useState(initialMode);
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () =>
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light')),
+      setMode: (newMode) => setMode(newMode),
     }),
     []
   );
 
-  // Memoize the palette based on the current mode (light/dark)
   const updatedPalette = useMemo(() => {
     if (mode === 'light') {
       return {
@@ -484,7 +481,7 @@ export const useMode = () => {
     return defaultPalette;
   }, [mode]);
 
-  return [updatedPalette, colorMode];
+  return [updatedPalette, colorMode, mode];
 };
 const globalThemeCallback = (palette) => {
   return createTheme({
@@ -937,11 +934,22 @@ const globalThemeCallback = (palette) => {
   });
 };
 
+export const ColorModeContext = createContext({
+  toggleColorMode: () => {},
+  setMode: () => {},
+});
+
 const AppThemeProvider = ({ children }) => {
-  const [updatedPalette, colorMode] = useMode(); // Use custom hook for palette
-  // Create the theme using the updated palette
-  const globalThemeVar = globalThemeCallback(updatedPalette);
-  const theme = (globalTheme) => {
+  useThemeSync();
+  const userTheme = useSelector(
+    (state) => state.user.data?.systemConfig?.theme
+  );
+  const [updatedPalette, colorMode, mode] = useMode(
+    userTheme ? 'light' : 'dark'
+  );
+
+  const globalTheme = globalThemeCallback(updatedPalette);
+  const theme = useMemo(() => {
     return createTheme(
       {
         components: {
@@ -2285,11 +2293,17 @@ const AppThemeProvider = ({ children }) => {
       },
       globalTheme
     );
-  };
-  const finalTheme = theme(globalThemeVar);
+  }, [globalTheme]);
+
+  useEffect(() => {
+    if (userTheme !== undefined) {
+      colorMode.setMode(userTheme ? 'light' : 'dark');
+    }
+  }, [userTheme, colorMode]);
+
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme(finalTheme)}>{children}</ThemeProvider>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ColorModeContext.Provider>
   );
 };

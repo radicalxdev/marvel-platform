@@ -5,23 +5,26 @@ import {
   Box,
   Container,
   FormControlLabel,
-  IconButton,
   Switch,
   Typography,
   useTheme,
 } from '@mui/material';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
 import styles from './styles';
 
-import { updateTheme } from '@/redux/slices/themeSlice';
+import { updateUserTheme } from '@/redux/slices/userSlice';
 import { ColorModeContext } from '@/theme/theme';
 
 const SystemConfiguration = ({ onSubmit }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const { toggleColorMode } = useContext(ColorModeContext);
+  const userData = useSelector((state) => state.user.data);
+
   const [preferenceData, setPreferenceData] = useState({
     email: false,
     push: false,
@@ -29,8 +32,11 @@ const SystemConfiguration = ({ onSubmit }) => {
     theme: false,
   });
 
-  const dispatch = useDispatch();
-  const { toggleColorMode } = useContext(ColorModeContext);
+  useEffect(() => {
+    if (userData && userData.systemConfig) {
+      setPreferenceData(userData.systemConfig);
+    }
+  }, [userData]);
 
   const handleToggle = (event) => {
     const { name, checked } = event.target;
@@ -40,16 +46,9 @@ const SystemConfiguration = ({ onSubmit }) => {
     }));
     if (name === 'theme') {
       toggleColorMode();
+      dispatch(updateUserTheme(checked));
     }
   };
-
-  useEffect(() => {
-    if (preferenceData.theme) {
-      dispatch(updateTheme('dark'));
-    } else {
-      dispatch(updateTheme('light'));
-    }
-  }, [preferenceData.theme, dispatch]);
 
   const onSubmitForm = async () => {
     try {
@@ -140,7 +139,7 @@ const SystemConfiguration = ({ onSubmit }) => {
               checkedIcon={<Brightness7 />} // Light icon
             />
           }
-          label="Theme Selection"
+          label="Dark Mode"
           sx={{
             marginBottom: '15px',
             justifyContent: 'space-between',
