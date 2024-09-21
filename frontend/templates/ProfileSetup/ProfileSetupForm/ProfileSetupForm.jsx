@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
 
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 
 import { Controller, FormContainer, useForm } from 'react-hook-form-mui';
 
 import FormTextField from '@/components/FormTextField';
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import ImageUpload from '@/components/ImageUpload';
 
 import SocialLinkInput from '../SocialLinkInput';
@@ -14,14 +15,15 @@ import styles from './styles';
 import ONBOARDING_REGEX from '@/regex/onboarding';
 
 const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
+  const theme = useTheme();
   const formContext = useForm({
     defaultValues: {
       fullName: user?.fullName || '',
       occupation: user?.occupation || '',
       bio: user?.bio || '',
-      twitterLink: user?.socialLink?.twitter || '',
-      facebookLink: user?.socialLink?.facebook || '',
-      linkedinLink: user?.socialLink?.linkedin || '',
+      twitterLink: user?.socialLinks?.twitter || '',
+      facebookLink: user?.socialLinks?.facebook || '',
+      linkedinLink: user?.socialLinks?.linkedin || '',
       profileImage: user?.profilePhotoUrl || '',
     },
   });
@@ -38,7 +40,6 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
       setSocialLinkError('Please, fill in at least one social media link.');
       // Scroll to error message
       setTimeout(() => {
-        console.log(socialLinkErrorRef.current);
         if (socialLinkErrorRef.current) {
           socialLinkErrorRef.current.scrollIntoView({
             behavior: 'smooth',
@@ -137,15 +138,6 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
           Social Links
         </Typography>
 
-        {/* Social Link Error Message */}
-        {socialLinkError && (
-          <Box ref={socialLinkErrorRef} sx={styles.socialLinkErrorMessage}>
-            <Typography variant="body2" color="error" align="center">
-              {socialLinkError}
-            </Typography>
-          </Box>
-        )}
-
         {/* Facebook Link */}
         <SocialLinkInput
           name="facebookLink"
@@ -157,6 +149,7 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
               message: ONBOARDING_REGEX.url.message,
             },
           }}
+          error={socialLinkError}
         />
         {/* Linkedin Link */}
         <SocialLinkInput
@@ -169,6 +162,7 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
               message: ONBOARDING_REGEX.url.message,
             },
           }}
+          error={socialLinkError}
         />
         {/* Twitter Link */}
         <SocialLinkInput
@@ -181,7 +175,17 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
               message: ONBOARDING_REGEX.url.message,
             },
           }}
+          error={socialLinkError}
         />
+
+        {/* Social Link Error Message */}
+        {socialLinkError && (
+          <Box ref={socialLinkErrorRef} sx={styles.socialLinkErrorMessage}>
+            <Typography variant="body2" color="error" align="center">
+              {socialLinkError}
+            </Typography>
+          </Box>
+        )}
       </Box>
 
       {/* Profile Image */}
@@ -268,16 +272,13 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
 
       {/* Submit Button */}
       <Box>
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          disabled={isLoading}
-          fullWidth
-          sx={styles.submitButton}
-        >
-          {isLoading ? 'Submitting...' : 'Next'}
-        </Button>
+        <GradientOutlinedButton
+          bgcolor={theme.palette.Dark_Colors.Dark[1]}
+          textColor={theme.palette.Common.White['100p']}
+          text={isLoading ? 'Submitting...' : 'Next'}
+          loading={isLoading}
+          {...styles.submitButtonProps}
+        />
       </Box>
     </FormContainer>
   );

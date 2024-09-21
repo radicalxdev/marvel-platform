@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
@@ -13,6 +13,7 @@ import styles from './styles';
 const WelcomeScreen = () => {
   const user = useSelector((state) => state.user.data);
   const router = useRouter();
+  const theme = useTheme();
 
   const handleAdvanceOnboarding = async () => {
     router.push(ROUTES.PROFILE_SETUP);
@@ -24,7 +25,7 @@ const WelcomeScreen = () => {
         Welcome to{' '}
         <span
           style={{
-            color: 'primary.main',
+            color: '#8653FF',
           }}
         >
           Marvel AI
@@ -36,10 +37,10 @@ const WelcomeScreen = () => {
       </Typography>
 
       <GradientOutlinedButton
-        bgcolor="primary.main"
+        bgcolor={theme.palette.Dark_Colors.Dark[1]}
+        textColor={theme.palette.Common.White['100p']}
         clickHandler={handleAdvanceOnboarding}
         text="Start Here!"
-        textColor="white"
         {...styles.submitButtonProps}
       />
     </Grid>

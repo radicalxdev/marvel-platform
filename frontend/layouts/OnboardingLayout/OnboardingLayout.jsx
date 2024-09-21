@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppDisabled from '@/components/AppDisabled';
 import Loader from '@/components/Loader';
-import ProgressBarMenu from '@/components/ProgressBarMenu';
+import ProgressBarMenu from '@/layouts/OnboardingLayout/ProgressBarMenu';
 
 import styles from './styles';
 
@@ -40,7 +40,7 @@ const OnboardingLayout = ({ children, currentStep }) => {
 
   const renderHead = () => (
     <Head>
-      <title>Kai Onboarding</title>
+      <title>Marvel AI Onboarding</title>
     </Head>
   );
 

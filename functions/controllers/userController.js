@@ -70,7 +70,7 @@ exports.signUpUser = https.onCall(async (data, context) => {
         4: false,
         5: false,
       },
-      systemconfig: {
+      systemConfig: {
         email: false,
         push: false,
         reminders: false,

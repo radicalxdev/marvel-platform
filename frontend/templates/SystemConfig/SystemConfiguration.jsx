@@ -1,29 +1,36 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
+import { Brightness4, Brightness7 } from '@mui/icons-material';
 import {
   Box,
-  Button,
   Container,
   FormControlLabel,
   Switch,
   Typography,
+  useTheme,
 } from '@mui/material';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { updateTheme } from '@/redux/slices/themeSlice';
+import GradientOutlinedButton from '@/components/GradientOutlinedButton';
+
+import styles from './styles';
+
+import { updateUserTheme } from '@/redux/slices/userSlice';
 import { ColorModeContext } from '@/theme/theme';
 
 const SystemConfiguration = ({ onSubmit }) => {
-  const [preferenceData, setPreferenceData] = useState({
-    email: false,
-    push: false,
-    reminders: false,
-    theme: false,
-  });
-
+  const theme = useTheme();
   const dispatch = useDispatch();
   const { toggleColorMode } = useContext(ColorModeContext);
+  const userData = useSelector((state) => state.user.data);
+
+  const [preferenceData, setPreferenceData] = useState({
+    email: userData?.systemConfig?.email || false,
+    push: userData?.systemConfig?.push || false,
+    reminders: userData?.systemConfig?.reminders || false,
+    theme: userData?.systemConfig?.theme || false,
+  });
 
   const handleToggle = (event) => {
     const { name, checked } = event.target;
@@ -33,17 +40,9 @@ const SystemConfiguration = ({ onSubmit }) => {
     }));
     if (name === 'theme') {
       toggleColorMode();
+      dispatch(updateUserTheme(checked));
     }
   };
-
-  // useEffect to handle theme changes based on preferenceData.theme
-  useEffect(() => {
-    if (preferenceData.theme) {
-      dispatch(updateTheme('dark'));
-    } else {
-      dispatch(updateTheme('light'));
-    }
-  }, [preferenceData.theme, dispatch]);
 
   const onSubmitForm = async () => {
     try {
@@ -54,7 +53,7 @@ const SystemConfiguration = ({ onSubmit }) => {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ textAlign: 'center', paddingTop: '40px' }}>
+    <Container maxWidth="xs" sx={{ textAlign: 'center' }}>
       <Typography
         variant="h4"
         gutterBottom
@@ -130,7 +129,8 @@ const SystemConfiguration = ({ onSubmit }) => {
               name="theme"
               checked={preferenceData.theme}
               onChange={handleToggle}
-              text={'"dark"'}
+              icon={<Brightness4 />} // Dark icon
+              checkedIcon={<Brightness7 />} // Light icon
             />
           }
           label="Theme Selection"
@@ -140,22 +140,13 @@ const SystemConfiguration = ({ onSubmit }) => {
           }}
         />
       </Box>
-
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{
-          marginTop: '30px',
-          backgroundColor: '#946EFF',
-          borderRadius: '30px',
-        }}
-        onClick={() => {
-          onSubmitForm(preferenceData);
-        }}
-      >
-        Finish
-      </Button>
+      <GradientOutlinedButton
+        bgcolor={theme.palette.Dark_Colors.Dark[1]}
+        textColor={theme.palette.Common.White['100p']}
+        clickHandler={onSubmitForm}
+        text="Finish"
+        {...styles.submitButtonProps}
+      />
     </Container>
   );
 };

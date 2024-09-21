@@ -5,7 +5,6 @@ import { ONBOARDING_ERROR_MESSAGES } from '@/constants/onboarding';
 import { functions } from '@/redux/store';
 
 const setupUserProfile = async (profileData) => {
-  console.log('Profile Data:', profileData);
   try {
     const updatePreferences = httpsCallable(functions, 'setupUserProfile');
     const response = await updatePreferences(profileData);

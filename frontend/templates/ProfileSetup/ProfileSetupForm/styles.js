@@ -65,8 +65,20 @@ const styles = {
   generalErrorMessage: {
     mb: 2,
   },
-  submitButton: {
-    py: 1.5,
+  submitButtonProps: {
+    type: 'submit',
+    color: 'purple',
+    inverted: true,
+    extraProps: {
+      padding: '2px',
+      height: { laptop: '54px', desktopMedium: '60px' },
+      width: '100%',
+    },
+    extraButtonProps: {
+      fontFamily: 'Satoshi Bold',
+      fontSize: '16px',
+      px: 4,
+    },
   },
   typographyLabel: {
     marginLeft: '.5rem',

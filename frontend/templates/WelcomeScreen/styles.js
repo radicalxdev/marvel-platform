@@ -7,11 +7,8 @@ const styles = {
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
-    paddingTop: '50px',
     sx: {
-      background: (theme) => {
-        return theme.palette.Background.primary;
-      },
+      background: (theme) => theme.palette.Background.primary,
     },
   },
 
@@ -21,7 +18,7 @@ const styles = {
     fontWeight: 700,
     lineHeight: '54px',
     letterSpacing: '-0.02em',
-    color: (theme) => theme.palette.Common.White['100p'],
+    color: 'text.primary',
     textAlign: 'center',
   },
   MainSectionTwoProps: {
@@ -31,7 +28,7 @@ const styles = {
     lineHeight: '32.4px',
     letterSpacing: '-0.02em',
     textAlign: 'center',
-    color: (theme) => theme.palette.Common.White['100p'],
+    color: 'text.primary',
     marginBottom: '20px',
   },
   submitButtonProps: {

@@ -19,6 +19,11 @@ const userData = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+    updateUserTheme: (state, action) => {
+      if (state.data && state.data.systemConfig) {
+        state.data.systemConfig.theme = action.payload;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -36,6 +41,7 @@ const userData = createSlice({
   },
 });
 
-export const { reset, setUserData, setLoading } = userData.actions;
+export const { reset, setUserData, setLoading, updateUserTheme } =
+  userData.actions;
 
 export default userData.reducer;
