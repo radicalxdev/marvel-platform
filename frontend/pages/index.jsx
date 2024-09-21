@@ -15,7 +15,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!data) dispatch(fetchTools({ firestore }));
+    if (!data) dispatch(fetchTools());
   }, []);
 
   return <HomePage data={data} loading={loading} error={error} />;

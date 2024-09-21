@@ -19,7 +19,7 @@ const DEBUG = process.env.DEBUG;
 /**
  * Simulates communication with the Marvel AI endpoint.
  *
- * @function kaiCommunicator
+ * @function marvelCommunicator
  * @param {object} payload - The properties of the communication.
  * @param {object} props.data - The payload data object used in the communication.
  *  @param {Array} props.data.messages - An array of messages for the current user chat session.
@@ -27,9 +27,9 @@ const DEBUG = process.env.DEBUG;
  *    @param {string} props.data.user.id - The id of the current user.
  *    @param {string} props.data.user.fullName - The user's full name.
  *    @param {string} props.data.user.email - The users email.
- *  @param {object} props.data.tool_data - The payload data object used in the communication.
- *    @param {string} props.data.tool_data.tool_id - The payload data object used in the communication.
- *    @param {Array} props.data.tool_data.inputs - The different form input values sent for a tool.
+ *  @param {object} props.data.toolData - The payload data object used in the communication.
+ *    @param {string} props.data.toolData.toolId - The payload data object used in the communication.
+ *    @param {Array} props.data.toolData.inputs - The different form input values sent for a tool.
  *  @param {string} props.data.type - The payload data object used in the communication.
  *
  * @return {object} The response from the AI service.
@@ -38,7 +38,7 @@ const marvelCommunicator = async (payload) => {
   try {
     DEBUG && logger.log('marvelCommunicator started, data:', payload.data);
 
-    const { messages, user, tool_data, type } = payload.data;
+    const { messages, user, toolData, type } = payload.data;
     const isToolCommunicator = type === BOT_TYPE.TOOL;
 
     const MARVEL_API_KEY = process.env.MARVEL_API_KEY;
@@ -59,7 +59,7 @@ const marvelCommunicator = async (payload) => {
     const marvelPayload = {
       user,
       type,
-      ...(isToolCommunicator ? { tool_data } : { messages }),
+      ...(isToolCommunicator ? { tool_data: toolData } : { messages }),
     };
 
     DEBUG && logger.log('MARVEL_ENDPOINT', MARVEL_ENDPOINT);
@@ -239,7 +239,7 @@ app.post('/api/tool/', (req, res) => {
       DEBUG && logger.log('data:', JSON.parse(data?.data));
 
       const {
-        tool_data: { inputs, ...otherToolData },
+        toolData: { inputs, ...otherToolData },
         ...otherData
       } = JSON.parse(data?.data);
 
@@ -257,8 +257,9 @@ app.post('/api/tool/', (req, res) => {
       const response = await marvelCommunicator({
         data: {
           ...otherData,
-          tool_data: {
+          toolData: {
             ...otherToolData,
+            tool_id: otherToolData.toolId,
             inputs: modifiedInputs,
           },
         },
@@ -270,9 +271,9 @@ app.post('/api/tool/', (req, res) => {
 
       await saveResponseToFirestore({
         response: response.data.data,
-        tool_id: otherToolData.tool_id,
+        toolId: otherToolData.toolId,
         topic,
-        userID: otherData.user.id,
+        userId: otherData.user.id,
       });
 
       res.status(200).json({ success: true, data: response.data });

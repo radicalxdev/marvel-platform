@@ -2,8 +2,10 @@ import { useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import { ToolCardSkeleton } from '../ToolCard';
+import { useSelector } from 'react-redux';
+
 import ToolHistoryCard from '../ToolHistoryCard';
+import ToolHistoryCardSkeleton from '../ToolHistoryCard/Skeleton';
 
 import ToolOutputHistoryDrawer from '../ToolOutputHistoryDrawer';
 
@@ -23,7 +25,9 @@ const DEFAULT_HISTORY = new Array(4)
  * @returns {JSX.Element} The rendered ToolHistoryListingContainer component.
  */
 const ToolHistoryListingContainer = (props) => {
-  const { data, loading, category } = props;
+  const { data, category } = props;
+
+  const { loading } = useSelector((state) => state.toolHistory);
 
   const [openDrawer, setOpenDrawer] = useState(false);
   const [selectedCardData, setSelectedCardData] = useState(null);
@@ -37,25 +41,51 @@ const ToolHistoryListingContainer = (props) => {
 
   if (data?.length === 0) return null;
 
+  const determineToolHistoryLength = () => {
+    if (!data) return null;
+    if (category !== 'Months Before') return data.length;
+    return Object.values(data || {})?.length;
+  };
+
   const renderTitle = () => (
     <Grid {...styles.headerGridProps}>
       <Typography {...styles.categoryTitleProps}>
-        {category} {data && `(${data?.length})`}
+        {category} {data && `(${determineToolHistoryLength()})`}
       </Typography>
     </Grid>
   );
 
+  const renderCategorizedTools = () => {
+    return (
+      Array.isArray(data) &&
+      data?.map((item, i) => (
+        <ToolHistoryCard
+          key={`$history-${i}`}
+          onOpen={handleOpenSidebar}
+          data={item}
+        />
+      ))
+    );
+  };
+
+  const renderMonthsBefore = () => {
+    return Object.values(data)?.map((item) => {
+      return item?.map((toolItem, i) => (
+        <ToolHistoryCard
+          key={`$history-${i}`}
+          onOpen={handleOpenSidebar}
+          data={toolItem}
+        />
+      ));
+    });
+  };
+
   const renderCards = () => (
     <Grid {...styles.containerGridProps}>
       <Grid {...styles.innerListGridProps}>
-        {Array.isArray(data) &&
-          data?.map((item) => (
-            <ToolHistoryCard
-              key={item.id}
-              onOpen={handleOpenSidebar}
-              data={item}
-            />
-          ))}
+        {category === 'Months Before'
+          ? renderMonthsBefore()
+          : renderCategorizedTools()}
       </Grid>
     </Grid>
   );
@@ -64,7 +94,7 @@ const ToolHistoryListingContainer = (props) => {
     <Grid {...styles.containerGridProps}>
       <Grid {...styles.innerListGridProps}>
         {DEFAULT_HISTORY.map((tool) => (
-          <ToolCardSkeleton key={tool.id} />
+          <ToolHistoryCardSkeleton key={tool.id} />
         ))}
       </Grid>
     </Grid>
