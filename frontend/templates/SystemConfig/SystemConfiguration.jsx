@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import {
@@ -26,17 +26,11 @@ const SystemConfiguration = ({ onSubmit }) => {
   const userData = useSelector((state) => state.user.data);
 
   const [preferenceData, setPreferenceData] = useState({
-    email: false,
-    push: false,
-    reminders: false,
-    theme: false,
+    email: userData?.systemConfig?.email || false,
+    push: userData?.systemConfig?.push || false,
+    reminders: userData?.systemConfig?.reminders || false,
+    theme: userData?.systemConfig?.theme || false,
   });
-
-  useEffect(() => {
-    if (userData && userData.systemConfig) {
-      setPreferenceData(userData.systemConfig);
-    }
-  }, [userData]);
 
   const handleToggle = (event) => {
     const { name, checked } = event.target;
@@ -139,7 +133,7 @@ const SystemConfiguration = ({ onSubmit }) => {
               checkedIcon={<Brightness7 />} // Light icon
             />
           }
-          label="Dark Mode"
+          label="Theme Selection"
           sx={{
             marginBottom: '15px',
             justifyContent: 'space-between',
