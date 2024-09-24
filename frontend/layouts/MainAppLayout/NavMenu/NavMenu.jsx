@@ -1,3 +1,4 @@
+import HistoryIcon from '@mui/icons-material/History';
 import { Grid, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -8,20 +9,26 @@ import ROUTES from '@/constants/routes';
 
 import styles from './styles';
 
-import { chatRegex, homeRegex } from '@/regex/routes';
+import { chatRegex, historyRegex, homeRegex } from '@/regex/routes';
 
 const PAGES = [
   {
-    name: 'Kai Tools',
+    name: 'Marvel Tools',
     link: ROUTES.HOME,
     icon: <Briefcase />,
     id: 'page_1',
   },
   {
-    name: 'Kai Chat',
+    name: 'Marvel Chat',
     link: ROUTES.CHAT,
     icon: <ChatBubble />,
     id: 'page_2',
+  },
+  {
+    name: 'History',
+    link: ROUTES.HISTORY,
+    icon: <HistoryIcon />,
+    id: 'page_3',
   },
 ];
 
@@ -35,18 +42,23 @@ const NavMenu = () => {
   const { pathname } = router;
 
   const setActive = (id) => {
-    const isNotHomePage = [chatRegex.test(pathname)].includes(true);
+    const isNotHomePage = [
+      chatRegex.test(pathname) || historyRegex.test(pathname),
+    ].includes(true);
 
     if (id === 'page_1') {
       return isNotHomePage ? false : homeRegex.test(pathname);
     }
 
-    return chatRegex.test(pathname);
+    if (id === 'page_2') return chatRegex.test(pathname);
+
+    if (id === 'page_3') return historyRegex.test(pathname);
+
+    return false;
   };
 
-  const handleRoute = (link, id) => {
+  const handleRoute = (link) => {
     router.push(link);
-    setActive(id);
   };
 
   return (
@@ -54,7 +66,7 @@ const NavMenu = () => {
       {PAGES.map((page) => (
         <MenuItem
           key={page.id}
-          onClick={() => handleRoute(page.link, page.id)}
+          onClick={() => handleRoute(page.link)}
           {...styles.menuItemProps(setActive(page.id))}
         >
           <Grid {...styles.innerMenuGridProps}>

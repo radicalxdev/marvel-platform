@@ -1,10 +1,10 @@
 import { LogoutOutlined } from '@mui/icons-material';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/router';
 
-import LargeLogo from '@/assets/svg/MenuLogo.svg';
+import MarvelAILogo from '@/assets/svg/MarvelAIFrame.svg';
 
 import ROUTES from '@/constants/routes';
 
@@ -30,13 +30,7 @@ const SideMenu = () => {
     return (
       <Grid onClick={() => router.push(ROUTES.HOME)} {...styles.logoGridProps}>
         <Grid {...styles.logoImageGridProps}>
-          <LargeLogo />
-        </Grid>
-        <Grid {...styles.titleGridProps}>
-          <Typography {...styles.titleProps}>KAI.AI</Typography>
-          <Typography {...styles.subtitleProps}>
-            AI Teaching Assistant
-          </Typography>
+          <MarvelAILogo />
         </Grid>
       </Grid>
     );

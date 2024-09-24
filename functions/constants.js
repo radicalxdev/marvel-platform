@@ -9,6 +9,11 @@ const BOT_TYPE = {
   TOOL: 'tool',
 };
 
+const AI_ENDPOINTS = {
+  [BOT_TYPE.CHAT]: '/chat',
+  [BOT_TYPE.TOOL]: '/submit-tool',
+};
+
 const MESSAGE_TYPES = {
   TEXT: 'text',
   IMAGE: 'image',
@@ -23,4 +28,5 @@ module.exports = {
   MESSAGE_ROLES,
   MESSAGE_TYPES,
   BOT_TYPE,
+  AI_ENDPOINTS,
 };

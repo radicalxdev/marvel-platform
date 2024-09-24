@@ -1,10 +1,10 @@
 {
-  "name": "kai-ai",
+  "name": "marvel-ai",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm i && next build",
     "start": "next start",
     "lint": "eslint --cache --ext .jsx --ext .js .",
     "lint:fix": "eslint --ext .jsx --ext .js ./ --fix",

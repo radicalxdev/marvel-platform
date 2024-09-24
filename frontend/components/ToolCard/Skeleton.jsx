@@ -3,9 +3,9 @@ import { Grid, Skeleton } from '@mui/material';
 import styles from './styles';
 
 /**
- * Returns a RewardCard component with an image and a chip displaying the amount of coins.
+ * Renders a skeleton loader for a tool card.
  *
- * @return {JSX.Element} The RewardCard component.
+ * @returns {JSX.Element} The ToolCardSkeleton component.
  */
 const ToolCardSkeleton = () => {
   return (

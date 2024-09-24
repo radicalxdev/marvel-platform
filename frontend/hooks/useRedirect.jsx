@@ -14,6 +14,7 @@ import {
 } from '@/redux/slices/authSlice';
 import { setLoading as setUserLoading } from '@/redux/slices/userSlice';
 import { auth } from '@/redux/store';
+import { fetchToolHistory } from '@/redux/thunks/toolHistory';
 import fetchUserData from '@/redux/thunks/user';
 import { homeRegex, onboardingRegex } from '@/regex/routes';
 
@@ -27,7 +28,8 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
   const { data: authData, loading } = useSelector((state) => state.auth);
   const { data: userData } = useSelector((state) => state.user);
   const fetchUserRelatedData = async (id) => {
-    await dispatch(fetchUserData({ firestore, id }));
+    dispatch(fetchUserData({ firestore, id }));
+    dispatch(fetchToolHistory());
   };
 
   useEffect(() => {

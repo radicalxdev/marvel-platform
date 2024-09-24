@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
@@ -8,6 +7,7 @@ import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 import authReducer from './slices/authSlice';
 import chatReducer from './slices/chatSlice';
 import onboardingReducer from './slices/onboardingSlice';
+import toolHistoryReducer from './slices/toolHistorySlice';
 import toolsReducer from './slices/toolsSlice';
 import userReducer from './slices/userSlice';
 
@@ -31,6 +31,7 @@ const store = configureStore({
     auth: authReducer,
     user: userReducer,
     tools: toolsReducer,
+    toolHistory: toolHistoryReducer,
     chat: chatReducer,
     onboarding: onboardingReducer,
   },

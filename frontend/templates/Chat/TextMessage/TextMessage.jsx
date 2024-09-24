@@ -15,7 +15,9 @@ const TextMessage = (props) => {
     <Fade in direction="up">
       <Grid id="message" {...styles.mainGridProps(isMyMessage)}>
         <Grid {...styles.messageWrapperProps(isMyMessage)}>
-          {!isMyMessage && <Typography {...styles.aiNameProps}>Kai</Typography>}
+          {!isMyMessage && (
+            <Typography {...styles.aiNameProps}>Marvel</Typography>
+          )}
           <Typography {...styles.messageProps(isMyMessage)}>
             <MemoizedReactMarkdown
               remarkPlugins={[remarkGfm, emoji]}

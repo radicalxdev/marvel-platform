@@ -59,20 +59,23 @@ const styles = {
   logoImageGridProps: {
     container: true,
     item: true,
-    mobileSmall: 'auto',
+    mobileSmall: 12,
     height: 'auto',
   },
   titleGridProps: {
+    position: 'relative',
     container: true,
     item: true,
     mobileSmall: true,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    height: '60px',
+    width: '100%',
   },
   titleProps: {
     fontFamily: 'Ethnocentric Regular',
-    fontSize: '36px',
+    fontSize: '28px',
     color: 'white',
   },
   subtitleProps: {
