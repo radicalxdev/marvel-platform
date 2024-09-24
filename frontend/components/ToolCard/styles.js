@@ -55,6 +55,13 @@ const styles = {
     fontFamily: 'Satoshi Bold',
     fontSize: '16px',
     color: (theme) => theme.palette.Common.White['100p'],
+    sx: {
+      display: '-webkit-box',
+      WebkitLineClamp: 1,
+      WebkitBoxOrient: 'vertical',
+      overflow: 'hidden',
+      width: 'calc(100% - 16px)',
+    },
   },
   contentGridProps: {
     container: true,
@@ -68,8 +75,6 @@ const styles = {
     fontFamily: 'Satoshi Regular',
     fontSize: '12px',
     color: (theme) => theme.palette.Common.White['100p'],
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
     sx: {
       display: '-webkit-box',
       WebkitLineClamp: 2,

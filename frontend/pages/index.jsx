@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import MainAppLayout from '@/layouts/MainAppLayout';
 import HomePage from '@/templates/HomePage';
 
-import { firestore } from '@/redux/store';
 import fetchTools from '@/redux/thunks/tools';
 
 const Home = () => {
@@ -14,7 +13,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!data) dispatch(fetchTools({ firestore }));
+    if (!data) dispatch(fetchTools());
   }, []);
 
   return <HomePage data={data} loading={loading} error={error} />;
