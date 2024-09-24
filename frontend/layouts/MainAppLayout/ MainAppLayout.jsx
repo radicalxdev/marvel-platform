@@ -15,6 +15,15 @@ import styles from './styles';
 
 import { setLoading } from '@/redux/slices/authSlice';
 
+/**
+ * Renders the main application layout.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {ReactNode} props.children - The child components to render.
+ * @param {Object} props.extraContentProps - The additional properties for the extra content.
+ * @param {boolean} props.isToolPage - Indicates if the layout is for a tool page.
+ * @return {ReactNode} The rendered main application layout.
+ */
 const MainAppLayout = (props) => {
   const { children, extraContentProps, isToolPage } = props;
   const dispatch = useDispatch();
@@ -22,6 +31,7 @@ const MainAppLayout = (props) => {
 
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
+
   const isTabletScreen = useMediaQuery((theme) =>
     theme.breakpoints.down('laptop')
   );
@@ -36,7 +46,7 @@ const MainAppLayout = (props) => {
 
   const renderHead = () => (
     <Head>
-      <title>Kai AI</title>
+      <title>Marvel AI</title>
     </Head>
   );
 
