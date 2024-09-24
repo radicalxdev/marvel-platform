@@ -33,7 +33,7 @@ const MainAppLayout = (props) => {
     theme.breakpoints.down('laptop')
   );
 
-  const isLoading = auth.loading || !user.data || !auth.data;
+  const isLoading = auth.loading || user.loading || !user.data || !auth.data;
 
   useEffect(() => {
     dispatch(setLoading(false));

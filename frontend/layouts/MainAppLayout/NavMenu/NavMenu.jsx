@@ -46,8 +46,9 @@ const NavMenu = () => {
       chatRegex.test(pathname) || historyRegex.test(pathname),
     ].includes(true);
 
-    if (id === 'page_1')
+    if (id === 'page_1') {
       return isNotHomePage ? false : homeRegex.test(pathname);
+    }
 
     if (id === 'page_2') return chatRegex.test(pathname);
 
