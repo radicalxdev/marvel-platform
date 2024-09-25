@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import MainAppLayout from '@/layouts/MainAppLayout';
+// import MainAppLayout from '@/layouts/MainAppLayout';
 import HomePage from '@/templates/HomePage';
 
+import withLayoutRedirect from '@/hoc/onboarding/withLayoutRedirect';
+import { firestore } from '@/redux/store';
 import fetchTools from '@/redux/thunks/tools';
 
 const Home = () => {
@@ -19,8 +21,8 @@ const Home = () => {
   return <HomePage data={data} loading={loading} error={error} />;
 };
 
-Home.getLayout = function getLayout(page) {
-  return <MainAppLayout>{page}</MainAppLayout>;
-};
+// Home.getLayout = function getLayout(page) {
+//   return <MainAppLayout>{page}</MainAppLayout>;
+// };
 
-export default Home;
+export default withLayoutRedirect(Home);
