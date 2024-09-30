@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { GoogleAnalytics } from 'nextjs-google-analytics';
 
 import firebaseConfig from '@/firebase/config';
@@ -7,10 +6,10 @@ import GlobalProvider from '@/providers/GlobalProvider';
 
 import '@/styles/globals.css';
 import AppThemeProvider from '@/theme/theme';
+import withLayoutRedirect from '@/hoc/withLayoutRedirect';
 
 const App = ({ Component, pageProps }) => {
-  const getLayout = Component.getLayout || ((page) => page);
-  const { query } = useRouter();
+  const LayoutWrapper = withLayoutRedirect(Component);
 
   return (
     <GlobalProvider>
@@ -19,7 +18,7 @@ const App = ({ Component, pageProps }) => {
           trackPageViews
           gaMeasurementId={firebaseConfig.measurementId}
         />
-        {getLayout(<Component {...pageProps} />, query)}
+        <LayoutWrapper {...pageProps} />
       </AppThemeProvider>
     </GlobalProvider>
   );
