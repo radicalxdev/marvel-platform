@@ -4,6 +4,7 @@ const initialState = {
   data: null,
   loading: true,
   error: null,
+  showSignupSuccessNotification: false,
 };
 
 const authSlice = createSlice({
@@ -25,6 +26,9 @@ const authSlice = createSlice({
     setTotalUsers: (state, action) => {
       if (state.data) state.data.totalUsers = action.payload;
     },
+    setShowSignupSuccessNotification: (state, action) => {
+      state.showSignupSuccessNotification = action.payload;
+    },
   },
 });
 
@@ -34,6 +38,7 @@ export const {
   setEmailVerified,
   setTotalUsers,
   setClaims,
+  setShowSignupSuccessNotification,
 } = authSlice.actions;
 
 export default authSlice.reducer;

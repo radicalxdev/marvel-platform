@@ -9,7 +9,11 @@ import AuthTextField from '@/components/AuthTextField';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import { AUTH_STEPS, VALIDATION_STATES } from '@/constants/auth';
+import {
+  AUTH_STEPS,
+  AUTH_ERROR_MESSAGES,
+  VALIDATION_STATES,
+} from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 
 import styles from './styles';
@@ -20,7 +24,16 @@ import { AuthContext } from '@/providers/GlobalProvider';
 import AUTH_REGEX from '@/regex/auth';
 import { signUp } from '@/services/user/signUp';
 import { validatePassword } from '@/utils/AuthUtils';
-
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from 'firebase/auth';
+import { toast } from 'react-toastify'; // Import react-toastify
+import {
+  SuccessNotification,
+  ErrorNotification,
+} from '@/components/Notification/Notifications';
 const DEFAULT_FORM_VALUES = {
   email: '',
   fullName: '',
@@ -70,12 +83,16 @@ const SignUpForm = (props) => {
 
   const [error, setError] = useState(DEFAULT_ERR_STATE);
   const [loading, setLoading] = useState(false);
-
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const { handleOpenSnackBar } = useContext(AuthContext);
 
   const { register, control, fieldStates } = useWatchFields(WATCH_FIELDS);
   const { email, fullName, password, reEnterPassword } = fieldStates;
-
+  const auth = getAuth(); // Initialize Firebase Auth
+  const hardCodedSuccessMessage = `Welcome to Kai, ${fullName.value}!`;
+  const hardCodedErrorMessage = `Signup Failed!. Please try again.`;
   const passwordMatch = password.value === reEnterPassword.value;
 
   const setReEnterPasswordStatus = () => {
@@ -142,15 +159,17 @@ const SignUpForm = (props) => {
 
       try {
         await signUp(email.value, password.value, fullName.value);
-        handleOpenSnackBar(
-          ALERT_COLORS.SUCCESS,
-          'Account created successfully'
-        );
-
+        // handleOpenSnackBar(
+        //   ALERT_COLORS.SUCCESS,
+        //   'Account created successfully'
+        // );
+        setOpenSuccess(true);
         setEmail(email.value);
         handleSwitch();
       } catch (err) {
-        handleOpenSnackBar(ALERT_COLORS.ERROR, err.message);
+        // handleOpenSnackBar(ALERT_COLORS.ERROR, err.message);
+        setErrorMessage(err.message);
+        setOpenError(true);
       } finally {
         setLoading(false);
       }
@@ -271,6 +290,16 @@ const SignUpForm = (props) => {
         {renderPasswordAndConfirmPasswordInputs()}
         {renderSubmitButton()}
       </Grid>
+      <SuccessNotification
+        message={hardCodedSuccessMessage}
+        open={openSuccess}
+        onClose={() => setOpenSuccess(false)}
+      />
+      <ErrorNotification
+        message={hardCodedErrorMessage} // "Error: " + errorMessage
+        open={openError}
+        onClose={() => setOpenError(false)}
+      />
     </FormContainer>
   );
 };

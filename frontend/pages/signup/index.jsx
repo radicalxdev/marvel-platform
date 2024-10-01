@@ -14,6 +14,13 @@ import ROUTES from '@/constants/routes';
 
 import sharedStyles from '@/styles/shared/sharedStyles';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+  SuccessNotification,
+  ErrorNotification,
+} from '@/components/Notification/Notifications';
+
 const TITLE_CONFIG = {
   main: 'sign up 🌟',
   subtitle: 'Already have an account?',
@@ -31,6 +38,9 @@ const SignUp = () => {
   const [isSignUp, setIsSignUp] = useState(true);
   const [authStep, setAuthStep] = useState(AUTH_STEPS.EMAIL);
   const [email, setEmail] = useState('');
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSwitchScreen = () => {
     setIsSignUp((prev) => !prev);
@@ -79,6 +89,27 @@ const SignUp = () => {
 
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={true}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        toastStyle={{
+          backgroundColor: '#3D252B',
+          color: 'white',
+          textAlign: 'center',
+          borderRadius: '8px',
+          padding: '20px',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+          border: '1px solid #FE6167',
+          zIndex: 9999,
+        }}
+      />
       {isSignUp && renderForm()}
       {!isSignUp && renderVerifyEmail()}
     </>

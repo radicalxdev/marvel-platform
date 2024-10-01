@@ -1,13 +1,16 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
 
 import { onAuthStateChanged } from 'firebase/auth';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 
 import useRedirect from '@/hooks/useRedirect';
 
 import SnackBar from '@/components/SnackBar';
-
-import { setLoading, setUser } from '@/redux/slices/authSlice';
+import {
+  setLoading,
+  setUser,
+  setShowSignupSuccessNotification,
+} from '@/redux/slices/authSlice';
 import { setUserData } from '@/redux/slices/userSlice';
 import store, { auth, firestore, functions } from '@/redux/store';
 
@@ -22,6 +25,7 @@ const AuthContext = createContext();
 const AuthProvider = (props) => {
   const { children } = props;
   const dispatch = useDispatch();
+  const { showSignupSuccessNotification } = useSelector((state) => state.auth);
 
   const [open, setOpen] = useState(false);
   const [severity, setSeverity] = useState('success');
@@ -46,7 +50,27 @@ const AuthProvider = (props) => {
       if (user) {
         // Get auth user claims
         const { claims } = await user.getIdTokenResult(true);
-        return dispatch(setUser({ ...user.toJSON(), claims }));
+        dispatch(setUser({ ...user.toJSON(), claims }));
+
+        const creationTime = user.metadata.creationTime;
+        const lastSignInTime = user.metadata.lastSignInTime;
+        const userId = user.uid;
+        const signupNotificationShownKey = `signupNotificationShown_${userId}`;
+        const signupNotificationShown = localStorage.getItem(
+          signupNotificationShownKey
+        );
+
+        if (
+          creationTime === lastSignInTime &&
+          !signupNotificationShown &&
+          user.emailVerified
+        ) {
+          dispatch(setShowSignupSuccessNotification(true));
+          localStorage.setItem(signupNotificationShownKey, 'true');
+        }
+
+        dispatch(setLoading(false));
+        return;
       }
 
       dispatch(setLoading(false));
@@ -57,7 +81,7 @@ const AuthProvider = (props) => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [dispatch]);
 
   useRedirect(firestore, functions, handleOpenSnackBar);
 
