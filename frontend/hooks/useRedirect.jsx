@@ -8,7 +8,11 @@ import { AUTH_MODES } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
 import ROUTES from '@/constants/routes';
 
-import { setEmailVerified, setLoading } from '@/redux/slices/authSlice';
+import {
+  setEmailVerified,
+  setLoading,
+  setShowSignupSuccessNotification,
+} from '@/redux/slices/authSlice';
 import { auth } from '@/redux/store';
 import { fetchToolHistory } from '@/redux/thunks/toolHistory';
 import fetchUserData from '@/redux/thunks/user';
@@ -83,7 +87,7 @@ const useRedirect = (firestore, functions, handleOpenSnackBar) => {
           const { oobCode } = query;
 
           await applyActionCode(auth, oobCode);
-
+          dispatch(setShowSignupSuccessNotification(true)); // <-- Trigger success notification
           dispatch(setEmailVerified(true));
           router.push(`${ROUTES.HOME}`);
         } catch (error) {

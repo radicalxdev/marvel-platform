@@ -12,7 +12,8 @@ import SideMenu from './SideMenu';
 import styles from './styles';
 
 import { setLoading } from '@/redux/slices/authSlice';
-
+import { SuccessNotification } from '@/components/Notification/Notifications'; // Import SuccessNotification
+import { setShowSignupSuccessNotification } from '@/redux/slices/authSlice';
 /**
  * Renders the main application layout.
  *
@@ -55,6 +56,25 @@ const MainAppLayout = (props) => {
         <SideMenu />
         <Grid {...styles.contentGridProps(extraContentProps, isToolPage)}>
           {children}
+          {auth.showSignupSuccessNotification && ( // Render SuccessNotification if the flag is true
+            <SuccessNotification
+              message={`👋 Welcome to Kai, ${user.data?.fullName || 'User'}!`}
+              // open={true}
+              open={auth.showSignupSuccessNotification}
+              // onClose={() => dispatch(setShowSignupSuccessNotification(false))}
+              onClose={(event, reason) => {
+                console.log('event:', event, 'reason:', reason);
+                if (
+                  reason !== 'clickaway'
+                  // reason === 'timeout' ||
+                  // reason === 'clickaway' ||
+                  // reason === 'undefined'
+                ) {
+                  dispatch(setShowSignupSuccessNotification(false));
+                }
+              }}
+            />
+          )}
         </Grid>
       </>
     );

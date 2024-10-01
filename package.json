@@ -18,6 +18,8 @@
     "lint:fix": "cd frontend && npm run lint:fix && cd ../functions && npm run lint:fix"
   },
   "devDependencies": {
-    "firebase-tools": "^9.10.0"
+    "firebase-tools": "^9.10.0",
+    "firebase": "^10.12.3",
+    "react-toastify": "^10.0.5"
   }
 }
