@@ -9,17 +9,12 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { useRouter } from 'next/router';
-
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 import StatusIcon from '@/templates/WelcomeScreen/StatusIcon';
 
-import ROUTES from '@/constants/routes';
-
 import styles from './styles';
 
-const FinalSteps = () => {
-  const router = useRouter();
+const FinalSteps = ({ onAdvance }) => {
   const currentStep = 3;
   const defaultSteps = [
     'Welcome',
@@ -29,8 +24,8 @@ const FinalSteps = () => {
   ];
   const theme = useTheme();
 
-  const handleAdvanceOnboarding = async () => {
-    router.push(ROUTES.RESULT);
+  const handleAdvanceOnboarding = () => {
+    onAdvance();
   };
 
   // Helper function to determine the status of the step

@@ -10,26 +10,26 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
 import styles from './styles';
 
 import { updateUserTheme } from '@/redux/slices/userSlice';
+import { setupUserSystemConfig } from '@/services/onboarding/setupUserSystemConfig';
 import { ColorModeContext } from '@/theme/theme';
 
-const SystemConfiguration = ({ onSubmit }) => {
+const SystemConfiguration = ({ user }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const { toggleColorMode } = useContext(ColorModeContext);
-  const userData = useSelector((state) => state.user.data);
 
   const [preferenceData, setPreferenceData] = useState({
-    email: userData?.systemConfig?.email || false,
-    push: userData?.systemConfig?.push || false,
-    reminders: userData?.systemConfig?.reminders || false,
-    theme: userData?.systemConfig?.theme || false,
+    email: user?.systemConfig?.email || false,
+    push: user?.systemConfig?.push || false,
+    reminders: user?.systemConfig?.reminders || false,
+    theme: user?.systemConfig?.theme || false,
   });
 
   const handleToggle = (event) => {
@@ -46,7 +46,11 @@ const SystemConfiguration = ({ onSubmit }) => {
 
   const onSubmitForm = async () => {
     try {
-      await onSubmit(preferenceData);
+      const userPreference = {
+        uid: user.id,
+        ...preferenceData,
+      };
+      await setupUserSystemConfig(userPreference);
     } catch (error) {
       throw new Error(error.message);
     }

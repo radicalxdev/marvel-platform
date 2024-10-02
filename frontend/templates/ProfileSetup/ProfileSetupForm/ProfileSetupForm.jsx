@@ -13,9 +13,11 @@ import SocialLinkInput from '../SocialLinkInput';
 import styles from './styles';
 
 import ONBOARDING_REGEX from '@/regex/onboarding';
+import { setupUserProfile } from '@/services/onboarding/setupUserProfile';
 
-const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
+const ProfileSetupForm = ({ user }) => {
   const theme = useTheme();
+  const [isLoading, setIsLoading] = useState(false);
   const formContext = useForm({
     defaultValues: {
       fullName: user?.fullName || '',
@@ -36,6 +38,7 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
     setError(null);
     setSocialLinkError(null);
 
+    // Check if at least one social media link is provided
     if (!data.facebookLink && !data.linkedinLink && !data.twitterLink) {
       setSocialLinkError('Please, fill in at least one social media link.');
       // Scroll to error message
@@ -46,14 +49,33 @@ const ProfileSetupForm = ({ onSubmit, isLoading, user }) => {
             block: 'center',
           });
         }
-      }, 100); // Small delay to ensure DOM has updated
+      }, 100);
       return;
     }
 
+    setIsLoading(true);
+
+    // Construct the object to send to the backend
+    const profileData = {
+      uid: user.id,
+      ...(data.fullName && { fullName: data.fullName }),
+      ...(data.occupation && { occupation: data.occupation }),
+      ...(data.bio && { bio: data.bio }),
+      socialLinks: {
+        ...(data.twitterLink && { twitter: data.twitterLink }),
+        ...(data.facebookLink && { facebook: data.facebookLink }),
+        ...(data.linkedinLink && { linkedin: data.linkedinLink }),
+      },
+      ...(data.profileImage && { profilePhotoUrl: data.profileImage }),
+    };
+
     try {
-      await onSubmit(data);
+      // Call the backend service to update preferences
+      await setupUserProfile(profileData);
     } catch (err) {
       setError(err.message || 'Failed to setup User Profile');
+    } finally {
+      setIsLoading(false);
     }
   };
 
