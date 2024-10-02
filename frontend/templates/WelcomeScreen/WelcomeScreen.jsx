@@ -1,22 +1,16 @@
 import React from 'react';
 
 import { Grid, Typography, useTheme } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
-import ROUTES from '@/constants/routes';
-
 import styles from './styles';
 
-const WelcomeScreen = () => {
-  const user = useSelector((state) => state.user.data);
-  const router = useRouter();
+const WelcomeScreen = ({ user, onAdvance }) => {
   const theme = useTheme();
 
-  const handleAdvanceOnboarding = async () => {
-    router.push(ROUTES.PROFILE_SETUP);
+  const handleAdvanceOnboarding = () => {
+    onAdvance();
   };
 
   const renderMessage = () => (

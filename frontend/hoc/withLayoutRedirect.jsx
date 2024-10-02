@@ -1,35 +1,61 @@
-import { useRouter } from 'next/router';
+import { useEffect, useMemo } from 'react';
 
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+
+import Loader from '@/components/Loader';
 import AuthLayout from '@/layouts/AuthLayout';
 import MainAppLayout from '@/layouts/MainAppLayout';
 
 import ROUTES from '@/constants/routes';
 
+const AUTH_PAGES = [
+  ROUTES.SIGNIN,
+  ROUTES.SIGNUP,
+  ROUTES.PASSWORD_RESET,
+  ROUTES.PRIVACY,
+];
+
+const isOnboardingComplete = (user) =>
+  user?.onboarding
+    ? Object.values(user.onboarding).every((step) => step)
+    : false;
+
 const withLayoutRedirect = (PageComponent) => {
   const LayoutWrapper = (props) => {
     const router = useRouter();
+    const { data: user, loading } = useSelector((state) => state.user);
+
     const currentRoute = router.pathname;
+    const isAuthPage = AUTH_PAGES.includes(currentRoute);
 
-    const authPages = [
-      ROUTES.SIGNIN,
-      ROUTES.SIGNUP,
-      ROUTES.PASSWORD_RESET,
-      ROUTES.PRIVACY,
-    ];
+    const onboardingComplete = useMemo(
+      () => isOnboardingComplete(user),
+      [user]
+    );
 
-    const isAuthPage = authPages.includes(currentRoute);
-    const isAuthScreen = [
-      ROUTES.SIGNIN,
-      ROUTES.SIGNUP,
-      ROUTES.PASSWORD_RESET,
-    ].includes(currentRoute);
+    useEffect(() => {
+      if (
+        !loading &&
+        user &&
+        !onboardingComplete &&
+        !isAuthPage &&
+        currentRoute !== ROUTES.ONBOARDING
+      ) {
+        router.push(ROUTES.ONBOARDING);
+      }
+    }, [loading, user, onboardingComplete, isAuthPage, currentRoute, router]);
 
     if (isAuthPage) {
       return (
-        <AuthLayout isAuthScreen={isAuthScreen}>
+        <AuthLayout isAuthScreen={isAuthPage}>
           <PageComponent {...props} />
         </AuthLayout>
       );
+    }
+
+    if (!onboardingComplete) {
+      return <PageComponent {...props} />;
     }
 
     return (

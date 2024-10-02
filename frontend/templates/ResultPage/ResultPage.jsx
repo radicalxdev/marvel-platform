@@ -61,7 +61,6 @@ const ResultPageTemplate = () => {
       alignItems="center"
       sx={{
         display: 'flex',
-        height: '100vh',
         backgroundColor: theme.palette.Background.primary,
       }}
     >
