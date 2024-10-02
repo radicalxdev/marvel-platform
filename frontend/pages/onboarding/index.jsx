@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
-import FadeTransition from '@/components/FadeTransition';
+import SlideTransition from '@/components/SlideTransition';
 import OnboardingLayout from '@/layouts/OnboardingLayout';
 import FinalSteps from '@/templates/FinalSteps';
 import ProfileSetupForm from '@/templates/ProfileSetup/ProfileSetupForm';
@@ -65,7 +65,7 @@ const Onboarding = () => {
 
   return (
     <OnboardingLayout currentStep={currentStep - 1}>
-      <FadeTransition key={currentStep}>{renderStep()}</FadeTransition>
+      <SlideTransition key={currentStep}>{renderStep()}</SlideTransition>
     </OnboardingLayout>
   );
 };

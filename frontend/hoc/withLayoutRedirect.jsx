@@ -24,7 +24,10 @@ const isOnboardingComplete = (user) =>
 const withLayoutRedirect = (PageComponent) => {
   const LayoutWrapper = (props) => {
     const router = useRouter();
-    const { data: user, loading } = useSelector((state) => state.user);
+    const { data: user, loading: userLoading } = useSelector(
+      (state) => state.user
+    );
+    const { data: authData } = useSelector((state) => state.auth);
 
     const currentRoute = router.pathname;
     const isAuthPage = AUTH_PAGES.includes(currentRoute);
@@ -36,7 +39,7 @@ const withLayoutRedirect = (PageComponent) => {
 
     useEffect(() => {
       if (
-        !loading &&
+        !userLoading &&
         user &&
         !onboardingComplete &&
         !isAuthPage &&
@@ -44,7 +47,14 @@ const withLayoutRedirect = (PageComponent) => {
       ) {
         router.push(ROUTES.ONBOARDING);
       }
-    }, [loading, user, onboardingComplete, isAuthPage, currentRoute, router]);
+    }, [
+      userLoading,
+      user,
+      onboardingComplete,
+      isAuthPage,
+      currentRoute,
+      router,
+    ]);
 
     if (isAuthPage) {
       return (
@@ -52,6 +62,10 @@ const withLayoutRedirect = (PageComponent) => {
           <PageComponent {...props} />
         </AuthLayout>
       );
+    }
+
+    if (userLoading || !authData) {
+      return <Loader />;
     }
 
     if (!onboardingComplete) {
