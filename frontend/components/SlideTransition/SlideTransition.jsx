@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { Slide } from '@mui/material';
 
 const SlideTransition = ({ children }) => {
