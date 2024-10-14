@@ -21,7 +21,7 @@ const SlideTransition = ({ children }) => {
   }, [children, currentChildren]);
 
   return (
-    <Slide direction="left" in={slideIn} timeout={300}>
+    <Slide direction="up" in={slideIn} timeout={300}>
       <div>{currentChildren}</div>
     </Slide>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import Loader from '@/components/Loader';
 import AuthLayout from '@/layouts/AuthLayout';
 import MainAppLayout from '@/layouts/MainAppLayout';
+import OnboardingLayout from '@/layouts/OnboardingLayout';
 
 import ROUTES from '@/constants/routes';
 
@@ -16,45 +17,19 @@ const AUTH_PAGES = [
   ROUTES.PRIVACY,
 ];
 
-const isOnboardingComplete = (user) =>
-  user?.onboarding
-    ? Object.values(user.onboarding).every((step) => step)
-    : false;
+const ONBOARDING_PAGES = [ROUTES.ONBOARDING];
 
 const withLayoutRedirect = (PageComponent) => {
   const LayoutWrapper = (props) => {
     const router = useRouter();
-    const { data: user, loading: userLoading } = useSelector(
-      (state) => state.user
-    );
-    const { data: authData } = useSelector((state) => state.auth);
+    const [currentOnboardingStep, setCurrentOnboardingStep] = useState(0);
 
     const currentRoute = router.pathname;
     const isAuthPage = AUTH_PAGES.includes(currentRoute);
+    const isOnboardingPage = ONBOARDING_PAGES.includes(currentRoute);
+    const { isLoading } = useSelector((state) => state.loading);
 
-    const onboardingComplete = useMemo(
-      () => isOnboardingComplete(user),
-      [user]
-    );
-
-    useEffect(() => {
-      if (
-        !userLoading &&
-        user &&
-        !onboardingComplete &&
-        !isAuthPage &&
-        currentRoute !== ROUTES.ONBOARDING
-      ) {
-        router.push(ROUTES.ONBOARDING);
-      }
-    }, [
-      userLoading,
-      user,
-      onboardingComplete,
-      isAuthPage,
-      currentRoute,
-      router,
-    ]);
+    if (isLoading) return <Loader />;
 
     if (isAuthPage) {
       return (
@@ -64,12 +39,15 @@ const withLayoutRedirect = (PageComponent) => {
       );
     }
 
-    if (userLoading || !authData) {
-      return <Loader />;
-    }
-
-    if (!onboardingComplete) {
-      return <PageComponent {...props} />;
+    if (isOnboardingPage) {
+      return (
+        <OnboardingLayout currentStep={currentOnboardingStep}>
+          <PageComponent
+            {...props}
+            updateCurrentStep={setCurrentOnboardingStep}
+          />
+        </OnboardingLayout>
+      );
     }
 
     return (

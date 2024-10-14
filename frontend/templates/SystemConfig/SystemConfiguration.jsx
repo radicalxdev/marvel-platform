@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import {
@@ -32,17 +32,20 @@ const SystemConfiguration = ({ user }) => {
     theme: user?.systemConfig?.theme || false,
   });
 
-  const handleToggle = (event) => {
-    const { name, checked } = event.target;
-    setPreferenceData((prevState) => ({
-      ...prevState,
-      [name]: checked,
-    }));
-    if (name === 'theme') {
-      toggleColorMode();
-      dispatch(updateUserTheme(checked));
-    }
-  };
+  const handleToggle = useCallback(
+    (event) => {
+      const { name, checked } = event.target;
+      setPreferenceData((prevState) => ({
+        ...prevState,
+        [name]: checked,
+      }));
+      if (name === 'theme') {
+        toggleColorMode();
+        dispatch(updateUserTheme(checked));
+      }
+    },
+    [toggleColorMode, dispatch]
+  );
 
   const onSubmitForm = async () => {
     try {

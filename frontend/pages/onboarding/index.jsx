@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import SlideTransition from '@/components/SlideTransition';
-import OnboardingLayout from '@/layouts/OnboardingLayout';
 import FinalSteps from '@/templates/FinalSteps';
 import ProfileSetupForm from '@/templates/ProfileSetup/ProfileSetupForm';
 import ResultPageTemplate from '@/templates/ResultPage';
@@ -13,10 +12,19 @@ import WelcomeScreen from '@/templates/WelcomeScreen';
 
 import ROUTES from '@/constants/routes';
 
-const Onboarding = () => {
+const ONBOARDING_STEPS = {
+  1: WelcomeScreen,
+  2: ProfileSetupForm,
+  3: SystemConfiguration,
+  4: FinalSteps,
+  5: ResultPageTemplate,
+};
+
+const Onboarding = ({ updateCurrentStep }) => {
   const user = useSelector((state) => state.user.data);
   const router = useRouter();
 
+  // Calculate the current step when the onboarding state changes
   const calculateStep = useCallback((onboarding) => {
     if (!onboarding) return 1;
     const step =
@@ -35,6 +43,12 @@ const Onboarding = () => {
     setCurrentStep(newStep);
   }, [user, calculateStep]);
 
+  useEffect(() => {
+    if (updateCurrentStep) {
+      updateCurrentStep(currentStep - 1);
+    }
+  }, [currentStep, updateCurrentStep]);
+
   const handleAdvanceOnboarding = useCallback(() => {
     setCurrentStep((prevStep) => {
       const newStep = prevStep + 1;
@@ -43,31 +57,17 @@ const Onboarding = () => {
     });
   }, [user, calculateStep]);
 
-  const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <WelcomeScreen user={user} onAdvance={handleAdvanceOnboarding} />
-        );
-      case 2:
-        return <ProfileSetupForm user={user} />;
-      case 3:
-        return <SystemConfiguration user={user} />;
-      case 4:
-        return <FinalSteps onAdvance={handleAdvanceOnboarding} />;
-      case 5:
-        return <ResultPageTemplate />;
-      default:
-        router.push(ROUTES.HOME);
-        return null;
-    }
-  };
+  const renderedStep = useMemo(() => {
+    const StepComponent = ONBOARDING_STEPS[currentStep];
 
-  return (
-    <OnboardingLayout currentStep={currentStep - 1}>
-      <SlideTransition key={currentStep}>{renderStep()}</SlideTransition>
-    </OnboardingLayout>
-  );
+    if (StepComponent) {
+      return <StepComponent user={user} onAdvance={handleAdvanceOnboarding} />;
+    }
+    router.push(ROUTES.HOME);
+    return null;
+  }, [currentStep, user, handleAdvanceOnboarding, router]);
+
+  return <SlideTransition key={currentStep}>{renderedStep}</SlideTransition>;
 };
 
 export default Onboarding;
